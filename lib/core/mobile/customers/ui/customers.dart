@@ -1,0 +1,155 @@
+import 'package:flutter/material.dart';
+import '../../../../../constants/app_constants.dart';
+import '../../../../../database/db_utils/db_customer.dart';
+import '../../../../../database/models/customer.dart';
+import '../../../../../utils/helper.dart';
+import '../../../../../utils/ui_utils/padding_margin.dart';
+import '../../../../../utils/ui_utils/spacer_widget.dart';
+import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
+import '../../../../../widgets/custom_appbar.dart';
+import '../../../../../widgets/customer_tile.dart';
+import '../../../../../widgets/main_drawer.dart';
+import '../../../../../widgets/search_widget.dart';
+import '../../../../../widgets/shimmer_widget.dart';
+
+class Customers extends StatefulWidget {
+  const Customers({Key? key}) : super(key: key);
+
+  @override
+  State<Customers> createState() => _CustomersState();
+}
+
+class _CustomersState extends State<Customers> {
+  List<Customer> customers = [];
+  late TextEditingController searchCustomerController;
+  bool isCustomersFound = true;
+
+  @override
+  void initState() {
+    super.initState();
+    searchCustomerController = TextEditingController();
+    getCustomersFromDB(0);
+  }
+
+  @override
+  void dispose() {
+    searchCustomerController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      endDrawer: MainDrawer(
+        menuItem: Helper.getMenuItemList(),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const CustomAppbar(title: CUSTOMERS_TXT),
+              hightSpacer30,
+              Padding(
+                padding: horizontalSpace(),
+                child: SearchWidget(
+                  searchHint: SEARCH_HINT_TXT,
+                  searchTextController: searchCustomerController,
+                  onTextChanged: (text) {
+                    if (text.isNotEmpty) {
+                      filterCustomerData(text);
+                    } else {
+                      getCustomersFromDB(0);
+                    }
+                  },
+                  onSubmit: (text) {
+                    if (text.isNotEmpty) {
+                      filterCustomerData(text);
+                    } else {
+                      getCustomersFromDB(0);
+                    }
+                  },
+                ),
+              ),
+              hightSpacer15,
+              isCustomersFound
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: customers.isEmpty ? 10 : customers.length,
+                      primary: false,
+                      itemBuilder: (context, position) {
+                        if (customers.isEmpty) {
+                          return const ShimmerWidget();
+                        } else {
+                          return CustomerTile(
+                            isCheckBoxEnabled: false,
+                            isDeleteButtonEnabled: false,
+                            customer: customers[position],
+                            isSubtitle: true,
+                          );
+                        }
+                      })
+                  : Center(
+                      child: Text(
+                      NO_DATA_FOUND,
+                      style: getTextStyle(
+                        fontSize: SMALL_PLUS_FONT_SIZE,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )),
+              // Visibility(
+              //     visible: isCustomersFound,
+              //     child: ListView.builder(
+              //         shrinkWrap: true,
+              //         itemCount: customers.isEmpty ? 10 : customers.length,
+              //         primary: false,
+              //         itemBuilder: (context, position) {
+              //           if (customers.isEmpty) {
+              //             return const ShimmerWidget();
+              //           } else {
+              //             return CustomerTile(
+              //               isCheckBoxEnabled: false,
+              //               isDeleteButtonEnabled: false,
+              //               customer: customers[position],
+              //               isSubtitle: true,
+              //             );
+              //           }
+              //         })),
+              // Visibility(
+              //     visible: !isCustomersFound,
+              //     child: Center(
+              //         child: Text(
+              //       NO_DATA_FOUND,
+              //       style: getTextStyle(
+              //         fontSize: SMALL_PLUS_FONT_SIZE,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ))),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///Function to get the customer data from api
+  ///If not available from api then load from local database
+  Future<void> getCustomersFromDB(val) async {
+    //Fetch the data from local database
+    customers = await DbCustomer().getCustomers();
+    isCustomersFound = customers.isNotEmpty;
+    if (val == 0) setState(() {});
+  }
+
+  void filterCustomerData(String searchText) async {
+    await getCustomersFromDB(1);
+    customers = customers
+        .where((element) =>
+            element.name.toLowerCase().contains(searchText.toLowerCase()) ||
+            element.phone.toLowerCase().contains(searchText.toLowerCase()))
+        .toList();
+
+    isCustomersFound = customers.isNotEmpty;
+
+    setState(() {});
+  }
+}

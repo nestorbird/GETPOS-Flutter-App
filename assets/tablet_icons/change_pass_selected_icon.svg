@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="95" height="95" viewBox="0 0 95 95">
+  <defs>
+    <filter id="Ellipse_31" x="0" y="0" width="95" height="95" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_907" data-name="Group 907" transform="translate(-299 -207)">
+    <g transform="matrix(1, 0, 0, 1, 299, 207)" filter="url(#Ellipse_31)">
+      <circle id="Ellipse_31-2" data-name="Ellipse 31" cx="38.5" cy="38.5" r="38.5" transform="translate(9 6)" fill="#dc1e44"/>
+    </g>
+    <g id="icAccountPassword" transform="translate(328 230)">
+      <g id="Group_46" data-name="Group 46">
+        <g id="Group_45" data-name="Group 45" transform="translate(13.577 21.08)">
+          <path id="Path_98" data-name="Path 98" d="M327.437,105.82h-.005a5.38,5.38,0,0,1-3.509-1.275.877.877,0,0,1-.261-.786l.62-3.574a5.035,5.035,0,0,1-1.77-3.768,4.923,4.923,0,0,1,9.846,0,5.045,5.045,0,0,1-1.77,3.768l.62,3.574a.873.873,0,0,1-.262.787A5.4,5.4,0,0,1,327.437,105.82Zm-1.954-2.292a3.739,3.739,0,0,0,1.949.542h.005a3.753,3.753,0,0,0,1.949-.544l-.621-3.58a.874.874,0,0,1,.416-.9,3.2,3.2,0,0,0,1.421-2.627,3.167,3.167,0,0,0-6.334,0,3.244,3.244,0,0,0,1.418,2.626.875.875,0,0,1,.418.9Z" transform="translate(-322.511 -91.503)" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"/>
+        </g>
+        <path id="Path_99" data-name="Path 99" d="M346.559,89.67h-3.337c-.054-5.773-4.293-13.687-12.2-13.687-7.5,0-12.157,7.084-12.21,13.687h-3.336a2.956,2.956,0,0,0-2.958,2.949V101.5a18.322,18.322,0,0,0,18.324,18.28h.352a18.323,18.323,0,0,0,18.324-18.28V92.619A2.956,2.956,0,0,0,346.559,89.67ZM331.018,77.734c6.767,0,10.4,6.9,10.448,11.936h-20.9C320.614,84.817,323.94,77.734,331.018,77.734ZM347.758,101.5a16.568,16.568,0,0,1-16.568,16.529h-.352A16.568,16.568,0,0,1,314.271,101.5V92.619a1.2,1.2,0,0,1,1.2-1.2h31.086a1.2,1.2,0,0,1,1.2,1.2Z" transform="translate(-312.515 -75.983)" fill="#fff" stroke="#fff" stroke-miterlimit="10" stroke-width="1"/>
+      </g>
+    </g>
+  </g>
+</svg>
