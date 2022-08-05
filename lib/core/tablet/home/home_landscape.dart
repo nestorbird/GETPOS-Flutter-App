@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
-
 import '../../../../../database/db_utils/db_categories.dart';
-import '../../../../../database/db_utils/db_hub_manager.dart';
-import '../../../../../database/db_utils/db_parked_order.dart';
 import '../../../../../database/models/category.dart';
 import '../../../../../database/models/customer.dart';
-import '../../../../../database/models/hub_manager.dart';
-import '../../../../../database/models/order_item.dart';
 import '../../../../../database/models/park_order.dart';
 import '../../../../../database/models/product.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
-import '../../../../../widgets/item_options.dart';
 import '../widget/create_customer_popup.dart';
 import '../widget/select_customer_popup.dart';
 import '../widget/title_search_bar.dart';

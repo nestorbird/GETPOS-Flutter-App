@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:nb_posx/constants/app_constants.dart';
@@ -10,8 +8,8 @@ import '../../../../../database/db_utils/db_parked_order.dart';
 import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../widgets/shimmer_widget.dart';
-import 'parked_data_item_landscape.dart';
 import '../widget/title_search_bar.dart';
+import 'parked_data_item_landscape.dart';
 
 class OrderListParkedLandscape extends StatefulWidget {
   final RxString selectedView;
