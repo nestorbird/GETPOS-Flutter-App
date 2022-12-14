@@ -57,7 +57,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(),
+        menuItem: Helper.getMenuItemList(context),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

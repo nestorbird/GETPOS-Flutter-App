@@ -51,6 +51,7 @@ class Items {
   String? id;
   String? name;
   List<Attributes>? attributes;
+  String? image;
   double? productPrice;
   String? warehouse;
   double? stockQty;
@@ -59,6 +60,7 @@ class Items {
       {this.id,
       this.name,
       this.attributes,
+      this.image,
       this.productPrice,
       this.warehouse,
       this.stockQty});
@@ -72,9 +74,10 @@ class Items {
         attributes!.add(Attributes.fromJson(v));
       });
     }
+    image = json['image'] ?? "";
     productPrice = json['product_price'];
     warehouse = json['warehouse'];
-    stockQty = json['stock_qty'];
+    stockQty = json['stock_qty'] == 0 ? 0.0 : json['stock_qty'];
   }
 
   Map<String, dynamic> toJson() {

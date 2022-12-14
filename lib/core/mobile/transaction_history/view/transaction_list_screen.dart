@@ -54,7 +54,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(),
+        menuItem: Helper.getMenuItemList(context),
       ),
       body: SafeArea(
         child: Column(
@@ -89,7 +89,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                 case TransactionStatus.success:
                   if (state.orders.isEmpty) {
                     return const Center(
-                      child: Text("no posts"),
+                      child: Text("no orders"),
                     );
                   }
 
@@ -101,7 +101,8 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                         controller: _scrollController,
                         itemBuilder: (BuildContext context, int index) {
                           return index >= state.orders.length
-                              ? const BottomLoader()
+                              ? const Visibility(
+                                  visible: false, child: BottomLoader())
                               : TransactionItem(order: state.orders[index]);
                         }),
                   );

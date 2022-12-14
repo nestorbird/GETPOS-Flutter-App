@@ -59,16 +59,19 @@ class ProductsService {
                   options: options);
               attributes.add(attrib);
             });
+
+            var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+
             Product product = Product(
                 id: item.id!,
                 name: item.name!,
                 group: catData.itemGroup!,
                 description: '',
                 stock: item.stockQty!,
-                price: item.productPrice!,
+                price: item.productPrice ?? 0.0,
                 attributes: attributes,
-                productImage: Uint8List.fromList([]),
-                productImageUrl: "",
+                productImage: imageBytes,
+                productImageUrl: item.image,
                 productUpdatedTime: DateTime.now());
 
             products.add(product);

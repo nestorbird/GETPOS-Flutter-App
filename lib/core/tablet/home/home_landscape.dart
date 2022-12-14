@@ -158,7 +158,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
           itemCount: categories.length,
           itemBuilder: (BuildContext context, index) {
             return InkWell(
-              // onTap: () => _handleCustomerPopup(),
+              onTap: () => _handleCustomerPopup(),
               child: Container(
                 margin: paddingXY(y: 5),
                 width: 80,

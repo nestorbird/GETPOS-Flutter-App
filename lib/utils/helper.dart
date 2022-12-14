@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
+import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 
 import '../configs/theme_config.dart';
@@ -252,24 +254,59 @@ class Helper {
     }
   }
 
-  static List<Map> getMenuItemList() {
+  ///Siddhant : Commented code, as GetMaterialApp from GetX state management is not the root.
+  ///
+  // static List<Map> getMenuItemList() {
+  //   List<Map> menuItems = [];
+  //   Map<String, dynamic> homeMenu = {
+  //     "title": "Home",
+  //     "action": () {
+  //       Get.offAll(() => const Home());
+  //     }
+  //   };
+  //   Map<String, dynamic> createOrderMenu = {
+  //     "title": "Create new sale",
+  //     "action": () {
+  //       Get.offAll(NewCreateOrder(), arguments: "create_new_order");
+  //     }
+  //   };
+  //   Map<String, dynamic> parkOrderMenu = {
+  //     "title": "Parked orders",
+  //     "action": () {
+  //       Get.offAll(const OrderListScreen(), arguments: "parked_order");
+  //     }
+  //   };
+  //   menuItems.add(createOrderMenu);
+  //   menuItems.add(parkOrderMenu);
+  //   menuItems.add(homeMenu);
+  //   return menuItems;
+  // }
+
+  static List<Map> getMenuItemList(BuildContext context) {
     List<Map> menuItems = [];
     Map<String, dynamic> homeMenu = {
       "title": "Home",
       "action": () {
-        Get.offAll(() => const Home());
+        //Get.offAll(() => const Home());
+        Navigator.push(
+            // ignore: prefer_const_constructors
+            context, MaterialPageRoute(builder: (context) => Home()));
       }
     };
     Map<String, dynamic> createOrderMenu = {
       "title": "Create new sale",
       "action": () {
-        Get.offAll(const Home(), arguments: "create_new_order");
+        //Get.offAll(NewCreateOrder(), arguments: "create_new_order");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NewCreateOrder()));
       }
     };
     Map<String, dynamic> parkOrderMenu = {
       "title": "Parked orders",
       "action": () {
-        Get.offAll(const Home(), arguments: "parked_order");
+        //Get.offAll(const OrderListScreen(), arguments: "parked_order");
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NewCreateOrder()));
       }
     };
     menuItems.add(createOrderMenu);

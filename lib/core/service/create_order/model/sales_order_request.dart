@@ -96,12 +96,12 @@ class Items {
 
   Map<String, dynamic> toMap() {
     return {
-      'itemCode': itemCode,
-      'name': name,
-      'price': price,
-      'selectedOption': selectedOption.map((x) => x.toMap()).toList(),
-      'orderedQuantity': orderedQuantity,
-      'orderedPrice': orderedPrice,
+      'item_code': itemCode,
+      'item_name': name,
+      'rate': price,
+      'sub_items': selectedOption.map((x) => x.toMap()).toList(),
+      'qty': orderedQuantity,
+      'ordered_price': orderedPrice,
     };
   }
 
@@ -174,9 +174,10 @@ class SelectedOptions {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'name': name,
-      'price': price,
+      'item_code': id,
+      'item_name': name,
+      'qty': 1,
+      'rate': price,
     };
   }
 

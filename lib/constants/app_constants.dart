@@ -46,7 +46,7 @@ const CREATE_ORDER_TXT = 'Create Order'; //Create Order Screen
 const PRODUCTS_TXT = 'Products';
 const CUSTOMERS_TXT = 'Customers';
 const MY_ACCOUNT_TXT = 'My Account';
-const SALES_HISTORY_TXT = 'Transaction History';
+const SALES_HISTORY_TXT = 'Order History';
 const FINANCE_TXT = 'Finance';
 
 //CREATE ORDER SCREEN

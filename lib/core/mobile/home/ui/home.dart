@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(),
+        menuItem: Helper.getMenuItemList(context),
       ),
       body: Builder(
         builder: (ctx) => SafeArea(

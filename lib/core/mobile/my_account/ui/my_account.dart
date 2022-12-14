@@ -78,7 +78,7 @@ class _MyAccountState extends State<MyAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(),
+        menuItem: Helper.getMenuItemList(context),
       ),
       body: SafeArea(
         child: Column(
