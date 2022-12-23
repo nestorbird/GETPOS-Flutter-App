@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import '../../core/service/create_order/api/create_sales_order.dart';
 import '../../core/service/my_account/api/get_hub_manager_details.dart';
@@ -42,6 +44,8 @@ class SyncHelper {
     await DbProduct().deleteProducts();
     await DbSaleOrder().delete();
     await DBPreferences().delete();
+    await DbInstanceUrl().deleteUrl();
+    instanceUrl = 'pos.nestorbird.com';
     return true;
   }
 

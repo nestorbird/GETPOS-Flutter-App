@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nestorbird.nb_pos">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
+
    <application
-        android:label="NB POS"
+        android:label="Get POS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

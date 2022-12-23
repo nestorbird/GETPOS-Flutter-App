@@ -104,7 +104,7 @@ class _CartWidgetState extends State<CartWidget> {
               : const SizedBox(height: 16),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Subtotal", "USD 423.00"),
+              : _subtotalSection("Subtotal", "₹ 423.00"),
           widget.orderList.isEmpty
               ? const SizedBox()
               : _subtotalSection("Discount", " - 23.00", isDiscount: true),
@@ -113,7 +113,7 @@ class _CartWidgetState extends State<CartWidget> {
               : _subtotalSection("Tax ( 10% )", "42.30"),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _totalSection("Total", "USD 389.30"),
+              : _totalSection("Total", "₹ 389.30"),
           widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
           _showActionButton()
         ],
@@ -249,7 +249,7 @@ class _CartWidgetState extends State<CartWidget> {
                 ]),
                 Row(children: [
                   Text(
-                    "USD ${item.price}",
+                    "₹ ${item.price}",
                     style: getTextStyle(
                         fontWeight: FontWeight.w600,
                         color: GREEN_COLOR,

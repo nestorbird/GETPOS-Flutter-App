@@ -162,7 +162,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                               color: WHITE_COLOR,
                               fontWeight: FontWeight.normal),
                         ),
-                        subtitle: Text("USD ${_getItemTotal()}",
+                        subtitle: Text("₹ ${_getItemTotal()}",
                             style: getTextStyle(
                                 fontSize: LARGE_FONT_SIZE,
                                 fontWeight: FontWeight.w600,
@@ -237,7 +237,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                                 : Padding(
                                     padding: verticalSpace(x: 5),
                                     child: Text(
-                                      "${categories[position].items.length + position} items",
+                                      "${categories[position].items.length} items",
                                       style: getTextStyle(
                                           color: MAIN_COLOR,
                                           fontWeight: FontWeight.normal,

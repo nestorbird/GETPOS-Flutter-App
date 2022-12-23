@@ -35,6 +35,7 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 const CustomAppbar(
                   title: "",
+                  hideSidemenu: true,
                 ),
                 CustomerTile(
                   isCheckBoxEnabled: false,

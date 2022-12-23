@@ -75,7 +75,7 @@ class APIUtils {
 
   static Uri _apiPath(String url) {
     //Parsing the apiURl to Uri
-    Uri uri = Uri.parse(BASE_URL + url);
+    Uri uri = Uri.parse(instanceUrl + url);
     log('API URL :: $uri');
     return uri;
   }

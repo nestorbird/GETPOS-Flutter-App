@@ -116,7 +116,7 @@ class GetPreviousOrder {
             manager: hubManager!,
             orderAmount: order.grandTotal!,
             tracsactionDateTime: DateTime.parse(transactionDateTime),
-            transactionId: order.mpesaNo!,
+            transactionId: order.mpesaNo ?? "",
             paymentMethod: order.modeOfPayment!,
             paymentStatus: "",
             transactionSynced: true,

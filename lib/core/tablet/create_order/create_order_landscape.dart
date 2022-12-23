@@ -172,7 +172,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                               ),
                               hightSpacer5,
                               Text(
-                                "USD ${cat.items[index].price}",
+                                "₹ ${cat.items[index].price}",
                                 textAlign: TextAlign.right,
                                 style: getTextStyle(
                                     color: MAIN_COLOR,

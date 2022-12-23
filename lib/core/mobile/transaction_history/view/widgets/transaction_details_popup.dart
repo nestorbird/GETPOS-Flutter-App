@@ -91,7 +91,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      'USD ${order.orderAmount}',
+                      '₹ ${order.orderAmount}',
                       style: getTextStyle(
                           color: MAIN_COLOR,
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -139,7 +139,7 @@ class TransactionDetailsPopup extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "USD ${order.items.first.price}",
+                "₹ ${order.items.first.price}",
                 style: getTextStyle(
                     color: GREEN_COLOR,
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -180,7 +180,7 @@ class TransactionDetailsPopup extends StatelessWidget {
     //           ),
     //           const Spacer(),
     //           Text(
-    //             "USD ${order.items.first.price}",
+    //             "₹ ${order.items.first.price}",
     //             style: getTextStyle(
     //                 color: GREEN_COLOR,
     //                 fontSize: MEDIUM_PLUS_FONT_SIZE,

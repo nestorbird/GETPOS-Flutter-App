@@ -96,14 +96,12 @@ class _CategoryItemState extends State<CategoryItem> {
     if (isUserOnline && widget.product!.productImageUrl!.isNotEmpty) {
       log('Image Url : ${widget.product!.productImageUrl!}');
       return ClipRRect(
-        borderRadius: BorderRadius.circular(8), // Image border
-        child: SizedBox(
-          // Image radius
-          height: 80,
-          child: Image.network(widget.product!.productImageUrl!,
-              fit: BoxFit.cover),
-        ),
-      );
+          borderRadius: BorderRadius.circular(8), // Image border
+          child: SizedBox(
+            // Image radius
+            height: 80,
+            child: Image(image: NetworkImage(widget.product!.productImageUrl!)),
+          ));
     } else {
       log('Local image');
       return widget.product!.productImage.isEmpty

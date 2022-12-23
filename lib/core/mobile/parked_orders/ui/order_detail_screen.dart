@@ -218,7 +218,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       color: WHITE_COLOR,
                       fontWeight: FontWeight.normal),
                 ),
-                Text("USD ${widget.order.orderAmount}",
+                Text("₹ ${widget.order.orderAmount}",
                     style: getTextStyle(
                         fontSize: LARGE_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w600,

@@ -4,6 +4,8 @@ import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import 'constants/app_constants.dart';
 import 'core/mobile/home/ui/home.dart';
@@ -33,6 +35,7 @@ void main() async {
   //Registering hive database type adapters
   registerHiveTypeAdapters();
   isUserLoggedIn = await DbHubManager().getManager() != null;
+  instanceUrl = await DbInstanceUrl().getUrl();
 
   await SyncHelper().launchFlow(isUserLoggedIn);
   // check for device
@@ -41,7 +44,7 @@ void main() async {
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeRight],
     );
-    runApp(const TabletApp());
+    runApp(const MobileApp());
   } else {
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],

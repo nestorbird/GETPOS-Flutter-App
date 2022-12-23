@@ -7,7 +7,7 @@
 import '../network/api_helper/api_server.dart';
 
 const APP_NAME = 'NB POS';
-const APP_CURRENCY = 'USD';
+const APP_CURRENCY = '₹';
 const PLEASE_WAIT_TXT = 'PLEASE WAIT...';
 
 const ENVIRONMENT = ApiServer.DEV;
@@ -21,6 +21,8 @@ const LOGIN_TXT = 'Log In';
 const ACCESS_YOUR_ACCOUNT = 'Access your account';
 const EMAIL_TXT = 'Email';
 const PASSWORD_TXT = 'Password';
+const URL_TXT = 'URL';
+const URL_HINT = 'Enter ERP URL';
 const EMAIL_HINT = 'Enter your registered email';
 const PASSWORD_HINT = '6-12 character password';
 const FORGET_PASSWORD_SMALL_TXT = 'Forgot Password?';
@@ -31,6 +33,7 @@ const PRIVACY_POLICY = 'Privacy Policy ';
 const SOMETHING_WRONG = 'Something went wrong. Please try again';
 const INVALID_EMAIL = 'Please enter valid email';
 const INVALID_PASSWORD = 'Password should be at least of 6 characters';
+const INVALID_URL = 'Please enter valid ERP URL';
 const CLOSE_APP_QUESTION = 'Do you want to close the App?';
 const OPTION_YES = 'Yes';
 const OPTION_NO = 'No';

@@ -94,7 +94,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                           color: WHITE_COLOR,
                           fontWeight: FontWeight.normal),
                     ),
-                    subtitle: Text("USD ${widget.orderItem.orderedPrice}",
+                    subtitle: Text("₹ ${widget.orderItem.orderedPrice}",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.w600,
@@ -153,7 +153,7 @@ class _ItemOptionsState extends State<ItemOptions> {
             widthSpacer(5),
             Text(option.name),
             const Spacer(),
-            Text("USD ${option.price}"),
+            Text("₹ ${option.price}"),
           ],
         ),
       ),

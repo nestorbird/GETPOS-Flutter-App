@@ -13,6 +13,9 @@ const TEST_URL = 'https://tst.erp.nbpos.com/api/';
 ///Base API URL for production environment
 const PROD_URL = 'https://prd.erp.nbpos.com/api/';
 
+///Default URL for POS instance
+String instanceUrl = 'pos.nestorbird.com';
+
 ///Base API URL for production environment
 // ignore: non_constant_identifier_names
 final BASE_URL = ENVIRONMENT == ApiServer.DEV

@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/network/api_constants/api_paths.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../network/api_helper/comman_response.dart';
@@ -30,7 +32,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late TextEditingController _emailCtrl, _passCtrl;
+  late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
   String? version;
 
   @override
@@ -38,8 +40,10 @@ class _LoginState extends State<Login> {
     super.initState();
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
-    _emailCtrl.text = "swapnil.g.pawar99@gmail.com";
-    _passCtrl.text = "User@123";
+    _urlCtrl = TextEditingController();
+    _emailCtrl.text = "";
+    _passCtrl.text = "";
+    _urlCtrl.text = instanceUrl;
 
     _getAppVersion();
   }
@@ -80,6 +84,9 @@ class _LoginState extends State<Login> {
                   hightSpacer50,
                   hightSpacer50,
                   hightSpacer50,
+                  hightSpacer50,
+                  instanceUrlTxtboxSection(context),
+                  hightSpacer50,
                   headingLblWidget(context),
                   hightSpacer5,
                   subHeadingLblWidget(context),
@@ -109,10 +116,11 @@ class _LoginState extends State<Login> {
   }
 
   /// HANDLE LOGIN BTN ACTION
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password, String url) async {
     try {
       Helper.showLoaderDialog(context);
-      CommanResponse response = await LoginService.login(email, password);
+
+      CommanResponse response = await LoginService.login(email, password, url);
 
       if (response.status!) {
         //Adding static data into the database
@@ -141,11 +149,36 @@ class _LoginState extends State<Login> {
     });
   }
 
+  ///Input field for entering the instance URL
+  Widget instanceUrlTxtboxSection(context) => Container(
+        margin: horizontalSpace(),
+        padding: smallPaddingAll(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: leftSpace(x: 10),
+              child: Text(
+                URL_TXT,
+                style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
+              ),
+            ),
+            hightSpacer5,
+            TextFieldWidget(
+              boxDecoration: txtFieldBorderDecoration,
+              txtCtrl: _urlCtrl,
+              hintText: URL_HINT,
+            ),
+          ],
+        ),
+      );
+
   /// LOGIN BUTTON
   Widget loginBtnWidget(context) => Center(
         child: ButtonWidget(
           onPressed: () async {
-            await login(_emailCtrl.text, _passCtrl.text);
+            String url = "https://${_urlCtrl.text}/api/";
+            await login(_emailCtrl.text, _passCtrl.text, url);
           },
           title: LOGIN_TXT,
           colorBG: MAIN_COLOR,

@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:nb_posx/widgets/custom_appbar.dart';
+
 import '../../../../constants/app_constants.dart';
 
 import '../../../../network/api_helper/api_status.dart';
@@ -24,10 +26,18 @@ class _WebViewScreenState extends State<WebViewScreen> {
   String parsedHtml = '';
   String apiResponse = '';
   WebViewController? _webViewController;
+  String title = "";
 
   @override
   void initState() {
     super.initState();
+
+    if (widget.topicTypes == TopicTypes.PRIVACY_POLICY) {
+      title = "Privacy Policy";
+    } else {
+      title = "Terms & Conditions";
+    }
+
     getTopicData();
   }
 
@@ -35,15 +45,21 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: WebView(
-                javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (_webController) {
-                  _webViewController = _webController;
-                },
-              ))),
+          body: Column(
+        children: [
+          CustomAppbar(title: title, hideSidemenu: true),
+          Expanded(
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: WebView(
+                    javascriptMode: JavascriptMode.unrestricted,
+                    onWebViewCreated: (_webController) {
+                      _webViewController = _webController;
+                    },
+                  )))
+        ],
+      )),
     );
   }
 

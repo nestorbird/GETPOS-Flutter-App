@@ -100,7 +100,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   Future<void> login(String email, String password) async {
     try {
       Helper.showLoaderDialog(context);
-      CommanResponse response = await LoginService.login(email, password);
+      CommanResponse response = await LoginService.login(email, password, "");
 
       if (response.status!) {
         //Adding static data into the database

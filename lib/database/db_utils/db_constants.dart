@@ -14,6 +14,7 @@ const CATEGORY_BOX = 'categories';
 const ATTRIBUTE_BOX = 'attributes';
 const OPTION_BOX = 'options';
 const ORDER_ITEM_BOX = 'order_items';
+const URL_BOX = 'url';
 
 //Temporary Variables
 const WardOne = 'SHM0134';
@@ -46,3 +47,4 @@ const SalesSeries = 'SALES_SERIES';
 const CUSTOMER_LAST_SYNC_DATETIME = 'CUSTOMER_LAST_SYNC_DATETIME';
 const PRODUCT_LAST_SYNC_DATETIME = 'PRODUCT_LAST_SYNC_DATETIME';
 const CURRENT_ORDER_NUMBER = 'CURRENT_ORDER_NUMBER';
+const URL_KEY = 'URL_KEY';

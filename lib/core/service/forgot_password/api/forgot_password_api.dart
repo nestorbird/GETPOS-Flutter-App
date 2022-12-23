@@ -17,6 +17,11 @@ class ForgotPasswordApi {
             status: true,
             message: SUCCESS,
             apiStatus: ApiStatus.REQUEST_SUCCESS);
+      } else if (apiResponse["message"]["success_key"] == 0) {
+        return CommanResponse(
+            status: false,
+            message: apiResponse["message"]["message"],
+            apiStatus: ApiStatus.REQUEST_FAILURE);
       } else {
         return CommanResponse(
             status: false,
