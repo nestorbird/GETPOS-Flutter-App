@@ -71,14 +71,15 @@ class CustomAppbar extends StatelessWidget {
   }
 
   _getBlankSideMenu() {
-    return Padding(
-      padding: mediumPaddingAll(),
-      child: SvgPicture.asset(
-        MENU_ICON,
-        color: WHITE_COLOR,
-        width: 20,
-      ),
-    );
+    // return Padding(
+    //   padding: mediumPaddingAll(),
+    //   child: SvgPicture.asset(
+    //     MENU_ICON,
+    //     color: WHITE_COLOR,
+    //     width: 20,
+    //   ),
+    // );
+    return Container(width: 30);
   }
 
   _getSideMenu(context) {

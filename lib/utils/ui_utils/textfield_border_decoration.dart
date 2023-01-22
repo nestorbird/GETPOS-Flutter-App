@@ -9,7 +9,7 @@ BoxDecoration txtFieldBorderDecoration = BoxDecoration(
 
 BoxDecoration searchTxtFieldBorderDecoration = BoxDecoration(
     border: Border.all(color: DARK_GREY_COLOR, width: BORDER_WIDTH),
-    borderRadius: BorderRadius.circular(15));
+    borderRadius: BorderRadius.circular(8));
 
 BoxDecoration txtFieldBoxShadowDecoration = BoxDecoration(
     color: WHITE_COLOR,

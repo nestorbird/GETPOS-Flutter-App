@@ -9,7 +9,7 @@ import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/button.dart';
-import '../../../../../widgets/search_widget.dart';
+import '../../../widgets/search_widget_tablet.dart';
 
 // ignore: must_be_immutable
 class TitleAndSearchBar extends StatelessWidget {
@@ -59,7 +59,7 @@ class TitleAndSearchBar extends StatelessWidget {
               child: Container(
                 width: searchBoxWidth,
                 padding: horizontalSpace(x: 10),
-                child: SearchWidget(
+                child: SearchWidgetTablet(
                   searchHint: searchHint,
                   searchTextController: searchCtrl,
                   onTextChanged: (val) => onTextChanged!(val),
@@ -74,6 +74,7 @@ class TitleAndSearchBar extends StatelessWidget {
             ),
           ],
         ),
+        hightSpacer10,
         Visibility(
           visible: !hideOperatorDetails,
           child: Padding(
@@ -92,7 +93,8 @@ class TitleAndSearchBar extends StatelessWidget {
                       ? Helper.hubManager!.name
                       : "Hub manager",
                   style: getTextStyle(
-                      fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.w500),
+                      fontSize: MEDIUM_PLUS_FONT_SIZE,
+                      fontWeight: FontWeight.bold),
                 ),
                 widthSpacer(10)
               ],

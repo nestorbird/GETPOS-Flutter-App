@@ -75,7 +75,7 @@ class _SimplePopupState extends State<SimplePopup> {
                                     OPTION_CANCEL,
                                     style: getTextStyle(
                                         fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                        color: GREY_COLOR),
+                                        color: DARK_GREY_COLOR),
                                   ))))
                         ],
                       ),

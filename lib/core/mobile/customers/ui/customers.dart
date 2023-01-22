@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
+import 'package:nb_posx/network/api_helper/comman_response.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_customer.dart';
 import '../../../../../database/models/customer.dart';
-import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/custom_appbar.dart';
 import '../../../../../widgets/customer_tile.dart';
-import '../../../../../widgets/main_drawer.dart';
 import '../../../../../widgets/search_widget.dart';
 import '../../../../../widgets/shimmer_widget.dart';
 
@@ -40,14 +40,14 @@ class _CustomersState extends State<Customers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
+      // endDrawer: MainDrawer(
+      //   menuItem: Helper.getMenuItemList(context),
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomAppbar(title: CUSTOMERS_TXT),
+              const CustomAppbar(title: CUSTOMERS_TXT, hideSidemenu: true),
               hightSpacer30,
               Padding(
                 padding: horizontalSpace(),
@@ -85,6 +85,7 @@ class _CustomersState extends State<Customers> {
                             isDeleteButtonEnabled: false,
                             customer: customers[position],
                             isSubtitle: true,
+                            isHighlighted: true,
                           );
                         }
                       })
@@ -149,6 +150,10 @@ class _CustomersState extends State<Customers> {
         .toList();
 
     isCustomersFound = customers.isNotEmpty;
+
+    if (!isCustomersFound) {
+      CommanResponse response = await CustomerService().getCustomers(searchTxt: searchText);
+    }
 
     setState(() {});
   }

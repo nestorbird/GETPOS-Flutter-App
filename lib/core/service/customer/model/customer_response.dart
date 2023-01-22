@@ -29,9 +29,9 @@ class Message {
   Message.fromJson(Map<String, dynamic> json) {
     successKey = json['success_key'];
     message = json['message'];
-    if (json['customer_list'] != null) {
+    if (json['customer'] != null) {
       customerList = [];
-      json['customer_list'].forEach((v) {
+      json['customer'].forEach((v) {
         customerList.add(CustomerList.fromJson(v));
       });
     }
@@ -41,8 +41,7 @@ class Message {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['success_key'] = successKey;
     data['message'] = message;
-
-    data['customer_list'] = customerList.map((v) => v.toJson()).toList();
+    data['customer'] = customerList.map((v) => v.toJson()).toList();
 
     return data;
   }
@@ -73,16 +72,16 @@ class CustomerList {
       required this.image});
 
   CustomerList.fromJson(Map<String, dynamic> json) {
-    customerName = json['customer_name'];
+    customerName = json['customer_name'] ?? "";
     emailId = json['email_id'] ?? "";
     mobileNo = json['mobile_no'] ?? "";
-    ward = json['ward'];
-    wardName = json['ward_name'];
-    name = json['name'];
-    creation = json['creation'];
-    modified = json['modified'];
-    disabled = json['disabled'];
-    image = json['image'];
+    ward = json['ward'] ?? "";
+    wardName = json['ward_name'] ?? "";
+    name = json['name'] ?? "";
+    creation = json['creation'] ?? "";
+    modified = json['modified'] ?? "";
+    disabled = json['disabled'] ?? 0;
+    image = json['image'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

@@ -109,7 +109,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   : (customer == null && searchCtrl.text.length == 10)
                       ? Container(
                           width: 380,
-                          height: 70,
+                          height: 75,
                           padding: morePaddingAll(),
                           decoration: BoxDecoration(
                             color: MAIN_COLOR.withOpacity(0.05),

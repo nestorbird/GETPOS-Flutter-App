@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
+import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -12,11 +13,8 @@ import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
-import '../../../../../widgets/custom_appbar.dart';
 import '../../../../../widgets/product_shimmer_widget.dart';
 import '../../add_products/ui/added_product_item.dart';
-import '../../checkout/ui/checkout_screen.dart';
-import '../../create_order_new/ui/new_create_order.dart';
 import 'widget/header_data.dart';
 
 class OrderDetailScreen extends StatefulWidget {
@@ -35,11 +33,78 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           child: Stack(
         children: [
           SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(left: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CustomAppbar(
-                  title: "Parked order details",
+                // const CustomAppbar(
+                //   title: "Parked order",
+                //   hideSidemenu: true,
+                // ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: smallPaddingAll(),
+                          child: SvgPicture.asset(
+                            BACK_IMAGE,
+                            color: BLACK_COLOR,
+                            width: 25,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        'Parked Order',
+                        style: getTextStyle(
+                            fontSize: LARGE_MINUS_FONT_SIZE,
+                            color: DARK_GREY_COLOR),
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.topRight,
+                        child: Stack(alignment: Alignment.topCenter, children: [
+                          IconButton(
+                            onPressed: (() {
+                              if (widget.order != null) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CartScreen(order: widget.order)));
+                              } else {
+                                Helper.showPopup(context, "Your cart is empty");
+                              }
+                            }),
+                            icon: SvgPicture.asset(
+                              CART_ICON,
+                              height: 25,
+                              width: 25,
+                            ),
+                          ),
+                          Container(
+                              padding: const EdgeInsets.all(6),
+                              margin: const EdgeInsets.only(left: 20),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: MAIN_COLOR),
+                              child: Text(
+                                widget.order != null
+                                    ? widget.order.items.length
+                                        .toInt()
+                                        .toString()
+                                    : "0",
+                                style: getTextStyle(
+                                    fontSize: SMALL_FONT_SIZE,
+                                    color: WHITE_COLOR),
+                              ))
+                        ]))
+                  ],
                 ),
                 hightSpacer20,
                 Padding(
@@ -63,7 +128,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             )),
                         InkWell(
                           onTap: () => _handleOrderDelete(context,
-                              "Do you want to delete this parked order"),
+                              "Do you want to delete this parked order?"),
                           child: Container(
                             decoration: BoxDecoration(
                                 color: MAIN_COLOR,
@@ -102,34 +167,37 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               heading: "Order Amount",
                               headingColor: DARK_GREY_COLOR,
                               content:
-                                  "$APP_CURRENCY ${widget.order.orderAmount}",
+                                  "$APP_CURRENCY ${widget.order.orderAmount.toStringAsFixed(2)}",
                               contentColor: MAIN_COLOR,
                             )),
                       ],
                     )),
+                hightSpacer15,
                 Padding(
                   padding: paddingXY(x: 16, y: 16),
                   child: Text(
                     "Items",
                     style: getTextStyle(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: DARK_GREY_COLOR),
+                        color: BLACK_COLOR),
                   ),
                 ),
                 productList(widget.order.items)
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Row(
-              children: [
-                _getAddMoreBtn(),
-                _getCheckoutBtn(),
-              ],
-            ),
-          )
+          Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Row(
+                  children: [
+                    _getAddMoreBtn(),
+                    _getCheckoutBtn(),
+                  ],
+                ),
+              ))
         ],
       )),
     );
@@ -212,13 +280,15 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "${widget.order.items.length} Items",
+                  widget.order.items.length > 1
+                      ? "${widget.order.items.length} Items"
+                      : "${widget.order.items.length} Item",
                   style: getTextStyle(
                       fontSize: SMALL_FONT_SIZE,
                       color: WHITE_COLOR,
                       fontWeight: FontWeight.normal),
                 ),
-                Text("₹ ${widget.order.orderAmount}",
+                Text("₹ ${widget.order.orderAmount.toStringAsFixed(2)}",
                     style: getTextStyle(
                         fontSize: LARGE_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w600,
@@ -232,7 +302,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              CheckoutScreen(order: widget.order)));
+                              CartScreen(order: widget.order)));
                 },
                 child: Text("Checkout",
                     textAlign: TextAlign.right,
@@ -252,7 +322,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
   Widget _getAddMoreBtn() {
     return InkWell(
       onTap: () {
-        Get.to(NewCreateOrder(order: widget.order));
+        //Get.to(NewCreateOrder(order: widget.order));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductListHome(
+                      parkedOrder: widget.order,
+                      isForNewOrder: true,
+                    )));
       },
       child: Container(
         margin: paddingXY(x: 5, y: 0),

@@ -8,11 +8,11 @@ import '../network/api_helper/api_server.dart';
 
 const APP_NAME = 'NB POS';
 const APP_CURRENCY = '₹';
-const PLEASE_WAIT_TXT = 'PLEASE WAIT...';
+const PLEASE_WAIT_TXT = 'Please wait...';
 
 const ENVIRONMENT = ApiServer.DEV;
 const OFFLINE_DATA_FOR = 7;
-const APP_VERSION = "App Version";
+const APP_VERSION = "App version";
 const APP_VERSION_FALLBACK = "1.0";
 
 //LOGIN SCREEN
@@ -25,8 +25,8 @@ const URL_TXT = 'URL';
 const URL_HINT = 'Enter ERP URL';
 const EMAIL_HINT = 'Enter your registered email';
 const PASSWORD_HINT = '6-12 character password';
-const FORGET_PASSWORD_SMALL_TXT = 'Forgot Password?';
-const BY_SIGNING_IN = 'By Signing, you agree to our ';
+const FORGET_PASSWORD_SMALL_TXT = 'Forgot password?';
+const BY_SIGNING_IN = 'By signing, you agree to our ';
 const TERMS_CONDITIONS = 'Terms & Conditions ';
 const AND_TXT = 'and ';
 const PRIVACY_POLICY = 'Privacy Policy ';
@@ -34,7 +34,7 @@ const SOMETHING_WRONG = 'Something went wrong. Please try again';
 const INVALID_EMAIL = 'Please enter valid email';
 const INVALID_PASSWORD = 'Password should be at least of 6 characters';
 const INVALID_URL = 'Please enter valid ERP URL';
-const CLOSE_APP_QUESTION = 'Do you want to close the App?';
+const CLOSE_APP_QUESTION = 'Do you want to close the app?';
 const OPTION_YES = 'Yes';
 const OPTION_NO = 'No';
 const OPTION_OK = 'Ok';
@@ -44,19 +44,19 @@ const OPTION_CANCEL = 'Cancel';
 
 const HOME_TXT = 'Home';
 const WELCOME_BACK = 'Welcome Back,';
-const SYNC_NOW_TXT = 'Sync Now';
-const CREATE_ORDER_TXT = 'Create Order'; //Create Order Screen
+const SYNC_NOW_TXT = 'Sync now';
+const CREATE_ORDER_TXT = 'Create order'; //Create Order Screen
 const PRODUCTS_TXT = 'Products';
 const CUSTOMERS_TXT = 'Customers';
-const MY_ACCOUNT_TXT = 'My Account';
-const SALES_HISTORY_TXT = 'Order History';
+const MY_ACCOUNT_TXT = 'My account';
+const SALES_HISTORY_TXT = 'Order history';
 const FINANCE_TXT = 'Finance';
 
 //CREATE ORDER SCREEN
 
-const SELECT_CUSTOMER_TXT = 'Select Customer'; //Select Customer Screen
-const ADD_PRODUCT_TXT = 'Add Product';
-const OUT_OF_STOCK = 'Out Of Stock'; //Create Order Screen
+const SELECT_CUSTOMER_TXT = 'Select customer'; //Select Customer Screen
+const ADD_PRODUCT_TXT = 'Add product';
+const OUT_OF_STOCK = 'Out of stock'; //Create Order Screen
 const ITEMS_TXT = 'Items';
 const PROCEED_TO_NXT_TXT = 'PROCCED TO NEXT';
 const CHECKOUT_TXT = 'CHECKOUT';
@@ -77,14 +77,14 @@ const SEARCH_PRODUCT_TXT = 'Search product / category';
 const ADD_PRODUCT_TITLE = 'Products';
 const ADD_CONTINUE = 'ADD & CONTINUE';
 const INSUFFICIENT_STOCK_ERROR = 'Insufficient stock for this product.';
-const ADD_PRODUCTS_SEARCH_TXT = 'Search Product';
-const ADD_PRODUCTS_AVAILABLE_STOCK_TXT = 'Available Stock';
+const ADD_PRODUCTS_SEARCH_TXT = 'Search product';
+const ADD_PRODUCTS_AVAILABLE_STOCK_TXT = 'Available stock';
 const ADD_PRODUCTS_STOCK_UPDATE_ON_TXT = 'Stock update on';
 
 //CREATE ORDER SCREEN
 
-const CHANGE_CUSTOMER_TXT = 'Change Customer';
-const ADD_MORE_PRODUCTS = 'Add More Products';
+const CHANGE_CUSTOMER_TXT = 'Change customer';
+const ADD_MORE_PRODUCTS = 'Add more products';
 
 //CHECKOUT SCREEN
 
@@ -97,50 +97,50 @@ const CONFIRM_PAYMENT = 'Pay now';
 const CASH_PAYMENT_MSG =
     'Take the cash from the customer and click on confirm payment button';
 const TRANSACTION_TXT = 'Transaction ID';
-const ENTER_UR_TRANSACTION_ID = 'Enter your Transaction ID';
+const ENTER_UR_TRANSACTION_ID = 'Enter your transaction ID';
 const SELECT_PAYMENT_TYPE = 'Please select the payment type.';
 const ENTER_MPESA_TRANS_ID =
     'Please enter 10 alphanumeric M-Pesa transaction ID';
 
 //SALE SUCCESSFUL SCREEN
 
-const SALES_SUCCESS_TXT = 'Order Successful';
-const RETURN_TO_HOME_TXT = 'Home Page';
+const SALES_SUCCESS_TXT = 'Order successful';
+const RETURN_TO_HOME_TXT = 'Home page';
 
 //MY ACCOUNT SCREEN
 
-const CHANGE_PASSWORD = 'Change Password';
+const CHANGE_PASSWORD = 'Change password';
 const LOGOUT_TITLE = 'Logout';
 const LOGOUT_QUESTION = 'Do you really want to logout?';
-const OFFLINE_ORDER_MSG = 'Please Sync your offline order first?';
+const OFFLINE_ORDER_MSG = 'Please sync your offline order first?';
 
 //SALES HISTORY SCREEN
 const PARKED_ORDER_ID = 'Parked ID';
 const SALES_ID = 'Order ID';
-const ITEM_CODE_TXT = 'Item Code';
+const ITEM_CODE_TXT = 'Item code';
 const ITEM_TXT = 'Items';
 
 //SALES DETAILS SCREEN
 
-const SALES_DETAILS_TXT = 'Order Details';
-const SALE_AMOUNT_TXT = 'Order Amount';
-const DATE_TIME = 'Date & Time';
-const CUSTOMER_INFO = 'Customer Info';
-const ITEMS_SUMMARY = 'Item(s) Summary';
+const SALES_DETAILS_TXT = 'Order details';
+const SALE_AMOUNT_TXT = 'Order amount';
+const DATE_TIME = 'Date & time';
+const CUSTOMER_INFO = 'Customer info';
+const ITEMS_SUMMARY = 'Item(s) summary';
 const PAYMENT_STATUS = 'Status';
 
 //FINANCE SCREEN
 const FINANCE_TITLE = 'Finance';
-const CASH_BALANCE_TXT = 'Cash Balance';
+const CASH_BALANCE_TXT = 'Cash balance';
 
 //FORGOT PASSWORD SCREEN
-const FORGOT_PASSWORD_TITLE = 'Forgot Password';
+const FORGOT_PASSWORD_TITLE = 'Forgot password';
 const FORGOT_EMAIL_TXT = 'Email';
 const FORGOT_EMAIL_HINT = 'Enter your registered email';
 const FORGOT_BTN_TXT = 'Continue';
-const FORGOT_TXT_FIELD_EMPTY = 'Please provide registered email id';
+const FORGOT_TXT_FIELD_EMPTY = 'Please provide registered email ID';
 const FORGOT_SUB_MSG =
-    'A reset password link will be sent to your registered email id to reset password.';
+    'A reset password link will be sent to your registered email ID to reset password.';
 
 //VERIFY OTP SCREEN
 const VERIFY_OTP_TITLE = 'Verification link sent';
@@ -150,18 +150,21 @@ const VERIFY_OTP_HINT = 'Enter otp';
 const VERIFY_OTP_BTN_TXT = 'Back';
 
 //CHANGE PASSWORD SCREEN
-const CHANGE_PASSWORD_TITLE = 'Change Password';
+const CHANGE_PASSWORD_TITLE = 'Change password';
 const CHANGE_PASSWORD_OTP_VERIFY_MSG = 'OTP verified successfully.';
-const CHANGE_PASSWORD_SET_MSG = 'Set new Password';
-const CHANGE_NEW_PASSWORD_HINT = 'Enter New Password';
-const CHANGE_CONFIRM_PASSWORD_HINT = 'Re-enter New Password';
-const CHANGE_PASSWORD_BTN_TXT = 'Change Password';
-const CHANGE_PASSWORD_INVALID_TEXT = 'Invalid passwords, Please recheck';
+const CHANGE_PASSWORD_SET_MSG = 'Set new password';
+const CHANGE_NEW_PASSWORD_HINT = 'Enter new password';
+const CHANGE_CONFIRM_PASSWORD_HINT = 'Re-enter new Password';
+const CHANGE_PASSWORD_BTN_TXT = 'Change password';
+const CHANGE_PASSWORD_INVALID_TEXT = 'Invalid passwords, please recheck';
 
 //PASSWORD UPDATED SCREEN
-const PASSWORD_UPDATED_TITLE = 'Password Updated!';
+const PASSWORD_UPDATED_TITLE = 'Password updated!';
 const PASSWORD_UPDATED_MSG = 'Password has been updated successfully';
 const PASSWORD_UPDATED_BTN_TXT = 'Back to home';
+
+//SPLASH SCREEN
+const POWERED_BY_TXT = 'Powered by NestorBird';
 
 //GENERAL MESSAGE CONSTANTS
 const NO_INTERNET = 'No internet connection';
@@ -179,7 +182,7 @@ const WEAK_PASSWORD = 'Password you choose is too weak';
 const SOMETHING_WENT_WRONG = 'Something went wrong, Please try later...';
 const FAILURE_OCCURED = 'Failure occured';
 const SERVER_COMM_EXCEPTION =
-    'Error occured while Communication with Server with StatusCode';
+    'Error occured while communication with server with StatusCode';
 
 // ERROR MSG
 const NO_PRODUCTS_FOUND_MSG = 'No products found';

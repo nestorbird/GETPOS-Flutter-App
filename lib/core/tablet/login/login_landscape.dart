@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -18,6 +17,8 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 
+import '../../../database/db_utils/db_instance_url.dart';
+import '../../../network/api_constants/api_paths.dart';
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
 import '../../service/login/api/login_api_service.dart';
@@ -32,7 +33,7 @@ class LoginLandscape extends StatefulWidget {
 }
 
 class _LoginLandscapeState extends State<LoginLandscape> {
-  late TextEditingController _emailCtrl, _passCtrl;
+  late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
   late BuildContext ctx;
 
   @override
@@ -40,8 +41,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     super.initState();
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
-    _emailCtrl.text = "swapnil.g.pawar99@gmail.com";
-    _passCtrl.text = "User@123";
+    _urlCtrl = TextEditingController();
+    _emailCtrl.text = "";
+    _passCtrl.text = "";
+    _urlCtrl.text = instanceUrl;
 
     // _getAppVersion();
   }
@@ -59,36 +62,37 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor: WHITE_COLOR,
         body: Stack(
           children: [
-            SvgPicture.asset(
-              LOGIN_IMAGE,
-            ),
             Center(
-              child: Container(
-                width: 550,
-                padding: paddingXY(),
-                child: Column(
-                  children: [
-                    hightSpacer50,
-                    headingLblWidget(),
-                    hightSpacer50,
-                    subHeadingLblWidget(),
-                    hightSpacer50,
-                    emailTxtboxSection(),
-                    hightSpacer20,
-                    passwordTxtboxSection(),
-                    hightSpacer20,
-                    forgotPasswordSection(),
-                    hightSpacer20,
-                    // termAndPolicySection,
-                    hightSpacer32,
-                    loginBtnWidget(),
-                  ],
-                ),
-              ),
+              child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Container(
+                    width: 550,
+                    padding: paddingXY(),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        headingLblWidget(),
+                        hightSpacer50,
+                        instanceUrlTxtboxSection(context),
+                        hightSpacer50,
+                        subHeadingLblWidget(),
+                        hightSpacer50,
+                        emailTxtboxSection(),
+                        hightSpacer20,
+                        passwordTxtboxSection(),
+                        hightSpacer20,
+                        forgotPasswordSection(),
+                        hightSpacer20,
+                        termAndPolicySection,
+                        hightSpacer32,
+                        loginBtnWidget(),
+                      ],
+                    ),
+                  )),
             )
           ],
         ),
@@ -97,10 +101,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   }
 
   /// HANDLE LOGIN BTN ACTION
-  Future<void> login(String email, String password) async {
+  Future<void> login(String email, String password, String url) async {
     try {
       Helper.showLoaderDialog(context);
-      CommanResponse response = await LoginService.login(email, password, "");
+      CommanResponse response = await LoginService.login(email, password, url);
 
       if (response.status!) {
         //Adding static data into the database
@@ -131,16 +135,36 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     return false;
   }
 
+  ///Input field for entering the instance URL
+  Widget instanceUrlTxtboxSection(context) => Padding(
+        // margin: horizontalSpace(),
+        padding: smallPaddingAll(),
+        child: SizedBox(
+          height: 55,
+          child: TextFieldWidget(
+            boxDecoration: txtFieldBoxShadowDecoration,
+            txtCtrl: _urlCtrl,
+            verticalContentPadding: 16,
+            hintText: URL_HINT,
+          ),
+        ),
+      );
+
   /// LOGIN TXT(HEADING) IN CENTER
   ///
   Widget headingLblWidget() => Center(
-        child: Text(
-          "POS",
-          style: getTextStyle(
-            color: MAIN_COLOR,
-            fontWeight: FontWeight.bold,
-            fontSize: 72.0,
-          ),
+        // child: Text(
+        //   "POS",
+        //   style: getTextStyle(
+        //     color: MAIN_COLOR,
+        //     fontWeight: FontWeight.bold,
+        //     fontSize: 72.0,
+        //   ),
+        // ),
+        child: Image.asset(
+          APP_ICON,
+          height: 150,
+          width: 150,
         ),
       );
 
@@ -149,7 +173,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           LOGIN_TXT,
           style: getTextStyle(
             // color: MAIN_COLOR,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
             fontSize: LARGE_FONT_SIZE,
           ),
         ),
@@ -206,7 +230,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                 style: getTextStyle(
                     color: MAIN_COLOR,
                     fontSize: LARGE_MINUS_FONT_SIZE,
-                    fontWeight: FontWeight.w300),
+                    fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -271,7 +295,9 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         width: double.infinity,
         child: ButtonWidget(
           onPressed: () async {
-            await login(_emailCtrl.text, _passCtrl.text);
+            await DbInstanceUrl().deleteUrl();
+            String url = "https://${_urlCtrl.text}/api/";
+            await login(_emailCtrl.text, _passCtrl.text, url);
           },
           title: "Login",
           colorBG: MAIN_COLOR,

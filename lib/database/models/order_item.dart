@@ -43,7 +43,11 @@ class OrderItem extends HiveObject {
   @HiveField(10)
   double orderedPrice;
 
+  @HiveField(11, defaultValue: '')
   String? productImageUrl;
+
+  @HiveField(12, defaultValue: 0.0)
+  double tax;
 
   OrderItem(
       {required this.id,
@@ -57,7 +61,8 @@ class OrderItem extends HiveObject {
       this.orderedPrice = 0,
       required this.productImage,
       required this.productUpdatedTime,
-      this.productImageUrl = ''});
+      required this.productImageUrl,
+      this.tax = 0});
 
   OrderItem copyWith(
       {String? id,
@@ -71,7 +76,9 @@ class OrderItem extends HiveObject {
       double? orderedQuantity,
       double? orderedPrice,
       Uint8List? productImage,
-      DateTime? productUpdatedTime}) {
+      DateTime? productUpdatedTime,
+      String? productImageUrl,
+      double? tax}) {
     return OrderItem(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -84,6 +91,8 @@ class OrderItem extends HiveObject {
       orderedPrice: orderedPrice ?? this.orderedPrice,
       productImage: productImage ?? this.productImage,
       productUpdatedTime: productUpdatedTime ?? this.productUpdatedTime,
+      productImageUrl: productImageUrl ?? this.productImageUrl,
+      tax: tax ?? this.tax,
     );
   }
 
@@ -122,7 +131,9 @@ class OrderItem extends HiveObject {
         orderedQuantity: map['orderedQuantity'] ?? 0,
         orderedPrice: map['orderedPrice'] ?? map['price'],
         productImage: Uint8List.fromList(data), //map['productImage'],
-        productUpdatedTime: DateTime.parse(map['productUpdatedTime']));
+        productUpdatedTime: DateTime.parse(map['productUpdatedTime']),
+        productImageUrl: map['productImageUrl'],
+        tax: map['tax']);
   }
 
   String toJson() => json.encode(toMap());

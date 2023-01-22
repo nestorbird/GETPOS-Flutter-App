@@ -34,7 +34,8 @@ class GetPreviousOrder {
 
     //Creating GET api url
     String apiUrl = SALES_HISTORY;
-    apiUrl += '?hub_manager=$hubManagerId&from_date=$dataUpto';
+    apiUrl +=
+        '?hub_manager=$hubManagerId&from_date=$dataUpto&to_date=$todaysDateTime';
     // '?hub_manager=$hubManagerId&from_date=$dataUpto&to_date=${DateTime.now()}';
 
     //Call to Sales History api
@@ -72,7 +73,9 @@ class GetPreviousOrder {
                 attributes: [],
                 orderedQuantity: orderedProduct.qty!,
                 productImage: productImage,
-                productUpdatedTime: DateTime.now());
+                productUpdatedTime: DateTime.now(),
+                productImageUrl: '',
+                tax: 0); //TODO:: Siddhant - Need to configure tax after deployment
             orderedProducts.add(product);
           });
 

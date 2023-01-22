@@ -149,6 +149,7 @@ class Items {
   double? rate;
   double? amount;
   String? image;
+  List<SubItems>? subItems;
 
   Items(
       {this.itemCode,
@@ -157,7 +158,8 @@ class Items {
       this.uom,
       this.rate,
       this.amount,
-      this.image});
+      this.image,
+      this.subItems});
 
   Items.fromJson(Map<String, dynamic> json) {
     itemCode = json['item_code'];
@@ -166,6 +168,62 @@ class Items {
     uom = json['uom'];
     rate = json['rate'];
     amount = json['amount'];
+    image = json['image'];
+    if (json['sub_items'] != null) {
+      subItems = <SubItems>[];
+      json['sub_items'].forEach((v) {
+        subItems!.add(SubItems.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['item_code'] = itemCode;
+    data['item_name'] = itemName;
+    data['qty'] = qty;
+    data['uom'] = uom;
+    data['rate'] = rate;
+    data['amount'] = amount;
+    data['image'] = image;
+    if (subItems != null) {
+      data['sub_items'] = subItems!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class SubItems {
+  String? itemCode;
+  String? itemName;
+  double? qty;
+  String? uom;
+  double? rate;
+  double? amount;
+  double? tax;
+  String? associatedItem;
+  String? image;
+
+  SubItems(
+      {this.itemCode,
+      this.itemName,
+      this.qty,
+      this.uom,
+      this.rate,
+      this.amount,
+      this.tax,
+      this.associatedItem,
+      this.image});
+
+  SubItems.fromJson(Map<String, dynamic> json) {
+    itemCode = json['item_code'];
+    itemName = json['item_name'];
+    qty = json['qty'];
+    uom = json['uom'];
+    rate = json['rate'];
+    amount = json['amount'];
+    tax = json['tax'] ?? 0.0;
+    associatedItem = json['associated_item'];
     image = json['image'];
   }
 
@@ -177,6 +235,8 @@ class Items {
     data['uom'] = uom;
     data['rate'] = rate;
     data['amount'] = amount;
+    data['tax'] = tax;
+    data['associated_item'] = associatedItem;
     data['image'] = image;
     return data;
   }

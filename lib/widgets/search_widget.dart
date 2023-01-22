@@ -43,27 +43,29 @@ class _SearchWidgetState extends State<SearchWidget> {
         autocorrect: true,
         decoration: InputDecoration(
           hintText: widget.searchHint ?? SEARCH_HINT_TXT,
+          contentPadding: const EdgeInsets.only(left: 10, right: 10),
           isDense: true,
+          suffixIconColor: WHITE_COLOR,
           prefix: Padding(padding: leftSpace(x: 5)),
-          prefixIcon: SvgPicture.asset(
-            SEARCH_TAB_IMAGE,
+          suffixIcon: SvgPicture.asset(
+            SEARCH_IMAGE,
             width: 30,
           ),
-          suffixIcon: widget.searchTextController!.text.isNotEmpty
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      widget.searchTextController!.text = "";
-                    });
-                  },
-                  icon: Padding(
-                    padding: rightSpace(),
-                    child: const Icon(
-                      Icons.close,
-                      color: DARK_GREY_COLOR,
-                    ),
-                  ))
-              : null,
+          // suffixIcon: widget.searchTextController!.text.isNotEmpty
+          //     ? IconButton(
+          //         onPressed: () {
+          //           setState(() {
+          //             widget.searchTextController!.text = "";
+          //           });
+          //         },
+          //         icon: Padding(
+          //           padding: rightSpace(),
+          //           child: const Icon(
+          //             Icons.close,
+          //             color: DARK_GREY_COLOR,
+          //           ),
+          //         ))
+          //     : null,
           hintStyle: getHintStyle(),
           focusColor: LIGHT_GREY_COLOR,
           border: InputBorder.none,

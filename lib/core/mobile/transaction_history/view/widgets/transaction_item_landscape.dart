@@ -21,7 +21,7 @@ class TransactionItemLandscape extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: GREY_COLOR, width: 0.4),
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(8),
         ),
         padding: morePaddingAll(),
         child: Row(
@@ -36,7 +36,7 @@ class TransactionItemLandscape extends StatelessWidget {
                   Text(
                     order.customer.name,
                     style: getTextStyle(
-                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w500),
+                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w600),
                   ),
                   hightSpacer10,
                   Text(
@@ -45,7 +45,7 @@ class TransactionItemLandscape extends StatelessWidget {
                         : order.customer.phone,
                     style: getTextStyle(
                         fontSize: MEDIUM_FONT_SIZE,
-                        fontWeight: FontWeight.w400),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -62,7 +62,7 @@ class TransactionItemLandscape extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -74,17 +74,14 @@ class TransactionItemLandscape extends StatelessWidget {
                         fontWeight: FontWeight.w500),
                   ),
                   hightSpacer10,
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Text(
-                      // '27th Jul 2021, 11:00AM ',
-                      '${order.date} ${order.time}',
-                      overflow: TextOverflow.clip,
-                      textAlign: TextAlign.right,
-                      style: getTextStyle(
-                          fontSize: SMALL_PLUS_FONT_SIZE,
-                          fontWeight: FontWeight.w300),
-                    ),
+                  Text(
+                    // '27th Jul 2021, 11:00AM ',
+                    '${order.date} ${order.time}',
+                    overflow: TextOverflow.clip,
+                    textAlign: TextAlign.center,
+                    style: getTextStyle(
+                        fontSize: MEDIUM_MINUS_FONT_SIZE,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

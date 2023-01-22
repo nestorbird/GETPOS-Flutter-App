@@ -10,7 +10,6 @@ import '../../../../../widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../utils/helper.dart';
-import '../../../../../widgets/main_drawer.dart';
 import '../../../service/finance/api/get_updated_account_details.dart';
 
 class Finance extends StatefulWidget {
@@ -53,30 +52,12 @@ class _FinanceState extends State<Finance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomAppbar(title: FINANCE_TITLE),
+              const CustomAppbar(title: FINANCE_TITLE, hideSidemenu: true),
               hightSpacer30,
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: FINANCE_PADDING_LEFT, bottom: FINANCE_PADDING_BOTTOM),
-                child: Row(
-                  children: [
-                    Text(
-                      "$APP_CURRENCY $cashCollected",
-                      style: getTextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: MEDIUM_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR),
-                    ),
-                  ],
-                ),
-              ),
               Padding(
                 padding: leftSpace(),
                 child: Row(
@@ -85,8 +66,24 @@ class _FinanceState extends State<Finance> {
                       CASH_BALANCE_TXT,
                       style: getTextStyle(
                           fontWeight: FontWeight.w500,
-                          fontSize: MEDIUM_PLUS_FONT_SIZE,
+                          fontSize: MEDIUM_FONT_SIZE,
                           color: DARK_GREY_COLOR),
+                    ),
+                  ],
+                ),
+              ),
+              hightSpacer10,
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: FINANCE_PADDING_LEFT, bottom: FINANCE_PADDING_BOTTOM),
+                child: Row(
+                  children: [
+                    Text(
+                      "$APP_CURRENCY $cashCollected",
+                      style: getTextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: LARGE_PLUS_FONT_SIZE,
+                          color: MAIN_COLOR),
                     ),
                   ],
                 ),

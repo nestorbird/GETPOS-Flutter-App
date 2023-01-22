@@ -13,6 +13,7 @@ import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/long_button_widget.dart';
 import '../../../service/create_order/api/create_sales_order.dart';
+import '../../create_order_new/ui/new_create_order.dart';
 
 class SaleSuccessScreen extends StatefulWidget {
   final SaleOrder placedOrder;
@@ -34,6 +35,7 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         SaleOrder order = widget.placedOrder;
         order.transactionSynced = true;
         order.id = value.message;
+        order.save();
 
         DbSaleOrder()
             .createOrder(order)
@@ -65,8 +67,8 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
             SALES_SUCCESS_TXT,
             style: getTextStyle(
                 fontSize: LARGE_FONT_SIZE,
-                color: DARK_GREY_COLOR,
-                fontWeight: FontWeight.w500),
+                color: BLACK_COLOR,
+                fontWeight: FontWeight.w600),
           ),
           hightSpacer30,
           LongButton(
@@ -87,7 +89,10 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
             isAmountAndItemsVisible: false,
             buttonTitle: "New Order",
             onTap: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => NewCreateOrder()),
+                  (route) => route.isFirst);
             },
           ),
         ],

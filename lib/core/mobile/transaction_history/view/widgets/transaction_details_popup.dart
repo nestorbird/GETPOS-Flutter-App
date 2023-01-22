@@ -32,7 +32,8 @@ class TransactionDetailsPopup extends StatelessWidget {
                 child: SvgPicture.asset(
                   CROSS_ICON,
                   color: BLACK_COLOR,
-                  width: 20,
+                  width: 15,
+                  height: 15,
                 ),
               ),
             ),
@@ -48,12 +49,12 @@ class TransactionDetailsPopup extends StatelessWidget {
                       order.customer.name,
                       style: getTextStyle(
                           fontSize: LARGE_FONT_SIZE,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w600),
                     ),
                     Text(
                       'ID: ${order.id}',
                       style: getTextStyle(
-                          fontSize: LARGE_MINUS_FONT_SIZE,
+                          fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -71,11 +72,11 @@ class TransactionDetailsPopup extends StatelessWidget {
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      '27th Jul 2021, 11:00AM ',
-                      // '${order.date} ${order.time}',
+                      //'27th Jul 2021, 11:00AM ',
+                      '${order.date} ${order.time}',
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
-                          fontWeight: FontWeight.w300),
+                          fontWeight: FontWeight.w500),
                     )
                   ],
                 ),
@@ -104,6 +105,13 @@ class TransactionDetailsPopup extends StatelessWidget {
                   thickness: 1,
                 ),
                 _getOrderDetails(),
+                hightSpacer20,
+                _promoCodeSection(),
+                _subtotalSection("Subtotal", "$APP_CURRENCY 0.00"),
+                _subtotalSection("Discount", "- $APP_CURRENCY 0.00",
+                    isDiscount: true),
+                _subtotalSection("Tax (0%)", "$APP_CURRENCY 0.00"),
+                _totalSection("Total", "$APP_CURRENCY ${order.orderAmount}"),
               ],
             ),
           ),
@@ -128,25 +136,30 @@ class TransactionDetailsPopup extends StatelessWidget {
                   width: 50,
                   height: 50,
                   color: MAIN_COLOR,
+                  child: Image.network(
+                    order.items[index].productImageUrl!,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
               widthSpacer(15),
               Text(
-                order.items.first.name,
+                order.items[index].name,
                 style: getTextStyle(
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),
               const Spacer(),
               Text(
-                "₹ ${order.items.first.price}",
+                "₹ ${order.items[index].price.toStringAsFixed(2)}",
                 style: getTextStyle(
                     color: GREEN_COLOR,
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),
+              widthSpacer(5),
               Text(
-                " x${order.items.first.orderedQuantity.round() == 0 ? index + 1 : order.items.first.orderedQuantity.round()}",
+                " x${order.items[index].orderedQuantity.round() == 0 ? index + 1 : order.items[index].orderedQuantity.round()}",
                 style: getTextStyle(
                     color: MAIN_COLOR,
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -197,4 +210,94 @@ class TransactionDetailsPopup extends StatelessWidget {
     //       );
     //     });
   }
+
+  Widget _promoCodeSection() {
+    return Container(
+      // height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: MAIN_COLOR.withOpacity(0.1),
+          border: Border.all(width: 1, color: MAIN_COLOR.withOpacity(0.5)),
+          borderRadius: BorderRadius.circular(12)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Promo Code",
+            style: getTextStyle(
+                fontWeight: FontWeight.w500,
+                color: MAIN_COLOR,
+                fontSize: MEDIUM_PLUS_FONT_SIZE),
+          ),
+          Column(
+            children: [
+              Text(
+                "Deal 20",
+                style: getTextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: MAIN_COLOR,
+                    fontSize: MEDIUM_PLUS_FONT_SIZE),
+              ),
+              const SizedBox(height: 2),
+              Row(
+                children: List.generate(
+                    15,
+                    (index) => Container(
+                          width: 2,
+                          height: 1,
+                          margin: const EdgeInsets.symmetric(horizontal: 1),
+                          color: MAIN_COLOR,
+                        )),
+              )
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
+        padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: getTextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE),
+            ),
+            Text(
+              amount,
+              style: getTextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE),
+            ),
+          ],
+        ),
+      );
+
+  Widget _totalSection(title, amount) => Padding(
+        padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: getTextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: BLACK_COLOR,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE),
+            ),
+            Text(
+              amount,
+              style: getTextStyle(
+                  fontWeight: FontWeight.w700, fontSize: MEDIUM_PLUS_FONT_SIZE),
+            ),
+          ],
+        ),
+      );
 }

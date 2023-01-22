@@ -7,12 +7,10 @@ import '../../../../constants/asset_paths.dart';
 import '../../../../database/db_utils/db_categories.dart';
 import '../../../../database/models/category.dart';
 import '../../../../database/models/product.dart';
-import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/custom_appbar.dart';
-import '../../../../widgets/main_drawer.dart';
 import '../../../../widgets/product_shimmer_widget.dart';
 import '../../../../widgets/product_widget.dart';
 import '../../../../widgets/search_widget.dart';
@@ -29,7 +27,7 @@ class _ProductsState extends State<Products> {
   List<Product> products = [];
   List<Category> categories = [];
   late TextEditingController searchProductCtrl;
-  bool isProductGridEnable = false;
+  bool isProductGridEnable = true;
 
   @override
   void initState() {
@@ -48,9 +46,9 @@ class _ProductsState extends State<Products> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
+      // endDrawer: MainDrawer(
+      //   menuItem: Helper.getMenuItemList(context),
+      // ),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: categories.isEmpty

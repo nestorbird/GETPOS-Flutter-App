@@ -35,7 +35,11 @@ class ProductsService {
         List<Category> categories = [];
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
-          var image = Uint8List.fromList([]);
+          //var image = Uint8List.fromList([]);
+          var image = (catData.itemGroupImage == null ||
+                  catData.itemGroupImage!.isEmpty)
+              ? Uint8List.fromList([])
+              : await Helper.getImageBytesFromUrl(catData.itemGroupImage!);
           List<Product> products = [];
 
           await Future.forEach(catData.items!, (itemObj) async {
@@ -44,14 +48,17 @@ class ProductsService {
             await Future.forEach(item.attributes!, (attributeObj) async {
               var attributeData = attributeObj as cat_resp.Attributes;
               List<Option> options = [];
-              attributeData.options!.forEach((optionObj) {
+              for (var optionObj in attributeData.options!) {
                 Option option = Option(
                     id: optionObj.id!,
                     name: optionObj.name!,
                     price: optionObj.price!,
-                    selected: optionObj.selected!);
+                    selected: optionObj.selected!,
+                    tax: optionObj.tax != null
+                        ? optionObj.tax!.first.taxRate!
+                        : 0.0);
                 options.add(option);
-              });
+              }
               Attribute attrib = Attribute(
                   name: attributeData.name!,
                   moq: attributeData.moq!,
@@ -72,7 +79,8 @@ class ProductsService {
                 attributes: attributes,
                 productImage: imageBytes,
                 productImageUrl: item.image,
-                productUpdatedTime: DateTime.now());
+                productUpdatedTime: DateTime.now(),
+                tax: item.tax != null ? item.tax!.first.taxRate! : 0.0);
 
             products.add(product);
           });
@@ -84,7 +92,7 @@ class ProductsService {
           categories.add(category);
         });
 
-        DbCategory().addCategory(categories);
+        await DbCategory().addCategory(categories);
         //returning the CommanResponse as true
         return CommanResponse(
             status: true,
@@ -152,7 +160,8 @@ class ProductsService {
               price: product.priceListRate.toDouble(),
               attributes: [],
               productImage: image,
-              productUpdatedTime: DateTime.parse(product.itemModified));
+              productUpdatedTime: DateTime.parse(product.itemModified),
+              tax: 0.0);
 
           //Adding product into the products list
           products.add(tempProduct);

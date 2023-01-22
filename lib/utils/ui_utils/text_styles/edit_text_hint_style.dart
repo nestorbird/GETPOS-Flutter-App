@@ -5,5 +5,5 @@ import '../../../constants/app_constants.dart';
 
 // Pass in the height and it return a vertical spacer
 //
-TextStyle getHintStyle() => GoogleFonts.montserrat(
+TextStyle getHintStyle() => GoogleFonts.poppins(
     fontSize: MEDIUM_PLUS_FONT_SIZE, fontWeight: FontWeight.w300);

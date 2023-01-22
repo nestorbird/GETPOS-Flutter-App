@@ -20,3 +20,5 @@ const WHITE_COLOR = const Color(0xFFFFFFFF);
 const OFF_WHITE_COLOR = const Color(0xFFFEF9FA);
 
 const MAIN_COLOR = const Color(0xFFDC1E44);
+
+const LIGHT_BLACK_COLOR = const Color(0xFF4A4A4A);

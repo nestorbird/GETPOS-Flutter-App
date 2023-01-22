@@ -96,16 +96,16 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
                         Helper.hubManager!.name,
                         style: getTextStyle(
                             fontSize: LARGE_MINUS_FONT_SIZE,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
-                  hightSpacer10,
+                  hightSpacer20,
                   Text(
                     Helper.hubManager!.phone,
                     style: getTextStyle(
                         fontSize: LARGE_MINUS_FONT_SIZE,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w600),
                   ),
                 ],
               ),

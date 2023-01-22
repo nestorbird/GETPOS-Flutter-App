@@ -54,8 +54,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   width: MediaQuery.of(context).size.width,
                   child: WebView(
                     javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (_webController) {
-                      _webViewController = _webController;
+                    onWebViewCreated: (webController) {
+                      _webViewController = webController;
                     },
                   )))
         ],

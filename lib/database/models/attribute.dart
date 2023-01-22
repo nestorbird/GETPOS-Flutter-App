@@ -33,6 +33,7 @@ class Attribute extends HiveObject {
     String? type,
     int? moq,
     List<Option>? options,
+    double? tax,
   }) {
     return Attribute(
       name: name ?? this.name,

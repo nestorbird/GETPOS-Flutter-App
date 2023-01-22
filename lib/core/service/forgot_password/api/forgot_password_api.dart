@@ -6,7 +6,7 @@ import '../../../../../network/service/api_utils.dart';
 import '../../../../../utils/helper.dart';
 
 class ForgotPasswordApi {
-  Future<CommanResponse> sendResetPasswordMail(String email) async {
+  Future<CommanResponse> sendResetPasswordMail(String email, String instanceUrl) async {
     if (await Helper.isNetworkAvailable()) {
       String apiUrl = FORGET_PASSWORD;
       apiUrl += '?user=$email';

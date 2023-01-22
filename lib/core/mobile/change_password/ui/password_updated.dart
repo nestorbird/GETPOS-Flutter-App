@@ -4,11 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
-import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/button.dart';
-import '../../../../widgets/header_curve.dart';
 
 class PasswordUpdated extends StatefulWidget {
   const PasswordUpdated({Key? key}) : super(key: key);
@@ -36,63 +34,58 @@ class _PasswordUpdatedState extends State<PasswordUpdated> {
 
   @override
   Widget build(BuildContext context) {
-    Widget passwordUpdatedBtnWidget = Center(
+    Widget passwordUpdatedBtnWidget = SizedBox(
+      width: 300,
       child: ButtonWidget(
         onPressed: () {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
         title: PASSWORD_UPDATED_BTN_TXT,
         colorBG: MAIN_COLOR,
-        width: MediaQuery.of(context).size.width / 2.5,
+        width: 350,
+        //width: MediaQuery.of(context).size.width / 2.5,
       ),
     );
     return Scaffold(
       body: SingleChildScrollView(
-        child: Stack(
+        child: Column(
           children: [
-            HeaderCurveWidget(),
-            Padding(
-              padding: smallPaddingAll(),
-              child: Column(
-                children: [
-                  hightSpacer50,
-                  hightSpacer50,
-                  hightSpacer50,
-                  hightSpacer50,
-                  // appLogo,
-                  hightSpacer50,
-                  Center(
-                    child: Text(
-                      PASSWORD_UPDATED_TITLE.toUpperCase(),
-                      style: getTextStyle(
-                          color: MAIN_COLOR,
-                          fontWeight: FontWeight.w600,
-                          fontSize: LARGE_FONT_SIZE),
-                    ),
-                  ),
-                  hightSpacer50,
-                  Center(
-                    child: SvgPicture.asset(
-                      SUCCESS_IMAGE,
-                      height: 120,
-                      width: 100,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  hightSpacer40,
-                  Center(
-                    child: Text(
-                      PASSWORD_UPDATED_MSG,
-                      style: getTextStyle(
-                          fontSize: SMALL_PLUS_FONT_SIZE,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ),
-                  hightSpacer40,
-                  passwordUpdatedBtnWidget,
-                ],
+            hightSpacer50,
+            hightSpacer50,
+            hightSpacer50,
+            Image.asset(APP_ICON, width: 100, height: 100),
+            hightSpacer50,
+            // appLogo,
+            hightSpacer50,
+            Center(
+              child: Text(
+                PASSWORD_UPDATED_TITLE.toUpperCase(),
+                style: getTextStyle(
+                    color: MAIN_COLOR,
+                    fontWeight: FontWeight.bold,
+                    fontSize: LARGE_FONT_SIZE),
               ),
             ),
+            hightSpacer50,
+            Center(
+              child: SvgPicture.asset(
+                SUCCESS_IMAGE,
+                height: 120,
+                width: 100,
+                fit: BoxFit.contain,
+              ),
+            ),
+            hightSpacer40,
+            Center(
+              child: Text(
+                PASSWORD_UPDATED_MSG,
+                style: getTextStyle(
+                    fontSize: SMALL_PLUS_FONT_SIZE,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+            hightSpacer40,
+            passwordUpdatedBtnWidget,
           ],
         ),
       ),

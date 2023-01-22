@@ -21,13 +21,14 @@ class OptionAdapter extends TypeAdapter<Option> {
       name: fields[1] as String,
       price: fields[2] as double,
       selected: fields[3] as bool,
+      tax: fields[4] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Option obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class OptionAdapter extends TypeAdapter<Option> {
       ..writeByte(2)
       ..write(obj.price)
       ..writeByte(3)
-      ..write(obj.selected);
+      ..write(obj.selected)
+      ..writeByte(4)
+      ..write(obj.tax);
   }
 
   @override

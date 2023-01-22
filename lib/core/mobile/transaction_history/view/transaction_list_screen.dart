@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nb_posx/configs/theme_config.dart';
+import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
+import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 
 import '../../../../constants/app_constants.dart';
-import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../widgets/custom_appbar.dart';
-import '../../../../widgets/main_drawer.dart';
 import '../../../../widgets/search_widget.dart';
 import '../bloc/transaction_bloc.dart';
 import 'widgets/bottomloader.dart';
@@ -53,14 +54,11 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CustomAppbar(title: SALES_HISTORY_TXT),
+            const CustomAppbar(title: SALES_HISTORY_TXT, hideSidemenu: true),
             hightSpacer10,
             Padding(
                 padding: horizontalSpace(),
@@ -84,12 +82,12 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
               switch (state.status) {
                 case TransactionStatus.failure:
                   return const Center(
-                    child: Text("Failed to fetch Transactions"),
+                    child: Text("Failed to fetch transactions"),
                   );
                 case TransactionStatus.success:
                   if (state.orders.isEmpty) {
                     return const Center(
-                      child: Text("no orders"),
+                      child: Text("No orders"),
                     );
                   }
 
@@ -114,6 +112,28 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
             }),
           ],
         ),
+      ),
+      extendBodyBehindAppBar: true,
+      bottomNavigationBar: Container(
+        height: 60,
+        margin: const EdgeInsets.only(left: 15, right: 15, bottom: 30),
+        decoration: const BoxDecoration(
+            color: MAIN_COLOR,
+            borderRadius: BorderRadius.all(Radius.circular(10))),
+        child: TextButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const OrderListScreen()));
+            },
+            child: Text(
+              'Parked Orders',
+              style: getTextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE,
+                  color: WHITE_COLOR),
+            )),
       ),
     );
   }

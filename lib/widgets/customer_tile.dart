@@ -88,7 +88,7 @@ class _CustomerTileState extends State<CustomerTile> {
                   style: getTextStyle(
                       fontSize: MEDIUM_FONT_SIZE,
                       color: DARK_GREY_COLOR,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w600),
                 ),
               ),
             ],
@@ -96,7 +96,7 @@ class _CustomerTileState extends State<CustomerTile> {
           Text(
             widget.customer != null ? widget.customer!.email : "",
             style: getTextStyle(
-                color: DARK_GREY_COLOR,
+                color: BLACK_COLOR,
                 fontSize: SMALL_PLUS_FONT_SIZE,
                 fontWeight: FontWeight.normal),
           ),

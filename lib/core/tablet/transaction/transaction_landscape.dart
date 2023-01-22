@@ -90,7 +90,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
                 );
               }
               return Expanded(
-                child: productGrid(state),
+                child: transactionsGrid(state),
               );
             default:
               return const Center(
@@ -102,7 +102,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
     );
   }
 
-  Widget productGrid(TransactionState state) {
+  Widget transactionsGrid(TransactionState state) {
     debugPrint("OrderLENGTH:${state.orders.length} ");
 
     return Padding(
@@ -126,7 +126,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
             return const ShimmerWidget();
           } else {
             return position >= state.orders.length && !state.hasReachedMax
-                ? const BottomLoader()
+                ? const Center(child: BottomLoader())
                 : TransactionItemLandscape(order: state.orders[position]);
           }
         },

@@ -71,7 +71,9 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
               Text(
                 "Add Customer",
                 style: getTextStyle(
-                    fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w500),
+                    fontSize: LARGE_FONT_SIZE,
+                    fontWeight: FontWeight.bold,
+                    color: BLACK_COLOR),
               ),
               hightSpacer15,
               Container(
@@ -110,7 +112,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
               InkWell(
                 onTap: () {
                   customer = Customer(
-                    id: "001",
+                    id: emailCtrl.text,
                     name: nameCtrl.text,
                     email: emailCtrl.text,
                     phone: phoneCtrl.text,
@@ -139,7 +141,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                       style: getTextStyle(
                           fontSize: LARGE_FONT_SIZE,
                           color: WHITE_COLOR,
-                          fontWeight: FontWeight.w400),
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),

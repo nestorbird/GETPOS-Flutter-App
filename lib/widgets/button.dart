@@ -44,7 +44,7 @@ class ButtonWidget extends StatelessWidget {
             style: getTextStyle(
                 color: colorTxt,
                 fontSize: fontSize,
-                fontWeight: FontWeight.normal),
+                fontWeight: FontWeight.w600),
           ),
         ),
       ),

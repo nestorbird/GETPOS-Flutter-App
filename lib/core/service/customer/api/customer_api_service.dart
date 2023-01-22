@@ -17,7 +17,7 @@ import '../model/customer_response.dart';
 ///[CustomerService] class for providing api calls functionality related to customer data.
 class CustomerService {
   ///Function to fetch the customer data from api & handle the responses.
-  Future<CommanResponse> getCustomers() async {
+  Future<CommanResponse> getCustomers({String searchTxt = ""}) async {
     // Check If internet available or not
     if (await Helper.isNetworkAvailable()) {
       //Fetching hub manager id/email from DbPreferences
@@ -32,8 +32,11 @@ class CustomerService {
         requestBody.putIfAbsent('last_sync', () => lastSyncDateTime);
       }
 
+      String customerUrl = '$NEW_GET_ALL_CUSTOMERS_PATH?mobile_no=$searchTxt';
+
       //Call to customer api
-      var apiResponse = await APIUtils.postRequest(CUSTOMERS_PATH, requestBody);
+      var apiResponse =
+          await APIUtils.getRequestWithHeaders(customerUrl);
       log(jsonEncode(apiResponse));
 
       //If success response from api

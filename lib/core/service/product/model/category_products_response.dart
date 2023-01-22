@@ -24,11 +24,13 @@ class CategoryProductsResponse {
 class Message {
   String? itemGroup;
   List<Items>? items;
+  String? itemGroupImage;
 
-  Message({this.itemGroup, this.items});
+  Message({this.itemGroup, this.items, this.itemGroupImage});
 
   Message.fromJson(Map<String, dynamic> json) {
     itemGroup = json['item_group'];
+    itemGroupImage = json['item_group_image'];
     if (json['items'] != null) {
       items = <Items>[];
       json['items'].forEach((v) {
@@ -40,6 +42,7 @@ class Message {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['item_group'] = itemGroup;
+    data['item_group_image'] = itemGroupImage;
     if (items != null) {
       data['items'] = items!.map((v) => v.toJson()).toList();
     }
@@ -52,6 +55,7 @@ class Items {
   String? name;
   List<Attributes>? attributes;
   String? image;
+  List<Tax>? tax;
   double? productPrice;
   String? warehouse;
   double? stockQty;
@@ -61,6 +65,7 @@ class Items {
       this.name,
       this.attributes,
       this.image,
+      this.tax,
       this.productPrice,
       this.warehouse,
       this.stockQty});
@@ -75,6 +80,12 @@ class Items {
       });
     }
     image = json['image'] ?? "";
+    if (json['tax'] != null && json['tax'] != '') {
+      tax = <Tax>[];
+      json['tax'].forEach((v) {
+        tax!.add(Tax.fromJson(v));
+      });
+    }
     productPrice = json['product_price'];
     warehouse = json['warehouse'];
     stockQty = json['stock_qty'] == 0 ? 0.0 : json['stock_qty'];
@@ -86,6 +97,10 @@ class Items {
     data['name'] = name;
     if (attributes != null) {
       data['attributes'] = attributes!.map((v) => v.toJson()).toList();
+    }
+    data['image'] = image;
+    if (tax != null) {
+      data['tax'] = tax!.map((v) => v.toJson()).toList();
     }
     data['product_price'] = productPrice;
     data['warehouse'] = warehouse;
@@ -129,6 +144,7 @@ class Attributes {
 class Options {
   String? id;
   String? name;
+  List<Tax>? tax;
   double? price;
   bool? selected;
   String? warehouse;
@@ -137,6 +153,7 @@ class Options {
   Options(
       {this.id,
       this.name,
+      this.tax,
       this.price,
       this.selected,
       this.warehouse,
@@ -145,6 +162,12 @@ class Options {
   Options.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    if (json['tax'] != null && json['tax'] != '') {
+      tax = <Tax>[];
+      json['tax'].forEach((v) {
+        tax!.add(Tax.fromJson(v));
+      });
+    }
     price = json['price'] == "" ? 0.0 : json['price'];
     selected = json['selected'];
     warehouse = json['warehouse'];
@@ -155,10 +178,32 @@ class Options {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['name'] = name;
+    if (tax != null) {
+      data['tax'] = tax!.map((v) => v.toJson()).toList();
+    }
     data['price'] = price;
     data['selected'] = selected;
     data['warehouse'] = warehouse;
     data['stock_qty'] = stockQty;
+    return data;
+  }
+}
+
+class Tax {
+  String? itemTaxTemplate;
+  double? taxRate;
+
+  Tax({this.itemTaxTemplate, this.taxRate});
+
+  Tax.fromJson(Map<String, dynamic> json) {
+    itemTaxTemplate = json['item_tax_template'] ?? "";
+    taxRate = json['tax_rate'] ?? 0.0;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['item_tax_template'] = itemTaxTemplate;
+    data['tax_rate'] = taxRate;
     return data;
   }
 }

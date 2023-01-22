@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import '../../../../../configs/theme_config.dart';
@@ -14,13 +15,12 @@ import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
-import '../../../../../widgets/header_curve.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../../../constants/asset_paths.dart';
 import '../../../service/login/api/login_api_service.dart';
 import '../../forgot_password/ui/forgot_password.dart';
-import '../../home/ui/home.dart';
 import '../../webview_screens/enums/topic_types.dart';
 import '../../webview_screens/ui/webview_screen.dart';
 
@@ -71,46 +71,43 @@ class _LoginState extends State<Login> {
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor: WHITE_COLOR,
-        body: Stack(
-          children: [
-            HeaderCurveWidget(),
-            Padding(
-              padding: smallPaddingAll(),
-              child: Column(
-                children: [
-                  hightSpacer50,
-                  hightSpacer50,
-                  hightSpacer50,
-                  hightSpacer50,
-                  hightSpacer50,
-                  instanceUrlTxtboxSection(context),
-                  hightSpacer50,
-                  headingLblWidget(context),
-                  hightSpacer5,
-                  subHeadingLblWidget(context),
-                  hightSpacer15,
-                  emailTxtboxSection(context),
-                  passwordTxtboxSection(context),
-                  forgotPasswordSection(context),
-                  hightSpacer50,
-                  hightSpacer32,
-                  termAndPolicySection(context),
-                  hightSpacer32,
-                  loginBtnWidget(context),
-                  // const Spacer(),
-                  // Center(
-                  //     child: Text(
-                  //   version ?? APP_VERSION_FALLBACK,
-                  //   style: getHintStyle(),
-                  // )),
-                  // hightSpacer10
-                ],
-              ),
-            ),
-          ],
-        ),
+        body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              children: [
+                hightSpacer50,
+                hightSpacer50,
+                hightSpacer15,
+                Image.asset(APP_ICON, width: 100, height: 100),
+                hightSpacer50,
+                instanceUrlTxtboxSection(context),
+                hightSpacer50,
+                headingLblWidget(context),
+                hightSpacer5,
+                subHeadingLblWidget(context),
+                hightSpacer15,
+                emailTxtboxSection(context),
+                hightSpacer10,
+                passwordTxtboxSection(context),
+                hightSpacer10,
+                forgotPasswordSection(context),
+                hightSpacer50,
+                hightSpacer32,
+                termAndPolicySection(context),
+                hightSpacer32,
+                loginBtnWidget(context),
+                hightSpacer25
+                // const Spacer(),
+                // Center(
+                //     child: Text(
+                //   version ?? APP_VERSION_FALLBACK,
+                //   style: getHintStyle(),
+                // )),
+                // hightSpacer10
+              ],
+            )),
       ),
     );
   }
@@ -127,8 +124,8 @@ class _LoginState extends State<Login> {
         // await addDataIntoDB();
         if (!mounted) return;
         Helper.hideLoader(context);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Home()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const ProductListHome()));
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
@@ -163,7 +160,7 @@ class _LoginState extends State<Login> {
                 style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
               ),
             ),
-            hightSpacer5,
+            hightSpacer15,
             TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _urlCtrl,
@@ -177,6 +174,7 @@ class _LoginState extends State<Login> {
   Widget loginBtnWidget(context) => Center(
         child: ButtonWidget(
           onPressed: () async {
+            await DbInstanceUrl().deleteUrl();
             String url = "https://${_urlCtrl.text}/api/";
             await login(_emailCtrl.text, _passCtrl.text, url);
           },
@@ -200,7 +198,7 @@ class _LoginState extends State<Login> {
                 style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
               ),
             ),
-            hightSpacer5,
+            hightSpacer15,
             TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _emailCtrl,
@@ -224,7 +222,7 @@ class _LoginState extends State<Login> {
                 style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
               ),
             ),
-            hightSpacer5,
+            hightSpacer15,
             TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _passCtrl,
@@ -271,7 +269,7 @@ class _LoginState extends State<Login> {
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color: GREY_COLOR,
+                  color: DARK_GREY_COLOR,
                   fontSize: MEDIUM_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
@@ -289,12 +287,12 @@ class _LoginState extends State<Login> {
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
                         color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color: GREY_COLOR,
+                        color: DARK_GREY_COLOR,
                         fontWeight: FontWeight.normal,
                         fontSize: MEDIUM_FONT_SIZE)),
                 TextSpan(
@@ -310,7 +308,7 @@ class _LoginState extends State<Login> {
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
                         color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_FONT_SIZE)),
               ]),
         ),
@@ -322,7 +320,7 @@ class _LoginState extends State<Login> {
           LOGIN_TXT.toUpperCase(),
           style: getTextStyle(
             color: MAIN_COLOR,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
             fontSize: LARGE_FONT_SIZE,
           ),
         ),

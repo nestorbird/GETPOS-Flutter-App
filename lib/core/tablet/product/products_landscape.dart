@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -26,6 +27,7 @@ class ProductsLandscape extends StatefulWidget {
 
 class _ProductsLandscapeState extends State<ProductsLandscape> {
   late TextEditingController searchCtrl;
+  late Size size;
   Customer? customer;
   List<Product> products = [];
   List<Category> categories = [];
@@ -45,30 +47,38 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TitleAndSearchBar(
           title: "Choose Category",
           onSubmit: (val) {},
           onTextChanged: (val) {},
           searchCtrl: searchCtrl,
-          searchHint: "Search products",
+          searchHint: "Search product",
+          searchBoxWidth: size.width / 4,
         ),
         hightSpacer20,
         getCategoryListWidget(),
         hightSpacer20,
-        Expanded(
-          child: ListView.builder(
-              primary: true,
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                return getCategoryItemsWidget(categories[index]);
-              }),
+        ListView.builder(
+          primary: false,
+          shrinkWrap: true,
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                getCategoryItemsWidget(categories[index]),
+                hightSpacer10
+              ],
+            );
+          },
         ),
       ],
-    );
+    ));
   }
 
   getCategoryItemsWidget(Category cat) {
@@ -88,59 +98,72 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
               scrollDirection: Axis.horizontal,
               itemCount: cat.items.length,
               itemBuilder: (BuildContext context, index) {
-                return InkWell(
-                  onTap: () {
-                    debugPrint("Item clicked $index");
-                  },
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          margin: paddingXY(x: 5, y: 5),
-                          padding: paddingXY(y: 0, x: 10),
-                          width: 145,
-                          height: 105,
-                          decoration: BoxDecoration(
-                              color: WHITE_COLOR,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              hightSpacer20,
-                              SizedBox(
-                                height: 40,
-                                child: Text(
-                                  cat.items[index].name,
-                                  style: getTextStyle(
-                                      // color: DARK_GREY_COLOR,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: MEDIUM_FONT_SIZE),
-                                ),
+                return Container(
+                    margin: const EdgeInsets.only(left: 8, right: 8),
+                    child: InkWell(
+                      onTap: () {
+                        // var item =
+                        //     OrderItem.fromJson(cat.items[index].toJson());
+                        // _openItemDetailDialog(context, item);
+                        debugPrint("Item clicked $index");
+                      },
+                      child: Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              margin: paddingXY(x: 5, y: 5),
+                              padding: paddingXY(y: 0, x: 10),
+                              width: 145,
+                              height: 105,
+                              decoration: BoxDecoration(
+                                  color: WHITE_COLOR,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  hightSpacer25,
+                                  SizedBox(
+                                    child: Text(
+                                      cat.items[index].name,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: getTextStyle(
+                                          color: DARK_GREY_COLOR,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: SMALL_PLUS_FONT_SIZE),
+                                    ),
+                                  ),
+                                  hightSpacer5,
+                                  Text(
+                                    "₹ ${cat.items[index].price}",
+                                    textAlign: TextAlign.right,
+                                    style: getTextStyle(
+                                        color: MAIN_COLOR,
+                                        fontSize: MEDIUM_FONT_SIZE),
+                                  ),
+                                ],
                               ),
-                              hightSpacer5,
-                              Text(
-                                "₹ ${cat.items[index].price}",
-                                textAlign: TextAlign.right,
-                                style: getTextStyle(
-                                    color: MAIN_COLOR,
-                                    fontSize: MEDIUM_FONT_SIZE),
-                              ),
-                            ],
+                            ),
                           ),
-                        ),
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: cat.items[index].productImage.isNotEmpty
+                                ? Image.memory(cat.items[index].productImage,
+                                    fit: BoxFit.fill)
+                                : SvgPicture.asset(
+                                    PRODUCT_IMAGE,
+                                  ),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset(
-                            index % 2 == 0 ? BURGAR_IMAGE : PIZZA_IMAGE),
-                      ),
-                    ],
-                  ),
-                );
+                    ));
               }),
         ),
       ],
@@ -155,30 +178,36 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
           itemCount: categories.length,
           itemBuilder: (BuildContext context, index) {
             return InkWell(
-              onTap: () => _handleCustomerPopup(),
               child: Container(
                 margin: paddingXY(y: 5),
-                // height: 75,
-                width: 80,
+                width: 70,
                 decoration: BoxDecoration(
                   color: WHITE_COLOR,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(index % 2 == 0 ? BURGAR_IMAGE : PIZZA_IMAGE),
+                    categories[index].image.isNotEmpty
+                        ? Image.memory(
+                            categories[index].image,
+                            height: 45,
+                            width: 45,
+                          )
+                        : Image.asset(
+                            BURGAR_IMAGE,
+                            height: 45,
+                            width: 45,
+                          ),
                     Text(
                       categories[index].name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
-                        fontWeight: FontWeight.w400,
-                        // color: title.toLowerCase() == widget.selectedView.toLowerCase()
-                        //     ? WHITE_COLOR
-                        //     : BLACK_COLOR,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    // hightSpacer10,
                   ],
                 ),
               ),

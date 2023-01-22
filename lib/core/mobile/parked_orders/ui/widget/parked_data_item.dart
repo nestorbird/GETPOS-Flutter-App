@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -20,6 +21,14 @@ class ParkedDataItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String dateTime = "${saleOrder!.date} ${saleOrder!.time}";
+    String date = DateFormat('EEEE, d LLLL y')
+        .format(DateTime.parse(dateTime))
+        .toString();
+
+    String time =
+        DateFormat().add_jm().format(DateTime.parse(dateTime)).toString();
+
     return InkWell(
       onTap: () => onClick(),
       child: Container(
@@ -58,13 +67,13 @@ class ParkedDataItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${saleOrder!.date} ${saleOrder!.time}",
+                      "$date, $time",
                       // '$PARKED_ORDER_ID - ${saleOrder!.id}',
                       style: getItalicStyle(fontSize: SMALL_FONT_SIZE),
                     ),
                     hightSpacer7,
                     Text(
-                      '$APP_CURRENCY ${saleOrder!.orderAmount}',
+                      '$APP_CURRENCY ${saleOrder!.orderAmount.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
                     ),

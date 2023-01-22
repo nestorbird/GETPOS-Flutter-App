@@ -66,12 +66,12 @@ class GetSalesHistory {
       //If success response from api
       if (salesOrderResponse.message!.orderList!.isNotEmpty) {
         //Convert the api response to local model
-        salesOrderResponse.message!.orderList!.forEach((order) {
+        for (var order in salesOrderResponse.message!.orderList!) {
           if (!sales.any((element) => element.id == order.name)) {
             List<OrderItem> orderedProducts = [];
 
             //Ordered products
-            order.items!.forEach((orderedProduct) {
+            for (var orderedProduct in order.items!) {
               OrderItem product = OrderItem(
                   id: orderedProduct.itemCode!,
                   // code: orderedProduct.itemCode,
@@ -87,7 +87,7 @@ class GetSalesHistory {
                   productUpdatedTime: DateTime.now());
 
               orderedProducts.add(product);
-            });
+            }
 
             String transactionDateTime =
                 "${order.transactionDate} ${order.transactionTime}";
@@ -127,7 +127,7 @@ class GetSalesHistory {
 
             sales.add(saleOrder);
           }
-        });
+        }
 
         return CommanResponse(
             status: true, message: sales, apiStatus: ApiStatus.REQUEST_SUCCESS);

@@ -37,6 +37,9 @@ class Product extends HiveObject {
   @HiveField(8)
   DateTime productUpdatedTime;
 
+  @HiveField(9, defaultValue: 0.0)
+  double tax;
+
   String? productImageUrl;
 
   Product(
@@ -49,7 +52,8 @@ class Product extends HiveObject {
       required this.attributes,
       required this.productImage,
       required this.productUpdatedTime,
-      this.productImageUrl = ''});
+      this.productImageUrl = '',
+      required this.tax});
 
   Product copyWith(
       {String? id,
@@ -63,7 +67,8 @@ class Product extends HiveObject {
       double? orderedQuantity,
       double? orderedPrice,
       Uint8List? productImage,
-      DateTime? productUpdatedTime}) {
+      DateTime? productUpdatedTime,
+      double? tax}) {
     return Product(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -74,6 +79,7 @@ class Product extends HiveObject {
       attributes: attributes ?? this.attributes,
       productImage: productImage ?? this.productImage,
       productUpdatedTime: productUpdatedTime ?? this.productUpdatedTime,
+      tax: tax ?? this.tax,
     );
   }
 
@@ -88,6 +94,7 @@ class Product extends HiveObject {
       'attributes': attributes.map((x) => x.toMap()).toList(),
       'productImage': productImage,
       'productUpdatedTime': productUpdatedTime.toIso8601String(),
+      'tax': tax
     };
   }
 
@@ -102,7 +109,8 @@ class Product extends HiveObject {
         attributes: List<Attribute>.from(
             map['attributes']?.map((x) => Attribute.fromMap(x))),
         productImage: map['productImage'],
-        productUpdatedTime: map['productUpdatedTime']);
+        productUpdatedTime: map['productUpdatedTime'],
+        tax: map['tax']);
   }
 
   String toJson() => json.encode(toMap());
@@ -112,7 +120,7 @@ class Product extends HiveObject {
 
   @override
   String toString() {
-    return 'Product(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes,  productImage: $productImage, productUpdatedTime: $productUpdatedTime)';
+    return 'Product(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes,  productImage: $productImage, productUpdatedTime: $productUpdatedTime, tax: $tax)';
   }
 
   @override

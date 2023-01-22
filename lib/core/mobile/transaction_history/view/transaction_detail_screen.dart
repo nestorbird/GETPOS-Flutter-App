@@ -40,22 +40,20 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                 padding: horizontalSpace(x: 13),
                 child: Row(
                   children: [
-                    Expanded(
-                        flex: 2,
-                        child: TransactionHeaderData(
-                          heading: SALES_ID,
-                          headingColor: DARK_GREY_COLOR,
-                          content: widget.order.id,
-                        )),
-                    Expanded(
-                        flex: 2,
-                        child: TransactionHeaderData(
-                          heading: SALE_AMOUNT_TXT,
-                          content: '$APP_CURRENCY ${widget.order.orderAmount}',
-                          headingColor: DARK_GREY_COLOR,
-                          contentColor: MAIN_COLOR,
-                          // crossAlign: CrossAxisAlignment.center,
-                        )),
+                    TransactionHeaderData(
+                      heading: SALES_ID,
+                      headingColor: DARK_GREY_COLOR,
+                      content: widget.order.id,
+                    ),
+                    widthSpacer(50),
+                    TransactionHeaderData(
+                      heading: SALE_AMOUNT_TXT,
+                      content:
+                          '$APP_CURRENCY ${widget.order.orderAmount.toStringAsFixed(2)}',
+                      headingColor: DARK_GREY_COLOR,
+                      contentColor: MAIN_COLOR,
+                      // crossAlign: CrossAxisAlignment.center,
+                    ),
                   ],
                 )),
             hightSpacer20,
@@ -75,7 +73,10 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                     padding: horizontalSpace(x: 13),
                     child: Text(
                       CUSTOMER_INFO,
-                      style: getTextStyle(fontWeight: FontWeight.w500),
+                      style: getTextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: MEDIUM_MINUS_FONT_SIZE,
+                          color: DARK_GREY_COLOR),
                     )),
                 hightSpacer5,
                 CustomerTile(
@@ -83,6 +84,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                   isDeleteButtonEnabled: false,
                   isSubtitle: false,
                   customer: widget.order.customer,
+                  isHighlighted: true,
                 )
               ],
             ),
@@ -90,8 +92,11 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
             Padding(
                 padding: horizontalSpace(x: 13),
                 child: Text(
-                  '$ITEMS_SUMMARY (${widget.order.items.length} $ITEM_TXT)',
-                  style: getTextStyle(fontWeight: FontWeight.w500),
+                  ITEMS_SUMMARY,
+                  style: getTextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: MEDIUM_MINUS_FONT_SIZE,
+                      color: DARK_GREY_COLOR),
                 )),
             hightSpacer10,
             ListView.builder(

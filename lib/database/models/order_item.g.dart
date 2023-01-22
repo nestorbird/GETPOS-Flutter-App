@@ -28,13 +28,15 @@ class OrderItemAdapter extends TypeAdapter<OrderItem> {
       orderedPrice: fields[10] as double,
       productImage: fields[8] as Uint8List,
       productUpdatedTime: fields[9] as DateTime,
+      productImageUrl: fields[11] == null ? '' : fields[11] as String?,
+      tax: fields[12] == null ? 0.0 : fields[12] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, OrderItem obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +58,11 @@ class OrderItemAdapter extends TypeAdapter<OrderItem> {
       ..writeByte(9)
       ..write(obj.productUpdatedTime)
       ..writeByte(10)
-      ..write(obj.orderedPrice);
+      ..write(obj.orderedPrice)
+      ..writeByte(11)
+      ..write(obj.productImageUrl)
+      ..writeByte(12)
+      ..write(obj.tax);
   }
 
   @override

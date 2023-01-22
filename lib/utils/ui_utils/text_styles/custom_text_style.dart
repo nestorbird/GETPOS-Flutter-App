@@ -10,19 +10,19 @@ TextStyle getTextStyle(
         {fontWeight = FontWeight.bold,
         fontSize = SMALL_FONT_SIZE,
         color = BLACK_COLOR}) =>
-    GoogleFonts.montserrat(
+    GoogleFonts.poppins(
         fontWeight: fontWeight, fontSize: fontSize, color: color);
 
-TextStyle getBoldStyle() => GoogleFonts.montserrat(
+TextStyle getBoldStyle() => GoogleFonts.poppins(
       fontWeight: FontWeight.bold,
     );
 
 TextStyle getItalicStyle(
         {fontSize, fontWeight = FontWeight.normal, color = DARK_GREY_COLOR}) =>
-    GoogleFonts.montserrat(
+    GoogleFonts.poppins(
         fontSize: fontSize,
         fontWeight: fontWeight,
         fontStyle: FontStyle.italic,
         color: color);
 
-TextStyle getNormalStyle() => GoogleFonts.montserrat();
+TextStyle getNormalStyle() => GoogleFonts.poppins();

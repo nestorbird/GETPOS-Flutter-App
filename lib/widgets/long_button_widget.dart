@@ -109,7 +109,7 @@ class _LongButtonState extends State<LongButton> {
                                 child: Text(widget.buttonTitle,
                                     style: getTextStyle(
                                       fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.bold,
                                       color: WHITE_COLOR,
                                     ))),
                           )

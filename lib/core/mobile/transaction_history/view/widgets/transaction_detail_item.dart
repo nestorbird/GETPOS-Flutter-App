@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
+import '../../../../../database/models/attribute.dart';
 import '../../../../../database/models/order_item.dart';
 import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/card_border_shape.dart';
@@ -42,51 +43,51 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
     return Card(
         shape: cardBorderShape(),
         margin: mediumPaddingAll(),
+        elevation: 0,
         child: Container(
           padding: horizontalSpace(),
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                  decoration: BoxDecoration(
-                      // border: Border.all(
-                      //   color: GREY_COLOR,
-                      // ),
-                      borderRadius: BorderRadius.circular(20)),
-                  padding: verticalSpace(),
-                  child: _getOrderedProductImage()),
-            ),
-            widthSpacer(10),
+            Container(
+                height: 90,
+                width: 90,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: MAIN_COLOR.withOpacity(0.1),
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                ),
+                child: _getOrderedProductImage()),
+            widthSpacer(15),
             Expanded(
               flex: 4,
               child: Container(
                 height: 85,
                 padding: verticalSpace(x: 5),
                 child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.product.orderedQuantity > 0
-                          ? '${widget.product.name} x ${widget.product.orderedQuantity.round()}'
+                          ? '${widget.product.name} (${widget.product.orderedQuantity.round()})'
                           : widget.product.name,
+                      style: getTextStyle(fontSize: SMALL_PLUS_FONT_SIZE),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                    Text(
+                      _getItemVariants(widget.product.attributes),
                       style: getTextStyle(
-                          fontSize: MEDIUM_PLUS_FONT_SIZE,
+                          fontSize: SMALL_FONT_SIZE,
                           fontWeight: FontWeight.normal),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                     Text(
-                      '$ITEM_CODE_TXT - ${widget.product.id}',
-                      style: getTextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: DARK_GREY_COLOR),
-                    ),
-                    const Spacer(),
-                    Text(
-                      '$APP_CURRENCY ${widget.product.price}',
+                      '$APP_CURRENCY ${widget.product.price.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           color: MAIN_COLOR,
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -94,6 +95,20 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
             )
           ]),
         ));
+  }
+
+  String _getItemVariants(List<Attribute> itemVariants) {
+    String variants = '';
+    if (itemVariants.isNotEmpty) {
+      for (var variantData in itemVariants) {
+        for (var selectedOption in variantData.options) {
+          variants = variants.isEmpty
+              ? '${selectedOption.name} [$APP_CURRENCY ${selectedOption.price.toStringAsFixed(2)}]'
+              : "$variants, ${selectedOption.name} [$APP_CURRENCY ${selectedOption.price.toStringAsFixed(2)}]";
+        }
+      }
+    }
+    return variants;
   }
 
   _getOrderedProductImage() {

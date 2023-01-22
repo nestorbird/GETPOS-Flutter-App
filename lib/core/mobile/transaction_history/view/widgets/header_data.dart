@@ -35,7 +35,10 @@ class _TransactionHeaderDataState extends State<TransactionHeaderData> {
         Text(widget.heading!,
             textAlign: TextAlign.end,
             style: getTextStyle(
-                fontWeight: FontWeight.w500, color: widget.headingColor)),
+              fontWeight: FontWeight.w500,
+              color: widget.headingColor,
+              fontSize: MEDIUM_MINUS_FONT_SIZE,
+            )),
         hightSpacer5,
         Text(
           widget.content!,

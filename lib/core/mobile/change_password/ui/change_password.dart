@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
+import '../../../../constants/asset_paths.dart';
 import '../../../../network/api_helper/comman_response.dart';
 import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
@@ -10,7 +11,6 @@ import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../widgets/button.dart';
 import '../../../../widgets/custom_appbar.dart';
-import '../../../../widgets/header_curve.dart';
 import '../../../../widgets/text_field_widget.dart';
 
 import '../../../service/change_password/api/change_hubmanager_password.dart';
@@ -58,82 +58,75 @@ class _ChangePasswordState extends State<ChangePassword> {
     /// main area
     return Scaffold(
       body: SingleChildScrollView(
-        child: Stack(
+        child: Column(
           children: [
-            HeaderCurveWidget(),
-            Padding(
-              padding: smallPaddingAll(),
-              child: Column(
-                children: [
-                  hightSpacer30,
-                  const CustomAppbar(
-                    title: "",
-                    backBtnColor: WHITE_COLOR,
-                    hideSidemenu: true,
-                  ),
-                  hightSpacer20,
-                  hightSpacer20,
-                  hightSpacer50,
-                  hightSpacer50,
-                  // appLogo,
-                  hightSpacer50,
-                  Center(
+            hightSpacer40,
+            const CustomAppbar(
+              title: "",
+              backBtnColor: BLACK_COLOR,
+              hideSidemenu: true,
+            ),
+            hightSpacer20,
+            Image.asset(APP_ICON, width: 100, height: 100),
+            hightSpacer20,
+
+            hightSpacer50,
+            // appLogo,
+            hightSpacer50,
+            Center(
+              child: Text(
+                CHANGE_PASSWORD_TITLE.toUpperCase(),
+                style: getTextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: MAIN_COLOR,
+                    fontSize: LARGE_FONT_SIZE),
+              ),
+            ),
+            hightSpacer5,
+            widget.verifiedOtp
+                ? Center(
                     child: Text(
-                      CHANGE_PASSWORD_TITLE.toUpperCase(),
-                      style: getTextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: MAIN_COLOR,
-                          fontSize: LARGE_FONT_SIZE),
-                    ),
-                  ),
-                  hightSpacer5,
-                  widget.verifiedOtp
-                      ? Center(
-                          child: Text(
-                            CHANGE_PASSWORD_OTP_VERIFY_MSG,
-                            style: getTextStyle(
-                                color: WHITE_COLOR,
-                                fontSize: SMALL_PLUS_FONT_SIZE,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        )
-                      : Container(),
-                  Center(
-                    child: Text(
-                      CHANGE_PASSWORD_SET_MSG,
+                      CHANGE_PASSWORD_OTP_VERIFY_MSG,
                       style: getTextStyle(
                           color: WHITE_COLOR,
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
                     ),
-                  ),
-                  hightSpacer45,
-                  Container(
-                    margin: horizontalSpace(),
-                    padding: smallPaddingAll(),
-                    child: TextFieldWidget(
-                      boxDecoration: txtFieldBorderDecoration,
-                      txtCtrl: _newPassCtrl,
-                      hintText: CHANGE_NEW_PASSWORD_HINT,
-                      password: true,
-                    ),
-                  ),
-                  hightSpacer20,
-                  Container(
-                    margin: horizontalSpace(),
-                    padding: smallPaddingAll(),
-                    child: TextFieldWidget(
-                      boxDecoration: txtFieldBorderDecoration,
-                      txtCtrl: _confirmPassCtrl,
-                      hintText: CHANGE_CONFIRM_PASSWORD_HINT,
-                      password: true,
-                    ),
-                  ),
-                  hightSpacer32,
-                  changePasswordBtnWidget,
-                ],
+                  )
+                : Container(),
+            Center(
+              child: Text(
+                CHANGE_PASSWORD_SET_MSG,
+                style: getTextStyle(
+                    color: WHITE_COLOR,
+                    fontSize: SMALL_PLUS_FONT_SIZE,
+                    fontWeight: FontWeight.w500),
               ),
             ),
+            hightSpacer45,
+            Container(
+              margin: horizontalSpace(),
+              padding: smallPaddingAll(),
+              child: TextFieldWidget(
+                boxDecoration: txtFieldBorderDecoration,
+                txtCtrl: _newPassCtrl,
+                hintText: CHANGE_NEW_PASSWORD_HINT,
+                password: true,
+              ),
+            ),
+            hightSpacer20,
+            Container(
+              margin: horizontalSpace(),
+              padding: smallPaddingAll(),
+              child: TextFieldWidget(
+                boxDecoration: txtFieldBorderDecoration,
+                txtCtrl: _confirmPassCtrl,
+                hintText: CHANGE_CONFIRM_PASSWORD_HINT,
+                password: true,
+              ),
+            ),
+            hightSpacer32,
+            changePasswordBtnWidget,
           ],
         ),
       ),

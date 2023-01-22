@@ -8,8 +8,7 @@ import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import 'constants/app_constants.dart';
-import 'core/mobile/home/ui/home.dart';
-import 'core/mobile/login/ui/login.dart';
+import 'core/mobile/splash/view/splash_screen.dart';
 import 'core/tablet/home_tablet.dart';
 import 'database/db_utils/db_hub_manager.dart';
 import 'database/models/attribute.dart';
@@ -42,9 +41,9 @@ void main() async {
   isTabletMode = Device.get().isTablet;
   if (isTabletMode) {
     await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeRight],
+      [DeviceOrientation.landscapeLeft],
     );
-    runApp(const MobileApp());
+    runApp(const TabletApp());
   } else {
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
@@ -91,7 +90,7 @@ class MobileApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: isUserLoggedIn ? const Home() : const Login(),
+      home: const SplashScreen(),
     );
   }
 }

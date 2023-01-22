@@ -19,6 +19,19 @@ class SaleSuccessfulPopup extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: InkWell(
+                    onTap: () => Navigator.pop(context, "home"),
+                    child: SvgPicture.asset(
+                      CROSS_ICON,
+                      height: 16,
+                      width: 16,
+                      color: BLACK_COLOR,
+                    ),
+                  ))),
           Center(
             child: SvgPicture.asset(
               SUCCESS_IMAGE,
@@ -29,34 +42,40 @@ class SaleSuccessfulPopup extends StatelessWidget {
           ),
           hightSpacer30,
           Text(
-            SALES_SUCCESS_TXT,
+            "Sale successful",
             style: getTextStyle(
-                fontSize: LARGE_FONT_SIZE,
-                color: DARK_GREY_COLOR,
-                fontWeight: FontWeight.w500),
+                fontSize: LARGE_PLUS_FONT_SIZE,
+                color: BLACK_COLOR,
+                fontWeight: FontWeight.w600),
           ),
           hightSpacer30,
-          LongButton(
-            isAmountAndItemsVisible: false,
-            buttonTitle: "Print Reciept",
-            onTap: () {
-              Navigator.pop(context, "print_receipt");
-            },
-          ),
-          LongButton(
-            isAmountAndItemsVisible: false,
-            buttonTitle: RETURN_TO_HOME_TXT,
-            onTap: () {
-              Navigator.pop(context, "home");
-            },
-          ),
-          LongButton(
-            isAmountAndItemsVisible: false,
-            buttonTitle: "New Order",
-            onTap: () {
-              Navigator.pop(context, "new_order");
-            },
-          ),
+          Padding(
+              padding: const EdgeInsets.only(left: 35, right: 35),
+              child: LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: "Print Reciept",
+                onTap: () {
+                  Navigator.pop(context, "print_receipt");
+                },
+              )),
+          Padding(
+              padding: const EdgeInsets.only(left: 35, right: 35),
+              child: LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: RETURN_TO_HOME_TXT,
+                onTap: () {
+                  Navigator.pop(context, "home");
+                },
+              )),
+          Padding(
+              padding: const EdgeInsets.only(left: 35, right: 35),
+              child: LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: "New Order",
+                onTap: () {
+                  Navigator.pop(context, "new_order");
+                },
+              )),
         ],
       ),
     );

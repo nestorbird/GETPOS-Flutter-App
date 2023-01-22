@@ -19,11 +19,16 @@ class Option extends HiveObject {
 
   @HiveField(3)
   bool selected;
+
+  @HiveField(4)
+  double tax;
+
   Option({
     required this.id,
     required this.name,
     required this.price,
     required this.selected,
+    required this.tax,
   });
 
   Option copyWith({
@@ -31,12 +36,14 @@ class Option extends HiveObject {
     String? name,
     double? price,
     bool? selected,
+    double? tax,
   }) {
     return Option(
       id: id ?? this.id,
       name: name ?? this.name,
       price: price ?? this.price,
       selected: selected ?? this.selected,
+      tax: tax ?? this.tax,
     );
   }
 
@@ -46,6 +53,7 @@ class Option extends HiveObject {
       'name': name,
       'price': price,
       'selected': selected,
+      'tax': tax
     };
   }
 
@@ -55,6 +63,7 @@ class Option extends HiveObject {
       name: map['name'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
       selected: map['selected'] ?? false,
+      tax: map['tax'] ?? 0.0
     );
   }
 
@@ -64,7 +73,7 @@ class Option extends HiveObject {
 
   @override
   String toString() {
-    return 'Option(id: $id, name: $name, price: $price, selected: $selected)';
+    return 'Option(id: $id, name: $name, price: $price, selected: $selected, tax: $tax)';
   }
 
   @override

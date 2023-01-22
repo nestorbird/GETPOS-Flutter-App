@@ -17,7 +17,6 @@ import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../utils/ui_utils/text_styles/edit_text_hint_style.dart';
 import '../../../../../widgets/custom_appbar.dart';
-import '../../../../../widgets/main_drawer.dart';
 import '../../change_password/ui/change_password.dart';
 import '../../login/ui/login.dart';
 
@@ -77,19 +76,19 @@ class _MyAccountState extends State<MyAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
+      // endDrawer: MainDrawer(
+      //   menuItem: Helper.getMenuItemList(context),
+      // ),
       body: SafeArea(
         child: Column(
           children: [
-            const CustomAppbar(title: MY_ACCOUNT_TXT),
+            const CustomAppbar(title: MY_ACCOUNT_TXT, hideSidemenu: true),
             hightSpacer30,
             _getProfileImage(),
             hightSpacer10,
             Text(name ?? "",
                 style: getTextStyle(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w700,
                   fontSize: MEDIUM_PLUS_FONT_SIZE,
                 )),
             Padding(
@@ -102,7 +101,7 @@ class _MyAccountState extends State<MyAccount> {
             ),
             Text(phone ?? "",
                 style: getTextStyle(
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.w600,
                   fontSize: MEDIUM_PLUS_FONT_SIZE,
                 )),
             hightSpacer25,

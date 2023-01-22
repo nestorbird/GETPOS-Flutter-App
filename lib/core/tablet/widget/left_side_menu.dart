@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import '../../../configs/theme_config.dart';
-import '../../../constants/app_constants.dart';
 import '../../../constants/asset_paths.dart';
 import '../../../utils/ui_utils/padding_margin.dart';
 import '../../../utils/ui_utils/spacer_widget.dart';
@@ -22,38 +21,48 @@ class LeftSideMenu extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
-            padding: morePaddingAll(),
+            //padding: morePaddingAll(),
             decoration: const BoxDecoration(
-                color: MAIN_COLOR,
+                // color: MAIN_COLOR,
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
+                    topLeft: Radius.circular(0),
                     topRight: Radius.circular(15))),
             child: Padding(
-              padding: verticalSpace(x: 8),
-              child: Text(
-                "POS",
-                textAlign: TextAlign.center,
-                style: getTextStyle(
-                    color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
+              padding: verticalSpace(x: 0),
+              child: Image.asset(
+                APP_ICON_TABLET,
+                fit: BoxFit.fill,
               ),
+              // child: Text(
+              //   "POS",
+              //   textAlign: TextAlign.center,
+              //   style: getTextStyle(
+              //       color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
+              // ),
             ),
           ),
+          hightSpacer15,
           _leftMenuSectionItem("Home", HOME_TAB_ICON, 30, () {
             selectedView.value = "Home";
           }),
+          hightSpacer10,
           _leftMenuSectionItem("Order", ORDER_TAB_ICON, 30, () {
             selectedView.value = "Order";
             // debugPrint("order");
           }),
+          hightSpacer10,
           _leftMenuSectionItem("Product", PRODUCE_TAB_ICON, 30, () {
             selectedView.value = "Product";
           }),
+          hightSpacer10,
           _leftMenuSectionItem("Customer", CUSTOMER_TAB_ICON, 30, () {
             selectedView.value = "Customer";
           }),
+          hightSpacer10,
           _leftMenuSectionItem("History", HISTORY_TAB_ICON, 30, () {
             selectedView.value = "History";
           }),
+          hightSpacer10,
           _leftMenuSectionItem("My Profile", PROFILE_TAB_ICON, 30, () {
             selectedView.value = "My Profile";
           }),

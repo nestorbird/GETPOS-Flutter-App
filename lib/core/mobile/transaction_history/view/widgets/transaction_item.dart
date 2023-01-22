@@ -39,14 +39,14 @@ class TransactionItem extends StatelessWidget {
               ),
               hightSpacer4,
               Text(
-                '${order.date} ${order.time}',
+                '${order.date}, ${order.time}',
                 style: getItalicStyle(fontSize: SMALL_FONT_SIZE),
               ),
               hightSpacer7,
               Row(
                 children: [
                   Text(
-                    '$APP_CURRENCY ${order.orderAmount}',
+                    '$APP_CURRENCY ${order.orderAmount.toStringAsFixed(2)}',
                     style: getTextStyle(
                         fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
                   ),

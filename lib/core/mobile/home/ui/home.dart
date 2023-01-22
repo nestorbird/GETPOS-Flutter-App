@@ -16,7 +16,6 @@ import '../../../../../utils/helpers/sync_helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
-import '../../../../../widgets/main_drawer.dart';
 import '../../create_order_new/ui/new_create_order.dart';
 import '../../customers/ui/customers.dart';
 import '../../finance/ui/finance.dart';
@@ -68,9 +67,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
+      // endDrawer: MainDrawer(
+      //   menuItem: Helper.getMenuItemList(context),
+      // ),
       body: Builder(
         builder: (ctx) => SafeArea(
             child: SingleChildScrollView(

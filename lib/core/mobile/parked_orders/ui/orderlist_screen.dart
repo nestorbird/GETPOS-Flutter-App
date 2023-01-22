@@ -52,17 +52,21 @@ class _OrderListScreenState extends State<OrderListScreen> {
             Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
-                  searchHint: SEARCH_HINT_TXT,
+                  searchHint: 'Customer name or mobile no.',
                   searchTextController: searchCtrl,
                   onTextChanged: (text) {
-                    // filterSalesData(text);
-                    // else
-                    //   getSales();
+                    if (text.length >= 3) {
+                      filterSalesData(text);
+                    } else {
+                      getParkedOrders();
+                    }
                   },
                   onSubmit: (text) {
-                    // filterSalesData(text);
-                    // else
-                    //   getSales();
+                    if (text.length >= 3) {
+                      filterSalesData(text);
+                    } else {
+                      getParkedOrders();
+                    }
                   },
                 )),
             hightSpacer10,

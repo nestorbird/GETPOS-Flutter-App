@@ -28,7 +28,7 @@ class Message {
   Message.fromJson(Map<String, dynamic> json) {
     successKey = json['success_key'];
     message = json['message'];
-    salesOrder = SalesOrder.fromJson(json['sales_order']);
+    salesOrder = SalesOrder.fromJson(json['sales_order'] ?? {});
   }
 
   Map<String, dynamic> toJson() {
@@ -49,8 +49,8 @@ class SalesOrder {
   late final int docStatus;
 
   SalesOrder.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    docStatus = json['doc_status'];
+    name = json['name'] ?? "";
+    docStatus = json['doc_status'] ?? 0;
   }
 
   Map<String, dynamic> toJson() {

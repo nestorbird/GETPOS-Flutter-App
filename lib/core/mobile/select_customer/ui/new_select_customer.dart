@@ -5,7 +5,6 @@ import '../../../../constants/app_constants.dart';
 import '../../../../database/db_utils/db_customer.dart';
 import '../../../../database/models/customer.dart';
 import '../../../../network/api_helper/comman_response.dart';
-import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
@@ -13,7 +12,6 @@ import '../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../widgets/button.dart';
 import '../../../../widgets/custom_appbar.dart';
 import '../../../../widgets/customer_tile.dart';
-import '../../../../widgets/main_drawer.dart';
 import '../../../../widgets/search_widget.dart';
 import '../../../../widgets/shimmer_widget.dart';
 import '../../../../widgets/text_field_widget.dart';
@@ -56,15 +54,12 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               // hightSpacer40,
-              const CustomAppbar(title: CUSTOMERS_TXT),
+              const CustomAppbar(title: CUSTOMERS_TXT, hideSidemenu: true),
               hightSpacer30,
               Padding(
                 padding: horizontalSpace(),
@@ -104,6 +99,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                             isDeleteButtonEnabled: false,
                             customer: customers[position],
                             isSubtitle: true,
+                            isHighlighted: true,
                             onCheckChanged: (p0) {
                               Navigator.pop(context, customers[position]);
                             },
@@ -111,14 +107,15 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                         }
                       })
                   : customers.isEmpty && searchCtrl.text.length < 10
-                      ? Center(
-                          child: Text(
-                          SEARCH_CUSTOMER_MSG_TXT,
-                          style: getTextStyle(
-                            fontSize: SMALL_PLUS_FONT_SIZE,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ))
+                      ? Container()
+                      // ? Center(
+                      //     child: Text(
+                      //     SEARCH_CUSTOMER_MSG_TXT,
+                      //     style: getTextStyle(
+                      //       fontSize: SMALL_PLUS_FONT_SIZE,
+                      //       fontWeight: FontWeight.w400,
+                      //     ),
+                      //   ))
                       : _addNewCustomerUI(),
             ],
           ),
@@ -159,10 +156,10 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
             child: Padding(
           padding: const EdgeInsets.fromLTRB(32, 16, 32, 32),
           child: Text(
-            "No records were found. Please add the details below in order to continue",
+            "No records were found. Please add the details below in order to continue.",
             style: getTextStyle(
                 fontSize: MEDIUM_PLUS_FONT_SIZE,
-                fontWeight: FontWeight.w400,
+                fontWeight: FontWeight.w500,
                 color: MAIN_COLOR),
           ),
         )),
@@ -198,7 +195,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
           child: TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _emailCtrl,
-              hintText: "Enter email (Optional)",
+              hintText: "Enter email (optional)",
               txtColor: BLACK_COLOR),
         ),
         hightSpacer30,
@@ -230,6 +227,18 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
     CommanResponse response = await CreateCustomer()
         .createNew(_phoneCtrl.text, _nameCtrl.text, _emailCtrl.text);
     if (response.status! && response.message == SUCCESS) {
+      filterCustomerData(_phoneCtrl.text);
+    } else {
+      Customer tempCustomer = Customer(
+          // profileImage: image,
+          // ward: Ward(id: "1", name: "1"),
+          email: _emailCtrl.text.trim(),
+          id: _nameCtrl.text.trim(),
+          name: _nameCtrl.text.trim(),
+          phone: _phoneCtrl.text.trim());
+      List<Customer> customers = [];
+      customers.add(tempCustomer);
+      await DbCustomer().addCustomers(customers);
       filterCustomerData(_phoneCtrl.text);
     }
   }

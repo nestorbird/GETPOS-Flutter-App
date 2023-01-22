@@ -47,6 +47,11 @@ class _CartWidgetState extends State<CartWidget> {
   ParkOrder? currentCart;
   late bool selectedCashMode;
   late bool isOrderProcessed;
+  double totalAmount = 0.0;
+  double subTotalAmount = 0.0;
+  double taxAmount = 0.0;
+  int totalItems = 0;
+  double taxPercentage = 0;
 
   @override
   void initState() {
@@ -66,6 +71,8 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _configureTaxAndTotal(widget.orderList);
+
     return Container(
       padding: paddingXY(x: 10, y: 10),
       color: WHITE_COLOR,
@@ -104,17 +111,22 @@ class _CartWidgetState extends State<CartWidget> {
               : const SizedBox(height: 16),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Subtotal", "₹ 423.00"),
+              : _subtotalSection("Subtotal",
+                  "$APP_CURRENCY ${subTotalAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Discount", " - 23.00", isDiscount: true),
+              : _subtotalSection("Discount", "- $APP_CURRENCY 0.00",
+                  isDiscount: true),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Tax ( 10% )", "42.30"),
+              : _subtotalSection("Tax ($taxPercentage%)",
+                  "$APP_CURRENCY ${taxAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _totalSection("Total", "₹ 389.30"),
+              : _totalSection(
+                  "Total", "$APP_CURRENCY ${totalAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
+          hightSpacer10,
           _showActionButton()
         ],
       ),
@@ -150,50 +162,50 @@ class _CartWidgetState extends State<CartWidget> {
   }
 
   _showActionButton() {
-    return selectedCustomer == null
-        ? InkWell(
-            onTap: () {
-              _handleCustomerPopup();
-            },
-            child: Container(
-              width: double.infinity,
-              padding: paddingXY(y: 20),
-              margin: paddingXY(y: 20, x: 5),
-              decoration: BoxDecoration(
-                  color: MAIN_COLOR, borderRadius: BorderRadius.circular(10)),
-              child: Text(
-                "Select Customer",
-                textAlign: TextAlign.center,
-                style:
-                    getTextStyle(color: WHITE_COLOR, fontSize: LARGE_FONT_SIZE),
-              ),
-            ),
-          )
-        : InkWell(
-            onTap: () async {
-              _prepareCart();
-              isOrderProcessed = await _placeOrderHandler();
+    // return selectedCustomer == null
+    //     ? InkWell(
+    //         onTap: () {
+    //           _handleCustomerPopup();
+    //         },
+    //         child: Container(
+    //           width: double.infinity,
+    //           padding: paddingXY(y: 20),
+    //           margin: paddingXY(y: 20, x: 5),
+    //           decoration: BoxDecoration(
+    //               color: MAIN_COLOR, borderRadius: BorderRadius.circular(10)),
+    //           child: Text(
+    //             "Select Customer",
+    //             textAlign: TextAlign.center,
+    //             style:
+    //                 getTextStyle(color: WHITE_COLOR, fontSize: LARGE_FONT_SIZE),
+    //           ),
+    //         ),
+    //       )
+    return InkWell(
+      onTap: () async {
+        _prepareCart();
+        isOrderProcessed = await _placeOrderHandler();
 
-              // to be showed on successfull order placed
-              _showOrderPlacedSuccessPopup();
-            },
-            child: Container(
-              width: double.infinity,
-              padding: paddingXY(y: 20),
-              margin: paddingXY(y: 10, x: 5),
-              decoration: BoxDecoration(
-                  color: widget.orderList.isNotEmpty
-                      ? MAIN_COLOR
-                      : MAIN_COLOR.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Text(
-                "Place Order",
-                textAlign: TextAlign.center,
-                style:
-                    getTextStyle(color: WHITE_COLOR, fontSize: LARGE_FONT_SIZE),
-              ),
-            ),
-          );
+        // to be showed on successfull order placed
+        _showOrderPlacedSuccessPopup();
+      },
+      child: Container(
+        width: double.infinity,
+        padding: paddingXY(y: 10),
+        margin: paddingXY(y: 10, x: 5),
+        decoration: BoxDecoration(
+            color: widget.orderList.isNotEmpty
+                ? MAIN_COLOR
+                : MAIN_COLOR.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(10)),
+        child: Text(
+          "Place Order",
+          textAlign: TextAlign.center,
+          style:
+              getTextStyle(color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
+        ),
+      ),
+    );
   }
 
   Widget _cartItemListSection() {
@@ -215,52 +227,126 @@ class _CartWidgetState extends State<CartWidget> {
   }
 
   Widget itemListWidget(OrderItem item) {
+    final Widget greySizedBox =
+        SizedBox(width: 1.0, child: Container(color: MAIN_COLOR));
+
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8, top: 15),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset(BURGAR_IMAGE),
-          Expanded(
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(children: [
-                  Expanded(
-                      child: Text(
-                    item.name,
-                    style: getTextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: BLACK_COLOR,
-                        fontSize: MEDIUM_PLUS_FONT_SIZE),
-                  )),
-                  InkWell(
-                    onTap: () {
-                      setState(() {
-                        widget.orderList.remove(item);
-                      });
-                    },
-                    child: const Padding(
-                      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-                      child: Icon(Icons.delete, size: 26),
-                    ),
-                  )
-                ]),
-                Row(children: [
-                  Text(
-                    "₹ ${item.price}",
-                    style: getTextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: GREEN_COLOR,
-                        fontSize: MEDIUM_PLUS_FONT_SIZE),
-                  ),
-                  // const Spacer(),
-                  // const Icon(Icons.delete)
-                ]),
-              ],
+          ClipRRect(
+            borderRadius: BorderRadius.circular(50),
+            child: SizedBox(
+              width: 55,
+              height: 55,
+              child: Image.memory(
+                item.productImage,
+                fit: BoxFit.fill,
+              ),
             ),
-          )
+          ),
+          // Image.asset(BURGAR_IMAGE),
+          widthSpacer(10),
+          Expanded(
+            child: SizedBox(
+                height: 60,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      Expanded(
+                          child: Text(
+                        item.name,
+                        style: getTextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: BLACK_COLOR,
+                            fontSize: SMALL_PLUS_FONT_SIZE),
+                      )),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget.orderList.remove(item);
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                          child: SvgPicture.asset(
+                            DELETE_IMAGE,
+                            width: 16,
+                            height: 16,
+                          ),
+                        ),
+                      )
+                    ]),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "₹ ${item.price.toStringAsFixed(2)}",
+                            style: getTextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: GREEN_COLOR,
+                                fontSize: SMALL_PLUS_FONT_SIZE),
+                          ),
+                          // const Spacer(),
+                          // const Icon(Icons.delete)
+                          Container(
+                              width: 100,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: MAIN_COLOR,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      BORDER_CIRCULAR_RADIUS_06)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        if (item.orderedQuantity > 1) {
+                                          item.orderedQuantity =
+                                              item.orderedQuantity - 1;
+                                        } else {
+                                          widget.orderList.remove(item);
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: const Icon(
+                                        Icons.remove,
+                                        size: 18,
+                                      )),
+                                  greySizedBox,
+                                  Container(
+                                      color: MAIN_COLOR.withOpacity(0.1),
+                                      child: Text(
+                                        item.orderedQuantity.toInt().toString(),
+                                        style: getTextStyle(
+                                          fontSize: MEDIUM_FONT_SIZE,
+                                          fontWeight: FontWeight.w600,
+                                          color: MAIN_COLOR,
+                                        ),
+                                      )),
+                                  greySizedBox,
+                                  InkWell(
+                                      onTap: () {
+                                        item.orderedQuantity =
+                                            item.orderedQuantity + 1;
+                                        setState(() {});
+                                      },
+                                      child: const Icon(
+                                        Icons.add,
+                                        size: 18,
+                                      )),
+                                ],
+                              ))
+                        ]),
+                  ],
+                )),
+          ),
         ],
       ),
     );
@@ -399,6 +485,8 @@ class _CartWidgetState extends State<CartWidget> {
   }
 
   Widget _selectedCustomerSection() {
+    //log('Selected customer from parent widget :: ${widget.customer}');
+    selectedCustomer = widget.customer;
     return selectedCustomer != null
         ? InkWell(
             onTap: () => _handleCustomerPopup(),
@@ -509,5 +597,42 @@ class _CartWidgetState extends State<CartWidget> {
       DbParkedOrder().saveOrder(currentCart!);
       Helper.activeParkedOrder = null;
     }
+  }
+
+  //TODO:: Siddhant - Need to correct the tax calculation logic here.
+  _configureTaxAndTotal(List<OrderItem> items) {
+    totalAmount = 0.0;
+    subTotalAmount = 0.0;
+    taxAmount = 0.0;
+    totalItems = 0;
+    taxPercentage = 0;
+    for (OrderItem item in items) {
+      taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+      log('Tax Percentage after adding ${item.name} :: $taxPercentage');
+      subTotalAmount =
+          subTotalAmount + (item.orderedPrice * item.orderedQuantity);
+      log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      if (item.attributes.isNotEmpty) {
+        for (var attribute in item.attributes) {
+          //taxPercentage = taxPercentage + attribute.tax;
+          log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
+          if (attribute.options.isNotEmpty) {
+            for (var options in attribute.options) {
+              taxPercentage = taxPercentage + options.tax;
+              subTotalAmount = subTotalAmount + options.price;
+              log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+            }
+          }
+        }
+      }
+    }
+    taxAmount = (subTotalAmount / 100) * taxPercentage;
+    totalAmount = subTotalAmount + taxAmount;
+    log('Subtotal :: $subTotalAmount');
+    log('Tax percentage :: $taxAmount');
+    log('Tax Amount :: $taxAmount');
+    log('Total :: $totalAmount');
+    //return taxPercentage;
+    setState(() {});
   }
 }

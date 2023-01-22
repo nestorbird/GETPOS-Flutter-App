@@ -5,16 +5,23 @@ import '../api_helper/api_server.dart';
 
 ///Base API URL for development environment
 const DEV_URL = 'https://pos.nestorbird.com/api/';
+const DEV_ERP_URL = 'pos.nestorbird.com';
 // const DEV_URL = 'https://agriboratest.nestorhawk.com/api/';
 
 ///Base API URL for staging/test environment
 const TEST_URL = 'https://tst.erp.nbpos.com/api/';
+const TEST_ERP_URL = 'pos.nestorbird.com';
 
 ///Base API URL for production environment
 const PROD_URL = 'https://prd.erp.nbpos.com/api/';
+const PROD_ERP_URL = 'pos.nestorbird.com';
 
 ///Default URL for POS instance
-String instanceUrl = 'pos.nestorbird.com';
+String instanceUrl = ENVIRONMENT == ApiServer.DEV
+    ? DEV_ERP_URL
+    : ENVIRONMENT == ApiServer.TEST
+        ? TEST_ERP_URL
+        : PROD_ERP_URL;
 
 ///Base API URL for production environment
 // ignore: non_constant_identifier_names
@@ -33,6 +40,8 @@ const CUSTOMERS_PATH = 'method/nbpos.nbpos.api.get_customer_list_by_hubmanager';
 const CUSTOMER_PATH = 'method/nbpos.nbpos.api.get_customer';
 
 const CREATE_CUSTOMER_PATH = 'method/nbpos.nbpos.api.create_customer';
+
+const NEW_GET_ALL_CUSTOMERS_PATH = 'method/nbpos.nbpos.api.get_all_customer';
 
 //PRODUCTS LIST API PATH
 const PRODUCTS_PATH = 'method/nbpos.nbpos.api.get_item_list_by_hubmanager';

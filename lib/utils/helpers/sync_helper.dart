@@ -3,6 +3,7 @@ import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import '../../core/service/create_order/api/create_sales_order.dart';
+import '../../core/service/customer/api/customer_api_service.dart';
 import '../../core/service/my_account/api/get_hub_manager_details.dart';
 import '../../core/service/product/api/products_api_service.dart';
 import '../../core/service/sales_history/api/get_previous_order.dart';
@@ -75,7 +76,7 @@ class SyncHelper {
   Future<bool> getDetails() async {
     if (await Helper.isNetworkAvailable()) {
       await HubManagerDetails().getAccountDetails();
-      // _ = await CustomerService().getCustomers();
+      var _ = await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
       // _ = await ProductsService().getProducts();
     }

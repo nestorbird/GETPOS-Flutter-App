@@ -31,19 +31,22 @@ class _ItemOptionsState extends State<ItemOptions> {
             borderRadius: BorderRadius.circular(10),
             color: Colors.white,
           ),
-          height: MediaQuery.of(context).size.height * 0.8,
+          //height: MediaQuery.of(context).size.height * 0.8,
           width: isTabletMode
               ? MediaQuery.of(context).size.width / 2
               : MediaQuery.of(context).size.width * 0.9,
           padding: morePaddingAll(),
-          child: Stack(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Column(
+              SingleChildScrollView(
+                  child: Column(
                 children: [
                   AddedProductItem(
                     product: widget.orderItem,
                     onDelete: () {},
                     disableDeleteOption: true,
+                    isUsedinVariantsPopup: true,
                     onItemAdd: () {
                       debugPrint("Stock count: ${widget.orderItem.stock}");
                       setState(() {
@@ -64,9 +67,11 @@ class _ItemOptionsState extends State<ItemOptions> {
                       });
                     },
                   ),
+                  hightSpacer30,
                   SizedBox(
                     height: 200,
                     child: ListView.builder(
+                      primary: false,
                       itemCount: widget.orderItem.attributes.length,
                       itemBuilder: (context, index) {
                         return _optionSection(
@@ -75,7 +80,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                     ),
                   ),
                 ],
-              ),
+              )),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -84,6 +89,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                     color: GREEN_COLOR,
                   ),
                   child: ListTile(
+                    dense: true,
                     onTap: () {
                       Navigator.pop(context, true);
                     },
@@ -94,7 +100,8 @@ class _ItemOptionsState extends State<ItemOptions> {
                           color: WHITE_COLOR,
                           fontWeight: FontWeight.normal),
                     ),
-                    subtitle: Text("₹ ${widget.orderItem.orderedPrice}",
+                    subtitle: Text(
+                        "₹ ${widget.orderItem.orderedPrice.toStringAsFixed(2)}",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.w600,
@@ -102,7 +109,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                     trailing: Text("Add Item",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.bold,
                             color: WHITE_COLOR)),
                   ),
                 ),
@@ -151,9 +158,19 @@ class _ItemOptionsState extends State<ItemOptions> {
                     ),
                   ),
             widthSpacer(5),
-            Text(option.name),
+            Text(
+              option.name,
+              style: getTextStyle(
+                  fontSize: SMALL_PLUS_FONT_SIZE,
+                  fontWeight: FontWeight.normal),
+            ),
             const Spacer(),
-            Text("₹ ${option.price}"),
+            Text(
+              "₹ ${option.price.toStringAsFixed(2)}",
+              style: getTextStyle(
+                  fontSize: SMALL_PLUS_FONT_SIZE,
+                  fontWeight: FontWeight.normal),
+            ),
           ],
         ),
       ),
@@ -167,7 +184,10 @@ class _ItemOptionsState extends State<ItemOptions> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(attribute.name),
+          Text(
+            attribute.name,
+            style: getTextStyle(fontSize: MEDIUM_FONT_SIZE),
+          ),
           SizedBox(
             height: attribute.options.length * 50,
             child: ListView.builder(

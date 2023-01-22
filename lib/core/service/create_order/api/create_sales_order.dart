@@ -23,14 +23,14 @@ class CreateOrderService {
       List<request_items.Items> items = [];
       for (OrderItem item in order.items) {
         List<request_items.SelectedOptions> selectedOption = [];
-        item.attributes.forEach((atrib) {
-          atrib.options.forEach((opt) {
+        for (var atrib in item.attributes) {
+          for (var opt in atrib.options) {
             if (opt.selected) {
               selectedOption.add(request_items.SelectedOptions(
                   id: opt.id, name: opt.name, price: opt.price));
             }
-          });
-        });
+          }
+        }
 
         request_items.Items i = request_items.Items(
             itemCode: item.id,
@@ -72,7 +72,8 @@ class CreateOrderService {
       SyncHelper().getDetails();
 
       // ignore: unnecessary_null_comparison
-      if (salesOrderResponse.message != null) {
+      if (salesOrderResponse.message != null &&
+          salesOrderResponse.message.successKey == 1) {
         DbParkedOrder().deleteOrderById(order.parkOrderId!);
         return CommanResponse(
             status: true,

@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/asset_paths.dart';
 import '../../../../../network/api_helper/comman_response.dart';
 import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
@@ -120,9 +118,9 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
         backgroundColor: WHITE_COLOR,
         body: Stack(
           children: [
-            SvgPicture.asset(
-              LOGIN_IMAGE,
-            ),
+            // SvgPicture.asset(
+            //   LOGIN_IMAGE,
+            // ),
             Center(
               child: Container(
                 width: 550,
@@ -169,8 +167,9 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
   Future<void> _handleForgotPassBtnClick() async {
     if (_emailCtrl.text.trim().isNotEmpty) {
       Helper.showLoaderDialog(context);
+      //TODO:: Siddhant - Need to pass the instance URL here
       CommanResponse response = await ForgotPasswordApi()
-          .sendResetPasswordMail(_emailCtrl.text.trim());
+          .sendResetPasswordMail(_emailCtrl.text.trim(), "");
       if (response.status!) {
         if (!mounted) return;
         Helper.hideLoader(context);

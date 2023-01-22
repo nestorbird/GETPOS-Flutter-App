@@ -49,7 +49,21 @@ const FINANCE_ACTIVE_TAB_IMAGE =
 const CHANGE_PASS_TAB_IMAGE = "assets/tablet_icons/change_pass_icon.svg";
 const CHANGE_PASS_ACTIVE_TAB_IMAGE =
     "assets/tablet_icons/change_pass_selected_icon.svg";
+const APP_ICON = "assets/images/app_logo.png";
+const APP_ICON_TABLET = "assets/images/app_logo_tablet.png";
 // const CUSTOMER_SMALL_IMAGE = 'assets/icons/customer_small.svg';
 // const FORWARD_ARROW_IMAGE = 'assets/icons/forward_arrow.svg';
 // const PAYMENT_MPESA_ICON = 'assets/icons/mpesa_icon.svg';
 // const PAYMENT_EWALLET_ICON = 'assets/icons/ewallet_icon.svg';
+
+//New Product Listing Screen
+const FAB_MAIN_ICON = "assets/icons/fab_icon.svg";
+const FAB_ACCOUNT_ICON = "assets/icons/fab_account.svg";
+const FAB_CUSTOMERS_ICON = "assets/icons/fab_customers.svg";
+const FAB_FINANCE_ICON = "assets/icons/fab_finance.svg";
+const FAB_HISTORY_ICON = "assets/icons/fab_history.svg";
+const FAB_HOME_ICON = "assets/icons/fab_home.svg";
+const FAB_ORDERS_ICON = "assets/icons/fab_orders.svg";
+const FAB_PRODUCTS_ICON = "assets/icons/fab_products.svg";
+const NEW_ORDER_ICON = "assets/icons/add_icon.svg";
+const CART_ICON = "assets/icons/cart_icon.svg";

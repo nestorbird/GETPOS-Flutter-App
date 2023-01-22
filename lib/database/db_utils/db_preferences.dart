@@ -53,7 +53,8 @@ class DBPreferences {
   Future<int> incrementOrderNo(String orderId) async {
     prefBox = await Hive.openBox(PREFERENCE_BOX);
     var list = orderId.split("-");
-    String orderNo = list.last;
+    //String orderNo = list.last;
+    String orderNo = list.elementAt(list.indexOf(list.last) - 1);
     if (orderNo.isEmpty) orderNo = "0001";
     int newOrderNo = int.parse(orderNo) + 1;
     await savePreference(CURRENT_ORDER_NUMBER, "$newOrderNo");

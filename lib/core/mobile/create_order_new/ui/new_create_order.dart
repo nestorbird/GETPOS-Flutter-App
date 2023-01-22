@@ -17,7 +17,6 @@ import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/custom_appbar.dart';
 import '../../../../../widgets/item_options.dart';
-import '../../../../../widgets/main_drawer.dart';
 import '../../../../../widgets/product_shimmer_widget.dart';
 import '../../../../../widgets/search_widget.dart';
 import '../../select_customer/ui/new_select_customer.dart';
@@ -120,9 +119,9 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: MainDrawer(
-        menuItem: Helper.getMenuItemList(context),
-      ),
+      // endDrawer: MainDrawer(
+      //   menuItem: Helper.getMenuItemList(context),
+      // ),
       body: SafeArea(
         child: Stack(
           children: [

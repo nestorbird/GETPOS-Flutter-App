@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
-import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 
 import '../configs/theme_config.dart';
@@ -37,10 +34,10 @@ class Helper {
 
   double getTotal(List<OrderItem> orderedProducts) {
     double totalAmount = 0.0;
-    orderedProducts.forEach((product) {
+    for (var product in orderedProducts) {
       totalAmount =
           totalAmount + (product.orderedPrice * product.orderedQuantity);
-    });
+    }
     return totalAmount;
   }
 

@@ -91,6 +91,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
               itemBuilder: (BuildContext context, index) {
                 return InkWell(
                   onTap: () {
+                    //TODO:: SS - Need to add the logic for the category tap
                     // var item = OrderItem.fromJson(cat.items[index].toJson());
                     // _openItemDetailDialog(context, item);
                     // debugPrint("Item clicked $index");
@@ -138,8 +139,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                       SizedBox(
                         height: 60,
                         width: 60,
-                        child: Image.asset(
-                            index % 2 == 0 ? BURGAR_IMAGE : PIZZA_IMAGE),
+                        child: Image.memory(cat.items[index].productImage),
                       ),
                     ],
                   ),

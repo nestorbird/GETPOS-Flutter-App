@@ -1,0 +1,726 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/constants/asset_paths.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
+import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
+import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
+import 'package:nb_posx/widgets/search_widget.dart';
+
+import '../../../../configs/theme_config.dart';
+import '../../../../constants/app_constants.dart';
+import '../../../../database/db_utils/db_categories.dart';
+import '../../../../database/db_utils/db_hub_manager.dart';
+import '../../../../database/models/category.dart';
+import '../../../../database/models/customer.dart';
+import '../../../../database/models/hub_manager.dart';
+import '../../../../database/models/order_item.dart';
+import '../../../../database/models/park_order.dart';
+import '../../../../database/models/product.dart';
+import '../../../../utils/helper.dart';
+import '../../../../utils/ui_utils/padding_margin.dart';
+import '../../../../utils/ui_utils/spacer_widget.dart';
+import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
+import '../../../../widgets/item_options.dart';
+import '../../customers/ui/customers.dart';
+import '../../select_customer/ui/new_select_customer.dart';
+import '../../transaction_history/view/transaction_screen.dart';
+
+class ProductListHome extends StatefulWidget {
+  final bool isForNewOrder;
+  final ParkOrder? parkedOrder;
+  const ProductListHome(
+      {super.key, this.isForNewOrder = false, this.parkedOrder});
+
+  @override
+  State<ProductListHome> createState() => _ProductListHomeState();
+}
+
+class _ProductListHomeState extends State<ProductListHome> {
+  final _key = GlobalKey<ExpandableFabState>();
+  late TextEditingController _searchTxtController;
+  List<Product> products = [];
+  List<Category> categories = [];
+
+  late String managerName = '';
+  //bool _isFABOpened = false;
+  ParkOrder? parkOrder;
+  Customer? _selectedCust;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchTxtController = TextEditingController();
+    if (widget.parkedOrder != null) {
+      parkOrder = widget.parkedOrder;
+      _selectedCust = widget.parkedOrder!.customer;
+    }
+    if (widget.isForNewOrder && _selectedCust == null) {
+      Future.delayed(Duration.zero, () => goToSelectCustomer());
+    }
+    _getManagerName();
+    getProducts();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+        child: Scaffold(
+      body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // SizedBox(
+              //   height: MediaQuery.of(context).size.height,
+              //   width: MediaQuery.of(context).size.width,
+              //   child: ModalBarrier(
+              //   dismissible: true,
+              //   color: _isModalVisible ? Colors.black.withOpacity(0.5) : Colors.transparent,
+              // )
+              // ),
+              hightSpacer30,
+              Visibility(
+                  visible: !widget.isForNewOrder,
+                  child: Stack(
+                    //mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                          flex: 8,
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Column(
+                                children: [
+                                  Text(WELCOME_BACK,
+                                      style: getTextStyle(
+                                        fontSize: SMALL_FONT_SIZE,
+                                        color: MAIN_COLOR,
+                                        fontWeight: FontWeight.w500,
+                                      )),
+                                  hightSpacer5,
+                                  Text(
+                                    managerName,
+                                    style: getTextStyle(
+                                        fontSize: LARGE_FONT_SIZE,
+                                        color: DARK_GREY_COLOR),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ))),
+                      Expanded(
+                          child: Align(
+                              alignment: Alignment.topRight,
+                              child: Stack(
+                                children: [
+                                  IconButton(
+                                      onPressed: (() {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const ProductListHome(
+                                                        isForNewOrder: true)));
+                                      }),
+                                      icon: SvgPicture.asset(
+                                        NEW_ORDER_ICON,
+                                        height: 25,
+                                        width: 25,
+                                      )),
+                                ],
+                              ))),
+                    ],
+                  )),
+              Visibility(
+                  visible: widget.isForNewOrder,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: smallPaddingAll(),
+                          child: SvgPicture.asset(
+                            BACK_IMAGE,
+                            color: BLACK_COLOR,
+                            width: 25,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        _selectedCust != null ? _selectedCust!.name : '',
+                        style: getTextStyle(
+                            fontSize: LARGE_FONT_SIZE, color: MAIN_COLOR),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Stack(alignment: Alignment.topCenter, children: [
+                        IconButton(
+                          onPressed: (() {
+                            if (parkOrder != null) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CartScreen(order: parkOrder!)));
+                            } else {
+                              Helper.showPopup(context, "Your cart is empty");
+                            }
+                          }),
+                          icon: SvgPicture.asset(
+                            CART_ICON,
+                            height: 25,
+                            width: 25,
+                          ),
+                        ),
+                        Visibility(
+                            visible: parkOrder != null,
+                            child: Container(
+                                padding: const EdgeInsets.all(6),
+                                margin: const EdgeInsets.only(left: 20),
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle, color: MAIN_COLOR),
+                                child: Text(
+                                  parkOrder != null
+                                      ? parkOrder!.items.length
+                                          .toInt()
+                                          .toString()
+                                      : "0",
+                                  style: getTextStyle(
+                                      fontSize: SMALL_FONT_SIZE,
+                                      color: WHITE_COLOR),
+                                )))
+                      ])
+                    ],
+                  )),
+              hightSpacer15,
+              SearchWidget(
+                searchHint: 'Search product/category',
+                searchTextController: _searchTxtController,
+              ),
+              hightSpacer20,
+              SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: categories.length,
+                      itemBuilder: (context, position) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(left: 5),
+                              height: 60,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              child: categories[position]
+                                      .items
+                                      .first
+                                      .productImage
+                                      .isEmpty
+                                  ? Image.asset(
+                                      PIZZA_IMAGE,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.memory(
+                                      categories[position]
+                                          .items
+                                          .first
+                                          .productImage,
+                                      fit: BoxFit.fill,
+                                    ),
+                            ),
+                            hightSpacer10,
+                            Text(
+                              categories[position].name,
+                              style: getTextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: SMALL_PLUS_FONT_SIZE),
+                            )
+                          ],
+                        );
+                      })),
+              _getCategoryItems()
+            ],
+          )),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: Visibility(
+          visible: !widget.isForNewOrder,
+          child: ExpandableFab(
+            key: _key,
+            onOpen: (() {
+              // setState(() {
+              //   _isFABOpened = true;
+              // });
+            }),
+            onClose: (() {
+              // setState(() {
+              //   _isFABOpened = false;
+              // });
+            }),
+            type: ExpandableFabType.up,
+            distance: 80,
+            backgroundColor: LIGHT_BLACK_COLOR,
+            child: SvgPicture.asset(
+              FAB_MAIN_ICON,
+              height: 55,
+              width: 55,
+            ),
+            closeButtonStyle: ExpandableFabCloseButtonStyle(
+                child: SvgPicture.asset(
+              FAB_MAIN_ICON,
+              height: 55,
+              width: 55,
+            )),
+            children: [
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: FloatingActionButton(
+                    heroTag: 'finance',
+                    onPressed: (() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Finance()));
+                      _key.currentState!.toggle();
+                    }),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    backgroundColor: WHITE_COLOR,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          FAB_FINANCE_ICON,
+                          color: BLACK_COLOR,
+                          height: 25,
+                          width: 25,
+                        ),
+                        hightSpacer5,
+                        Text('Finance',
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.w600))
+                      ],
+                    )),
+              ),
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: FloatingActionButton(
+                    heroTag: 'account',
+                    onPressed: (() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyAccount()));
+                      _key.currentState!.toggle();
+                    }),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    backgroundColor: WHITE_COLOR,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          FAB_ACCOUNT_ICON,
+                          color: BLACK_COLOR,
+                          height: 25,
+                          width: 25,
+                        ),
+                        hightSpacer5,
+                        Text('My Profile',
+                            textAlign: TextAlign.center,
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.w600))
+                      ],
+                    )),
+              ),
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: FloatingActionButton(
+                    heroTag: 'transactions',
+                    onPressed: (() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const TransactionScreen()));
+                      _key.currentState!.toggle();
+                    }),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    backgroundColor: WHITE_COLOR,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          FAB_HISTORY_ICON,
+                          color: BLACK_COLOR,
+                          height: 25,
+                          width: 25,
+                        ),
+                        hightSpacer5,
+                        Text('History',
+                            textAlign: TextAlign.center,
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.w600))
+                      ],
+                    )),
+              ),
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: FloatingActionButton(
+                    heroTag: 'customers',
+                    onPressed: (() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Customers()));
+                      _key.currentState!.toggle();
+                    }),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    backgroundColor: WHITE_COLOR,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          FAB_CUSTOMERS_ICON,
+                          color: BLACK_COLOR,
+                          height: 25,
+                          width: 25,
+                        ),
+                        hightSpacer5,
+                        Text('Customer',
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.w600))
+                      ],
+                    )),
+              ),
+              // SizedBox(
+              //   height: 70,
+              //   width: 70,
+              //   child: FloatingActionButton(
+              //       heroTag: 'products',
+              //       onPressed: (() {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => const Products()));
+              //       }),
+              //       shape: const RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.all(Radius.circular(8))),
+              //       backgroundColor: WHITE_COLOR,
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           SvgPicture.asset(
+              //             FAB_PRODUCTS_ICON,
+              //             color: BLACK_COLOR,
+              //             height: 25,
+              //             width: 25,
+              //           ),
+              //           hightSpacer5,
+              //           Text('Product',
+              //               style: getTextStyle(
+              //                   fontSize: SMALL_FONT_SIZE,
+              //                   fontWeight: FontWeight.normal))
+              //         ],
+              //       )),
+              // ),
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: FloatingActionButton(
+                    heroTag: 'create order',
+                    onPressed: (() {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ProductListHome(isForNewOrder: true)));
+                      _key.currentState!.toggle();
+                    }),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    backgroundColor: WHITE_COLOR,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          FAB_ORDERS_ICON,
+                          color: BLACK_COLOR,
+                          height: 25,
+                          width: 25,
+                        ),
+                        hightSpacer5,
+                        Text('Order',
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.w600))
+                      ],
+                    )),
+              ),
+              SizedBox(
+                height: 70,
+                width: 70,
+                child: FloatingActionButton(
+                    heroTag: 'home',
+                    onPressed: (() {
+                      _key.currentState!.toggle();
+                    }),
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    backgroundColor: WHITE_COLOR,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          FAB_HOME_ICON,
+                          color: BLACK_COLOR,
+                          height: 25,
+                          width: 25,
+                        ),
+                        hightSpacer5,
+                        Text('Home',
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.w600))
+                      ],
+                    )),
+              ),
+            ],
+          )),
+    ));
+  }
+
+  _getCategoryItems() {
+    return ListView.builder(
+        shrinkWrap: true,
+        primary: false,
+        itemCount: categories.length,
+        itemBuilder: ((context, catPosition) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              hightSpacer20,
+              Text(categories[catPosition].name,
+                  style: getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE)),
+              hightSpacer10,
+              GridView.builder(
+                  shrinkWrap: true,
+                  primary: false,
+                  itemCount: categories[catPosition].items.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 4.0,
+                      mainAxisSpacing: 4.0),
+                  itemBuilder: ((context, itemPosition) {
+                    return GestureDetector(
+                        onTap: () {
+                          if (widget.isForNewOrder) {
+                            if (categories[catPosition]
+                                    .items[itemPosition]
+                                    .stock >
+                                0) {
+                              var item = OrderItem.fromJson(
+                                  categories[catPosition]
+                                      .items[itemPosition]
+                                      .toJson());
+                              log('Selected Item :: $item');
+                              _openItemDetailDialog(context, item);
+                            } else {
+                              Helper.showPopup(
+                                  context, 'Sorry, item is not in stock.');
+                            }
+                          }
+                        },
+                        child: ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                                categories[catPosition]
+                                            .items[itemPosition]
+                                            .stock >
+                                        0
+                                    ? Colors.transparent
+                                    : Colors.white.withOpacity(0.6),
+                                BlendMode.screen),
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    margin: paddingXY(x: 5, y: 5),
+                                    padding: paddingXY(y: 0, x: 10),
+                                    width: 145,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                        color: MAIN_COLOR.withOpacity(0.04),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        hightSpacer40,
+                                        SizedBox(
+                                          //height: 30,
+                                          child: Text(
+                                            categories[catPosition]
+                                                .items[itemPosition]
+                                                .name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                            style: getTextStyle(
+                                                // color: DARK_GREY_COLOR,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: SMALL_PLUS_FONT_SIZE),
+                                          ),
+                                        ),
+                                        hightSpacer4,
+                                        Text(
+                                          "₹ ${categories[catPosition].items[itemPosition].price.toStringAsFixed(2)}",
+                                          textAlign: TextAlign.center,
+                                          style: getTextStyle(
+                                              color: MAIN_COLOR,
+                                              fontSize: SMALL_PLUS_FONT_SIZE),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: WHITE_COLOR),
+                                        shape: BoxShape.circle),
+                                    child: Container(
+                                      margin: const EdgeInsets.only(
+                                          left: 5, right: 5),
+                                      height: 55,
+                                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                                      decoration: const BoxDecoration(
+                                          shape: BoxShape.circle),
+                                      child: categories[catPosition]
+                                              .items[itemPosition]
+                                              .productImage
+                                              .isEmpty
+                                          ? Image.asset(BURGAR_IMAGE)
+                                          : Image.memory(categories[catPosition]
+                                              .items[itemPosition]
+                                              .productImage),
+                                    )),
+                                Container(
+                                    padding: const EdgeInsets.all(6),
+                                    margin: const EdgeInsets.only(left: 45),
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: GREEN_COLOR),
+                                    child: Text(
+                                      categories[catPosition]
+                                          .items[itemPosition]
+                                          .stock
+                                          .toInt()
+                                          .toString(),
+                                      style: getTextStyle(
+                                          fontSize: SMALL_FONT_SIZE,
+                                          color: WHITE_COLOR),
+                                    ))
+                              ],
+                            )));
+                  })),
+              hightSpacer30
+            ],
+          );
+        }));
+  }
+
+  Future<void> getProducts() async {
+    //Fetching data from DbProduct database
+    // products = await DbProduct().getProducts();
+    // categories = Category.getCategories(products);
+    categories = await DbCategory().getCategories();
+    setState(() {});
+  }
+
+  _getManagerName() async {
+    HubManager manager = await DbHubManager().getManager() as HubManager;
+    managerName = manager.name;
+    //profilePic = manager.profileImage;
+    setState(() {});
+  }
+
+  _openItemDetailDialog(BuildContext context, OrderItem product) async {
+    product.orderedPrice = product.price;
+    if (product.orderedQuantity == 0) {
+      product.orderedQuantity = 1;
+    }
+    var res = await showDialog(
+        context: context,
+        builder: (context) {
+          return ItemOptions(orderItem: product);
+        });
+    if (res == true) {
+      if (parkOrder == null) {
+        HubManager manager = await DbHubManager().getManager() as HubManager;
+        parkOrder = ParkOrder(
+            id: _selectedCust!.id,
+            date: Helper.getCurrentDate(),
+            time: Helper.getCurrentTime(),
+            customer: _selectedCust!,
+            items: [],
+            orderAmount: 0,
+            manager: manager,
+            transactionDateTime: DateTime.now());
+      }
+
+      setState(() {
+        if (product.orderedQuantity > 0 &&
+            !parkOrder!.items.contains(product)) {
+          OrderItem newItem = product;
+          parkOrder!.items.add(newItem);
+          _calculateOrderAmount();
+        } else if (product.orderedQuantity == 0) {
+          parkOrder!.items.remove(product);
+          _calculateOrderAmount();
+        }
+      });
+      // DbParkedOrder().saveOrder(parkOrder!);
+    }
+    return res;
+  }
+
+  void _calculateOrderAmount() {
+    double amount = 0;
+    for (var item in parkOrder!.items) {
+      amount += item.orderedPrice * item.orderedQuantity;
+    }
+    parkOrder!.orderAmount = amount;
+  }
+
+  void goToSelectCustomer() async {
+    var data = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const NewSelectCustomer()));
+    if (data != null) {
+      getProducts();
+      setState(() {
+        _selectedCust = data;
+      });
+    } else {
+      if (!mounted) return;
+      Navigator.pop(context);
+    }
+  }
+}

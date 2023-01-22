@@ -55,7 +55,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
           ),
           hightSpacer20,
           isCustomersFound
-              ? productGrid()
+              ? customerGrid()
               : const Center(
                   child: Text("No Customer found!!!"),
                 ),
@@ -64,7 +64,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
     );
   }
 
-  Widget productGrid() {
+  Widget customerGrid() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
       child: GridView.builder(

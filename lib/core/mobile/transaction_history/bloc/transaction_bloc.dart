@@ -8,11 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:nb_posx/database/db_utils/db_sale_order.dart';
+import 'package:nb_posx/database/models/attribute.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
 import '../../../../constants/app_constants.dart';
 
 import '../../../../database/db_utils/db_constants.dart';
 import '../../../../database/db_utils/db_preferences.dart';
 import '../../../../database/models/customer.dart';
+import '../../../../database/models/option.dart';
 import '../../../../database/models/order_item.dart';
 import '../../../../network/api_constants/api_paths.dart';
 import '../../../../network/service/api_utils.dart';
@@ -103,9 +107,25 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       apiUrl += '?hub_manager=$hubManagerId&page_no=$pageNo';
 
       return _processRequest(apiUrl);
+    } else {
+      List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
+      List<Transaction> offlineTransactions = [];
+      for (var order in offlineOrders) {
+        Transaction transaction = Transaction(
+            id: order.id,
+            date: order.date,
+            time: order.time,
+            customer: order.customer,
+            items: order.items,
+            orderAmount: order.orderAmount,
+            tracsactionDateTime: order.tracsactionDateTime);
+
+        offlineTransactions.add(transaction);
+      }
+      return offlineTransactions;
     }
 
-    throw Exception("Error fetching transactions");
+    //throw Exception("Error fetching transactions");
   }
 
   Future<List<Transaction>> _processRequest(String apiUrl) async {
@@ -123,12 +143,32 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
           SalesOrderResponse.fromJson(apiResponse);
       if (salesOrderResponse.message!.orderList!.isNotEmpty) {
         //Convert the api response to local model
-        salesOrderResponse.message!.orderList!.forEach((order) {
+        for (var order in salesOrderResponse.message!.orderList!) {
           if (!sales.any((element) => element.id == order.name)) {
             List<OrderItem> orderedProducts = [];
 
             //Ordered products
-            order.items!.forEach((orderedProduct) {
+            for (var orderedProduct in order.items!) {
+              List<Attribute> attributes = [];
+
+              for (var attribute in orderedProduct.subItems!) {
+                Option option = Option(
+                    id: attribute.itemCode!,
+                    name: attribute.itemName!,
+                    price: attribute.amount!,
+                    selected: false,
+                    tax: attribute.tax!);
+
+                Attribute orderedAttribute = Attribute(
+                  name: attribute.itemName!,
+                  type: '',
+                  moq: 0,
+                  options: [option],
+                );
+
+                attributes.add(orderedAttribute);
+              }
+
               OrderItem product = OrderItem(
                   id: orderedProduct.itemCode!,
                   name: orderedProduct.itemName!,
@@ -136,14 +176,15 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
                   description: '',
                   stock: 0,
                   price: orderedProduct.rate!,
-                  attributes: [],
+                  attributes: attributes,
                   orderedQuantity: orderedProduct.qty!,
                   productImage: Uint8List.fromList([]),
                   productImageUrl: orderedProduct.image,
-                  productUpdatedTime: DateTime.now());
+                  productUpdatedTime: DateTime.now(),
+                  tax: 0);
 
               orderedProducts.add(product);
-            });
+            }
 
             String transactionDateTime =
                 "${order.transactionDate} ${order.transactionTime}";
@@ -177,7 +218,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
             sales.add(sale);
           }
-        });
+        }
         return sales;
       } else {
         return [];
