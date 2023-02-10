@@ -18,9 +18,9 @@ default_platform(:ios)
 platform :ios do
   desc "Push a new beta build to TestFlight"
 
-  ENV["FASTLANE_USER"]="siddhant@nestorbird.com"
-  ENV["FASTLANE_PASSWORD"]="Chintu@01"
-  ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]="pdec-yfcr-cdql-hrgl"
+  ENV["FASTLANE_USER"]=""
+  ENV["FASTLANE_PASSWORD"]=""
+  ENV["FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD"]=""
 
   lane :beta do
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
