@@ -51,7 +51,7 @@ class SalesDataItem extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '$APP_CURRENCY ${saleOrder!.orderAmount}',
+                    '$appCurrency ${saleOrder!.orderAmount}',
                     style: getTextStyle(
                         fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
                   ),

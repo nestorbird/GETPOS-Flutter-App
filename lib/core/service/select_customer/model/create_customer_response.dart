@@ -55,7 +55,7 @@ class CustomerRes {
     name = json['name'];
     customerName = json['customer_name'];
     mobileNo = json['mobile_no'];
-    emailId = json['email_id'];
+    emailId = json['email_id'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

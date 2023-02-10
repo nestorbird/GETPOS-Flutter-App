@@ -11,8 +11,9 @@ import 'package:intl/intl.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/models/attribute.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
-import '../../../../constants/app_constants.dart';
+import 'package:stream_transform/stream_transform.dart';
 
+import '../../../../constants/app_constants.dart';
 import '../../../../database/db_utils/db_constants.dart';
 import '../../../../database/db_utils/db_preferences.dart';
 import '../../../../database/models/customer.dart';
@@ -21,10 +22,7 @@ import '../../../../database/models/order_item.dart';
 import '../../../../network/api_constants/api_paths.dart';
 import '../../../../network/service/api_utils.dart';
 import '../../../../utils/helper.dart';
-import 'package:stream_transform/stream_transform.dart';
-
 import '../../../service/sales_history/model/sale_order_list_response.dart';
-
 import '../model/transaction.dart';
 
 part 'transaction_event.dart';
@@ -49,21 +47,33 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
     on<TransactionSearched>((event, emit) async {
       if (event.text.length > 2) {
-        final transactions = await _searchTransactions(event.text);
-        return emit(state.copyWith(
-          status: TransactionStatus.success,
-          orders: transactions,
-          hasReachedMax: true,
-        ));
+        if (state.hasReachedMax) return;
+        final transactions = await _searchTransactions(event.text,
+            orderSize: event.isSearchTextChanged ? 0 : state.orders.length);
+
+        if (event.isSearchTextChanged) {
+          return emit(state.copyWith(
+              status: TransactionStatus.success,
+              orders: transactions,
+              hasReachedMax: false));
+        } else {
+          return emit(transactions.isEmpty
+              ? state.copyWith(hasReachedMax: true)
+              : state.copyWith(
+                  status: TransactionStatus.success,
+                  orders: List.of(state.orders)..addAll(transactions),
+                  hasReachedMax: transactions.length < _listSize,
+                ));
+        }
       } else if (event.text.isEmpty) {
-        final transactions = await _fetchTransactions();
+        //final transactions = await _fetchTransactions(0);
         return emit(state.copyWith(
-          status: TransactionStatus.success,
-          orders: transactions,
+          status: TransactionStatus.initial,
+          orders: [],
           hasReachedMax: false,
         ));
       }
-    });
+    }, transformer: throttleDroppable(throttleDuration));
   }
 
   FutureOr<void> _onPostFetched(
@@ -203,11 +213,12 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
             Transaction sale = Transaction(
               id: order.name!,
               customer: Customer(
-                id: order.customer!,
-                name: order.customerName!,
-                phone: order.contactMobile!,
-                email: order.contactEmail!,
-              ),
+                  id: order.customer!,
+                  name: order.customerName!,
+                  phone: order.contactMobile!,
+                  email: order.contactEmail!,
+                  isSynced: false,
+                  modifiedDateTime: DateTime.now()),
               items: orderedProducts,
               orderAmount: order.grandTotal!,
               date: date,
@@ -231,12 +242,20 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     }
   }
 
-  Future<List<Transaction>> _searchTransactions(String query) async {
+  Future<List<Transaction>> _searchTransactions(String query,
+      {int orderSize = 0}) async {
     if (await Helper.isNetworkAvailable()) {
+      int pageNo = 1;
+      if (orderSize > 0) {
+        var ord = orderSize / _listSize;
+        pageNo = (ord.ceilToDouble() + 1).toInt();
+      }
+      debugPrint("Search Sales Order - Current Page No: $pageNo");
+
       String hubManagerId = await DBPreferences().getPreference(HubManagerId);
       //Creating GET api url
       String apiUrl = SALES_HISTORY;
-      apiUrl += '?hub_manager=$hubManagerId&txt=$query';
+      apiUrl += '?hub_manager=$hubManagerId&mobile_no=$query&page_no=$pageNo';
       return _processRequest(apiUrl);
     }
 

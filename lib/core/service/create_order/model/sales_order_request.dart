@@ -154,21 +154,25 @@ class SelectedOptions {
   String id;
   String name;
   double price;
+  double qty;
   SelectedOptions({
     required this.id,
     required this.name,
     required this.price,
+    required this.qty,
   });
 
   SelectedOptions copyWith({
     String? id,
     String? name,
     double? price,
+    double? qty,
   }) {
     return SelectedOptions(
       id: id ?? this.id,
       name: name ?? this.name,
       price: price ?? this.price,
+      qty: qty ?? this.qty,
     );
   }
 
@@ -176,7 +180,7 @@ class SelectedOptions {
     return {
       'item_code': id,
       'item_name': name,
-      'qty': 1,
+      'qty': qty,
       'rate': price,
     };
   }
@@ -186,6 +190,7 @@ class SelectedOptions {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
+      qty: map['qty'] ?? 0.0,
     );
   }
 
@@ -195,7 +200,8 @@ class SelectedOptions {
       SelectedOptions.fromMap(json.decode(source));
 
   @override
-  String toString() => 'SelectedOptions(id: $id, name: $name, price: $price)';
+  String toString() =>
+      'SelectedOptions(id: $id, name: $name, price: $price, qty: $qty)';
 
   @override
   bool operator ==(Object other) {
@@ -204,9 +210,10 @@ class SelectedOptions {
     return other is SelectedOptions &&
         other.id == id &&
         other.name == name &&
-        other.price == price;
+        other.price == price &&
+        other.qty == qty;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ price.hashCode;
+  int get hashCode => id.hashCode ^ name.hashCode ^ price.hashCode ^ qty.hashCode;
 }

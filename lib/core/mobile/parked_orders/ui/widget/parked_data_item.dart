@@ -73,7 +73,7 @@ class ParkedDataItem extends StatelessWidget {
                     ),
                     hightSpacer7,
                     Text(
-                      '$APP_CURRENCY ${saleOrder!.orderAmount.toStringAsFixed(2)}',
+                      '$appCurrency ${saleOrder!.orderAmount.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
                     ),

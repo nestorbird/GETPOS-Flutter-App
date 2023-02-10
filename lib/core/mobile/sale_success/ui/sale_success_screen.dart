@@ -2,14 +2,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/utils/helper.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
+
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
-
 import '../../../../database/db_utils/db_sale_order.dart';
 import '../../../../database/models/sale_order.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
-
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/long_button_widget.dart';
 import '../../../service/create_order/api/create_sales_order.dart';
@@ -17,6 +20,7 @@ import '../../create_order_new/ui/new_create_order.dart';
 
 class SaleSuccessScreen extends StatefulWidget {
   final SaleOrder placedOrder;
+
   const SaleSuccessScreen({Key? key, required this.placedOrder})
       : super(key: key);
 
@@ -35,15 +39,18 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         SaleOrder order = widget.placedOrder;
         order.transactionSynced = true;
         order.id = value.message;
-        order.save();
+        //order.save();
 
-        DbSaleOrder()
-            .createOrder(order)
-            .then((value) => debugPrint('order sync and saved to db'));
+        DbSaleOrder().createOrder(order).then((value) {
+          debugPrint('order sync and saved to db');
+          //Helper.showPopup(context, "Order synced and saved locally");
+        });
       } else {
-        DbSaleOrder()
-            .createOrder(widget.placedOrder)
-            .then((value) => debugPrint('order saved to db'));
+        DbSaleOrder().createOrder(widget.placedOrder).then((value) {
+          debugPrint('order saved to db');
+          Helper.showPopup(context,
+              "Order saved locally, and will be synced when you restart the app.");
+        });
       }
     });
   }
@@ -73,9 +80,9 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
           hightSpacer30,
           LongButton(
             isAmountAndItemsVisible: false,
-            buttonTitle: "Print Reciept",
+            buttonTitle: "Print Receipt",
             onTap: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
+              _printInvoice();
             },
           ),
           LongButton(
@@ -98,5 +105,43 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         ],
       ),
     );
+  }
+
+  //TODO:: Need to handle the print receipt here
+  _printInvoice() async {
+    final doc = pw.Document();
+
+    doc.addPage(pw.Page(
+        pageFormat: PdfPageFormat.roll80,
+        build: ((context) => pw.Container(
+                child: pw.Column(children: [
+              _getInvoiceItem('Date & Time', widget.placedOrder.date),
+              _getInvoiceItem(
+                  'Customer Name', widget.placedOrder.customer.name),
+              _getInvoiceItem('Name', widget.placedOrder.customer.name),
+              _getInvoiceItem('Phone', widget.placedOrder.customer.phone),
+              _getInvoiceItem('Email', widget.placedOrder.customer.email),
+              _getInvoiceItem('Order ID', widget.placedOrder.parkOrderId!),
+              _getInvoiceItem(
+                  'Order Amount', widget.placedOrder.orderAmount.toString()),
+              pw.Text('Item(s) Summary'),
+              pw.ListView.builder(
+                  itemCount: widget.placedOrder.items.length,
+                  itemBuilder: ((context, index) => _getInvoiceItem(
+                      widget.placedOrder.items[index].name,
+                      widget.placedOrder.items[index].orderedPrice
+                          .toString()))),
+            ])))));
+
+    await Printing.layoutPdf(
+        format: PdfPageFormat.roll80,
+        usePrinterSettings: true,
+        onLayout: (PdfPageFormat format) async => doc.save());
+  }
+
+  _getInvoiceItem(String keyName, String dataValue) {
+    return pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [pw.Text(keyName), pw.Text(dataValue)]);
   }
 }

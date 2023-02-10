@@ -26,9 +26,10 @@ class CreateCustomer {
           await APIUtils.postRequest(CREATE_CUSTOMER_PATH, requestBody);
       log(jsonEncode(apiResponse));
 
+      CreateCustomerResponse resp =
+          CreateCustomerResponse.fromJson(apiResponse);
+
       if (apiResponse["message"]["message"] == "success") {
-        CreateCustomerResponse resp =
-            CreateCustomerResponse.fromJson(apiResponse);
         if (resp.message!.message == "success") {
           // var image = Uint8List.fromList([]);
           Customer tempCustomer = Customer(
@@ -37,16 +38,31 @@ class CreateCustomer {
               email: resp.message!.customer!.emailId!,
               id: resp.message!.customer!.name!,
               name: resp.message!.customer!.customerName!,
-              phone: resp.message!.customer!.mobileNo!);
+              phone: resp.message!.customer!.mobileNo!,
+              isSynced: true,
+              modifiedDateTime: DateTime.now());
           List<Customer> customers = [];
           customers.add(tempCustomer);
           await DbCustomer().addCustomers(customers);
 
           return CommanResponse(
               status: true,
-              message: SUCCESS,
+              message: tempCustomer,
               apiStatus: ApiStatus.REQUEST_SUCCESS);
         }
+      } else if (resp.message!.successKey == 0) {
+        Customer existingCustomer = Customer(
+            id: resp.message!.customer!.name!,
+            name: resp.message!.customer!.customerName!,
+            email: resp.message!.customer!.emailId!,
+            phone: resp.message!.customer!.mobileNo!,
+            isSynced: true,
+            modifiedDateTime: DateTime.now());
+
+        return CommanResponse(
+            status: true,
+            message: existingCustomer,
+            apiStatus: ApiStatus.REQUEST_SUCCESS);
       }
     }
 

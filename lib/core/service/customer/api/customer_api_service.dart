@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:intl/intl.dart';
+
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../database/db_utils/db_constants.dart';
@@ -32,11 +34,15 @@ class CustomerService {
         requestBody.putIfAbsent('last_sync', () => lastSyncDateTime);
       }
 
-      String customerUrl = '$NEW_GET_ALL_CUSTOMERS_PATH?mobile_no=$searchTxt';
+      String formattedDate = lastSyncDateTime.isNotEmpty
+          ? DateFormat("yyyy-MM-dd").format(DateTime.parse(lastSyncDateTime))
+          : '';
+
+      String customerUrl =
+          '$NEW_GET_ALL_CUSTOMERS_PATH?search=$searchTxt&from_date=$lastSyncDateTime';
 
       //Call to customer api
-      var apiResponse =
-          await APIUtils.getRequestWithHeaders(customerUrl);
+      var apiResponse = await APIUtils.getRequestWithHeaders(customerUrl);
       log(jsonEncode(apiResponse));
 
       //If success response from api
@@ -63,15 +69,30 @@ class CustomerService {
 
             //Creating customer object
             Customer tempCustomer = Customer(
-              id: customer.name,
-              name: customer.customerName,
-              email: customer.emailId,
-              phone: customer.mobileNo,
-            );
+                id: customer.name,
+                name: customer.customerName,
+                email: customer.emailId,
+                phone: customer.mobileNo,
+                isSynced: true,
+                modifiedDateTime: DateTime.now());
             if (customer.disabled == 1) {
               await DbCustomer().deleteCustomer(tempCustomer.id);
             } else {
-              customers.add(tempCustomer);
+              var existingCustomer =
+                  await DbCustomer().getCustomer(tempCustomer.phone);
+              if (existingCustomer.isEmpty) {
+                customers.add(tempCustomer);
+              } else {
+                Customer modifiedCustomer = existingCustomer.first;
+                modifiedCustomer.id = tempCustomer.id;
+                modifiedCustomer.email = tempCustomer.email;
+                modifiedCustomer.name = tempCustomer.name;
+                modifiedCustomer.modifiedDateTime =
+                    tempCustomer.modifiedDateTime;
+                modifiedCustomer.isSynced = true;
+                modifiedCustomer.save();
+                //await DbCustomer().updateCustomer(modifiedCustomer);
+              }
             }
             //Adding customer into customer list
           });

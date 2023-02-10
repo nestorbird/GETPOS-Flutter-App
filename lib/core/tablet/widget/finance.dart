@@ -23,7 +23,7 @@ class FinanceView extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: DARK_GREY_COLOR)),
           hightSpacer10,
-          Text("₹ $cashCollected",
+          Text("$appCurrency $cashCollected",
               style: getTextStyle(
                   color: MAIN_COLOR,
                   fontSize: 30.0,

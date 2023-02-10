@@ -122,10 +122,14 @@ class DbParkedOrder {
   }
 
   Future<bool> deleteOrderById(String orderId) async {
-    box = await Hive.openBox<ParkOrder>(PARKED_ORDER_BOX);
-    // String orderKey = _getOrderKey(order);
-    ParkOrder parkOrder = box.get(orderId);
-    parkOrder.delete();
+    try {
+      box = await Hive.openBox<ParkOrder>(PARKED_ORDER_BOX);
+      // String orderKey = _getOrderKey(order);
+      ParkOrder parkOrder = box.get(orderId);
+      parkOrder.delete();
+    } catch (e) {
+      debugPrintStack(label: 'Delete order by ID');
+    }
     return true;
   }
 

@@ -11,6 +11,7 @@ import '../widget/title_search_bar.dart';
 
 class TransactionLandscape extends StatefulWidget {
   final RxString selectedView;
+
   const TransactionLandscape({Key? key, required this.selectedView})
       : super(key: key);
 
@@ -21,6 +22,7 @@ class TransactionLandscape extends StatefulWidget {
 class _TransactionLandscapeState extends State<TransactionLandscape> {
   final _scrollController = ScrollController();
   late TextEditingController searchCtrl;
+
   // List<Transaction> orders = [];
   // List<Transaction> ordersToShow = [];
   // bool isCustomersFound = true;
@@ -61,10 +63,12 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           parkedOrderVisible: true,
           title: "Order History",
           onSubmit: (text) {
-            context.read<TransactionBloc>().add(TransactionSearched(text));
+            context
+                .read<TransactionBloc>()
+                .add(TransactionSearched(text, true));
           },
           onTextChanged: (val) {
-            context.read<TransactionBloc>().add(TransactionSearched(val));
+            context.read<TransactionBloc>().add(TransactionSearched(val, true));
           },
           parkOrderClicked: () {
             widget.selectedView.value = "Parked Order";

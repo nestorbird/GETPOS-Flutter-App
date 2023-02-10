@@ -161,7 +161,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                               color: WHITE_COLOR,
                               fontWeight: FontWeight.normal),
                         ),
-                        subtitle: Text("₹ ${_getItemTotal()}",
+                        subtitle: Text("$appCurrency ${_getItemTotal()}",
                             style: getTextStyle(
                                 fontSize: LARGE_FONT_SIZE,
                                 fontWeight: FontWeight.w600,

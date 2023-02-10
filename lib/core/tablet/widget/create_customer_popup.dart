@@ -116,6 +116,8 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                     name: nameCtrl.text,
                     email: emailCtrl.text,
                     phone: phoneCtrl.text,
+                    isSynced: false,
+                    modifiedDateTime: DateTime.now()
                     // ward: Ward(id: "01", name: "name"),
                     // profileImage: Uint8List.fromList([]),
                   );

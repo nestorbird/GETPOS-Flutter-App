@@ -49,7 +49,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                     TransactionHeaderData(
                       heading: SALE_AMOUNT_TXT,
                       content:
-                          '$APP_CURRENCY ${widget.order.orderAmount.toStringAsFixed(2)}',
+                          '$appCurrency ${widget.order.orderAmount.toStringAsFixed(2)}',
                       headingColor: DARK_GREY_COLOR,
                       contentColor: MAIN_COLOR,
                       // crossAlign: CrossAxisAlignment.center,

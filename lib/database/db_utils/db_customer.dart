@@ -23,6 +23,19 @@ class DbCustomer {
     return list;
   }
 
+  Future<List<Customer>> getOfflineCustomers() async {
+    box = await Hive.openBox<Customer>(CUSTOMER_BOX);
+    List<Customer> list = [];
+
+    for (var key in box.keys) {
+      var item = await box.get(key);
+      var customer = item as Customer;
+      if (customer.isSynced == false) list.add(customer);
+    }
+
+    return list;
+  }
+
   Future<List<Customer>> getCustomer(String mobileNo) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     List<Customer> list = [];
@@ -50,6 +63,11 @@ class DbCustomer {
     Customer? customer = box.get(key);
     if (customer != null) customer.delete();
     return true;
+  }
+
+  Future<void> updateCustomer(Customer customer) async {
+    box = await Hive.openBox<Customer>(CUSTOMER_BOX);
+    box.put(customer.id, customer);
   }
 
   // Future<int> deleteWardCustomer(String wardId) async {

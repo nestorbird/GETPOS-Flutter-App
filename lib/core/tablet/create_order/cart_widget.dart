@@ -112,19 +112,19 @@ class _CartWidgetState extends State<CartWidget> {
           widget.orderList.isEmpty
               ? const SizedBox()
               : _subtotalSection("Subtotal",
-                  "$APP_CURRENCY ${subTotalAmount.toStringAsFixed(2)}"),
+                  "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Discount", "- $APP_CURRENCY 0.00",
+              : _subtotalSection("Discount", "- $appCurrency 0.00",
                   isDiscount: true),
           widget.orderList.isEmpty
               ? const SizedBox()
               : _subtotalSection("Tax ($taxPercentage%)",
-                  "$APP_CURRENCY ${taxAmount.toStringAsFixed(2)}"),
+                  "$appCurrency ${taxAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty
               ? const SizedBox()
               : _totalSection(
-                  "Total", "$APP_CURRENCY ${totalAmount.toStringAsFixed(2)}"),
+                  "Total", "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
           hightSpacer10,
           _showActionButton()
@@ -284,7 +284,7 @@ class _CartWidgetState extends State<CartWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "₹ ${item.price.toStringAsFixed(2)}",
+                            "$appCurrency ${item.price.toStringAsFixed(2)}",
                             style: getTextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: GREEN_COLOR,

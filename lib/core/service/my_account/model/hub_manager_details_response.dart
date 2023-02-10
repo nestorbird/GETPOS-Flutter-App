@@ -27,6 +27,7 @@ class Message {
   late final String series;
   String? image;
   late final double balance;
+  late final String appCurrency;
   late final String lastTransactionDate;
   late final List<Wards> wards;
 
@@ -41,6 +42,7 @@ class Message {
       required this.series,
       required this.image,
       required this.balance,
+      required this.appCurrency,
       required this.lastTransactionDate,
       required this.wards});
 
@@ -55,6 +57,7 @@ class Message {
     series = json['series'] ?? "T-.YYYY.-.MM.-.####";
     image = json['image'];
     balance = json['balance'] ?? 0;
+    appCurrency = json['app_currency'] ?? "\$";
     lastTransactionDate = json['last_transaction_date'] ?? '';
     if (json['wards'] != null) {
       wards = [];
@@ -76,6 +79,7 @@ class Message {
     data['series'] = series;
     data['image'] = image;
     data['balance'] = balance;
+    data['app_currency'] = appCurrency;
     data['last_transaction_date'] = lastTransactionDate;
 
     data['wards'] = wards.map((v) => v.toJson()).toList();

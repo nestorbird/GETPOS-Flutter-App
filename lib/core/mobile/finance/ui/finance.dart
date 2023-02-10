@@ -79,7 +79,7 @@ class _FinanceState extends State<Finance> {
                 child: Row(
                   children: [
                     Text(
-                      "$APP_CURRENCY $cashCollected",
+                      "$appCurrency $cashCollected",
                       style: getTextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: LARGE_PLUS_FONT_SIZE,

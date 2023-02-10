@@ -7,7 +7,7 @@
 import '../network/api_helper/api_server.dart';
 
 const APP_NAME = 'NB POS';
-const APP_CURRENCY = '₹';
+String appCurrency = '₹';
 const PLEASE_WAIT_TXT = 'Please wait...';
 
 const ENVIRONMENT = ApiServer.DEV;
@@ -45,17 +45,17 @@ const OPTION_CANCEL = 'Cancel';
 const HOME_TXT = 'Home';
 const WELCOME_BACK = 'Welcome Back,';
 const SYNC_NOW_TXT = 'Sync now';
-const CREATE_ORDER_TXT = 'Create order'; //Create Order Screen
+const CREATE_ORDER_TXT = 'Create Order'; //Create Order Screen
 const PRODUCTS_TXT = 'Products';
 const CUSTOMERS_TXT = 'Customers';
-const MY_ACCOUNT_TXT = 'My account';
-const SALES_HISTORY_TXT = 'Order history';
+const MY_ACCOUNT_TXT = 'My Account';
+const SALES_HISTORY_TXT = 'Order History';
 const FINANCE_TXT = 'Finance';
 
 //CREATE ORDER SCREEN
 
-const SELECT_CUSTOMER_TXT = 'Select customer'; //Select Customer Screen
-const ADD_PRODUCT_TXT = 'Add product';
+const SELECT_CUSTOMER_TXT = 'Select Customer'; //Select Customer Screen
+const ADD_PRODUCT_TXT = 'Add Product';
 const OUT_OF_STOCK = 'Out of stock'; //Create Order Screen
 const ITEMS_TXT = 'Items';
 const PROCEED_TO_NXT_TXT = 'PROCCED TO NEXT';
@@ -77,7 +77,7 @@ const SEARCH_PRODUCT_TXT = 'Search product / category';
 const ADD_PRODUCT_TITLE = 'Products';
 const ADD_CONTINUE = 'ADD & CONTINUE';
 const INSUFFICIENT_STOCK_ERROR = 'Insufficient stock for this product.';
-const ADD_PRODUCTS_SEARCH_TXT = 'Search product';
+const ADD_PRODUCTS_SEARCH_TXT = 'Search Product';
 const ADD_PRODUCTS_AVAILABLE_STOCK_TXT = 'Available stock';
 const ADD_PRODUCTS_STOCK_UPDATE_ON_TXT = 'Stock update on';
 
@@ -104,12 +104,12 @@ const ENTER_MPESA_TRANS_ID =
 
 //SALE SUCCESSFUL SCREEN
 
-const SALES_SUCCESS_TXT = 'Order successful';
-const RETURN_TO_HOME_TXT = 'Home page';
+const SALES_SUCCESS_TXT = 'Order Successful';
+const RETURN_TO_HOME_TXT = 'Home Page';
 
 //MY ACCOUNT SCREEN
 
-const CHANGE_PASSWORD = 'Change password';
+const CHANGE_PASSWORD = 'Change Password';
 const LOGOUT_TITLE = 'Logout';
 const LOGOUT_QUESTION = 'Do you really want to logout?';
 const OFFLINE_ORDER_MSG = 'Please sync your offline order first?';
@@ -131,7 +131,7 @@ const PAYMENT_STATUS = 'Status';
 
 //FINANCE SCREEN
 const FINANCE_TITLE = 'Finance';
-const CASH_BALANCE_TXT = 'Cash balance';
+const CASH_BALANCE_TXT = 'Cash Balance';
 
 //FORGOT PASSWORD SCREEN
 const FORGOT_PASSWORD_TITLE = 'Forgot password';

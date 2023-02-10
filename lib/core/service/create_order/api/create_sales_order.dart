@@ -27,7 +27,10 @@ class CreateOrderService {
           for (var opt in atrib.options) {
             if (opt.selected) {
               selectedOption.add(request_items.SelectedOptions(
-                  id: opt.id, name: opt.name, price: opt.price));
+                  id: opt.id,
+                  name: opt.name,
+                  price: opt.price,
+                  qty: item.orderedQuantity));
             }
           }
         }

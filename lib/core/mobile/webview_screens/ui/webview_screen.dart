@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-import 'package:nb_posx/widgets/custom_appbar.dart';
-
-import '../../../../constants/app_constants.dart';
-
-import '../../../../network/api_helper/api_status.dart';
 import 'package:flutter/material.dart';
-
+import 'package:nb_posx/widgets/custom_appbar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import '../../../../constants/app_constants.dart';
+import '../../../../network/api_helper/api_status.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../enums/topic_types.dart';
 import '../service/topic_api_service.dart';
 
 class WebViewScreen extends StatefulWidget {
   final TopicTypes topicTypes;
+  final String apiUrl;
 
-  const WebViewScreen({Key? key, required this.topicTypes}) : super(key: key);
+  const WebViewScreen(
+      {Key? key, required this.topicTypes, required this.apiUrl})
+      : super(key: key);
 
   @override
   State<WebViewScreen> createState() => _WebViewScreenState();
@@ -66,7 +66,8 @@ class _WebViewScreenState extends State<WebViewScreen> {
   //Function to get the data from api for privacy policy and T&C
   void getTopicData() async {
     //Call to api service as the topic type
-    var response = await TopicDataService.getTopicData(widget.topicTypes);
+    var response =
+        await TopicDataService.getTopicData(widget.topicTypes, widget.apiUrl);
 
     //Execute when internet is not available
     if (response.apiStatus == ApiStatus.NO_INTERNET) {

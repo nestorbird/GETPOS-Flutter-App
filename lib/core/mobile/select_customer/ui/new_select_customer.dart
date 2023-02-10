@@ -66,6 +66,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                 child: SearchWidget(
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCtrl,
+                  keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
                     if (text.isNotEmpty && text.length == 10) {
                       filterCustomerData(text);
@@ -226,16 +227,18 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
   Future<void> _newCustomerAPI() async {
     CommanResponse response = await CreateCustomer()
         .createNew(_phoneCtrl.text, _nameCtrl.text, _emailCtrl.text);
-    if (response.status! && response.message == SUCCESS) {
+    if (response.status!) {
       filterCustomerData(_phoneCtrl.text);
     } else {
       Customer tempCustomer = Customer(
           // profileImage: image,
           // ward: Ward(id: "1", name: "1"),
           email: _emailCtrl.text.trim(),
-          id: _nameCtrl.text.trim(),
+          id: _phoneCtrl.text.trim(),
           name: _nameCtrl.text.trim(),
-          phone: _phoneCtrl.text.trim());
+          phone: _phoneCtrl.text.trim(),
+          isSynced: false,
+          modifiedDateTime: DateTime.now());
       List<Customer> customers = [];
       customers.add(tempCustomer);
       await DbCustomer().addCustomers(customers);

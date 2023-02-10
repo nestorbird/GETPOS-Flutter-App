@@ -114,6 +114,8 @@ class GetPreviousOrder {
               name: order.customerName!,
               phone: order.contactPhone!,
               email: order.contactEmail!,
+              isSynced: true,
+              modifiedDateTime: DateTime.now()
             ),
             items: orderedProducts,
             manager: hubManager!,

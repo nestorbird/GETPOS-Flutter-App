@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../network/api_helper/comman_response.dart';
@@ -16,8 +18,6 @@ import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-
 import '../../../../constants/asset_paths.dart';
 import '../../../service/login/api/login_api_service.dart';
 import '../../forgot_password/ui/forgot_password.dart';
@@ -70,7 +70,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _onBackPressed,
-      child: Scaffold(
+      child: SafeArea(
+          child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: WHITE_COLOR,
         body: SingleChildScrollView(
@@ -78,23 +79,18 @@ class _LoginState extends State<Login> {
             child: Column(
               children: [
                 hightSpacer50,
-                hightSpacer50,
-                hightSpacer15,
                 Image.asset(APP_ICON, width: 100, height: 100),
                 hightSpacer50,
                 instanceUrlTxtboxSection(context),
-                hightSpacer50,
+                hightSpacer20,
                 headingLblWidget(context),
-                hightSpacer5,
-                subHeadingLblWidget(context),
                 hightSpacer15,
-                emailTxtboxSection(context),
+                emailTxtBoxSection(context),
                 hightSpacer10,
-                passwordTxtboxSection(context),
+                passwordTxtBoxSection(context),
                 hightSpacer10,
                 forgotPasswordSection(context),
-                hightSpacer50,
-                hightSpacer32,
+                hightSpacer30,
                 termAndPolicySection(context),
                 hightSpacer32,
                 loginBtnWidget(context),
@@ -108,7 +104,7 @@ class _LoginState extends State<Login> {
                 // hightSpacer10
               ],
             )),
-      ),
+      )),
     );
   }
 
@@ -185,7 +181,7 @@ class _LoginState extends State<Login> {
       );
 
   /// EMAIL SECTION
-  Widget emailTxtboxSection(context) => Container(
+  Widget emailTxtBoxSection(context) => Container(
         margin: horizontalSpace(),
         padding: smallPaddingAll(),
         child: Column(
@@ -209,7 +205,7 @@ class _LoginState extends State<Login> {
       );
 
   /// PASSWORD SECTION
-  Widget passwordTxtboxSection(context) => Container(
+  Widget passwordTxtBoxSection(context) => Container(
         margin: horizontalSpace(),
         padding: smallPaddingAll(),
         child: Column(
@@ -276,13 +272,18 @@ class _LoginState extends State<Login> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const WebViewScreen(
-                                      topicTypes:
-                                          TopicTypes.TERMS_AND_CONDITIONS,
-                                    )));
+                        if (isValidInstanceUrl()) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WebViewScreen(
+                                        topicTypes:
+                                            TopicTypes.TERMS_AND_CONDITIONS,
+                                        apiUrl: "https://${_urlCtrl.text}/api/",
+                                      )));
+                        } else {
+                          Helper.showPopup(context, INVALID_URL);
+                        }
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
@@ -298,12 +299,17 @@ class _LoginState extends State<Login> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const WebViewScreen(
-                                      topicTypes: TopicTypes.PRIVACY_POLICY,
-                                    )));
+                        if (isValidInstanceUrl()) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WebViewScreen(
+                                        topicTypes: TopicTypes.PRIVACY_POLICY,
+                                        apiUrl: "https://${_urlCtrl.text}/api/",
+                                      )));
+                        } else {
+                          Helper.showPopup(context, INVALID_URL);
+                        }
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
@@ -333,7 +339,13 @@ class _LoginState extends State<Login> {
           style: getTextStyle(
               fontSize: SMALL_PLUS_FONT_SIZE,
               fontWeight: FontWeight.w500,
-              color: WHITE_COLOR),
+              color: BLACK_COLOR),
         ),
       );
+
+  ///Method to check whether the API URL is correct.
+  bool isValidInstanceUrl() {
+    String url = "https://${_urlCtrl.text}/api/";
+    return Helper.isValidUrl(url);
+  }
 }

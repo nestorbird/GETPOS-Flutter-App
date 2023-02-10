@@ -83,7 +83,7 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                       maxLines: 2,
                     ),
                     Text(
-                      '$APP_CURRENCY ${widget.product.price.toStringAsFixed(2)}',
+                      '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           color: MAIN_COLOR,
@@ -103,8 +103,8 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
       for (var variantData in itemVariants) {
         for (var selectedOption in variantData.options) {
           variants = variants.isEmpty
-              ? '${selectedOption.name} [$APP_CURRENCY ${selectedOption.price.toStringAsFixed(2)}]'
-              : "$variants, ${selectedOption.name} [$APP_CURRENCY ${selectedOption.price.toStringAsFixed(2)}]";
+              ? '${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]'
+              : "$variants, ${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]";
         }
       }
     }

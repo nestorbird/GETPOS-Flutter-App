@@ -91,7 +91,7 @@ class _ProductWidgetState extends State<ProductWidget> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 8, bottom: 5),
-              child: Text("$APP_CURRENCY $price",
+              child: Text("$appCurrency $price",
                   style: getTextStyle(
                       color: MAIN_COLOR,
                       fontWeight: FontWeight.w600,

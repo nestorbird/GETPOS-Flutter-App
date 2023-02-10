@@ -138,7 +138,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                                   ),
                                   hightSpacer5,
                                   Text(
-                                    "₹ ${cat.items[index].price}",
+                                    "$appCurrency ${cat.items[index].price}",
                                     textAlign: TextAlign.right,
                                     style: getTextStyle(
                                         color: MAIN_COLOR,

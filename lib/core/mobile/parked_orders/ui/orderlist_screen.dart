@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../../../constants/app_constants.dart';
-import 'order_detail_screen.dart';
+
 import './widget/parked_data_item.dart';
+import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_parked_order.dart';
 import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/helper.dart';
@@ -10,6 +10,7 @@ import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/custom_appbar.dart';
 import '../../../../../widgets/search_widget.dart';
+import 'order_detail_screen.dart';
 
 class OrderListScreen extends StatefulWidget {
   const OrderListScreen({Key? key}) : super(key: key);
@@ -38,9 +39,9 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+          body: SingleChildScrollView(
         primary: true,
         child: Column(
           children: [
@@ -52,7 +53,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
             Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
-                  searchHint: 'Customer name or mobile no.',
+                  searchHint: 'Enter customer mobile no.',
                   searchTextController: searchCtrl,
                   onTextChanged: (text) {
                     if (text.length >= 3) {
@@ -117,22 +118,15 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
   ///Function to filter the orders as per the search keyword.
   void filterSalesData(String searchText) {
-    parkedOrders = orderFromLocalDB
-        .where((element) =>
-            element.id.toLowerCase().contains(searchText) ||
-            element.customer.name.toLowerCase().contains(searchText) ||
-            element.customer.phone.toLowerCase().contains(searchText))
-        .toList();
-    parkedOrders = parkedOrders.reversed.toList();
-
     if (searchText.trim().isEmpty) {
       parkedOrders = orderFromLocalDB.reversed.toList();
+    } else {
+      parkedOrders = orderFromLocalDB.where((element) =>
+          //element.id.toLowerCase().contains(searchText) ||
+          //element.customer.name.toLowerCase().contains(searchText) ||
+          element.customer.phone.toLowerCase().contains(searchText)).toList();
+      parkedOrders = parkedOrders.reversed.toList();
     }
-
-    if (searchText.trim().length > 2) {
-      parkedOrders = [];
-    }
-
     setState(() {});
   }
 
@@ -149,8 +143,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
         getParkedOrders();
       } else {
         if (!mounted) return;
-        await Helper.showConfirmationPopup(context,
-            "Something went wrong, Please try again later!!!", OPTION_OK);
+        await Helper.showConfirmationPopup(
+            context, SOMETHING_WENT_WRONG, OPTION_OK);
       }
     }
   }

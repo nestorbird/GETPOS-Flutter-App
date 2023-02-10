@@ -21,6 +21,31 @@ class ItemOptions extends StatefulWidget {
 }
 
 class _ItemOptionsState extends State<ItemOptions> {
+  double itemTotal = 0;
+
+  _calculateItemPrice() {
+    itemTotal = widget.orderItem.price;
+    OrderItem item = widget.orderItem;
+    if (widget.orderItem.attributes.isNotEmpty) {
+      for (var attribute in item.attributes) {
+        for (var option in attribute.options) {
+          if (option.selected) {
+            itemTotal = (itemTotal + option.price);
+          }
+        }
+      }
+      itemTotal = itemTotal * widget.orderItem.orderedQuantity;
+    } else {
+      itemTotal = item.price * widget.orderItem.orderedQuantity;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateItemPrice();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -55,14 +80,16 @@ class _ItemOptionsState extends State<ItemOptions> {
                             widget.orderItem.stock == 0) {
                           widget.orderItem.orderedQuantity =
                               widget.orderItem.orderedQuantity + 1;
+                          _calculateItemPrice();
                         }
                       });
                     },
                     onItemRemove: () {
                       setState(() {
-                        if (widget.orderItem.orderedQuantity > 0) {
+                        if (widget.orderItem.orderedQuantity > 1) {
                           widget.orderItem.orderedQuantity =
                               widget.orderItem.orderedQuantity - 1;
+                          _calculateItemPrice();
                         }
                       });
                     },
@@ -101,7 +128,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                           fontWeight: FontWeight.normal),
                     ),
                     subtitle: Text(
-                        "₹ ${widget.orderItem.orderedPrice.toStringAsFixed(2)}",
+                        "$appCurrency ${itemTotal.toStringAsFixed(2)}",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.w600,
@@ -166,7 +193,7 @@ class _ItemOptionsState extends State<ItemOptions> {
             ),
             const Spacer(),
             Text(
-              "₹ ${option.price.toStringAsFixed(2)}",
+              "$appCurrency ${option.price.toStringAsFixed(2)}",
               style: getTextStyle(
                   fontSize: SMALL_PLUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
@@ -191,6 +218,8 @@ class _ItemOptionsState extends State<ItemOptions> {
           SizedBox(
             height: attribute.options.length * 50,
             child: ListView.builder(
+              primary: false,
+              physics: const BouncingScrollPhysics(),
               padding: verticalSpace(),
               itemCount: attribute.options.length,
               itemBuilder: (context, index) {
@@ -216,11 +245,15 @@ class _ItemOptionsState extends State<ItemOptions> {
         setState(() {
           option.selected = !option.selected;
           if (option.selected) {
-            widget.orderItem.orderedPrice =
-                widget.orderItem.orderedPrice + option.price;
+            double optionsTotal =
+                option.price * widget.orderItem.orderedQuantity;
+            itemTotal = itemTotal + optionsTotal;
+            //itemTotal = itemTotal * widget.orderItem.orderedQuantity;
           } else {
-            widget.orderItem.orderedPrice =
-                widget.orderItem.orderedPrice - option.price;
+            double optionsTotal =
+                option.price * widget.orderItem.orderedQuantity;
+            itemTotal = itemTotal - optionsTotal;
+            //itemTotal = itemTotal * widget.orderItem.orderedQuantity;
           }
         });
       }

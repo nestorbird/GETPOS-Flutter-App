@@ -117,7 +117,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '$APP_CURRENCY ${widget.product.orderedPrice.toStringAsFixed(2)}',
+                    '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
                     style: getTextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: SMALL_PLUS_FONT_SIZE,
@@ -314,9 +314,11 @@ class _AddedProductItemState extends State<AddedProductItem> {
     if (itemVariants.isNotEmpty) {
       for (var variantData in itemVariants) {
         for (var selectedOption in variantData.options) {
-          variants = variants.isEmpty
-              ? '${selectedOption.name} [$APP_CURRENCY ${selectedOption.price.toStringAsFixed(2)}]'
-              : "$variants, ${selectedOption.name} [$APP_CURRENCY ${selectedOption.price.toStringAsFixed(2)}]";
+          if (selectedOption.selected) {
+            variants = variants.isEmpty
+                ? '${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]'
+                : "$variants, ${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]";
+          }
         }
       }
     }

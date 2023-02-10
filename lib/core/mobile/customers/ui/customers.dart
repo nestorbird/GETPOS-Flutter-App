@@ -54,6 +54,7 @@ class _CustomersState extends State<Customers> {
                 child: SearchWidget(
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCustomerController,
+                  keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
                     if (text.isNotEmpty) {
                       filterCustomerData(text);
@@ -94,7 +95,7 @@ class _CustomersState extends State<Customers> {
                       NO_DATA_FOUND,
                       style: getTextStyle(
                         fontSize: SMALL_PLUS_FONT_SIZE,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     )),
               // Visibility(
@@ -145,14 +146,15 @@ class _CustomersState extends State<Customers> {
     await getCustomersFromDB(1);
     customers = customers
         .where((element) =>
-            element.name.toLowerCase().contains(searchText.toLowerCase()) ||
+            //element.name.toLowerCase().contains(searchText.toLowerCase()) ||
             element.phone.toLowerCase().contains(searchText.toLowerCase()))
         .toList();
 
     isCustomersFound = customers.isNotEmpty;
 
     if (!isCustomersFound) {
-      CommanResponse response = await CustomerService().getCustomers(searchTxt: searchText);
+      CommanResponse response =
+          await CustomerService().getCustomers(searchTxt: searchText);
     }
 
     setState(() {});

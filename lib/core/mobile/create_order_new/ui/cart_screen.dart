@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
+import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
+import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
+import 'package:nb_posx/network/api_helper/api_status.dart';
+import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 import 'package:nb_posx/widgets/long_button_widget.dart';
+
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
-
 import '../../../../../database/db_utils/db_parked_order.dart';
 import '../../../../../database/models/order_item.dart';
 import '../../../../../database/models/park_order.dart';
@@ -28,6 +32,7 @@ import 'new_create_order.dart';
 // ignore: must_be_immutable
 class CartScreen extends StatefulWidget {
   ParkOrder order;
+
   CartScreen({required this.order, Key? key}) : super(key: key);
 
   @override
@@ -42,12 +47,16 @@ class _CartScreenState extends State<CartScreen> {
   int totalItems = 0;
   double taxPercentage = 0;
   late HubManager? hubManager;
+
   // String? transactionID;
   late String paymentMethod;
+  List<CouponCode> couponCodes = [];
+  bool isPromoCodeAvailableForUse = false;
 
   @override
   void initState() {
     super.initState();
+    //_getAllPromoCodes();
     _getHubManager();
     //totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
@@ -57,129 +66,85 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-          child: Stack(
+    return SafeArea(
+        child: Scaffold(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SingleChildScrollView(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomAppbar(
-                    title: "Cart",
-                    hideSidemenu: true,
-                  ),
+              const CustomAppbar(
+                title: "Cart",
+                hideSidemenu: true,
+              ),
 
-                  Padding(
-                      padding: paddingXY(x: 16, y: 16),
-                      child: Text(
-                        widget.order.customer.name,
-                        style: getTextStyle(
-                            fontSize: MEDIUM_PLUS_FONT_SIZE,
-                            color: MAIN_COLOR,
-                            fontWeight: FontWeight.bold),
-                      )),
+              Padding(
+                  padding: paddingXY(x: 16, y: 16),
+                  child: Text(
+                    widget.order.customer.name,
+                    style: getTextStyle(
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        color: MAIN_COLOR,
+                        fontWeight: FontWeight.bold),
+                  )),
 
-                  Padding(
-                    padding: paddingXY(x: 16, y: 16),
-                    child: Text(
-                      "Items",
-                      style: getTextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: MEDIUM_PLUS_FONT_SIZE,
-                          color: BLACK_COLOR),
-                    ),
-                  ),
-                  productList(widget.order.items),
-                  // selectedCustomerSection,
-                  // searchBarSection,
-                  // productCategoryList()
-                  hightSpacer15,
-                  Padding(
-                      padding: paddingXY(x: 16, y: 16),
-                      child: Text(
-                        'Payment Methods',
-                        style: getTextStyle(
-                            fontSize: MEDIUM_PLUS_FONT_SIZE,
-                            color: BLACK_COLOR,
-                            fontWeight: FontWeight.bold),
-                      )),
-                  Padding(
-                    padding: paddingXY(x: 16),
-                    child: Row(
-                      children: [
-                        getPaymentOption(PAYMENT_CARD_ICON, CARD_PAYMENT_TXT,
-                            !_isCODSelected),
-                        widthSpacer(15),
-                        getPaymentOption(PAYMENT_CASH_ICON, CASH_PAYMENT_TXT,
-                            _isCODSelected),
-                      ],
-                    ),
-                  ),
-                  hightSpacer20,
-                  Padding(
-                      padding: paddingXY(x: 16, y: 0),
-                      child: _promoCodeSection()),
-                  hightSpacer15,
-                  Padding(
-                      padding: paddingXY(x: 16, y: 0),
-                      child: _subtotalSection('Subtotal',
-                          '$APP_CURRENCY ${subTotalAmount.toStringAsFixed(2)}')),
-                  hightSpacer10,
-                  Padding(
-                      padding: paddingXY(x: 16, y: 0),
-                      child: _subtotalSection('Discount', '$APP_CURRENCY 0.00',
-                          isDiscount: true)),
-                  hightSpacer10,
-                  Padding(
-                      padding: paddingXY(x: 16, y: 0),
-                      child: _subtotalSection(
-                          'Tax (${taxPercentage.toStringAsFixed(2)} %)',
-                          ' $APP_CURRENCY ${taxAmount.toStringAsFixed(2)}')),
-                  hightSpacer10,
-                ],
-              )),
-
-              // Align(
-              //   alignment: Alignment.bottomCenter,
-              //   child: Container(
-              //     margin: morePaddingAll(),
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(5),
-              //       color: MAIN_COLOR,
-              //     ),
-              //     child: ListTile(
-              //       onTap: () {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) =>
-              //                     CheckoutScreen(order: widget.order)));
-              //       },
-              //       title: Text(
-              //         "${widget.order.items.length} Item",
-              //         style: getTextStyle(
-              //             fontSize: SMALL_FONT_SIZE,
-              //             color: WHITE_COLOR,
-              //             fontWeight: FontWeight.normal),
-              //       ),
-              //       subtitle: Text("USD ${_getItemTotal(widget.order.items)}",
-              //           style: getTextStyle(
-              //               fontSize: LARGE_FONT_SIZE,
-              //               fontWeight: FontWeight.w600,
-              //               color: WHITE_COLOR)),
-              //       trailing: Text("Checkout",
-              //           style: getTextStyle(
-              //               fontSize: LARGE_FONT_SIZE,
-              //               fontWeight: FontWeight.w400,
-              //               color: WHITE_COLOR)),
-              //     ),
-              //   ),
-              // )
+              Padding(
+                padding: paddingXY(x: 16, y: 16),
+                child: Text(
+                  "Items",
+                  style: getTextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: MEDIUM_PLUS_FONT_SIZE,
+                      color: BLACK_COLOR),
+                ),
+              ),
+              productList(widget.order.items),
+              // selectedCustomerSection,
+              // searchBarSection,
+              // productCategoryList()
+              hightSpacer15,
+              Padding(
+                  padding: paddingXY(x: 16, y: 16),
+                  child: Text(
+                    'Payment Methods',
+                    style: getTextStyle(
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        color: BLACK_COLOR,
+                        fontWeight: FontWeight.bold),
+                  )),
+              Padding(
+                padding: paddingXY(x: 16),
+                child: Row(
+                  children: [
+                    getPaymentOption(
+                        PAYMENT_CARD_ICON, CARD_PAYMENT_TXT, !_isCODSelected),
+                    widthSpacer(15),
+                    getPaymentOption(
+                        PAYMENT_CASH_ICON, CASH_PAYMENT_TXT, _isCODSelected),
+                  ],
+                ),
+              ),
+              hightSpacer20,
+              Padding(
+                  padding: paddingXY(x: 16, y: 0), child: _promoCodeSection()),
+              hightSpacer15,
+              Padding(
+                  padding: paddingXY(x: 16, y: 0),
+                  child: _subtotalSection('Subtotal',
+                      '$appCurrency ${subTotalAmount.toStringAsFixed(2)}')),
+              hightSpacer10,
+              Padding(
+                  padding: paddingXY(x: 16, y: 0),
+                  child: _subtotalSection('Discount', '$appCurrency 0.00',
+                      isDiscount: true)),
+              hightSpacer10,
             ],
-          ),
-        ),
-        bottomNavigationBar: bottomBarWidget());
+          ))
+        ],
+      ),
+      bottomNavigationBar: bottomBarWidget(),
+    ));
   }
 
   Widget bottomBarWidget() => Container(
@@ -234,7 +199,7 @@ class _CartScreenState extends State<CartScreen> {
                                     fontWeight: FontWeight.normal),
                               ),
                               Text(
-                                  "$APP_CURRENCY ${totalAmount.toStringAsFixed(2)}",
+                                  "$appCurrency ${totalAmount.toStringAsFixed(2)}",
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
                                       fontWeight: FontWeight.w600,
@@ -386,7 +351,16 @@ class _CartScreenState extends State<CartScreen> {
                 },
                 child: AddedProductItem(
                   product: prodList[position],
-                  onDelete: () {},
+                  onDelete: () {
+                    prodList.remove(prodList[position]);
+                    //_updateOrderPriceAndSave();
+                    if (prodList.isEmpty) {
+                      //DbParkedOrder().deleteOrder(widget.order);
+                      Navigator.pop(context, "reload");
+                    } else {
+                      _updateOrderPriceAndSave();
+                    }
+                  },
                   onItemAdd: () {
                     setState(() {
                       if (prodList[position].orderedQuantity <
@@ -405,7 +379,7 @@ class _CartScreenState extends State<CartScreen> {
                         if (prodList[position].orderedQuantity == 0) {
                           widget.order.items.remove(prodList[position]);
                           if (prodList.isEmpty) {
-                            DbParkedOrder().deleteOrder(widget.order);
+                            //DbParkedOrder().deleteOrder(widget.order);
                             Navigator.pop(context, "reload");
                           } else {
                             _updateOrderPriceAndSave();
@@ -446,7 +420,7 @@ class _CartScreenState extends State<CartScreen> {
           Column(
             children: [
               Text(
-                "Deal 20",
+                "",
                 style: getTextStyle(
                     fontWeight: FontWeight.w600,
                     color: MAIN_COLOR,
@@ -537,8 +511,13 @@ class _CartScreenState extends State<CartScreen> {
 
   //TODO:: Siddhant - Need to correct the tax calculation logic here.
   _configureTaxAndTotal(List<OrderItem> items) {
+    totalAmount = 0.0;
+    subTotalAmount = 0.0;
+    taxAmount = 0.0;
+    totalItems = 0;
+    taxPercentage = 0;
     for (OrderItem item in items) {
-      taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+      //taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
       subTotalAmount =
           subTotalAmount + (item.orderedPrice * item.orderedQuantity);
@@ -546,23 +525,28 @@ class _CartScreenState extends State<CartScreen> {
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {
           //taxPercentage = taxPercentage + attribute.tax;
-          log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
+          //log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
           if (attribute.options.isNotEmpty) {
-            for (var options in attribute.options) {
-              taxPercentage = taxPercentage + options.tax;
-              subTotalAmount = subTotalAmount + options.price;
-              log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+            for (var option in attribute.options) {
+              if (option.selected) {
+                //taxPercentage = taxPercentage + option.tax;
+                subTotalAmount =
+                    subTotalAmount + (option.price * item.orderedQuantity);
+                log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+              }
             }
           }
         }
       }
     }
-    taxAmount = (subTotalAmount / 100) * taxPercentage;
+    //taxAmount = (subTotalAmount / 100) * taxPercentage;
     totalAmount = subTotalAmount + taxAmount;
+    widget.order.orderAmount = totalAmount;
     log('Subtotal :: $subTotalAmount');
     log('Tax percentage :: $taxAmount');
     log('Tax Amount :: $taxAmount');
     log('Total :: $totalAmount');
+    setState(() {});
     //return taxPercentage;
   }
 
@@ -576,7 +560,21 @@ class _CartScreenState extends State<CartScreen> {
       orderAmount += item.orderedPrice * item.orderedQuantity;
     }
     widget.order.orderAmount = orderAmount;
-
+    _configureTaxAndTotal(widget.order.items);
+    //widget.order.save();
     //DbParkedOrder().saveOrder(widget.order);
+  }
+
+  void _getAllPromoCodes() async {
+    CommanResponse commanResponse = await PromoCodeservice().getPromoCodes();
+
+    if (commanResponse.apiStatus == ApiStatus.NO_INTERNET) {
+      isPromoCodeAvailableForUse = false;
+    } else if (commanResponse.apiStatus == ApiStatus.REQUEST_SUCCESS) {
+      PromoCodesResponse promoCodesResponse = commanResponse.message;
+      couponCodes = promoCodesResponse.message!.couponCode!;
+    } else {
+      isPromoCodeAvailableForUse = false;
+    }
   }
 }
