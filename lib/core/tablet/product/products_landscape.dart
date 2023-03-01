@@ -55,8 +55,20 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
       children: [
         TitleAndSearchBar(
           title: "Choose Category",
-          onSubmit: (val) {},
-          onTextChanged: (val) {},
+          onSubmit: (text) {
+            if (text.length >= 3) {
+              _filterProductsCategories(text);
+            } else {
+              getProducts();
+            }
+          },
+          onTextChanged: (changedtext) {
+            if (changedtext.length >= 3) {
+              _filterProductsCategories(changedtext);
+            } else {
+              getProducts();
+            }
+          },
           searchCtrl: searchCtrl,
           searchHint: "Search product",
           searchBoxWidth: size.width / 4,
@@ -246,6 +258,17 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
   Future<void> getProducts() async {
     //Fetching data from DbProduct database
     categories = await DbCategory().getCategories();
+    setState(() {});
+  }
+
+  void _filterProductsCategories(String searchTxt) {
+    categories = categories
+        .where((element) =>
+            element.items.any((element) =>
+                element.name.toLowerCase().contains(searchTxt.toLowerCase())) ||
+            element.name.toLowerCase().contains(searchTxt.toLowerCase()))
+        .toList();
+
     setState(() {});
   }
 }

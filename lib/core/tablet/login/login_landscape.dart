@@ -188,7 +188,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             boxDecoration: txtFieldBoxShadowDecoration,
             txtCtrl: _emailCtrl,
             verticalContentPadding: 16,
-            hintText: "Enter ID",
+            hintText: "Email",
           ),
         ),
       );
@@ -244,7 +244,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color: GREY_COLOR,
+                  color: DARK_GREY_COLOR,
                   fontSize: LARGE_MINUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
@@ -267,12 +267,12 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
                         color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color: GREY_COLOR,
+                        color: DARK_GREY_COLOR,
                         fontWeight: FontWeight.normal,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
@@ -293,7 +293,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
                         color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
               ]),
         ),

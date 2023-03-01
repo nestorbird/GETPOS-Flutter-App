@@ -18,7 +18,7 @@ import 'widget/left_side_menu.dart';
 class HomeTablet extends StatelessWidget {
   HomeTablet({Key? key}) : super(key: key);
 
-  final selectedTab = "Home".obs;
+  final selectedTab = "Order".obs;
 
   late Size size;
 

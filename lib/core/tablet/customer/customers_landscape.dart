@@ -48,10 +48,23 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
         children: [
           TitleAndSearchBar(
             title: "Customer",
-            onSubmit: (val) {},
-            onTextChanged: (val) {},
+            keyboardType: TextInputType.phone,
+            onSubmit: (text) {
+              if (text.isNotEmpty) {
+                filterCustomerData(text);
+              } else {
+                getCustomersFromDB(0);
+              }
+            },
+            onTextChanged: (text) {
+              if (text.isNotEmpty) {
+                filterCustomerData(text);
+              } else {
+                getCustomersFromDB(0);
+              }
+            },
             searchCtrl: searchCtrl,
-            searchHint: "Search name",
+            searchHint: "Customer mobile number",
           ),
           hightSpacer20,
           isCustomersFound
@@ -91,5 +104,23 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
         },
       ),
     );
+  }
+
+  void filterCustomerData(String searchText) async {
+    await getCustomersFromDB(1);
+    customers = customers
+        .where((element) =>
+            //element.name.toLowerCase().contains(searchText.toLowerCase()) ||
+            element.phone.toLowerCase().contains(searchText.toLowerCase()))
+        .toList();
+
+    isCustomersFound = customers.isNotEmpty;
+
+    if (!isCustomersFound) {
+      // CommanResponse response =
+      //     await CustomerService().getCustomers(searchTxt: searchText);
+    }
+
+    setState(() {});
   }
 }

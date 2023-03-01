@@ -12,7 +12,7 @@ import '../../../../../widgets/button.dart';
 import '../../../widgets/search_widget_tablet.dart';
 
 // ignore: must_be_immutable
-class TitleAndSearchBar extends StatelessWidget {
+class TitleAndSearchBar extends StatefulWidget {
   final String title;
   final String? searchHint;
   final double? searchBoxWidth;
@@ -23,6 +23,7 @@ class TitleAndSearchBar extends StatelessWidget {
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
   Function? parkOrderClicked;
+  TextInputType keyboardType;
 
   TitleAndSearchBar(
       {Key? key,
@@ -35,9 +36,15 @@ class TitleAndSearchBar extends StatelessWidget {
       this.hideOperatorDetails = false,
       this.onTextChanged,
       this.parkOrderClicked,
-      this.onSubmit})
+      this.onSubmit,
+      this.keyboardType = TextInputType.text})
       : super(key: key);
 
+  @override
+  State<TitleAndSearchBar> createState() => _TitleAndSearchBarState();
+}
+
+class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,34 +56,35 @@ class TitleAndSearchBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              title,
+              widget.title,
               style: getTextStyle(
                   fontSize: LARGE_PLUS_FONT_SIZE, color: BLACK_COLOR),
             ),
             const Spacer(),
             Visibility(
-              visible: searchBoxVisible,
+              visible: widget.searchBoxVisible,
               child: Container(
-                width: searchBoxWidth,
+                width: widget.searchBoxWidth,
                 padding: horizontalSpace(x: 10),
                 child: SearchWidgetTablet(
-                  searchHint: searchHint,
-                  searchTextController: searchCtrl,
-                  onTextChanged: (val) => onTextChanged!(val),
-                  onSubmit: (val) => onSubmit!(val),
+                  searchHint: widget.searchHint,
+                  searchTextController: widget.searchCtrl,
+                  onTextChanged: (val) => widget.onTextChanged!(val),
+                  onSubmit: (val) => widget.onSubmit!(val),
+                  keyboardType: widget.keyboardType,
                 ),
               ),
             ),
-            parkedOrderVisible ? const Spacer() : Container(),
+            widget.parkedOrderVisible ? const Spacer() : Container(),
             Visibility(
-              visible: parkedOrderVisible,
+              visible: widget.parkedOrderVisible,
               child: parkOrderBtnWidget,
             ),
           ],
         ),
         hightSpacer10,
         Visibility(
-          visible: !hideOperatorDetails,
+          visible: !widget.hideOperatorDetails,
           child: Padding(
             padding: topSpace(y: 10),
             child: Row(
@@ -108,7 +116,7 @@ class TitleAndSearchBar extends StatelessWidget {
   Widget get parkOrderBtnWidget => SizedBox(
         // width: double.infinity,
         child: ButtonWidget(
-          onPressed: () => parkOrderClicked!(),
+          onPressed: () => widget.parkOrderClicked!(),
           title: "Parked Order",
           colorBG: BLACK_COLOR,
           width: 200,

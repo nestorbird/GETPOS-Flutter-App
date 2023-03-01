@@ -2,11 +2,18 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_launcher_icons/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
 import 'package:nb_posx/database/models/park_order.dart';
+import 'package:nb_posx/network/api_constants/api_paths.dart';
+// import 'package:pdf/pdf.dart';
+// import 'package:pdf/widgets.dart' as pw;
+// import 'package:printing/printing.dart';
+import 'package:esc_pos_printer/esc_pos_printer.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -15,9 +22,12 @@ import '../database/db_utils/db_constants.dart';
 import '../database/db_utils/db_preferences.dart';
 import '../database/models/hub_manager.dart';
 import '../database/models/order_item.dart';
+import '../database/models/sale_order.dart';
 import '../widgets/popup_widget.dart';
 import 'ui_utils/padding_margin.dart';
 import 'ui_utils/text_styles/custom_text_style.dart';
+import 'dart:io';
+import 'package:image/image.dart' as img;
 
 class Helper {
   static HubManager? hubManager;
@@ -102,6 +112,34 @@ class Helper {
 
   //Function to show the popup with one button with on pressed functionality to close popup.
   static showPopup(BuildContext context, String message) async {
+    await showGeneralDialog(
+        context: context,
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(
+              scale: animation,
+              child: child,
+            ),
+          );
+        },
+        pageBuilder: (context, animation, secondaryAnimation) {
+          return SizedBox(
+            height: 100,
+            child: SimplePopup(
+              message: message,
+              buttonText: OPTION_OK.toUpperCase(),
+              onOkPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          );
+        });
+  }
+
+  //FIXME:: Fix the width of the popup for tablet here
+  //Function to show the popup with one button with on pressed functionality to close popup.
+  static showPopupForTablet(BuildContext context, String message) async {
     await showGeneralDialog(
         context: context,
         transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -325,4 +363,154 @@ class Helper {
 
     return RegExp(regex).hasMatch(url);
   }
+
+  //TODO:: Need to handle the print receipt here
+  ///Helper method to print the invoice in PDF format and through printer device.
+  Future<bool> printInvoice(SaleOrder placedOrder) async {
+    // final doc = pw.Document(
+    //     pageMode: PdfPageMode.thumbs,
+    //     title: "Invoice ${placedOrder.parkOrderId}");
+
+    // doc.addPage(pw.Page(
+    //     pageFormat: PdfPageFormat.roll57,
+    //     build: ((context) => pw.Container(
+    //         color: PdfColors.amber,
+    //         child: pw.Center(
+    //             child: pw.Column(children: [
+    //           _getInvoiceItem('Date & Time', placedOrder.date),
+    //           _getInvoiceItem('Customer Name', placedOrder.customer.name),
+    //           _getInvoiceItem('Name', placedOrder.customer.name),
+    //           _getInvoiceItem('Phone', placedOrder.customer.phone),
+    //           _getInvoiceItem('Email', placedOrder.customer.email),
+    //           _getInvoiceItem('Order ID', placedOrder.parkOrderId!),
+    //           _getInvoiceItem(
+    //               'Order Amount', placedOrder.orderAmount.toString()),
+    //           pw.Text('Item(s) Summary'),
+    //           pw.ListView.builder(
+    //               itemCount: placedOrder.items.length,
+    //               itemBuilder: ((context, index) => _getInvoiceItem(
+    //                   placedOrder.items[index].name,
+    //                   placedOrder.items[index].orderedPrice.toString()))),
+    //         ]))))));
+
+    // return await Printing.layoutPdf(
+    //     name: 'Invoice ${placedOrder.parkOrderId}',
+    //     format: PdfPageFormat.roll57,
+    //     usePrinterSettings: true,
+    //     onLayout: (PdfPageFormat format) async => doc.save());
+
+    const PaperSize paper = PaperSize.mm80;
+    final profile = await CapabilityProfile.load();
+    final printer = NetworkPrinter(paper, profile);
+
+    final PosPrintResult res =
+        await printer.connect('192.168.0.123', port: 9100);
+
+    if (res == PosPrintResult.success) {
+      final ByteData data = await rootBundle.load('assets/images/app_logo.png');
+      final Uint8List bytes = data.buffer.asUint8List();
+      final img.Image? image = img.decodeImage(bytes);
+
+      printer.imageRaster(image!, imageFn: PosImageFn.graphics);
+      printer.text('Prop: NestorBird Ltd.',
+          styles: const PosStyles(fontType: PosFontType.fontA, bold: true));
+      printer.text('49, Cumberland Drive, Flagstaff, Hamilton 3219',
+          styles: const PosStyles(fontType: PosFontType.fontA, bold: true));
+      printer.text('---------------------------------',
+          styles: const PosStyles(align: PosAlign.center, bold: true));
+      printer.text('Invoice', styles: const PosStyles(align: PosAlign.center));
+      printer.text('---------------------------------',
+          styles: const PosStyles(align: PosAlign.center, bold: true));
+      printer.text('Order ID: ${placedOrder.parkOrderId}',
+          styles: const PosStyles(fontType: PosFontType.fontA));
+      printer.text('Invoice Date: ${placedOrder.tracsactionDateTime}',
+          styles: const PosStyles(fontType: PosFontType.fontA));
+      printer.text('Customer Name: ${placedOrder.customer.name}',
+          styles: const PosStyles(fontType: PosFontType.fontA));
+      printer.text('Customer Contact: ${placedOrder.customer.phone}',
+          styles: const PosStyles(fontType: PosFontType.fontA));
+      printer.text('Customer Email: ${placedOrder.customer.email}',
+          styles: const PosStyles(fontType: PosFontType.fontA));
+      printer.text('Customer Name: ${placedOrder.customer.name}',
+          styles: const PosStyles(fontType: PosFontType.fontA));
+      printer.text('---------------------------------',
+          styles: const PosStyles(align: PosAlign.center, bold: true));
+
+      PosColumn(
+        text: "Item(s)",
+        width: 6,
+        styles: const PosStyles(align: PosAlign.left, underline: true),
+      );
+
+      PosColumn(
+        text: "Qty",
+        width: 3,
+        styles: const PosStyles(align: PosAlign.center, underline: true),
+      );
+
+      PosColumn(
+        text: "Amount",
+        width: 3,
+        styles: const PosStyles(align: PosAlign.right, underline: true),
+      );
+
+      printer.text('---------------------------------',
+          styles: const PosStyles(align: PosAlign.center, bold: true));
+
+      for (var item in placedOrder.items) {
+        printer.row([
+          PosColumn(
+            text: item.name,
+            width: 6,
+            styles: const PosStyles(align: PosAlign.left, underline: true),
+          ),
+          PosColumn(
+            text: item.orderedQuantity.toString(),
+            width: 6,
+            styles: const PosStyles(align: PosAlign.center, underline: true),
+          ),
+          PosColumn(
+            text: item.orderedPrice.toString(),
+            width: 6,
+            styles: const PosStyles(align: PosAlign.right, underline: true),
+          )
+        ]);
+      }
+
+      printer.row([
+        PosColumn(
+          text: 'Total',
+          width: 6,
+          styles: const PosStyles(align: PosAlign.left, underline: true),
+        ),
+        PosColumn(
+          text: placedOrder.orderAmount.toString(),
+          width: 6,
+          styles: const PosStyles(align: PosAlign.right, underline: true),
+        )
+      ]);
+
+      printer.text('Remarks: ________________________________');
+
+      printer.text('For suggestions/complaint write us on: info@nestorbird.com',
+          styles: const PosStyles(bold: true));
+
+      printer.qrcode(instanceUrl);
+
+      printer.text('Cashier: ${placedOrder.manager.name}');
+      printer.disconnect();
+      log('Print result: ${res.msg}');
+      return true;
+    } else {
+      log('Print result: ${res.msg}');
+      return false;
+    }
+  }
+
+  ///Private helper method to display the item content of invoice
+  // _getInvoiceItem(String keyName, String dataValue) {
+  //   return pw.Row(
+  //       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+  //       children: [pw.Text(keyName), pw.Text(dataValue)]);
+  // }
 }

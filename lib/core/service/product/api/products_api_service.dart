@@ -33,7 +33,7 @@ class ProductsService {
           : "";
 
       var categoryProductsPath =
-          "$CATEGORY_PRODUCTS_PATH?from_date=$lastSyncDateTime";
+          "$CATEGORY_PRODUCTS_PATH?from_date=";
       //Call to products list api
       var apiResponse =
           await APIUtils.getRequestWithHeaders(categoryProductsPath);

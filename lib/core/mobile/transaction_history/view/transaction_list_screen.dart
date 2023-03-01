@@ -76,6 +76,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                 keyboardType: TextInputType.phone,
                 onTextChanged: (text) {
                   if (text.isEmpty) {
+                    context.read<TransactionBloc>().state.orders.clear();
                     context.read<TransactionBloc>().add(TransactionFetched());
                   } else {
                     context
@@ -85,6 +86,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                 },
                 onSubmit: (text) {
                   if (text.isEmpty) {
+                    context.read<TransactionBloc>().state.orders.clear();
                     context.read<TransactionBloc>().add(TransactionFetched());
                   } else {
                     context

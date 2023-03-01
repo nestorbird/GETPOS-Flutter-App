@@ -3,9 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:nb_posx/utils/helper.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
@@ -109,39 +106,14 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
 
   //TODO:: Need to handle the print receipt here
   _printInvoice() async {
-    final doc = pw.Document();
-
-    doc.addPage(pw.Page(
-        pageFormat: PdfPageFormat.roll80,
-        build: ((context) => pw.Container(
-                child: pw.Column(children: [
-              _getInvoiceItem('Date & Time', widget.placedOrder.date),
-              _getInvoiceItem(
-                  'Customer Name', widget.placedOrder.customer.name),
-              _getInvoiceItem('Name', widget.placedOrder.customer.name),
-              _getInvoiceItem('Phone', widget.placedOrder.customer.phone),
-              _getInvoiceItem('Email', widget.placedOrder.customer.email),
-              _getInvoiceItem('Order ID', widget.placedOrder.parkOrderId!),
-              _getInvoiceItem(
-                  'Order Amount', widget.placedOrder.orderAmount.toString()),
-              pw.Text('Item(s) Summary'),
-              pw.ListView.builder(
-                  itemCount: widget.placedOrder.items.length,
-                  itemBuilder: ((context, index) => _getInvoiceItem(
-                      widget.placedOrder.items[index].name,
-                      widget.placedOrder.items[index].orderedPrice
-                          .toString()))),
-            ])))));
-
-    await Printing.layoutPdf(
-        format: PdfPageFormat.roll80,
-        usePrinterSettings: true,
-        onLayout: (PdfPageFormat format) async => doc.save());
-  }
-
-  _getInvoiceItem(String keyName, String dataValue) {
-    return pw.Row(
-        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-        children: [pw.Text(keyName), pw.Text(dataValue)]);
+    try {
+      bool isPrintSuccessful = await Helper().printInvoice(widget.placedOrder);
+      if (!isPrintSuccessful && context.mounted) {
+        Helper.showPopup(context, "Print operation cancelled by you.");
+      }
+    } catch (e) {
+      Helper.showPopup(context, SOMETHING_WENT_WRONG);
+      log('Exception ocurred in printing invoice :: $e');
+    }
   }
 }
