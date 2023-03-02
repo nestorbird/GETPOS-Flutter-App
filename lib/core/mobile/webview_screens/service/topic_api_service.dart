@@ -10,16 +10,17 @@ import '../model/topic_response.dart';
 ///Class to handle the api calls for terms and conditions and privacy policy
 class TopicDataService {
   ///Function to get privacy policy or terms & conditions data
-  static Future<CommanResponse> getTopicData(TopicTypes topicTypes) async {
+  static Future<CommanResponse> getTopicData(
+      TopicTypes topicTypes, String instanceUrl) async {
     //api url
-    String apiUrl = TOPICS_PATH;
+    String apiUrl = "$instanceUrl$TOPICS_PATH";
 
     //Check for internet connectivity
     bool isInternetAvailable = await Helper.isNetworkAvailable();
 
     if (isInternetAvailable) {
       //Call to api
-      var response = await APIUtils.getRequest(apiUrl);
+      var response = await APIUtils.getRequestWithCompleteUrl(apiUrl);
 
       //Parsing the api JSON response
       TopicResponse topicResponse = TopicResponse.fromJson(response);

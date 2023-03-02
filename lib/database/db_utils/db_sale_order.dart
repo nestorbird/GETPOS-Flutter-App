@@ -16,8 +16,8 @@ class DbSaleOrder {
 
   Future<String> createOrder(SaleOrder order) async {
     String res = await saveOrder(order);
-    DBPreferences().incrementOrderNo(order.id);
-    DbCategory().reduceInventory(order.items);
+    await DBPreferences().incrementOrderNo(order.id);
+    await DbCategory().reduceInventory(order.items);
     if (order.transactionId.isEmpty) {
       await DbHubManager().updateCashBalance(order.orderAmount);
     }

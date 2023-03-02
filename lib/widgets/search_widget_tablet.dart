@@ -15,13 +15,15 @@ class SearchWidgetTablet extends StatefulWidget {
   final TextEditingController? searchTextController;
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
+  TextInputType keyboardType;
 
   SearchWidgetTablet(
       {Key? key,
       this.searchHint,
       this.searchTextController,
       this.onTextChanged,
-      this.onSubmit})
+      this.onSubmit,
+      this.keyboardType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -71,11 +73,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
           border: InputBorder.none,
         ),
         onSubmitted: (text) => widget.onSubmit!(text),
-        onChanged: (updatedText) {
-          setState(() {
-            widget.onTextChanged!(updatedText);
-          });
-        },
+        onChanged: (updatedText) => widget.onTextChanged!(updatedText),
       ),
     );
   }

@@ -1,11 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
+
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
-
 import '../../../../../database/db_utils/db_parked_order.dart';
 import '../../../../../database/models/order_item.dart';
 import '../../../../../database/models/park_order.dart';
@@ -19,6 +21,7 @@ import 'widget/header_data.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final ParkOrder order;
+
   const OrderDetailScreen({Key? key, required this.order}) : super(key: key);
 
   @override
@@ -26,11 +29,23 @@ class OrderDetailScreen extends StatefulWidget {
 }
 
 class _OrderDetailScreenState extends State<OrderDetailScreen> {
+  double totalAmount = 0.0;
+  double subTotalAmount = 0.0;
+  double taxAmount = 0.0;
+  int totalItems = 0;
+  double taxPercentage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _configureTaxAndTotal(widget.order.items);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-          child: Stack(
+    return SafeArea(
+      child: Scaffold(
+          body: Stack(
         children: [
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -167,7 +182,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               heading: "Order Amount",
                               headingColor: DARK_GREY_COLOR,
                               content:
-                                  "$APP_CURRENCY ${widget.order.orderAmount.toStringAsFixed(2)}",
+                                  "$appCurrency ${totalAmount.toStringAsFixed(2)}",
                               contentColor: MAIN_COLOR,
                             )),
                       ],
@@ -288,7 +303,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       color: WHITE_COLOR,
                       fontWeight: FontWeight.normal),
                 ),
-                Text("₹ ${widget.order.orderAmount.toStringAsFixed(2)}",
+                Text("$appCurrency ${totalAmount.toStringAsFixed(2)}",
                     style: getTextStyle(
                         fontSize: LARGE_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w600,
@@ -401,7 +416,48 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       orderAmount += item.orderedPrice * item.orderedQuantity;
     }
     widget.order.orderAmount = orderAmount;
-
+    _configureTaxAndTotal(widget.order.items);
     DbParkedOrder().saveOrder(widget.order);
+  }
+
+  //TODO:: Siddhant - Need to correct the tax calculation logic here.
+  _configureTaxAndTotal(List<OrderItem> items) {
+    totalAmount = 0.0;
+    subTotalAmount = 0.0;
+    taxAmount = 0.0;
+    totalItems = 0;
+    taxPercentage = 0;
+    for (OrderItem item in items) {
+      //taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+      log('Tax Percentage after adding ${item.name} :: $taxPercentage');
+      subTotalAmount =
+          subTotalAmount + (item.orderedPrice * item.orderedQuantity);
+      log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      if (item.attributes.isNotEmpty) {
+        for (var attribute in item.attributes) {
+          //taxPercentage = taxPercentage + attribute.tax;
+          //log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
+          if (attribute.options.isNotEmpty) {
+            for (var option in attribute.options) {
+              if (option.selected) {
+                //taxPercentage = taxPercentage + option.tax;
+                subTotalAmount =
+                    subTotalAmount + (option.price * item.orderedQuantity);
+                log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+              }
+            }
+          }
+        }
+      }
+    }
+    //taxAmount = (subTotalAmount / 100) * taxPercentage;
+    totalAmount = subTotalAmount + taxAmount;
+    widget.order.orderAmount = totalAmount;
+    log('Subtotal :: $subTotalAmount');
+    log('Tax percentage :: $taxAmount');
+    log('Tax Amount :: $taxAmount');
+    log('Total :: $totalAmount');
+    setState(() {});
+    //return taxPercentage;
   }
 }

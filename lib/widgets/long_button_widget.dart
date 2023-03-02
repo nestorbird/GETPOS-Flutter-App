@@ -95,7 +95,7 @@ class _LongButtonState extends State<LongButton> {
                               child: Expanded(
                                   flex: 25,
                                   child: Text(
-                                    '$APP_CURRENCY${widget.totalAmount}',
+                                    '$appCurrency${widget.totalAmount}',
                                     style: getTextStyle(
                                         fontSize: MEDIUM_PLUS_FONT_SIZE,
                                         color: WHITE_COLOR),

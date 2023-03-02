@@ -50,7 +50,7 @@ class _SalesDetailsScreenState extends State<SalesDetailsScreen> {
                         child: SalesHeaderAndData(
                           heading: SALE_AMOUNT_TXT,
                           content:
-                              '$APP_CURRENCY ${widget.saleOrder!.orderAmount}',
+                              '$appCurrency ${widget.saleOrder!.orderAmount}',
                           headingColor: BLACK_COLOR,
                           contentColor: MAIN_COLOR,
                           crossAlign: CrossAxisAlignment.center,

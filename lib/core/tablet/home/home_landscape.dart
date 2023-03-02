@@ -52,8 +52,12 @@ class HomeLandscapeState extends State<HomeLandscape> {
       children: [
         TitleAndSearchBar(
           title: "Choose Category",
-          onSubmit: (val) {},
-          onTextChanged: (val) {},
+          onSubmit: (text) {
+
+          },
+          onTextChanged: (changedtext) {
+
+          },
           searchCtrl: searchCtrl,
           searchHint: "Search products",
         ),
@@ -126,7 +130,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                               ),
                               hightSpacer5,
                               Text(
-                                "₹ ${cat.items[index].price}",
+                                "$appCurrency ${cat.items[index].price}",
                                 textAlign: TextAlign.right,
                                 style: getTextStyle(
                                     color: MAIN_COLOR,
@@ -170,7 +174,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(index % 2 == 0 ? BURGAR_IMAGE : PIZZA_IMAGE),
+                    Image.memory(categories[index].image),
                     hightSpacer4,
                     Text(
                       categories[index].name,

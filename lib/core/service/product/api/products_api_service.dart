@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
+import 'package:intl/intl.dart';
+
 import '../../../../../constants/app_constants.dart';
 import '../model/category_products_response.dart' as cat_resp;
 
@@ -23,10 +25,18 @@ import '../model/products_response.dart';
 class ProductsService {
   Future<CommanResponse> getCategoryProduct() async {
     if (await Helper.isNetworkAvailable()) {
-      // CATEGORY_PRODUCTS_PATH
+      String lastSyncDateTime =
+          await DBPreferences().getPreference(PRODUCT_LAST_SYNC_DATETIME);
+
+      String formattedDate = lastSyncDateTime.isNotEmpty
+          ? DateFormat("yyyy-MM-dd").format(DateTime.parse(lastSyncDateTime))
+          : "";
+
+      var categoryProductsPath =
+          "$CATEGORY_PRODUCTS_PATH?from_date=";
       //Call to products list api
       var apiResponse =
-          await APIUtils.getRequestWithHeaders(CATEGORY_PRODUCTS_PATH);
+          await APIUtils.getRequestWithHeaders(categoryProductsPath);
       log(jsonEncode(apiResponse));
 
       cat_resp.CategoryProductsResponse resp =
@@ -95,6 +105,9 @@ class ProductsService {
         });
 
         await DbCategory().addCategory(categories);
+        await DBPreferences().savePreference(
+            PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
+
         //returning the CommanResponse as true
         return CommanResponse(
             status: true,

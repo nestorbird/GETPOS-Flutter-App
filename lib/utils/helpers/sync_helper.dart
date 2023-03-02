@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/core/service/select_customer/api/create_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
@@ -12,6 +13,7 @@ import '../../database/db_utils/db_hub_manager.dart';
 import '../../database/db_utils/db_preferences.dart';
 import '../../database/db_utils/db_product.dart';
 import '../../database/db_utils/db_sale_order.dart';
+import '../../database/models/customer.dart';
 import '../../database/models/sale_order.dart';
 import '../helper.dart';
 
@@ -31,7 +33,7 @@ class SyncHelper {
   Future<bool> launchFlow(bool isUserLoggedIn) async {
     if (isUserLoggedIn) {
       await syncNowFlow();
-      DbSaleOrder().modifySevenDaysOrdersFromToday();
+      await DbSaleOrder().modifySevenDaysOrdersFromToday();
     }
     return true;
   }
@@ -46,7 +48,7 @@ class SyncHelper {
     await DbSaleOrder().delete();
     await DBPreferences().delete();
     await DbInstanceUrl().deleteUrl();
-    instanceUrl = 'pos.nestorbird.com';
+    instanceUrl = 'getpos.in';
     return true;
   }
 
@@ -55,16 +57,37 @@ class SyncHelper {
   /// mobile database and then fetch the other updated details
   ///
   Future<bool> syncNowFlow() async {
+    List<Customer> offlineCustomers = await DbCustomer().getOfflineCustomers();
+    if (offlineCustomers.isNotEmpty) {
+      await Future.forEach(offlineCustomers, (Customer customer) async {
+        var res = await CreateCustomer()
+            .createNew(customer.phone, customer.name, customer.email);
+        if (res.status!) {
+          Customer newCustomer = res.message as Customer;
+          customer.id = newCustomer.id;
+          customer.isSynced = true;
+          customer.modifiedDateTime = DateTime.now();
+          customer.save();
+          //await DbCustomer().updateCustomer(customer);
+        }
+      });
+    }
+
     List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
     if (offlineOrders.isNotEmpty) {
       // ignore: unused_local_variable
       var result = await Future.forEach(offlineOrders, (SaleOrder order) async {
+        var customers = await DbCustomer().getCustomer(order.customer.phone);
+        order.customer.id = customers.first.id;
+        order.save();
+
         var res = await CreateOrderService().createOrder(order);
         if (res.status!) {
           await DbSaleOrder().updateOrder(res.message, order);
         }
       });
     }
+
     await getDetails();
     return true;
   }

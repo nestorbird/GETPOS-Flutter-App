@@ -40,6 +40,7 @@ class _SimplePopupState extends State<SimplePopup> {
               hightSpacer15,
               Text(
                 widget.message,
+                textAlign: TextAlign.center,
                 style: getTextStyle(fontSize: MEDIUM_PLUS_FONT_SIZE),
               ),
               hightSpacer20,

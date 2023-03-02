@@ -46,7 +46,7 @@ class TransactionItem extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '$APP_CURRENCY ${order.orderAmount.toStringAsFixed(2)}',
+                    '$appCurrency ${order.orderAmount.toStringAsFixed(2)}',
                     style: getTextStyle(
                         fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
                   ),

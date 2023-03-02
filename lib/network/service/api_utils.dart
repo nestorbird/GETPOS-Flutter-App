@@ -32,6 +32,22 @@ class APIUtils {
     }
   }
 
+  static Future<Map<String, dynamic>> getRequestWithCompleteUrl(
+      String apiUrl) async {
+    try {
+      //Remote Call to API with url and headers
+      http.Response apiResponse = await http.get(Uri.parse(apiUrl));
+
+      //Checking for the response code and handling the result.
+      return _returnResponse(apiResponse);
+    }
+
+    //Handling the condition when socket exception received.
+    on SocketException {
+      throw FetchDataException(FAILURE_OCCURED);
+    }
+  }
+
   ///[postRequest] function for GET requests with auth token as header
   ///and request type as form data.
   ///param : [apiUrl] -> API URL

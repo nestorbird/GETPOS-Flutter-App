@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../configs/theme_config.dart';
@@ -115,10 +117,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   /// HANDLE FORGOT PASS BTN CLICK
   Future<void> _handleForgotPassBtnClick() async {
-    if (_emailCtrl.text.trim().isNotEmpty) {
+    String url = "https://${_urlCtrl.text}/api/";
+
+    try {
       Helper.showLoaderDialog(context);
       CommanResponse response = await ForgotPasswordApi()
-          .sendResetPasswordMail(_emailCtrl.text.trim(), _urlCtrl.text);
+          .sendResetPasswordMail(_emailCtrl.text.trim(), url.trim());
       if (response.status!) {
         if (!mounted) return;
         Helper.hideLoader(context);
@@ -127,10 +131,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
-        Helper.showSnackBar(context, response.message);
+        Helper.showPopup(context, response.message);
       }
-    } else {
-      Helper.showSnackBar(context, FORGOT_TXT_FIELD_EMPTY);
+    } catch (e) {
+      log('Exception ocurred in Forgot Password :: $e');
     }
   }
 

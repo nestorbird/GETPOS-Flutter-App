@@ -81,7 +81,7 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
                     ),
                     const Spacer(),
                     Text(
-                      '$APP_CURRENCY ${widget.product!.price}',
+                      '$appCurrency ${widget.product!.price}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           color: MAIN_COLOR,

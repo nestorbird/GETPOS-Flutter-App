@@ -33,11 +33,14 @@ class GetCustomer {
           email: resp.message!.customer!.first.emailId!,
           id: resp.message!.customer!.first.name!,
           name: resp.message!.customer!.first.customerName!,
-          phone: resp.message!.customer!.first.mobileNo!);
+          phone: resp.message!.customer!.first.mobileNo!,
+          isSynced: true,
+          modifiedDateTime: DateTime.now());
 
       List<Customer> custlist = [];
       custlist.add(tempCustomer);
-      await DbCustomer().addCustomers(custlist);
+      //TODO:: Siddhant - Uncomment this if found any issue with the customer search
+      //await DbCustomer().addCustomers(custlist);
 
       //returning the CommanResponse as true
       return CommanResponse(

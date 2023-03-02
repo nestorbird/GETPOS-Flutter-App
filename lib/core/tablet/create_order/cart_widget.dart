@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
@@ -18,6 +19,7 @@ import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/customer_tile.dart';
 import '../../../database/db_utils/db_parked_order.dart';
 import '../../../database/db_utils/db_sale_order.dart';
+import '../../../database/models/attribute.dart';
 import '../../../database/models/park_order.dart';
 import '../../../database/models/sale_order.dart';
 import '../../service/create_order/api/create_sales_order.dart';
@@ -112,19 +114,19 @@ class _CartWidgetState extends State<CartWidget> {
           widget.orderList.isEmpty
               ? const SizedBox()
               : _subtotalSection("Subtotal",
-                  "$APP_CURRENCY ${subTotalAmount.toStringAsFixed(2)}"),
+                  "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Discount", "- $APP_CURRENCY 0.00",
+              : _subtotalSection("Discount", "- $appCurrency 0.00",
                   isDiscount: true),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _subtotalSection("Tax ($taxPercentage%)",
-                  "$APP_CURRENCY ${taxAmount.toStringAsFixed(2)}"),
+          // widget.orderList.isEmpty
+          //     ? const SizedBox()
+          //     : _subtotalSection("Tax ($taxPercentage%)",
+          //         "$appCurrency ${taxAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty
               ? const SizedBox()
               : _totalSection(
-                  "Total", "$APP_CURRENCY ${totalAmount.toStringAsFixed(2)}"),
+                  "Total", "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
           widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
           hightSpacer10,
           _showActionButton()
@@ -158,7 +160,6 @@ class _CartWidgetState extends State<CartWidget> {
       selectedCustomer = result;
       debugPrint("Customer selected");
     }
-    setState(() {});
   }
 
   _showActionButton() {
@@ -183,11 +184,15 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
-        _prepareCart();
-        isOrderProcessed = await _placeOrderHandler();
+        if (currentCart != null) {
+          _prepareCart();
+          isOrderProcessed = await _placeOrderHandler();
 
-        // to be showed on successfull order placed
-        _showOrderPlacedSuccessPopup();
+          // to be showed on successfull order placed
+          _showOrderPlacedSuccessPopup();
+        } else {
+          Helper.showPopupForTablet(context, "Please add items in cart");
+        }
       },
       child: Container(
         width: double.infinity,
@@ -232,6 +237,7 @@ class _CartWidgetState extends State<CartWidget> {
 
     return Container(
       width: double.infinity,
+      height: 100,
       margin: const EdgeInsets.only(bottom: 8, top: 15),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +257,7 @@ class _CartWidgetState extends State<CartWidget> {
           widthSpacer(10),
           Expanded(
             child: SizedBox(
-                height: 60,
+                height: 85,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -280,11 +286,25 @@ class _CartWidgetState extends State<CartWidget> {
                         ),
                       )
                     ]),
+                    hightSpacer10,
+                    Expanded(
+                        child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              _getItemVariants(item.attributes),
+                              style: getTextStyle(
+                                  fontSize: SMALL_FONT_SIZE,
+                                  fontWeight: FontWeight.normal),
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ))),
+                    hightSpacer10,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "₹ ${item.price.toStringAsFixed(2)}",
+                            "$appCurrency ${item.price.toStringAsFixed(2)}",
                             style: getTextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: GREEN_COLOR,
@@ -352,6 +372,22 @@ class _CartWidgetState extends State<CartWidget> {
     );
   }
 
+  String _getItemVariants(List<Attribute> itemVariants) {
+    String variants = '';
+    if (itemVariants.isNotEmpty) {
+      for (var variantData in itemVariants) {
+        for (var selectedOption in variantData.options) {
+          if (selectedOption.selected) {
+            variants = variants.isEmpty
+                ? '${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]'
+                : "$variants, ${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]";
+          }
+        }
+      }
+    }
+    return variants;
+  }
+
   Widget _promoCodeSection() {
     return Container(
       // height: 60,
@@ -374,7 +410,7 @@ class _CartWidgetState extends State<CartWidget> {
           Column(
             children: [
               Text(
-                "Deal 20",
+                "",
                 style: getTextStyle(
                     fontWeight: FontWeight.w600,
                     color: MAIN_COLOR,
@@ -549,7 +585,9 @@ class _CartWidgetState extends State<CartWidget> {
         manager: Helper.hubManager!,
         items: currentCart!.items,
         transactionId: '',
-        paymentMethod: selectedCashMode ? "Cash" : "Cash",
+        paymentMethod: selectedCashMode
+            ? "Cash"
+            : "Cash", //TODO:: Need to check when payment gateway is implemented
         paymentStatus: "Paid",
         transactionSynced: false,
         parkOrderId:
@@ -607,7 +645,7 @@ class _CartWidgetState extends State<CartWidget> {
     totalItems = 0;
     taxPercentage = 0;
     for (OrderItem item in items) {
-     // taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+      //taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
       subTotalAmount =
           subTotalAmount + (item.orderedPrice * item.orderedQuantity);
@@ -618,9 +656,11 @@ class _CartWidgetState extends State<CartWidget> {
           log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
           if (attribute.options.isNotEmpty) {
             for (var options in attribute.options) {
-              //taxPercentage = taxPercentage + options.tax;
-              subTotalAmount = subTotalAmount + options.price;
-              log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+              if (options.selected) {
+                //taxPercentage = taxPercentage + options.tax;
+                subTotalAmount = subTotalAmount + options.price;
+                log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+              }
             }
           }
         }

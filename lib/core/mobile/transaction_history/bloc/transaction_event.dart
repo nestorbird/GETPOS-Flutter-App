@@ -9,8 +9,10 @@ class TransactionFetched extends TransactionEvent {}
 
 class TransactionSearched extends TransactionEvent {
   final String text;
+  final bool isSearchTextChanged;
 
-  TransactionSearched(this.text);
+  TransactionSearched(this.text, this.isSearchTextChanged);
+
   @override
-  List<Object> get props => [text];
+  List<Object> get props => [text, isSearchTextChanged];
 }

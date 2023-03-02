@@ -56,6 +56,15 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   package_info_plus: ^1.4.3
   flutter_expandable_fab: ^1.6.1
+  showcaseview: ^2.0.0+1
+  firebase_core: ^2.4.1
+  firebase_crashlytics: ^3.0.11
+  #printing: ^5.10.1
+  esc_pos_printer: ^4.1.0
+  esc_pos_utils: ^1.1.0
+  ping_discover_network: ^0.2.0+1
+  qr_flutter: ^3.2.0
+  wifi: ^0.1.5
 
 dev_dependencies:
   flutter_test:

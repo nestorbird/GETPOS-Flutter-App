@@ -4,17 +4,17 @@ import '../../constants/app_constants.dart';
 import '../api_helper/api_server.dart';
 
 ///Base API URL for development environment
-const DEV_URL = 'https://pos.nestorbird.com/api/';
-const DEV_ERP_URL = 'pos.nestorbird.com';
+const DEV_URL = 'https://getpos.in/api/';
+const DEV_ERP_URL = 'getpos.in';
 // const DEV_URL = 'https://agriboratest.nestorhawk.com/api/';
 
 ///Base API URL for staging/test environment
 const TEST_URL = 'https://tst.erp.nbpos.com/api/';
-const TEST_ERP_URL = 'pos.nestorbird.com';
+const TEST_ERP_URL = 'getpos.in';
 
 ///Base API URL for production environment
 const PROD_URL = 'https://prd.erp.nbpos.com/api/';
-const PROD_ERP_URL = 'pos.nestorbird.com';
+const PROD_ERP_URL = 'getpos.in';
 
 ///Default URL for POS instance
 String instanceUrl = ENVIRONMENT == ApiServer.DEV
@@ -67,3 +67,6 @@ const CHANGE_PASSWORD_PATH = 'method/nbpos.nbpos.api.change_password';
 // New Product api with category and variants
 const CATEGORY_PRODUCTS_PATH =
     'method/nbpos.custom_api.item_variant_api.get_items';
+
+//PROMO CODES API PATH
+const GET_ALL_PROMO_CODES_PATH = '';

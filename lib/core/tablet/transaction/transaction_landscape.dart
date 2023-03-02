@@ -11,6 +11,7 @@ import '../widget/title_search_bar.dart';
 
 class TransactionLandscape extends StatefulWidget {
   final RxString selectedView;
+
   const TransactionLandscape({Key? key, required this.selectedView})
       : super(key: key);
 
@@ -21,6 +22,7 @@ class TransactionLandscape extends StatefulWidget {
 class _TransactionLandscapeState extends State<TransactionLandscape> {
   final _scrollController = ScrollController();
   late TextEditingController searchCtrl;
+
   // List<Transaction> orders = [];
   // List<Transaction> ordersToShow = [];
   // bool isCustomersFound = true;
@@ -42,7 +44,16 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<TransactionBloc>().add(TransactionFetched());
+    // if (_isBottom) context.read<TransactionBloc>().add(TransactionFetched());
+    if (_isBottom) {
+      if (searchCtrl.text.isEmpty) {
+        context.read<TransactionBloc>().add(TransactionFetched());
+      } else {
+        context
+            .read<TransactionBloc>()
+            .add(TransactionSearched(searchCtrl.text, false));
+      }
+    }
   }
 
   bool get _isBottom {
@@ -61,10 +72,28 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           parkedOrderVisible: true,
           title: "Order History",
           onSubmit: (text) {
-            context.read<TransactionBloc>().add(TransactionSearched(text));
+            // context
+            //     .read<TransactionBloc>()
+            //     .add(TransactionSearched(text, true));
+            if (text.isEmpty) {
+              context.read<TransactionBloc>().state.orders.clear();
+              context.read<TransactionBloc>().add(TransactionFetched());
+            } else {
+              context
+                  .read<TransactionBloc>()
+                  .add(TransactionSearched(text, true));
+            }
           },
-          onTextChanged: (val) {
-            context.read<TransactionBloc>().add(TransactionSearched(val));
+          onTextChanged: (text) {
+            //context.read<TransactionBloc>().add(TransactionSearched(val, true));
+            if (text.isEmpty) {
+              context.read<TransactionBloc>().state.orders.clear();
+              context.read<TransactionBloc>().add(TransactionFetched());
+            } else {
+              context
+                  .read<TransactionBloc>()
+                  .add(TransactionSearched(text, true));
+            }
           },
           parkOrderClicked: () {
             widget.selectedView.value = "Parked Order";
@@ -73,7 +102,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
             debugPrint("parked order clicked");
           },
           searchCtrl: searchCtrl,
-          searchHint: "Order Id",
+          searchHint: "Customer mobile number",
         ),
         hightSpacer20,
         BlocBuilder<TransactionBloc, TransactionState>(

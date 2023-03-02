@@ -61,6 +61,8 @@ class HubManagerDetails {
           cashBalance: hubManagerData.balance.toDouble(),
         );
 
+        appCurrency = hubManagerData.appCurrency;
+
         //Saving the HubManager data into the database
         await dbHubManager.addManager(hubManager);
 

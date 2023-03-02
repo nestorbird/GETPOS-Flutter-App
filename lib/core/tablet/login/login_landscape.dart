@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
-
 import '../../../../../network/api_helper/comman_response.dart';
 import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
@@ -16,7 +16,6 @@ import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
-
 import '../../../database/db_utils/db_instance_url.dart';
 import '../../../network/api_constants/api_paths.dart';
 import '../../mobile/webview_screens/enums/topic_types.dart';
@@ -189,7 +188,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             boxDecoration: txtFieldBoxShadowDecoration,
             txtCtrl: _emailCtrl,
             verticalContentPadding: 16,
-            hintText: "Enter ID",
+            hintText: "Email",
           ),
         ),
       );
@@ -245,46 +244,56 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color: GREY_COLOR,
+                  color: DARK_GREY_COLOR,
                   fontSize: LARGE_MINUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.push(
-                            ctx,
-                            MaterialPageRoute(
-                                builder: (context) => const WebViewScreen(
+                        if (isValidInstanceUrl()) {
+                          Navigator.push(
+                              ctx,
+                              MaterialPageRoute(
+                                  builder: (context) => WebViewScreen(
                                       topicTypes:
                                           TopicTypes.TERMS_AND_CONDITIONS,
-                                    )));
+                                      apiUrl:
+                                          "https://${_urlCtrl.text}/api/")));
+                        } else {
+                          Helper.showPopup(context, INVALID_URL);
+                        }
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
                         color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color: GREY_COLOR,
+                        color: DARK_GREY_COLOR,
                         fontWeight: FontWeight.normal,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        Navigator.push(
-                            ctx,
-                            MaterialPageRoute(
-                                builder: (context) => const WebViewScreen(
+                        if (isValidInstanceUrl()) {
+                          Navigator.push(
+                              ctx,
+                              MaterialPageRoute(
+                                  builder: (context) => WebViewScreen(
                                       topicTypes: TopicTypes.PRIVACY_POLICY,
-                                    )));
+                                      apiUrl:
+                                          "https://${_urlCtrl.text}/api/")));
+                        } else {
+                          Helper.showPopup(context, INVALID_URL);
+                        }
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
                         color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
               ]),
         ),
@@ -306,4 +315,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           fontSize: LARGE_PLUS_FONT_SIZE,
         ),
       );
+
+  ///Method to check whether the API URL is correct.
+  bool isValidInstanceUrl() {
+    String url = "https://${_urlCtrl.text}/api/";
+    return Helper.isValidUrl(url);
+  }
 }

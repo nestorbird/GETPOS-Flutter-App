@@ -15,13 +15,15 @@ class SearchWidget extends StatefulWidget {
   final TextEditingController? searchTextController;
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
+  final TextInputType keyboardType;
 
   SearchWidget(
       {Key? key,
       this.searchHint,
       this.searchTextController,
       this.onTextChanged,
-      this.onSubmit})
+      this.onSubmit,
+      this.keyboardType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -38,6 +40,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
         cursorColor: BLACK_COLOR,
         controller: widget.searchTextController,
+        keyboardType: widget.keyboardType,
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.done,
         autocorrect: true,

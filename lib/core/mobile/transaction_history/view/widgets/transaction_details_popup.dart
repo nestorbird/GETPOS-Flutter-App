@@ -92,7 +92,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      '₹ ${order.orderAmount}',
+                      '$appCurrency ${order.orderAmount}',
                       style: getTextStyle(
                           color: MAIN_COLOR,
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -107,11 +107,11 @@ class TransactionDetailsPopup extends StatelessWidget {
                 _getOrderDetails(),
                 hightSpacer20,
                 _promoCodeSection(),
-                _subtotalSection("Subtotal", "$APP_CURRENCY 0.00"),
-                _subtotalSection("Discount", "- $APP_CURRENCY 0.00",
+                _subtotalSection("Subtotal", "$appCurrency 0.00"),
+                _subtotalSection("Discount", "- $appCurrency 0.00",
                     isDiscount: true),
-                _subtotalSection("Tax (0%)", "$APP_CURRENCY 0.00"),
-                _totalSection("Total", "$APP_CURRENCY ${order.orderAmount}"),
+                _subtotalSection("Tax (0%)", "$appCurrency 0.00"),
+                _totalSection("Total", "$appCurrency ${order.orderAmount}"),
               ],
             ),
           ),
@@ -151,7 +151,7 @@ class TransactionDetailsPopup extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "₹ ${order.items[index].price.toStringAsFixed(2)}",
+                "$appCurrency ${order.items[index].price.toStringAsFixed(2)}",
                 style: getTextStyle(
                     color: GREEN_COLOR,
                     fontSize: MEDIUM_PLUS_FONT_SIZE,

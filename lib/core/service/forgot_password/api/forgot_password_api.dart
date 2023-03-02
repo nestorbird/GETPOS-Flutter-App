@@ -6,12 +6,22 @@ import '../../../../../network/service/api_utils.dart';
 import '../../../../../utils/helper.dart';
 
 class ForgotPasswordApi {
-  Future<CommanResponse> sendResetPasswordMail(String email, String instanceUrl) async {
+  Future<CommanResponse> sendResetPasswordMail(
+      String email, String instanceUrl) async {
+    if (!_isvalidUrl(instanceUrl)) {
+      return CommanResponse(status: false, message: INVALID_URL);
+    }
+
+    if (!isValidEmail(email)) {
+      //Return the email validation failed Response
+      return CommanResponse(status: false, message: INVALID_EMAIL);
+    }
+
     if (await Helper.isNetworkAvailable()) {
-      String apiUrl = FORGET_PASSWORD;
+      String apiUrl = instanceUrl + FORGET_PASSWORD;
       apiUrl += '?user=$email';
 
-      var apiResponse = await APIUtils.getRequest(apiUrl);
+      var apiResponse = await APIUtils.getRequestWithCompleteUrl(apiUrl);
       if (apiResponse["message"]["success_key"] == 1) {
         return CommanResponse(
             status: true,
@@ -34,5 +44,21 @@ class ForgotPasswordApi {
           message: NO_INTERNET,
           apiStatus: ApiStatus.NO_INTERNET);
     }
+  }
+
+  ///Function to check whether the input URL is valid or not
+  static bool _isvalidUrl(String url) {
+    // Regex to check valid URL
+    String regex =
+        "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
+
+    return RegExp(regex).hasMatch(url);
+  }
+
+  ///Function to check whether email is in correct format or not.
+  static bool isValidEmail(String email) {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
   }
 }

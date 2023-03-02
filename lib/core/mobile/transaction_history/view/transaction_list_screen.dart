@@ -41,77 +41,95 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<TransactionBloc>().add(TransactionFetched());
+    if (_isBottom) {
+      if (_searchTransactionCtrl.text.isEmpty) {
+        context.read<TransactionBloc>().add(TransactionFetched());
+      } else {
+        context
+            .read<TransactionBloc>()
+            .add(TransactionSearched(_searchTransactionCtrl.text, false));
+      }
+    }
   }
 
   bool get _isBottom {
     if (!_scrollController.hasClients) return false;
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.offset;
-    return currentScroll >= (maxScroll * 0.8);
+    return currentScroll <= (maxScroll * 0.8);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CustomAppbar(title: SALES_HISTORY_TXT, hideSidemenu: true),
-            hightSpacer10,
-            Padding(
-                padding: horizontalSpace(),
-                child: SearchWidget(
-                  searchHint: SEARCH_HINT_TXT,
-                  searchTextController: _searchTransactionCtrl,
-                  onTextChanged: (text) {
+    return SafeArea(
+        child: Scaffold(
+      body: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const CustomAppbar(title: SALES_HISTORY_TXT, hideSidemenu: true),
+          hightSpacer10,
+          Padding(
+              padding: horizontalSpace(),
+              child: SearchWidget(
+                searchHint: SEARCH_HINT_TXT,
+                searchTextController: _searchTransactionCtrl,
+                keyboardType: TextInputType.phone,
+                onTextChanged: (text) {
+                  if (text.isEmpty) {
+                    context.read<TransactionBloc>().state.orders.clear();
+                    context.read<TransactionBloc>().add(TransactionFetched());
+                  } else {
                     context
                         .read<TransactionBloc>()
-                        .add(TransactionSearched(text));
-                  },
-                  onSubmit: (text) {
-                    context
-                        .read<TransactionBloc>()
-                        .add(TransactionSearched(text));
-                  },
-                )),
-            hightSpacer10,
-            BlocBuilder<TransactionBloc, TransactionState>(
-                builder: (context, state) {
-              switch (state.status) {
-                case TransactionStatus.failure:
-                  return const Center(
-                    child: Text("Failed to fetch transactions"),
-                  );
-                case TransactionStatus.success:
-                  if (state.orders.isEmpty) {
-                    return const Center(
-                      child: Text("No orders"),
-                    );
+                        .add(TransactionSearched(text, true));
                   }
-
-                  return Expanded(
-                    child: ListView.builder(
-                        itemCount: state.hasReachedMax
-                            ? state.orders.length
-                            : state.orders.length + 1,
-                        controller: _scrollController,
-                        itemBuilder: (BuildContext context, int index) {
-                          return index >= state.orders.length
-                              ? const Visibility(
-                                  visible: false, child: BottomLoader())
-                              : TransactionItem(order: state.orders[index]);
-                        }),
-                  );
-                default:
+                },
+                onSubmit: (text) {
+                  if (text.isEmpty) {
+                    context.read<TransactionBloc>().state.orders.clear();
+                    context.read<TransactionBloc>().add(TransactionFetched());
+                  } else {
+                    context
+                        .read<TransactionBloc>()
+                        .add(TransactionSearched(text, true));
+                  }
+                },
+              )),
+          hightSpacer10,
+          BlocBuilder<TransactionBloc, TransactionState>(
+              builder: (context, state) {
+            switch (state.status) {
+              case TransactionStatus.failure:
+                return const Center(
+                  child: Text("Failed to fetch transactions"),
+                );
+              case TransactionStatus.success:
+                if (state.orders.isEmpty) {
                   return const Center(
-                    child: CircularProgressIndicator(),
+                    child: Text("No orders"),
                   );
-              }
-            }),
-          ],
-        ),
+                }
+
+                return Expanded(
+                  child: ListView.builder(
+                      itemCount: state.hasReachedMax
+                          ? state.orders.length
+                          : state.orders.length + 1,
+                      controller: _scrollController,
+                      itemBuilder: (BuildContext context, int index) {
+                        return index >= state.orders.length
+                            ? const Visibility(
+                                visible: false, child: BottomLoader())
+                            : TransactionItem(order: state.orders[index]);
+                      }),
+                );
+              default:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+            }
+          }),
+        ],
       ),
       extendBodyBehindAppBar: true,
       bottomNavigationBar: Container(
@@ -135,6 +153,6 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                   color: WHITE_COLOR),
             )),
       ),
-    );
+    ));
   }
 }
