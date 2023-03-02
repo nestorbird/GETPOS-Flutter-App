@@ -4,7 +4,7 @@ project(nb_posx LANGUAGES CXX)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
-set(BINARY_NAME "nb_posx")
+set(BINARY_NAME "GETPOS")
 
 # Explicitly opt in to modern CMake behaviors to avoid warnings with recent
 # versions of CMake.
@@ -21,7 +21,7 @@ else()
       STRING "Flutter build mode" FORCE)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
       "Debug" "Profile" "Release")
-  endif()
+  endif() 
 endif()
 # Define settings for the Profile build mode.
 set(CMAKE_EXE_LINKER_FLAGS_PROFILE "${CMAKE_EXE_LINKER_FLAGS_RELEASE}")

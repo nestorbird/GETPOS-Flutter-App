@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.nestorbird" "\0"
-            VALUE "FileDescription", "nb_posx" "\0"
+            VALUE "CompanyName", "NestorBird" "\0"
+            VALUE "FileDescription", "GETPOS Windows Desktop app" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "nb_posx" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 com.nestorbird. All rights reserved." "\0"
+            VALUE "InternalName", "GETPOS Windows" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 NestorBird. All rights reserved." "\0"
             VALUE "OriginalFilename", "nb_posx.exe" "\0"
-            VALUE "ProductName", "nb_posx" "\0"
+            VALUE "ProductName", "GETPOS" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
