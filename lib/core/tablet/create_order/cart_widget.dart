@@ -549,7 +549,7 @@ class _CartWidgetState extends State<CartWidget> {
         manager: Helper.hubManager!,
         items: currentCart!.items,
         transactionId: '',
-        paymentMethod: selectedCashMode ? "Cash" : "Card",
+        paymentMethod: selectedCashMode ? "Cash" : "Cash",
         paymentStatus: "Paid",
         transactionSynced: false,
         parkOrderId:
@@ -607,7 +607,7 @@ class _CartWidgetState extends State<CartWidget> {
     totalItems = 0;
     taxPercentage = 0;
     for (OrderItem item in items) {
-      taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+     // taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
       subTotalAmount =
           subTotalAmount + (item.orderedPrice * item.orderedQuantity);
@@ -618,7 +618,7 @@ class _CartWidgetState extends State<CartWidget> {
           log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
           if (attribute.options.isNotEmpty) {
             for (var options in attribute.options) {
-              taxPercentage = taxPercentage + options.tax;
+              //taxPercentage = taxPercentage + options.tax;
               subTotalAmount = subTotalAmount + options.price;
               log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
             }
@@ -626,7 +626,7 @@ class _CartWidgetState extends State<CartWidget> {
         }
       }
     }
-    taxAmount = (subTotalAmount / 100) * taxPercentage;
+    //taxAmount = (subTotalAmount / 100) * taxPercentage;
     totalAmount = subTotalAmount + taxAmount;
     log('Subtotal :: $subTotalAmount');
     log('Tax percentage :: $taxAmount');

@@ -80,7 +80,9 @@ class ProductsService {
                 productImage: imageBytes,
                 productImageUrl: item.image,
                 productUpdatedTime: DateTime.now(),
-                tax: item.tax != null ? item.tax!.first.taxRate! : 0.0);
+                tax: item.tax != null && item.tax!.isNotEmpty
+                    ? item.tax!.first.taxRate!
+                    : 0.0);
 
             products.add(product);
           });
