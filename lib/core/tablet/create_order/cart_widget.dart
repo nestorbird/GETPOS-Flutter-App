@@ -184,8 +184,8 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
+        _prepareCart();
         if (currentCart != null) {
-          _prepareCart();
           isOrderProcessed = await _placeOrderHandler();
 
           // to be showed on successfull order placed

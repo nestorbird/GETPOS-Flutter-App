@@ -154,12 +154,15 @@ class Helper {
         pageBuilder: (context, animation, secondaryAnimation) {
           return SizedBox(
             height: 100,
-            child: SimplePopup(
-              message: message,
-              buttonText: OPTION_OK.toUpperCase(),
-              onOkPressed: () {
-                Navigator.pop(context);
-              },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 400 , right: 400),
+              child: SimplePopup(
+                message: message,
+                buttonText: OPTION_OK.toUpperCase(),
+                onOkPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
           );
         });
