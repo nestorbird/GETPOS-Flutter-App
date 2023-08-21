@@ -48,6 +48,18 @@ class DbCustomer {
     return list;
   }
 
+  Future<List<Customer>> getCustomerNo(String mobileNo) async {
+    box = await Hive.openBox<Customer>(CUSTOMER_BOX);
+    List<Customer> list = [];
+    for (var item in box.values) {
+      var customer = item as Customer;
+      if (customer.phone.contains(mobileNo)) {
+        list.add(customer);
+      }
+    }
+    return list;
+  }
+
   Future<Customer?> getCustomerDetails(String key) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     return box.get(key);
