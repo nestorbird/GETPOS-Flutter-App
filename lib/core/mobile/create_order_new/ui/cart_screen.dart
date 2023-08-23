@@ -495,7 +495,7 @@ class _CartScreenState extends State<CartScreen> {
             "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
         tracsactionDateTime: currentDateTime);
     if (!mounted) return;
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
             builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));

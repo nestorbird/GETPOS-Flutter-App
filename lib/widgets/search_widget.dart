@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../configs/theme_config.dart';
@@ -15,6 +16,7 @@ class SearchWidget extends StatefulWidget {
   final TextEditingController? searchTextController;
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
+  List<TextInputFormatter>? inputFormatters = [];
   final TextInputType keyboardType;
   VoidCallback? submit;
 
@@ -22,6 +24,7 @@ class SearchWidget extends StatefulWidget {
       {Key? key,
       this.searchHint,
       this.searchTextController,
+      this.inputFormatters,
       this.onTextChanged,
       this.onSubmit,
       this.submit,
@@ -43,6 +46,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         cursorColor: BLACK_COLOR,
         controller: widget.searchTextController,
         keyboardType: widget.keyboardType,
+        inputFormatters: widget.inputFormatters,
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.done,
         autocorrect: true,

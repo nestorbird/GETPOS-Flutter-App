@@ -149,7 +149,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         ),
                                       ],
                                     )),
-                                Align(
+                                /*  Align(
                                     alignment: Alignment.topRight,
                                     child: Stack(
                                       children: [
@@ -174,7 +174,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                   width: 25,
                                                 ))),
                                       ],
-                                    )),
+                                    )),*/
                               ],
                             )),
                         Visibility(

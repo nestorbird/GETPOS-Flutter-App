@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 
@@ -64,11 +65,12 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
-                    if (text.isNotEmpty && text.length == 10) {
+                    if (text.isNotEmpty && text.length >= 1) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -76,7 +78,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                     // }
                   },
                   onSubmit: (text) {
-                    if (text.isNotEmpty && text.length == 10) {
+                    if (text.isNotEmpty && text.length >= 1) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -129,7 +131,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
   ///If not available from api then load from local database
   Future<void> getCustomersFromDB(val) async {
     //Fetch the data from local database
-    customers = await DbCustomer().getCustomer(searchCtrl.text);
+    customers = await DbCustomer().getCustomerNo(searchCtrl.text);
 
     if (val == 0) setState(() {});
   }
