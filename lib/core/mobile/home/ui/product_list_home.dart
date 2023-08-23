@@ -41,6 +41,7 @@ class ProductListHome extends StatefulWidget {
 
 class _ProductListHomeState extends State<ProductListHome> {
   final _key = GlobalKey<ExpandableFabState>();
+
   final GlobalKey _focusKey = GlobalKey();
   late TextEditingController _searchTxtController;
   List<Product> products = [];
@@ -52,17 +53,31 @@ class _ProductListHomeState extends State<ProductListHome> {
   Customer? _selectedCust;
   final _scrollController = ScrollController();
 
-  // Define the fixed height for an item
-  final double _height = 80;
-
-  void _scrollToIndex(index) {
-    _scrollController.animateTo(_height * (3 + index),
-        duration: const Duration(seconds: 1), curve: Curves.easeIn);
+  double _scrollToOffset(int index) {
+    // Calculate the scroll offset for the given index
+    // You'll need to adjust this based on your actual item heights
+    double itemHeight = 350;
+    return itemHeight * index;
   }
+
+  void _scrollToIndex(int index) {
+    double offset = _scrollToOffset(index);
+    _scrollController.animateTo(offset,
+        duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
+  }
+
+  // Define the fixed height for an item
+  // double _height = 0.0;
+
+  // void _scrollToIndex(index) {
+  //   _scrollController.animateTo(_height * index,
+  //       duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
+  // }
 
   @override
   void initState() {
     super.initState();
+    // _height = MediaQuery.of(context).size.height;
     _searchTxtController = TextEditingController();
     if (widget.parkedOrder != null) {
       parkOrder = widget.parkedOrder;
@@ -71,6 +86,7 @@ class _ProductListHomeState extends State<ProductListHome> {
     if (widget.isForNewOrder && _selectedCust == null) {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
+
     _getManagerName();
     getProducts();
     //throw Exception();
@@ -79,480 +95,497 @@ class _ProductListHomeState extends State<ProductListHome> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      body: ShowCaseWidget(
-          builder: Builder(
-              builder: ((context) => SingleChildScrollView(
-                  controller: _scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // SizedBox(
-                      //   height: MediaQuery.of(context).size.height,
-                      //   width: MediaQuery.of(context).size.width,
-                      //   child: ModalBarrier(
-                      //   dismissible: true,
-                      //   color: _isModalVisible ? Colors.black.withOpacity(0.5) : Colors.transparent,
-                      // )
-                      // ),
-                      hightSpacer30,
-                      Visibility(
-                          visible: !widget.isForNewOrder,
-                          child: Stack(
-                            //mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Align(
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    children: [
-                                      Text(WELCOME_BACK,
-                                          style: getTextStyle(
-                                            fontSize: SMALL_FONT_SIZE,
-                                            color: MAIN_COLOR,
-                                            fontWeight: FontWeight.w500,
-                                          )),
-                                      hightSpacer5,
-                                      Text(
-                                        managerName,
-                                        style: getTextStyle(
-                                            fontSize: LARGE_FONT_SIZE,
-                                            color: DARK_GREY_COLOR),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ],
-                                  )),
-                              Align(
-                                  alignment: Alignment.topRight,
-                                  child: Stack(
-                                    children: [
-                                      Showcase(
-                                          key: _focusKey,
-                                          description:
-                                              'Tap here to create the new order',
-                                          child: IconButton(
-                                              onPressed: (() async {
-                                                await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const ProductListHome(
-                                                                isForNewOrder:
-                                                                    true)));
-                                                setState(() {});
-                                              }),
-                                              icon: SvgPicture.asset(
-                                                NEW_ORDER_ICON,
-                                                height: 25,
-                                                width: 25,
-                                              ))),
-                                    ],
-                                  )),
-                            ],
-                          )),
-                      Visibility(
-                          visible: widget.isForNewOrder,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              InkWell(
-                                onTap: () => Navigator.pop(context),
-                                child: Padding(
-                                  padding: smallPaddingAll(),
-                                  child: SvgPicture.asset(
-                                    BACK_IMAGE,
-                                    color: BLACK_COLOR,
-                                    width: 25,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                _selectedCust != null
-                                    ? _selectedCust!.name
-                                    : '',
-                                style: getTextStyle(
-                                    fontSize: LARGE_FONT_SIZE,
-                                    color: MAIN_COLOR),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Stack(alignment: Alignment.topCenter, children: [
-                                IconButton(
-                                  onPressed: (() async {
-                                    if (parkOrder != null &&
-                                        parkOrder!.items.isNotEmpty) {
-                                      await Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => CartScreen(
-                                                  order: parkOrder!)));
-                                      setState(() {});
-                                    } else {
-                                      Helper.showPopup(
-                                          context, "Your cart is empty");
-                                    }
-                                  }),
-                                  icon: SvgPicture.asset(
-                                    CART_ICON,
-                                    height: 25,
-                                    width: 25,
-                                  ),
-                                ),
-                                Visibility(
-                                    visible: parkOrder != null &&
-                                        parkOrder!.items.isNotEmpty,
-                                    child: Container(
-                                        padding: const EdgeInsets.all(6),
-                                        margin: const EdgeInsets.only(left: 20),
-                                        decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: MAIN_COLOR),
-                                        child: Text(
-                                          parkOrder != null
-                                              ? parkOrder!.items.length
-                                                  .toInt()
-                                                  .toString()
-                                              : "0",
-                                          style: getTextStyle(
-                                              fontSize: SMALL_FONT_SIZE,
-                                              color: WHITE_COLOR),
-                                        )))
-                              ])
-                            ],
-                          )),
-                      hightSpacer15,
-                      SearchWidget(
-                        searchHint: 'Search product/category',
-                        searchTextController: _searchTxtController,
-                        onTextChanged: ((changedtext) {
-                          if (changedtext.length >= 3) {
-                            _filterProductsCategories(changedtext);
-                          } else {
-                            getProducts();
-                          }
-                        }),
-                        onSubmit: (text) {
-                          if (text.length >= 3) {
-                            _filterProductsCategories(text);
-                          } else {
-                            getProducts();
-                          }
-                        },
-                      ),
-                      hightSpacer20,
-                      SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: categories.length,
-                              itemBuilder: (context, position) {
-                                return GestureDetector(
-                                    onTap: (() {
-                                      _scrollToIndex(position);
-                                    }),
+        child: GestureDetector(
+      onTap: () {
+        final state = _key.currentState;
+        if (state != null) {
+          debugPrint('isOpen:${state.isOpen}');
+          if (state.isOpen) {
+            state.toggle();
+          }
+        }
+      },
+      child: Scaffold(
+        body: ShowCaseWidget(
+            builder: Builder(
+                builder: ((context) => SingleChildScrollView(
+                    controller: _scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // SizedBox(
+                        //   height: MediaQuery.of(context).size.height,
+                        //   width: MediaQuery.of(context).size.width,
+                        //   child: ModalBarrier(
+                        //   dismissible: true,
+                        //   color: _isModalVisible ? Colors.black.withOpacity(0.5) : Colors.transparent,
+                        // )
+                        // ),
+                        hightSpacer30,
+                        Visibility(
+                            visible: !widget.isForNewOrder,
+                            child: Stack(
+                              //mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Align(
+                                    alignment: Alignment.center,
                                     child: Column(
-                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Container(
-                                          margin:
-                                              const EdgeInsets.only(left: 5),
-                                          height: 60,
-                                          clipBehavior:
-                                              Clip.antiAliasWithSaveLayer,
-                                          decoration: const BoxDecoration(
-                                              shape: BoxShape.circle),
-                                          child: categories[position]
-                                                  .items
-                                                  .first
-                                                  .productImage
-                                                  .isEmpty
-                                              ? Image.asset(
-                                                  PIZZA_IMAGE,
-                                                  fit: BoxFit.fill,
-                                                )
-                                              : Image.memory(
-                                                  categories[position]
-                                                      .items
-                                                      .first
-                                                      .productImage,
-                                                  fit: BoxFit.fill,
-                                                ),
-                                        ),
-                                        hightSpacer10,
+                                        Text(WELCOME_BACK,
+                                            style: getTextStyle(
+                                              fontSize: SMALL_FONT_SIZE,
+                                              color: MAIN_COLOR,
+                                              fontWeight: FontWeight.w500,
+                                            )),
+                                        hightSpacer5,
                                         Text(
-                                          categories[position].name,
+                                          managerName,
                                           style: getTextStyle(
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: SMALL_PLUS_FONT_SIZE),
-                                        )
+                                              fontSize: LARGE_FONT_SIZE,
+                                              color: DARK_GREY_COLOR),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ],
-                                    ));
-                              })),
-                      _getCategoryItems(),
-                      hightSpacer45
-                    ],
-                  ))))),
-      floatingActionButtonLocation: ExpandableFab.location,
-      floatingActionButton: Visibility(
-          visible: !widget.isForNewOrder,
-          child: ExpandableFab(
-            key: _key,
-            onOpen: (() {
-              // setState(() {
-              //   _isFABOpened = true;
-              // });
-            }),
-            onClose: (() {
-              // setState(() {
-              //   _isFABOpened = false;
-              // });
-            }),
-            type: ExpandableFabType.up,
-            distance: 80,
-            backgroundColor: LIGHT_BLACK_COLOR,
-            child: SvgPicture.asset(
-              FAB_MAIN_ICON,
-              height: 55,
-              width: 55,
-            ),
-            closeButtonStyle: ExpandableFabCloseButtonStyle(
-                child: SvgPicture.asset(
-              FAB_MAIN_ICON,
-              height: 55,
-              width: 55,
+                                    )),
+                                Align(
+                                    alignment: Alignment.topRight,
+                                    child: Stack(
+                                      children: [
+                                        Showcase(
+                                            key: _focusKey,
+                                            description:
+                                                'Tap here to create the new order',
+                                            child: IconButton(
+                                                onPressed: (() async {
+                                                  await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const ProductListHome(
+                                                                  isForNewOrder:
+                                                                      true)));
+                                                  setState(() {});
+                                                }),
+                                                icon: SvgPicture.asset(
+                                                  NEW_ORDER_ICON,
+                                                  height: 25,
+                                                  width: 25,
+                                                ))),
+                                      ],
+                                    )),
+                              ],
+                            )),
+                        Visibility(
+                            visible: widget.isForNewOrder,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                  onTap: () => Navigator.pop(context),
+                                  child: Padding(
+                                    padding: smallPaddingAll(),
+                                    child: SvgPicture.asset(
+                                      BACK_IMAGE,
+                                      color: BLACK_COLOR,
+                                      width: 25,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  _selectedCust != null
+                                      ? _selectedCust!.name
+                                      : '',
+                                  style: getTextStyle(
+                                      fontSize: LARGE_FONT_SIZE,
+                                      color: MAIN_COLOR),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                Stack(
+                                    alignment: Alignment.topCenter,
+                                    children: [
+                                      IconButton(
+                                        onPressed: (() async {
+                                          if (parkOrder != null &&
+                                              parkOrder!.items.isNotEmpty) {
+                                            await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        CartScreen(
+                                                            order:
+                                                                parkOrder!)));
+                                            setState(() {});
+                                          } else {
+                                            Helper.showPopup(
+                                                context, "Your cart is empty");
+                                          }
+                                        }),
+                                        icon: SvgPicture.asset(
+                                          CART_ICON,
+                                          height: 25,
+                                          width: 25,
+                                        ),
+                                      ),
+                                      Visibility(
+                                          visible: parkOrder != null &&
+                                              parkOrder!.items.isNotEmpty,
+                                          child: Container(
+                                              padding: const EdgeInsets.all(6),
+                                              margin: const EdgeInsets.only(
+                                                  left: 20),
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: MAIN_COLOR),
+                                              child: Text(
+                                                parkOrder != null
+                                                    ? parkOrder!.items.length
+                                                        .toInt()
+                                                        .toString()
+                                                    : "0",
+                                                style: getTextStyle(
+                                                    fontSize: SMALL_FONT_SIZE,
+                                                    color: WHITE_COLOR),
+                                              )))
+                                    ])
+                              ],
+                            )),
+                        hightSpacer15,
+                        SearchWidget(
+                          searchHint: 'Search product/category',
+                          searchTextController: _searchTxtController,
+                          onTextChanged: ((changedtext) {
+                            if (changedtext.length < 3) {
+                              getProducts();
+                              // _filterProductsCategories(changedtext);
+                            }
+                          }),
+                          submit: () {
+                            if (_searchTxtController.text.length >= 3) {
+                              _filterProductsCategories(
+                                  _searchTxtController.text);
+                            } else {
+                              getProducts();
+                            }
+                          },
+                        ),
+                        hightSpacer20,
+                        SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: categories.length,
+                                itemBuilder: (context, position) {
+                                  return GestureDetector(
+                                      onTap: (() {
+                                        _scrollToIndex(position);
+                                      }),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 5),
+                                            height: 60,
+                                            clipBehavior:
+                                                Clip.antiAliasWithSaveLayer,
+                                            decoration: const BoxDecoration(
+                                                shape: BoxShape.circle),
+                                            child: categories[position]
+                                                    .items
+                                                    .first
+                                                    .productImage
+                                                    .isEmpty
+                                                ? Image.asset(
+                                                    PIZZA_IMAGE,
+                                                    fit: BoxFit.fill,
+                                                  )
+                                                : Image.memory(
+                                                    categories[position]
+                                                        .items
+                                                        .first
+                                                        .productImage,
+                                                    fit: BoxFit.fill,
+                                                  ),
+                                          ),
+                                          hightSpacer10,
+                                          Text(
+                                            categories[position].name,
+                                            style: getTextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: SMALL_PLUS_FONT_SIZE),
+                                          )
+                                        ],
+                                      ));
+                                })),
+                        _getCategoryItems(),
+                        hightSpacer45
+                      ],
+                    ))))),
+        floatingActionButtonLocation: ExpandableFab.location,
+        floatingActionButton: Visibility(
+            visible: !widget.isForNewOrder,
+            child: ExpandableFab(
+              key: _key,
+              onOpen: (() {
+                // setState(() {
+                //   _isFABOpened = true;
+                // });
+              }),
+              onClose: (() {
+                // setState(() {
+                //   _isFABOpened = false;
+                // });
+              }),
+              type: ExpandableFabType.up,
+              distance: 80,
+              backgroundColor: LIGHT_BLACK_COLOR,
+              child: SvgPicture.asset(
+                FAB_MAIN_ICON,
+                height: 55,
+                width: 55,
+              ),
+              closeButtonStyle: ExpandableFabCloseButtonStyle(
+                  child: SvgPicture.asset(
+                FAB_MAIN_ICON,
+                height: 55,
+                width: 55,
+              )),
+              children: [
+                SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: FloatingActionButton(
+                      heroTag: 'finance',
+                      onPressed: (() async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Finance()));
+                        _key.currentState!.toggle();
+                        setState(() {});
+                      }),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      backgroundColor: WHITE_COLOR,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            FAB_FINANCE_ICON,
+                            color: BLACK_COLOR,
+                            height: 25,
+                            width: 25,
+                          ),
+                          hightSpacer5,
+                          Text('Finance',
+                              style: getTextStyle(
+                                  fontSize: SMALL_FONT_SIZE,
+                                  fontWeight: FontWeight.w600))
+                        ],
+                      )),
+                ),
+                SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: FloatingActionButton(
+                      heroTag: 'account',
+                      onPressed: (() async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyAccount()));
+                        _key.currentState!.toggle();
+                        setState(() {});
+                      }),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      backgroundColor: WHITE_COLOR,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            FAB_ACCOUNT_ICON,
+                            color: BLACK_COLOR,
+                            height: 25,
+                            width: 25,
+                          ),
+                          hightSpacer5,
+                          Text('My Profile',
+                              textAlign: TextAlign.center,
+                              style: getTextStyle(
+                                  fontSize: SMALL_FONT_SIZE,
+                                  fontWeight: FontWeight.w600))
+                        ],
+                      )),
+                ),
+                SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: FloatingActionButton(
+                      heroTag: 'transactions',
+                      onPressed: (() async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const TransactionScreen()));
+                        _key.currentState!.toggle();
+                        setState(() {});
+                      }),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      backgroundColor: WHITE_COLOR,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            FAB_HISTORY_ICON,
+                            color: BLACK_COLOR,
+                            height: 25,
+                            width: 25,
+                          ),
+                          hightSpacer5,
+                          Text('History',
+                              textAlign: TextAlign.center,
+                              style: getTextStyle(
+                                  fontSize: SMALL_FONT_SIZE,
+                                  fontWeight: FontWeight.w600))
+                        ],
+                      )),
+                ),
+                SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: FloatingActionButton(
+                      heroTag: 'customers',
+                      onPressed: (() async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Customers()));
+                        _key.currentState!.toggle();
+                        setState(() {});
+                      }),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      backgroundColor: WHITE_COLOR,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            FAB_CUSTOMERS_ICON,
+                            color: BLACK_COLOR,
+                            height: 25,
+                            width: 25,
+                          ),
+                          hightSpacer5,
+                          Text('Customer',
+                              style: getTextStyle(
+                                  fontSize: SMALL_FONT_SIZE,
+                                  fontWeight: FontWeight.w600))
+                        ],
+                      )),
+                ),
+                // SizedBox(
+                //   height: 70,
+                //   width: 70,
+                //   child: FloatingActionButton(
+                //       heroTag: 'products',
+                //       onPressed: (() {
+                //         Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //                 builder: (context) => const Products()));
+                //       }),
+                //       shape: const RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.all(Radius.circular(8))),
+                //       backgroundColor: WHITE_COLOR,
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           SvgPicture.asset(
+                //             FAB_PRODUCTS_ICON,
+                //             color: BLACK_COLOR,
+                //             height: 25,
+                //             width: 25,
+                //           ),
+                //           hightSpacer5,
+                //           Text('Product',
+                //               style: getTextStyle(
+                //                   fontSize: SMALL_FONT_SIZE,
+                //                   fontWeight: FontWeight.normal))
+                //         ],
+                //       )),
+                // ),
+                SizedBox(
+                  height: 70,
+                  width: 70,
+                  child: FloatingActionButton(
+                      heroTag: 'create order',
+                      onPressed: (() async {
+                        await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const ProductListHome(
+                                    isForNewOrder: true)));
+                        _key.currentState!.toggle();
+                        setState(() {});
+                      }),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      backgroundColor: WHITE_COLOR,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            FAB_ORDERS_ICON,
+                            color: BLACK_COLOR,
+                            height: 25,
+                            width: 25,
+                          ),
+                          hightSpacer5,
+                          Text('Order',
+                              style: getTextStyle(
+                                  fontSize: SMALL_FONT_SIZE,
+                                  fontWeight: FontWeight.w600))
+                        ],
+                      )),
+                ),
+                // SizedBox(
+                //   height: 70,
+                //   width: 70,
+                //   child: FloatingActionButton(
+                //       heroTag: 'home',
+                //       onPressed: (() {
+                //         _key.currentState!.toggle();
+                //       }),
+                //       shape: const RoundedRectangleBorder(
+                //           borderRadius: BorderRadius.all(Radius.circular(8))),
+                //       backgroundColor: WHITE_COLOR,
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           SvgPicture.asset(
+                //             FAB_HOME_ICON,
+                //             color: BLACK_COLOR,
+                //             height: 25,
+                //             width: 25,
+                //           ),
+                //           hightSpacer5,
+                //           Text('Home',
+                //               style: getTextStyle(
+                //                   fontSize: SMALL_FONT_SIZE,
+                //                   fontWeight: FontWeight.w600))
+                //         ],
+                //       )),
+                // ),
+              ],
             )),
-            children: [
-              SizedBox(
-                height: 70,
-                width: 70,
-                child: FloatingActionButton(
-                    heroTag: 'finance',
-                    onPressed: (() async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Finance()));
-                      _key.currentState!.toggle();
-                      setState(() {});
-                    }),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    backgroundColor: WHITE_COLOR,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          FAB_FINANCE_ICON,
-                          color: BLACK_COLOR,
-                          height: 25,
-                          width: 25,
-                        ),
-                        hightSpacer5,
-                        Text('Finance',
-                            style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.w600))
-                      ],
-                    )),
-              ),
-              SizedBox(
-                height: 70,
-                width: 70,
-                child: FloatingActionButton(
-                    heroTag: 'account',
-                    onPressed: (() async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const MyAccount()));
-                      _key.currentState!.toggle();
-                      setState(() {});
-                    }),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    backgroundColor: WHITE_COLOR,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          FAB_ACCOUNT_ICON,
-                          color: BLACK_COLOR,
-                          height: 25,
-                          width: 25,
-                        ),
-                        hightSpacer5,
-                        Text('My Profile',
-                            textAlign: TextAlign.center,
-                            style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.w600))
-                      ],
-                    )),
-              ),
-              SizedBox(
-                height: 70,
-                width: 70,
-                child: FloatingActionButton(
-                    heroTag: 'transactions',
-                    onPressed: (() async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const TransactionScreen()));
-                      _key.currentState!.toggle();
-                      setState(() {});
-                    }),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    backgroundColor: WHITE_COLOR,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          FAB_HISTORY_ICON,
-                          color: BLACK_COLOR,
-                          height: 25,
-                          width: 25,
-                        ),
-                        hightSpacer5,
-                        Text('History',
-                            textAlign: TextAlign.center,
-                            style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.w600))
-                      ],
-                    )),
-              ),
-              SizedBox(
-                height: 70,
-                width: 70,
-                child: FloatingActionButton(
-                    heroTag: 'customers',
-                    onPressed: (() async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Customers()));
-                      _key.currentState!.toggle();
-                      setState(() {});
-                    }),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    backgroundColor: WHITE_COLOR,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          FAB_CUSTOMERS_ICON,
-                          color: BLACK_COLOR,
-                          height: 25,
-                          width: 25,
-                        ),
-                        hightSpacer5,
-                        Text('Customer',
-                            style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.w600))
-                      ],
-                    )),
-              ),
-              // SizedBox(
-              //   height: 70,
-              //   width: 70,
-              //   child: FloatingActionButton(
-              //       heroTag: 'products',
-              //       onPressed: (() {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) => const Products()));
-              //       }),
-              //       shape: const RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.all(Radius.circular(8))),
-              //       backgroundColor: WHITE_COLOR,
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           SvgPicture.asset(
-              //             FAB_PRODUCTS_ICON,
-              //             color: BLACK_COLOR,
-              //             height: 25,
-              //             width: 25,
-              //           ),
-              //           hightSpacer5,
-              //           Text('Product',
-              //               style: getTextStyle(
-              //                   fontSize: SMALL_FONT_SIZE,
-              //                   fontWeight: FontWeight.normal))
-              //         ],
-              //       )),
-              // ),
-              SizedBox(
-                height: 70,
-                width: 70,
-                child: FloatingActionButton(
-                    heroTag: 'create order',
-                    onPressed: (() async {
-                      await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ProductListHome(isForNewOrder: true)));
-                      _key.currentState!.toggle();
-                      setState(() {});
-                    }),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(8))),
-                    backgroundColor: WHITE_COLOR,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset(
-                          FAB_ORDERS_ICON,
-                          color: BLACK_COLOR,
-                          height: 25,
-                          width: 25,
-                        ),
-                        hightSpacer5,
-                        Text('Order',
-                            style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.w600))
-                      ],
-                    )),
-              ),
-              // SizedBox(
-              //   height: 70,
-              //   width: 70,
-              //   child: FloatingActionButton(
-              //       heroTag: 'home',
-              //       onPressed: (() {
-              //         _key.currentState!.toggle();
-              //       }),
-              //       shape: const RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.all(Radius.circular(8))),
-              //       backgroundColor: WHITE_COLOR,
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           SvgPicture.asset(
-              //             FAB_HOME_ICON,
-              //             color: BLACK_COLOR,
-              //             height: 25,
-              //             width: 25,
-              //           ),
-              //           hightSpacer5,
-              //           Text('Home',
-              //               style: getTextStyle(
-              //                   fontSize: SMALL_FONT_SIZE,
-              //                   fontWeight: FontWeight.w600))
-              //         ],
-              //       )),
-              // ),
-            ],
-          )),
+      ),
     ));
   }
 

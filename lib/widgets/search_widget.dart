@@ -16,6 +16,7 @@ class SearchWidget extends StatefulWidget {
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
   final TextInputType keyboardType;
+  VoidCallback? submit;
 
   SearchWidget(
       {Key? key,
@@ -23,6 +24,7 @@ class SearchWidget extends StatefulWidget {
       this.searchTextController,
       this.onTextChanged,
       this.onSubmit,
+      this.submit,
       this.keyboardType = TextInputType.text})
       : super(key: key);
 
@@ -50,9 +52,12 @@ class _SearchWidgetState extends State<SearchWidget> {
           isDense: true,
           suffixIconColor: WHITE_COLOR,
           prefix: Padding(padding: leftSpace(x: 5)),
-          suffixIcon: SvgPicture.asset(
-            SEARCH_IMAGE,
-            width: 30,
+          suffixIcon: GestureDetector(
+            onTap: () => widget.submit!(),
+            child: SvgPicture.asset(
+              SEARCH_IMAGE,
+              width: 30,
+            ),
           ),
           // suffixIcon: widget.searchTextController!.text.isNotEmpty
           //     ? IconButton(

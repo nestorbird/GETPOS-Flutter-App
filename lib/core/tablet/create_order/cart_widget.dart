@@ -291,7 +291,7 @@ class _CartWidgetState extends State<CartWidget> {
                         child: Align(
                             alignment: Alignment.topLeft,
                             child: Text(
-                              _getItemVariants(item.attributes),
+                              "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
                               style: getTextStyle(
                                   fontSize: SMALL_FONT_SIZE,
                                   fontWeight: FontWeight.normal),
