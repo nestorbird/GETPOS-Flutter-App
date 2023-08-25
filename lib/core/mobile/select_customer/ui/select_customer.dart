@@ -58,6 +58,13 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
                     searchHint: SEARCH_HINT_TXT,
                     searchTextController: searchCustomerController,
                     onTextChanged: (text) {
+                      validateMyInput(String value) {
+                        RegExp regex = new RegExp(
+                            r'^(?=\D*(?:\d\D*){1,12}$)\d+(?:\.\d{1,4})?$');
+                        if (!regex.hasMatch(value)) return 'Enter Valid Number';
+                        return null;
+                      }
+
                       log('Changed text :: $text');
                       if (text.isNotEmpty) {
                         filterCustomerData(text);

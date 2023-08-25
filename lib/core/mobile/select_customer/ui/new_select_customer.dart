@@ -70,6 +70,10 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
+                    RegExp regex = new RegExp(
+                        r'^(?=\D*(?:\d\D*){1,12}$)\d+(?:\.\d{1,4})?$');
+                    if (!regex.hasMatch(text)) return 'Enter Valid Number';
+
                     if (text.isNotEmpty && text.length >= 1) {
                       filterCustomerData(text);
                     }

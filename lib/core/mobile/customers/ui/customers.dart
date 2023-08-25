@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import '../../../../../constants/app_constants.dart';
@@ -55,6 +56,7 @@ class _CustomersState extends State<Customers> {
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCustomerController,
                   keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onTextChanged: (text) {
                     if (text.isNotEmpty) {
                       filterCustomerData(text);

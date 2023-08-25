@@ -8,9 +8,9 @@ import '../../../../../utils/helper.dart';
 class ForgotPasswordApi {
   Future<CommanResponse> sendResetPasswordMail(
       String email, String instanceUrl) async {
-    if (!_isvalidUrl(instanceUrl)) {
+    /* if (!_isvalidUrl(instanceUrl)) {
       return CommanResponse(status: false, message: INVALID_URL);
-    }
+    }*/
 
     if (!isValidEmail(email)) {
       //Return the email validation failed Response
