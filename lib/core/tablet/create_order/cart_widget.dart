@@ -184,8 +184,8 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
+        _prepareCart();
         if (currentCart != null) {
-          _prepareCart();
           isOrderProcessed = await _placeOrderHandler();
 
           // to be showed on successfull order placed
@@ -291,7 +291,7 @@ class _CartWidgetState extends State<CartWidget> {
                         child: Align(
                             alignment: Alignment.topLeft,
                             child: Text(
-                              _getItemVariants(item.attributes),
+                              "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
                               style: getTextStyle(
                                   fontSize: SMALL_FONT_SIZE,
                                   fontWeight: FontWeight.normal),

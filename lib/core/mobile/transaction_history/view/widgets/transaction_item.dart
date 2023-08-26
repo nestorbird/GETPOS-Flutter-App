@@ -34,8 +34,13 @@ class TransactionItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '$SALES_ID - ${order.id}',
+                order.customer.name,
                 style: getTextStyle(fontSize: MEDIUM_FONT_SIZE),
+              ),
+              hightSpacer4,
+              Text(
+                '$SALES_ID - ${order.id}',
+                style: getTextStyle(fontSize: SMALL_FONT_SIZE),
               ),
               hightSpacer4,
               Text(

@@ -104,7 +104,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
             Text(
               widget.isUsedinVariantsPopup
                   ? 'Item Code - ${widget.product.id}'
-                  : _getItemVariants(widget.product.attributes),
+                  : "${_getItemVariants(widget.product.attributes)} x ${widget.product.orderedQuantity.toInt()}",
               style: getTextStyle(
                   fontSize: SMALL_FONT_SIZE, fontWeight: FontWeight.normal),
               overflow: TextOverflow.ellipsis,

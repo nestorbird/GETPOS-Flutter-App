@@ -114,7 +114,9 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
           //   getCustomersFromDB();
           // }
         },
-      ));
+      )
+      
+      );
 
   @override
   Widget build(BuildContext context) {
