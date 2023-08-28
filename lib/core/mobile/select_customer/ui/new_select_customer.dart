@@ -65,12 +65,12 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(12)],
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
-                    if (text.isNotEmpty && text.length >= 1) {
+                    if (text.isNotEmpty && text.isNotEmpty) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -78,7 +78,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                     // }
                   },
                   onSubmit: (text) {
-                    if (text.isNotEmpty && text.length >= 1) {
+                    if (text.isNotEmpty && text.isNotEmpty) {
                       filterCustomerData(text);
                     }
                     //else {

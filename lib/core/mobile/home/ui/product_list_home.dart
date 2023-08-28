@@ -624,6 +624,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       .toJson());
                               log('Selected Item :: $item');
                               _openItemDetailDialog(context, item);
+                              
                             } else {
                               Helper.showPopup(
                                   context, 'Sorry, item is not in stock.');

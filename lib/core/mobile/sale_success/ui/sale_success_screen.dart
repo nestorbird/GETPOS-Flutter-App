@@ -14,6 +14,7 @@ import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/long_button_widget.dart';
 import '../../../service/create_order/api/create_sales_order.dart';
 import '../../create_order_new/ui/new_create_order.dart';
+import '../../home/ui/product_list_home.dart';
 
 class SaleSuccessScreen extends StatefulWidget {
   final SaleOrder placedOrder;
@@ -54,7 +55,17 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async {
+        // Navigate to the HomeScreen when the back button is pressed
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => ProductListHome()
+          ),
+          (route) => false, // Remove all other routes from the stack
+        );
+        return false; // Prevent default back button behavior
+      }, child:Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -101,7 +112,7 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
           ),
         ],
       ),
-    );
+    ));
   }
 
   //TODO:: Need to handle the print receipt here

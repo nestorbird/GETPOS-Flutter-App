@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 

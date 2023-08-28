@@ -47,7 +47,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     _getHubManager();
     totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
-    paymentMethod = "Cash";
+   
   }
 
   @override
@@ -71,7 +71,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       PAYMENT_CASH_ICON, CASH_PAYMENT_TXT, _isCODSelected),
                   widthSpacer(16),
                   getPaymentOption(
-                      PAYMENT_CARD_ICON, CARD_PAYMENT_TXT, !_isCODSelected),
+                      PAYMENT_CARD_ICON, CARD_PAYMENT_TXT, _isCODSelected),
                 ],
               ),
             ),
@@ -83,12 +83,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         isAmountAndItemsVisible: true,
         totalAmount: '$totalAmount',
         totalItems: '$totalItems',
-        onTap: () => createSale(),
+        onTap: () => createSale(_isCODSelected?"Card":"Cash"),
       ),
     );
   }
 
-  getPaymentOption(String icon, String title, bool selected) {
+  getPaymentOption(String icon, String title, bool selected,) {
     return Expanded(
       child: InkWell(
         onTap: () {
@@ -123,9 +123,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  void createSale() async {
-    paymentMethod = "Cash";
+  createSale(String paymentMethod) async {
+    paymentMethod =paymentMethod;
+if(paymentMethod=="Card"){ return Helper.showPopup(context,
+              "Comming soon" );
 
+}else{
     DateTime currentDateTime = DateTime.now();
     String date =
         DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
@@ -155,7 +158,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
-  }
+  }}
 
   void _getHubManager() async {
     hubManager = await DbHubManager().getManager();

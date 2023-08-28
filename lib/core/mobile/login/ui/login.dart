@@ -114,7 +114,7 @@ class _LoginState extends State<Login> {
       Helper.showLoaderDialog(context);
 
       CommanResponse response = await LoginService.login(email, password, url);
-
+print(response);
       if (response.status!) {
         //Adding static data into the database
         // await addDataIntoDB();

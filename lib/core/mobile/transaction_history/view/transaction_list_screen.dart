@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_posx/configs/theme_config.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
@@ -73,7 +74,9 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
               child: SearchWidget(
                 searchHint: SEARCH_HINT_TXT,
                 searchTextController: _searchTransactionCtrl,
-                keyboardType: TextInputType.phone,
+              keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(12)],
+             
                 onTextChanged: (text) {
                   if (text.isEmpty) {
                     context.read<TransactionBloc>().state.orders.clear();

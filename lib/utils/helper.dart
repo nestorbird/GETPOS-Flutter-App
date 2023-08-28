@@ -5,7 +5,6 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_launcher_icons/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
 import 'package:nb_posx/database/models/park_order.dart';
@@ -26,7 +25,6 @@ import '../database/models/sale_order.dart';
 import '../widgets/popup_widget.dart';
 import 'ui_utils/padding_margin.dart';
 import 'ui_utils/text_styles/custom_text_style.dart';
-import 'dart:io';
 import 'package:image/image.dart' as img;
 
 class Helper {
@@ -329,7 +327,7 @@ class Helper {
         Navigator.push(
             // ignore: prefer_const_constructors
             context,
-            MaterialPageRoute(builder: (context) => Home()));
+            MaterialPageRoute(builder: (context) => const Home()));
       }
     };
     Map<String, dynamic> createOrderMenu = {

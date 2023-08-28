@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 //import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -24,7 +23,6 @@ import 'database/models/order_item.dart';
 import 'database/models/park_order.dart';
 import 'database/models/product.dart';
 import 'database/models/sale_order.dart';
-import 'firebase_options.dart';
 import 'utils/helpers/sync_helper.dart';
 
 bool isUserLoggedIn = false;

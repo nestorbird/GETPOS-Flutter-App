@@ -139,7 +139,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 child: TextFormField(
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.allow(RegExp("[a-z,A-Z,0-9]")),
-                    LengthLimitingTextInputFormatter(10)
+                    LengthLimitingTextInputFormatter(12)
                   ],
                   style: getTextStyle(
                       color: GREY_COLOR,

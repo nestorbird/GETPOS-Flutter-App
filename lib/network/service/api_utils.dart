@@ -61,6 +61,7 @@ class APIUtils {
       http.Response apiResponse = await http.post(_apiPath(apiUrl),
           body: jsonEncode(requestBody),
           headers: enableHeader ? await _headers() : {});
+          print(apiResponse);
 
       //Checking for the response code and handling the result.
       return _returnResponse(apiResponse);

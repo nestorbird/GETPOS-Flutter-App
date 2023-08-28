@@ -60,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
     _getHubManager();
     //totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
-    paymentMethod = "Cash";
+   // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }
 
@@ -174,7 +174,7 @@ class _CartScreenState extends State<CartScreen> {
               )),
           Expanded(
               child: GestureDetector(
-                  onTap: () => createSale(),
+                  onTap: () =>  createSale(!_isCODSelected?"Card":"Cash"),
                   child: Container(
                       height: 70,
                       margin: const EdgeInsets.only(left: 10),
@@ -218,6 +218,7 @@ class _CartScreenState extends State<CartScreen> {
 
   _parkOrder() async {
     await DbParkedOrder().saveOrder(widget.order);
+    // ignore: use_build_context_synchronously
     await showGeneralDialog(
         context: context,
         transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -467,8 +468,12 @@ class _CartScreenState extends State<CartScreen> {
         ),
       );
 
-  void createSale() async {
-    paymentMethod = "Cash";
+  createSale(String paymentMethod) async {
+    paymentMethod =paymentMethod;
+if(paymentMethod=="Card"){ return Helper.showPopup(context,
+              "Comming soon" );
+
+}else{
 
     DateTime currentDateTime = DateTime.now();
     String date =
@@ -499,7 +504,7 @@ class _CartScreenState extends State<CartScreen> {
         context,
         MaterialPageRoute(
             builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
-  }
+  }}
 
   // double _getItemTotal(items) {
   //   double total = 0;

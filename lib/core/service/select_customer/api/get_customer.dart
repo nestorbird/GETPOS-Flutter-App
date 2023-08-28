@@ -1,6 +1,5 @@
 import '../../../../../constants/app_constants.dart';
 import '../model/customer_response.dart';
-import '../../../../../database/db_utils/db_customer.dart';
 import '../../../../../database/models/customer.dart';
 import '../../../../../network/api_constants/api_paths.dart';
 import '../../../../../network/api_helper/api_status.dart';

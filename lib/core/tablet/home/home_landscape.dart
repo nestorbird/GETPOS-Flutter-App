@@ -4,7 +4,6 @@ import 'package:get/route_manager.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_categories.dart';
 import '../../../../../database/models/category.dart';
 import '../../../../../database/models/customer.dart';
