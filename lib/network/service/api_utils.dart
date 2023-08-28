@@ -114,7 +114,7 @@ class APIUtils {
     switch (response.statusCode) {
       case 200:
         var responseJson = jsonDecode(response.body);
-        // Helper.printJSONData(responseJson);
+        Helper.printJSONData(responseJson);
         return responseJson;
       case 400:
         throw BadRequestException(response.body.toString());

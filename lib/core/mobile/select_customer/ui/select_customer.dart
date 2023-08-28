@@ -58,6 +58,8 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
                     searchHint: SEARCH_HINT_TXT,
                     searchTextController: searchCustomerController,
                     onTextChanged: (text) {
+                    
+
                       log('Changed text :: $text');
                       if (text.isNotEmpty) {
                         filterCustomerData(text);

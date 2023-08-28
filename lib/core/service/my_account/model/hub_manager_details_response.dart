@@ -53,7 +53,7 @@ class Message {
     fullName = json['full_name'];
     email = json['email'];
     mobileNo = json['mobile_no'] ?? "";
-    hubManager = json['hub_manager'];
+    hubManager = json['hub_manager'] ?? "";
     series = json['series'] ?? "T-.YYYY.-.MM.-.####";
     image = json['image'];
     balance = json['balance'] ?? 0;
