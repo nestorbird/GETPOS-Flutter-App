@@ -103,7 +103,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
         Helper.showSnackBar(context, response.message);
       }
     } else {
-      Helper.showSnackBar(context, CHANGE_PASSWORD_INVALID_TEXT);
+      Helper.showPopup(context, CHANGE_PASSWORD_INVALID_TEXT);
     }
   }
 }

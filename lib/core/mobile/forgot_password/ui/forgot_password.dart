@@ -170,7 +170,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           },
           title: FORGOT_BTN_TXT,
           colorBG: MAIN_COLOR,
-          width: MediaQuery.of(context).size.width - 100,
+         
         ),
       );
 

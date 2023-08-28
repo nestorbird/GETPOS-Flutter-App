@@ -51,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         },
         title: CHANGE_PASSWORD_BTN_TXT,
         colorBG: MAIN_COLOR,
-        width: MediaQuery.of(context).size.width - 100,
+    //    width: MediaQuery.of(context).size.width - 100,
       ),
     );
 
@@ -137,6 +137,9 @@ class _ChangePasswordState extends State<ChangePassword> {
   Future<void> _handleChangePassBtnAction() async {
     String newPass = _newPassCtrl.text.trim();
     String confirmPass = _confirmPassCtrl.text.trim();
+    if(newPass.isEmpty && confirmPass.isEmpty){
+      Helper.showPopup(context,"Please Enter Password");
+    }
     if (newPass.isNotEmpty &&
         confirmPass.isNotEmpty &&
         newPass == confirmPass) {
@@ -152,7 +155,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         Helper.showSnackBar(context, response.message);
       }
     } else {
-      Helper.showSnackBar(context, CHANGE_PASSWORD_INVALID_TEXT);
+      Helper.showPopup(context, CHANGE_PASSWORD_INVALID_TEXT);
     }
   }
+
+
 }

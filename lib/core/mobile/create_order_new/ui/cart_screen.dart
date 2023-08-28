@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
@@ -27,6 +28,7 @@ import '../../../../database/models/sale_order.dart';
 import '../../../../utils/helper.dart';
 import '../../add_products/ui/added_product_item.dart';
 import '../../sale_success/ui/sale_success_screen.dart';
+import '../../select_customer/ui/new_select_customer.dart';
 import 'new_create_order.dart';
 
 // ignore: must_be_immutable
@@ -263,23 +265,26 @@ class _CartScreenState extends State<CartScreen> {
                     hightSpacer30,
                     LongButton(
                         isAmountAndItemsVisible: false,
-                        buttonTitle: 'Create a new order',
+                        buttonTitle: 'Create A New Order',
+                        onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>const ProductListHome()), (route) => route.isFirst);
+                             
+                        }),
+                    LongButton(
+                        isAmountAndItemsVisible: false,
+                        buttonTitle: ' Home Page',
                         onTap: () {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => NewCreateOrder()),
-                              (route) => route.isFirst);
-                        }),
+                                  builder: (context) =>const ProductListHome()), (route) => route.isFirst);
+                              }),
                     LongButton(
                         isAmountAndItemsVisible: false,
-                        buttonTitle: 'Back to Home',
-                        onTap: () {
-                          Navigator.popUntil(context, (route) => route.isFirst);
-                        }),
-                    LongButton(
-                        isAmountAndItemsVisible: false,
-                        buttonTitle: 'View parked orders',
+                        buttonTitle: 'View Parked Orders',
                         onTap: () {
                           Navigator.pushAndRemoveUntil(
                               context,
@@ -471,7 +476,7 @@ class _CartScreenState extends State<CartScreen> {
   createSale(String paymentMethod) async {
     paymentMethod =paymentMethod;
 if(paymentMethod=="Card"){ return Helper.showPopup(context,
-              "Comming soon" );
+              "Comming Soon" );
 
 }else{
 

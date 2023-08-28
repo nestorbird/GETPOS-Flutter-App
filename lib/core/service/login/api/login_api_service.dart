@@ -15,9 +15,9 @@ import '../model/login_response.dart';
 class LoginService {
   static Future<CommanResponse> login(
       String email, String password, String url) async {
-    // if (!_isValidUrl(url)) {
-    //   return CommanResponse(status: false, message: INVALID_URL);
-    // }
+    if (!_isValidUrl(url)) {
+      return CommanResponse(status: false, message: INVALID_URL);
+    }
 
     if (!isValidEmail(email)) {
       //Return the email validation failed Response

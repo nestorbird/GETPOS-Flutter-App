@@ -373,7 +373,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       if (result) {
         if (!mounted) return;
         await Helper.showConfirmationPopup(
-            context, "Parked Order Deleted Successfully", OPTION_OK);
+            context, "Parked order deleted successfully", OPTION_OK);
         if (!mounted) return;
         Navigator.pop(context, "reload");
       } else {

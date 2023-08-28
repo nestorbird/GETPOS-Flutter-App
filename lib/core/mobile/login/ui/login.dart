@@ -110,18 +110,26 @@ class _LoginState extends State<Login> {
 
   /// HANDLE LOGIN BTN ACTION
   Future<void> login(String email, String password, String url) async {
-    try {
+   {if(email.isEmpty){
+  Helper.showPopup(context, "Please Enter Email");
+
+}else if(password.isEmpty){
+  Helper.showPopup(context, "Please Enter Password");
+  
+}
+else{ try {
       Helper.showLoaderDialog(context);
 
       CommanResponse response = await LoginService.login(email, password, url);
 print(response);
+
       if (response.status!) {
         //Adding static data into the database
         // await addDataIntoDB();
         if (!mounted) return;
         Helper.hideLoader(context);
         Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const ProductListHome()));
+            MaterialPageRoute(builder: (context) =>  ProductListHome()));
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
@@ -133,7 +141,7 @@ print(response);
       debugPrintStack();
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
-  }
+  }}}
 
   Future<void> _getAppVersion() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -176,7 +184,7 @@ print(response);
           },
           title: LOGIN_TXT,
           colorBG: MAIN_COLOR,
-          width: MediaQuery.of(context).size.width - 100,
+          
         ),
       );
 

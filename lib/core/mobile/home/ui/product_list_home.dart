@@ -56,7 +56,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   double _scrollToOffset(int index) {
     // Calculate the scroll offset for the given index
     // You'll need to adjust this based on your actual item heights
-    double itemHeight = 350;
+    double itemHeight = 250;
     return itemHeight * index;
   }
 
@@ -255,7 +255,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                         SearchWidget(
                           searchHint: 'Search product/category',
                           searchTextController: _searchTxtController,
-                          onTextChanged: ((changedtext) {
+                          onTextChanged: ((changedtext) { final state = _key.currentState;
+        if (state != null) {
+          debugPrint('isOpen:${state.isOpen}');
+          if (state.isOpen) {
+            state.toggle();
+          }
+        }
                             if (changedtext.length < 3) {
                               getProducts();
                               // _filterProductsCategories(changedtext);
@@ -280,7 +286,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                                 itemCount: categories.length,
                                 itemBuilder: (context, position) {
                                   return GestureDetector(
-                                      onTap: (() {
+                                      onTap: (() { final state = _key.currentState;
+        if (state != null) {
+          debugPrint('isOpen:${state.isOpen}');
+          if (state.isOpen) {
+            state.toggle();
+          }
+        }
                                         _scrollToIndex(position);
                                       }),
                                       child: Column(
@@ -321,7 +333,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         ],
                                       ));
                                 })),
-                        _getCategoryItems(),
+                       categories.isEmpty?const Text("No Items Found",style: TextStyle(fontWeight: FontWeight.bold),): _getCategoryItems(),
                         hightSpacer45
                       ],
                     ))))),
@@ -612,7 +624,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       mainAxisSpacing: 4.0),
                   itemBuilder: ((context, itemPosition) {
                     return GestureDetector(
-                        onTap: () {
+                        onTap: () { final state = _key.currentState;
+        if (state != null) {
+          debugPrint('isOpen:${state.isOpen}');
+          if (state.isOpen) {
+            state.toggle();
+          }
+        }
                           if (widget.isForNewOrder) {
                             if (categories[catPosition]
                                     .items[itemPosition]
@@ -630,6 +648,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                   context, 'Sorry, item is not in stock.');
                             }
                           } else {
+                            Helper.showPopup(context, "Please Select Customer First");
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               ShowCaseWidget.of(context)
                                   .startShowCase([_focusKey]);

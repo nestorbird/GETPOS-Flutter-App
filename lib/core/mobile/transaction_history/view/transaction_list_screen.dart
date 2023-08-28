@@ -109,7 +109,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
               case TransactionStatus.success:
                 if (state.orders.isEmpty) {
                   return const Center(
-                    child: Text("No orders"),
+                    child: Text("No Orders"),
                   );
                 }
 

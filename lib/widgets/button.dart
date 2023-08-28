@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -30,8 +31,8 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: Container(
-        width: width,
+      child: Container(margin: EdgeInsets.all(20),
+        width: MediaQuery.of(context).size.width,
         height: height,
         decoration: BoxDecoration(
           color: colorBG,

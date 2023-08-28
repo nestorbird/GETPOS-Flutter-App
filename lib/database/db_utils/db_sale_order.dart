@@ -69,7 +69,7 @@ class DbSaleOrder {
       var product = item as SaleOrder;
       if (product.transactionSynced == false) list.add(product);
     }
-    // await box.close();
+    await box.close();
     return list;
   }
 

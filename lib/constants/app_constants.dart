@@ -23,7 +23,7 @@ const EMAIL_TXT = 'Email';
 const PASSWORD_TXT = 'Password';
 const URL_TXT = 'URL';
 const URL_HINT = 'Enter ERP URL';
-const EMAIL_HINT = 'Enter your registered email';
+const EMAIL_HINT = 'Enter Your Registered Email';
 const PASSWORD_HINT = '6-12 character password';
 const FORGET_PASSWORD_SMALL_TXT = 'Forgot password?';
 const BY_SIGNING_IN = 'By signing, you agree to our ';
@@ -84,7 +84,7 @@ const ADD_PRODUCTS_STOCK_UPDATE_ON_TXT = 'Stock update on';
 //CREATE ORDER SCREEN
 
 const CHANGE_CUSTOMER_TXT = 'Change customer';
-const ADD_MORE_PRODUCTS = 'Add more products';
+const ADD_MORE_PRODUCTS = 'Add More Product';
 
 //CHECKOUT SCREEN
 
@@ -122,11 +122,11 @@ const ITEM_TXT = 'Items';
 
 //SALES DETAILS SCREEN
 
-const SALES_DETAILS_TXT = 'Order details';
-const SALE_AMOUNT_TXT = 'Order amount';
-const DATE_TIME = 'Date & time';
-const CUSTOMER_INFO = 'Customer info';
-const ITEMS_SUMMARY = 'Item(s) summary';
+const SALES_DETAILS_TXT = 'Order Details';
+const SALE_AMOUNT_TXT = 'Order Amount';
+const DATE_TIME = 'Date & Time';
+const CUSTOMER_INFO = 'Customer Info';
+const ITEMS_SUMMARY = 'Item(s) Summary';
 const PAYMENT_STATUS = 'Status';
 
 //FINANCE SCREEN
@@ -150,18 +150,18 @@ const VERIFY_OTP_HINT = 'Enter otp';
 const VERIFY_OTP_BTN_TXT = 'Back';
 
 //CHANGE PASSWORD SCREEN
-const CHANGE_PASSWORD_TITLE = 'Change password';
+const CHANGE_PASSWORD_TITLE = 'Change Password';
 const CHANGE_PASSWORD_OTP_VERIFY_MSG = 'OTP verified successfully.';
 const CHANGE_PASSWORD_SET_MSG = 'Set new password';
 const CHANGE_NEW_PASSWORD_HINT = 'Enter new password';
 const CHANGE_CONFIRM_PASSWORD_HINT = 'Re-enter new Password';
-const CHANGE_PASSWORD_BTN_TXT = 'Change password';
-const CHANGE_PASSWORD_INVALID_TEXT = 'Invalid passwords, please recheck';
+const CHANGE_PASSWORD_BTN_TXT = 'Change Password';
+const CHANGE_PASSWORD_INVALID_TEXT = 'New Password And Confirm Password Is Not Matched';
 
 //PASSWORD UPDATED SCREEN
-const PASSWORD_UPDATED_TITLE = 'Password updated!';
-const PASSWORD_UPDATED_MSG = 'Password has been updated successfully';
-const PASSWORD_UPDATED_BTN_TXT = 'Back to home';
+const PASSWORD_UPDATED_TITLE = 'Password Updated!';
+const PASSWORD_UPDATED_MSG = 'Password Has Been Updated Successfully';
+const PASSWORD_UPDATED_BTN_TXT = 'Back To Home';
 
 //SPLASH SCREEN
 const POWERED_BY_TXT = 'Powered by NestorBird';
@@ -172,7 +172,7 @@ const NO_INTERNET_LOADING_DATA_FROM_LOCAL =
     'No internet connection. Loading data from local storage.';
 const SOMTHING_WRONG_LOADING_LOCAL =
     'Something went wrong. Loading data from local storage.';
-const NO_DATA_FOUND = 'No data found.';
+const NO_DATA_FOUND = 'No Data Found.';
 const SUCCESS = 'success';
 
 const NO_INTERNET_CREATE_ORDER_SYNC_QUEUED =
@@ -185,8 +185,8 @@ const SERVER_COMM_EXCEPTION =
     'Error occured while communication with server with StatusCode';
 
 // ERROR MSG
-const NO_PRODUCTS_FOUND_MSG = 'No products found';
-const NO_ORDERS_FOUND_MSG = 'No orders found';
+const NO_PRODUCTS_FOUND_MSG = 'No Products Found';
+const NO_ORDERS_FOUND_MSG = 'No Orders Found';
 
 // height width margin constants
 const double APP_LOGO_WIDTH = 200;

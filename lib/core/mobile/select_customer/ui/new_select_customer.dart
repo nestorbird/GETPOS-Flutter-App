@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 
@@ -104,8 +105,8 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                             isSubtitle: true,
                             isHighlighted: true,
                             onCheckChanged: (p0) {
-                              Navigator.pop(context, customers[position]);
-                            },
+                                 Navigator.pop(context, customers[position]);
+           },
                           );
                         }
                       })
@@ -180,7 +181,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
           child: TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _phoneCtrl,
-              hintText: "Phone no.",
+              hintText: "Phone No.",
               txtColor: BLACK_COLOR),
         ),
         hightSpacer20,
@@ -198,7 +199,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
           child: TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _emailCtrl,
-              hintText: "Enter email (optional)",
+              hintText: "Enter Email (optional)",
               txtColor: BLACK_COLOR),
         ),
         hightSpacer30,
@@ -210,7 +211,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                   _newCustomerAPI();
                 }
               },
-              title: "Add and create order",
+              title: "Add and Create Order",
             )),
         hightSpacer20,
         SizedBox(
