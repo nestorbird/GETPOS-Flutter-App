@@ -51,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         },
         title: CHANGE_PASSWORD_BTN_TXT,
         colorBG: MAIN_COLOR,
-    //    width: MediaQuery.of(context).size.width - 100,
+        //    width: MediaQuery.of(context).size.width - 100,
       ),
     );
 
@@ -137,27 +137,28 @@ class _ChangePasswordState extends State<ChangePassword> {
   Future<void> _handleChangePassBtnAction() async {
     String newPass = _newPassCtrl.text.trim();
     String confirmPass = _confirmPassCtrl.text.trim();
-    if(newPass.isEmpty && confirmPass.isEmpty){
-      Helper.showPopup(context,"Please Enter Password");
-    }
-    if (newPass.isNotEmpty &&
-        confirmPass.isNotEmpty &&
-        newPass == confirmPass) {
-      CommanResponse response =
-          await ChangeHubManagerPassword().changePassword(newPass);
-
-      if (response.status!) {
-        if (!mounted) return;
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const PasswordUpdated()));
-      } else {
-        if (!mounted) return;
-        Helper.showSnackBar(context, response.message);
-      }
+    if (newPass.isEmpty || confirmPass.isEmpty) {
+      Helper.showPopup(context, "Please Enter Password");
     } else {
-      Helper.showPopup(context, CHANGE_PASSWORD_INVALID_TEXT);
+      if (newPass.isNotEmpty &&
+          confirmPass.isNotEmpty &&
+          newPass == confirmPass) {
+        CommanResponse response =
+            await ChangeHubManagerPassword().changePassword(newPass);
+
+        if (response.status!) {
+          if (!mounted) return;
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const PasswordUpdated()));
+        } else {
+          if (!mounted) return;
+          Helper.showPopup(context, response.message);
+        }
+      } else if (newPass != confirmPass) {
+        Helper.showPopup(context, passwordMismatch);
+      } else {
+        Helper.showPopup(context, invalidPasswordMsg);
+      }
     }
   }
-
-
 }

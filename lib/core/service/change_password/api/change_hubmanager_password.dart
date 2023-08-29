@@ -12,10 +12,15 @@ import '../../../../../utils/helper.dart';
 
 class ChangeHubManagerPassword {
   Future<CommanResponse> changePassword(String newPass) async {
-    var passWordRegex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)\S{6,}$');
+    // ignore: valid_regexps
+    var passWordRegex =
+        RegExp(r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
+
     if (!passWordRegex.hasMatch(newPass)) {
       return CommanResponse(
-          status: false, message: WEAK_PASSWORD, apiStatus: ApiStatus.NONE);
+          status: false,
+          message: invalidPasswordMsg,
+          apiStatus: ApiStatus.NONE);
     }
 
     if (await Helper.isNetworkAvailable()) {

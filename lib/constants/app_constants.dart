@@ -16,16 +16,19 @@ const APP_VERSION = "App version";
 const APP_VERSION_FALLBACK = "1.0";
 
 //LOGIN SCREEN
-
+const invalidPasswordMsg =
+    "Enter at least 6 digits, should be one special characters,one uppercase,one lowercase,one digit.";
+//  "Invalid Password \n1. Include at least 8 digits and three special characters \n2. Include at least one upper case characters (A-Z)\n3. Include at least one lower case character (a-z)\n4. Include a number (0-9)\n5. Include a symbol (!, #, \$, etc.)";
+const passwordMismatch = "Password is mismatch";
 const LOGIN_TXT = 'Log In';
 const ACCESS_YOUR_ACCOUNT = 'Access your account';
 const EMAIL_TXT = 'Email';
 const PASSWORD_TXT = 'Password';
 const URL_TXT = 'URL';
 const URL_HINT = 'Enter ERP URL';
-const EMAIL_HINT = 'Enter Your Registered Email';
-const PASSWORD_HINT = '6-12 character password';
-const FORGET_PASSWORD_SMALL_TXT = 'Forgot password?';
+const EMAIL_HINT = 'Enter your email';
+const PASSWORD_HINT = 'Enter your password';
+const FORGET_PASSWORD_SMALL_TXT = 'Forgot Password?';
 const BY_SIGNING_IN = 'By signing, you agree to our ';
 const TERMS_CONDITIONS = 'Terms & Conditions ';
 const AND_TXT = 'and ';
@@ -154,9 +157,10 @@ const CHANGE_PASSWORD_TITLE = 'Change Password';
 const CHANGE_PASSWORD_OTP_VERIFY_MSG = 'OTP verified successfully.';
 const CHANGE_PASSWORD_SET_MSG = 'Set new password';
 const CHANGE_NEW_PASSWORD_HINT = 'Enter new password';
-const CHANGE_CONFIRM_PASSWORD_HINT = 'Re-enter new Password';
+const CHANGE_CONFIRM_PASSWORD_HINT = 'Re-enter new password';
 const CHANGE_PASSWORD_BTN_TXT = 'Change Password';
-const CHANGE_PASSWORD_INVALID_TEXT = 'New Password And Confirm Password Is Not Matched';
+const CHANGE_PASSWORD_INVALID_TEXT =
+    'New Password And Confirm Password Is Not Matched';
 
 //PASSWORD UPDATED SCREEN
 const PASSWORD_UPDATED_TITLE = 'Password Updated!';
@@ -172,7 +176,7 @@ const NO_INTERNET_LOADING_DATA_FROM_LOCAL =
     'No internet connection. Loading data from local storage.';
 const SOMTHING_WRONG_LOADING_LOCAL =
     'Something went wrong. Loading data from local storage.';
-const NO_DATA_FOUND = 'No Data Found.';
+const NO_DATA_FOUND = 'No data found.';
 const SUCCESS = 'success';
 
 const NO_INTERNET_CREATE_ORDER_SYNC_QUEUED =
@@ -185,8 +189,8 @@ const SERVER_COMM_EXCEPTION =
     'Error occured while communication with server with StatusCode';
 
 // ERROR MSG
-const NO_PRODUCTS_FOUND_MSG = 'No Products Found';
-const NO_ORDERS_FOUND_MSG = 'No Orders Found';
+const NO_PRODUCTS_FOUND_MSG = 'No products found';
+const NO_ORDERS_FOUND_MSG = 'No orders found';
 
 // height width margin constants
 const double APP_LOGO_WIDTH = 200;

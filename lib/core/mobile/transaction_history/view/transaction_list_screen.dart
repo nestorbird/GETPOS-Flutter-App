@@ -74,9 +74,11 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
               child: SearchWidget(
                 searchHint: SEARCH_HINT_TXT,
                 searchTextController: _searchTransactionCtrl,
-              keyboardType: TextInputType.phone,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(12)],
-             
+                keyboardType: TextInputType.phone,
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(12)
+                ],
                 onTextChanged: (text) {
                   if (text.isEmpty) {
                     context.read<TransactionBloc>().state.orders.clear();
@@ -109,7 +111,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
               case TransactionStatus.success:
                 if (state.orders.isEmpty) {
                   return const Center(
-                    child: Text("No Orders"),
+                    child: Text("No orders"),
                   );
                 }
 

@@ -253,15 +253,25 @@ class _ProductListHomeState extends State<ProductListHome> {
                             )),
                         hightSpacer15,
                         SearchWidget(
-                          searchHint: 'Search product/category',
+                          onTap: () {
+                            final state = _key.currentState;
+                            if (state != null) {
+                              debugPrint('isOpen:${state.isOpen}');
+                              if (state.isOpen) {
+                                state.toggle();
+                              }
+                            }
+                          },
+                          searchHint: 'Search product / category',
                           searchTextController: _searchTxtController,
-                          onTextChanged: ((changedtext) { final state = _key.currentState;
-        if (state != null) {
-          debugPrint('isOpen:${state.isOpen}');
-          if (state.isOpen) {
-            state.toggle();
-          }
-        }
+                          onTextChanged: ((changedtext) {
+                            final state = _key.currentState;
+                            if (state != null) {
+                              debugPrint('isOpen:${state.isOpen}');
+                              if (state.isOpen) {
+                                state.toggle();
+                              }
+                            }
                             if (changedtext.length < 3) {
                               getProducts();
                               // _filterProductsCategories(changedtext);
@@ -286,13 +296,14 @@ class _ProductListHomeState extends State<ProductListHome> {
                                 itemCount: categories.length,
                                 itemBuilder: (context, position) {
                                   return GestureDetector(
-                                      onTap: (() { final state = _key.currentState;
-        if (state != null) {
-          debugPrint('isOpen:${state.isOpen}');
-          if (state.isOpen) {
-            state.toggle();
-          }
-        }
+                                      onTap: (() {
+                                        final state = _key.currentState;
+                                        if (state != null) {
+                                          debugPrint('isOpen:${state.isOpen}');
+                                          if (state.isOpen) {
+                                            state.toggle();
+                                          }
+                                        }
                                         _scrollToIndex(position);
                                       }),
                                       child: Column(
@@ -333,7 +344,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         ],
                                       ));
                                 })),
-                       categories.isEmpty?const Text("No Items Found",style: TextStyle(fontWeight: FontWeight.bold),): _getCategoryItems(),
+                        categories.isEmpty
+                            ? const Center(
+                                child: Text(
+                                "No items found",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))
+                            : _getCategoryItems(),
                         hightSpacer45
                       ],
                     ))))),
@@ -624,13 +641,14 @@ class _ProductListHomeState extends State<ProductListHome> {
                       mainAxisSpacing: 4.0),
                   itemBuilder: ((context, itemPosition) {
                     return GestureDetector(
-                        onTap: () { final state = _key.currentState;
-        if (state != null) {
-          debugPrint('isOpen:${state.isOpen}');
-          if (state.isOpen) {
-            state.toggle();
-          }
-        }
+                        onTap: () {
+                          final state = _key.currentState;
+                          if (state != null) {
+                            debugPrint('isOpen:${state.isOpen}');
+                            if (state.isOpen) {
+                              state.toggle();
+                            }
+                          }
                           if (widget.isForNewOrder) {
                             if (categories[catPosition]
                                     .items[itemPosition]
@@ -642,13 +660,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       .toJson());
                               log('Selected Item :: $item');
                               _openItemDetailDialog(context, item);
-                              
                             } else {
                               Helper.showPopup(
                                   context, 'Sorry, item is not in stock.');
                             }
                           } else {
-                            Helper.showPopup(context, "Please Select Customer First");
+                            Helper.showPopup(
+                                context, "Please select customer first");
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               ShowCaseWidget.of(context)
                                   .startShowCase([_focusKey]);

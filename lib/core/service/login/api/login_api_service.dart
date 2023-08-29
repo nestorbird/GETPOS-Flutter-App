@@ -26,7 +26,7 @@ class LoginService {
 
     if (!isValidPassword(password)) {
       //Return the password validation failed Response
-      return CommanResponse(status: false, message: INVALID_PASSWORD);
+      return CommanResponse(status: false, message: invalidPasswordMsg);
     }
 
     //Check for the internet connection
@@ -96,7 +96,9 @@ class LoginService {
 
   ///Function to check whether password is in correct format or not.
   static bool isValidPassword(String password) {
-    return password.length >= 6;
+    String regex =
+        (r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$");
+    return RegExp(regex).hasMatch(regex);
   }
 
   ///Function to check whether the input URL is valid or not
