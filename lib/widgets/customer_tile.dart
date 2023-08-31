@@ -88,7 +88,7 @@ class _CustomerTileState extends State<CustomerTile> {
                   style: getTextStyle(
                       fontSize: MEDIUM_FONT_SIZE,
                       color: DARK_GREY_COLOR,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -98,7 +98,7 @@ class _CustomerTileState extends State<CustomerTile> {
             style: getTextStyle(
                 color: BLACK_COLOR,
                 fontSize: SMALL_PLUS_FONT_SIZE,
-                fontWeight: FontWeight.normal),
+                fontWeight: FontWeight.bold),
           ),
         ],
       ),

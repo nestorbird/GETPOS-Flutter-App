@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../../configs/theme_config.dart';
@@ -24,19 +25,21 @@ class TitleAndSearchBar extends StatefulWidget {
   Function(String text)? onSubmit;
   Function? parkOrderClicked;
   TextInputType keyboardType;
+  List<TextInputFormatter>? inputFormatter;
 
   TitleAndSearchBar(
       {Key? key,
       required this.title,
       this.searchHint,
       this.searchCtrl,
-      this.searchBoxWidth = 300,
+      this.searchBoxWidth = 330,
       this.searchBoxVisible = true,
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
       this.onTextChanged,
       this.parkOrderClicked,
       this.onSubmit,
+      this.inputFormatter,
       this.keyboardType = TextInputType.text})
       : super(key: key);
 
@@ -51,10 +54,17 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const SizedBox(
+          height: 10,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(
+              width: 20,
+            ),
             Text(
               widget.title,
               style: getTextStyle(
@@ -72,8 +82,12 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
                   onTextChanged: (val) => widget.onTextChanged!(val),
                   onSubmit: (val) => widget.onSubmit!(val),
                   keyboardType: widget.keyboardType,
+                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
+            ),
+            const SizedBox(
+              width: 1,
             ),
             widget.parkedOrderVisible ? const Spacer() : Container(),
             Visibility(
@@ -83,32 +97,32 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
           ],
         ),
         hightSpacer10,
-        Visibility(
-          visible: !widget.hideOperatorDetails,
-          child: Padding(
-            padding: topSpace(y: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SvgPicture.asset(
-                  MY_PROFILE_TAB_IMAGE,
-                  // color: MAIN_COLOR,
-                  width: 15,
-                ),
-                widthSpacer(10),
-                Text(
-                  Helper.hubManager != null
-                      ? Helper.hubManager!.name
-                      : "Hub manager",
-                  style: getTextStyle(
-                      fontSize: MEDIUM_PLUS_FONT_SIZE,
-                      fontWeight: FontWeight.bold),
-                ),
-                widthSpacer(10)
-              ],
-            ),
-          ),
-        )
+        // Visibility(
+        //   visible: !widget.hideOperatorDetails,
+        //   child: Padding(
+        //     padding: topSpace(y: 10),
+        //     child: Row(
+        //       mainAxisAlignment: MainAxisAlignment.end,
+        //       children: [
+        //         // SvgPicture.asset(
+        //         //   MY_PROFILE_TAB_IMAGE,
+        //         //   // color: MAIN_COLOR,
+        //         //   width: 15,
+        //         // ),
+        //         // widthSpacer(10),
+        //         // Text(
+        //         //   Helper.hubManager != null
+        //         //       ? Helper.hubManager!.name
+        //         //       : "Hub manager",
+        //         //   style: getTextStyle(
+        //         //       fontSize: MEDIUM_PLUS_FONT_SIZE,
+        //         //       fontWeight: FontWeight.bold),
+        //         // ),
+        //         // widthSpacer(10)
+        //       ],
+        //     ),
+        //   ),
+        // )
       ],
     );
   }
