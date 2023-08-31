@@ -213,6 +213,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
     if (customer != null) {
       debugPrint("Customer selected");
     }
+    //malvika
     setState(() {});
   }
 

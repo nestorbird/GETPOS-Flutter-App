@@ -30,6 +30,7 @@ import '../widget/select_customer_popup.dart';
 class CartWidget extends StatefulWidget {
   Customer? customer;
   List<OrderItem> orderList;
+  //List<OrderItem> orderList;
   Function onNewOrder, onHome, onPrintReceipt;
   CartWidget({
     Key? key,
@@ -54,6 +55,7 @@ class _CartWidgetState extends State<CartWidget> {
   double taxAmount = 0.0;
   int totalItems = 0;
   double taxPercentage = 0;
+  int qty = 0;
 
   @override
   void initState() {
@@ -96,7 +98,8 @@ class _CartWidgetState extends State<CartWidget> {
                   ),
                 ),
                 Text(
-                  "${widget.orderList.length} Items",
+                  "${widget.orderList.length}",
+                  // "$qty Items",
                   style: getTextStyle(
                     color: MAIN_COLOR,
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -333,7 +336,12 @@ class _CartWidgetState extends State<CartWidget> {
                                         } else {
                                           widget.orderList.remove(item);
                                         }
-                                        setState(() {});
+                                        setState(() {
+                                          // for (var item in widget.orderList) {
+                                          //   qty = item.orderedQuantity.toInt() +
+                                          //       qty;
+                                          // }
+                                        });
                                       },
                                       child: const Icon(
                                         Icons.remove,
@@ -355,7 +363,12 @@ class _CartWidgetState extends State<CartWidget> {
                                       onTap: () {
                                         item.orderedQuantity =
                                             item.orderedQuantity + 1;
-                                        setState(() {});
+                                        setState(() {
+                                          // for (var item in widget.orderList) {
+                                          //   qty = item.orderedQuantity.toInt() +
+                                          //       qty;
+                                          // }
+                                        });
                                       },
                                       child: const Icon(
                                         Icons.add,
@@ -528,7 +541,7 @@ class _CartWidgetState extends State<CartWidget> {
             onTap: () => _handleCustomerPopup(),
             child: CustomerTile(
               isCheckBoxEnabled: false,
-              isDeleteButtonEnabled: false,
+              isDeleteButtonEnabled: true,
               customer: selectedCustomer,
               isHighlighted: true,
               isSubtitle: true,

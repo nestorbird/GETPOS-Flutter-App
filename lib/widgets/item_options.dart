@@ -22,7 +22,7 @@ class ItemOptions extends StatefulWidget {
 
 class _ItemOptionsState extends State<ItemOptions> {
   double itemTotal = 0;
-
+  int qty = 0;
   _calculateItemPrice() {
     itemTotal = widget.orderItem.price;
     OrderItem item = widget.orderItem;
@@ -81,6 +81,8 @@ class _ItemOptionsState extends State<ItemOptions> {
                           widget.orderItem.orderedQuantity =
                               widget.orderItem.orderedQuantity + 1;
                           _calculateItemPrice();
+                          // _selectedCustomerSection();
+                          
                         }
                       });
                     },

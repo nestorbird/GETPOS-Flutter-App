@@ -63,7 +63,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
           alignment: Alignment.topRight,
           child: InkWell(
             onTap: () {
-              Get.back(result: customer);
+              Get.back(result: null);
             },
             child: Padding(
               padding: const EdgeInsets.only(right: 10),
@@ -83,6 +83,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   width: 400,
                   // height: 100,
                   padding: horizontalSpace(),
+                  //changes needed to be done here(malvika)
                   child: SearchWidget(
                     searchHint: SEARCH_HINT_TXT,
                     searchTextController: searchCtrl,
