@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../../database/db_utils/db_customer.dart';
 import '../../../../../database/models/customer.dart';
@@ -46,8 +47,9 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
       // padding: paddingXY(),
       child: Column(
         children: [
-          TitleAndSearchBar(
-            title: "Customerss",
+          TitleAndSearchBar(inputFormatter: [FilteringTextInputFormatter.digitsOnly],
+               
+            title: "Customer",
             keyboardType: TextInputType.number,
             onSubmit: (text) {
               if (text.isNotEmpty) {

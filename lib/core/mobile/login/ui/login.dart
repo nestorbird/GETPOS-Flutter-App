@@ -56,20 +56,38 @@ class _LoginState extends State<Login> {
   }
 
   /// HANDLE BACK BTN PRESS ON LOGIN SCREEN
-  Future<bool> _onBackPressed() async {
-    var res = await Helper.showConfirmationPopup(
-        context, CLOSE_APP_QUESTION, OPTION_YES,
-        hasCancelAction: true);
-    if (res != OPTION_CANCEL) {
-      exit(0);
-    }
-    return false;
+  _showExitConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Close App Confirmation'),
+          content: Text('Are you sure you want to close the app?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                // You can add your code here to exit the app
+                // For example, you can use SystemNavigator.pop() to exit the app.
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onBackPressed,
+      onWillPop: _showExitConfirmationDialog(context),
       child: SafeArea(
           child: Scaffold(
         resizeToAvoidBottomInset: true,

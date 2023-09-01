@@ -66,8 +66,7 @@ class _SimplePopupState extends State<SimplePopup> {
                             thickness: 1,
                           ),
                           InkWell(
-                              onTap: () => Navigator.of(context)
-                                  .pop(OPTION_CANCEL.toLowerCase()),
+                              onTap: () => Navigator.of(context).pop(),
                               child: SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width / 2.5,
@@ -82,7 +81,7 @@ class _SimplePopupState extends State<SimplePopup> {
                       ),
                     )
                   : InkWell(
-                      onTap: () => widget.onOkPressed(),
+                      onTap: () => Navigator.of(context).pop(),
                       child: SizedBox(
                           height: 20,
                           width: MediaQuery.of(context).size.width - 30,

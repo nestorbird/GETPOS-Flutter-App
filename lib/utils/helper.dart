@@ -189,7 +189,7 @@ class Helper {
               buttonText: btnTxt,
               hasCancelAction: hasCancelAction,
               onOkPressed: () {
-                Navigator.pop(context, btnTxt.toLowerCase());
+                SystemNavigator.pop();
               },
             ),
           );

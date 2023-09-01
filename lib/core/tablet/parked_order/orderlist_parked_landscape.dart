@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -47,7 +48,8 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            TitleAndSearchBar(
+            TitleAndSearchBar(inputFormatter: [FilteringTextInputFormatter.digitsOnly],
+              
               title: "Parked Orders",
               onSubmit: (text) {
                 if (text.length >= 3) {

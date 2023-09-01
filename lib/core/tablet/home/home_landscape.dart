@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 
@@ -54,6 +55,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
           onSubmit: (text) {},
           onTextChanged: (changedtext) {},
           searchCtrl: searchCtrl,
+          inputFormatter: [],
           searchHint: "Search products / Category",
         ),
         hightSpacer20,

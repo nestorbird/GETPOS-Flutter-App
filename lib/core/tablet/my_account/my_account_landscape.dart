@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 
@@ -65,7 +66,8 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
       child: Column(
         children: [
           hightSpacer20,
-          TitleAndSearchBar(
+          TitleAndSearchBar(inputFormatter: [FilteringTextInputFormatter.digitsOnly],
+               
             title: "My Profile",
             searchBoxVisible: false,
             onSubmit: (val) {},

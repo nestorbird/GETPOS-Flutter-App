@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
@@ -53,7 +54,8 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        TitleAndSearchBar(
+        TitleAndSearchBar(inputFormatter: [],
+               
           title: "Choose Category",
           onSubmit: (text) {
             if (text.length >= 3) {

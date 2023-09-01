@@ -25,7 +25,7 @@ class TitleAndSearchBar extends StatefulWidget {
   Function(String text)? onSubmit;
   Function? parkOrderClicked;
   TextInputType keyboardType;
-  List<TextInputFormatter>? inputFormatter;
+  List<TextInputFormatter> inputFormatter;
 
   TitleAndSearchBar(
       {Key? key,
@@ -39,7 +39,7 @@ class TitleAndSearchBar extends StatefulWidget {
       this.onTextChanged,
       this.parkOrderClicked,
       this.onSubmit,
-      this.inputFormatter,
+      required this.inputFormatter,
       this.keyboardType = TextInputType.text})
       : super(key: key);
 
@@ -82,7 +82,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
                   onTextChanged: (val) => widget.onTextChanged!(val),
                   onSubmit: (val) => widget.onSubmit!(val),
                   keyboardType: widget.keyboardType,
-                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                  inputFormatter: widget.inputFormatter,
                 ),
               ),
             ),

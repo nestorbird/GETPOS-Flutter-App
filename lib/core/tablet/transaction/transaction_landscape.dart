@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
@@ -69,6 +70,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
       children: [
         hightSpacer10,
         TitleAndSearchBar(
+          inputFormatter: [FilteringTextInputFormatter.digitsOnly],
           parkedOrderVisible: true,
           title: "Order History",
           onSubmit: (text) {

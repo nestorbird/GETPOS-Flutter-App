@@ -43,7 +43,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _urlCtrl = TextEditingController();
     _emailCtrl.text = "";
     _passCtrl.text = "";
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "getpos.in";
 
     // _getAppVersion();
   }
@@ -128,9 +128,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     var res = await Helper.showConfirmationPopup(
         context, CLOSE_APP_QUESTION, OPTION_YES,
         hasCancelAction: true);
-    if (res != OPTION_CANCEL) {
-      exit(0);
-    }
+   
     return false;
   }
 

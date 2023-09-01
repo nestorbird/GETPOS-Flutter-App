@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
+import 'package:nb_posx/utils/helper.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -160,25 +161,31 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   }
 
   Future<void> _newCustomerAPI() async {
-    CommanResponse response = await CreateCustomer()
-        .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
-    /* if (response.status!) {
+    if (emailCtrl.text.isEmpty ||
+        nameCtrl.text.isEmpty ||
+        phoneCtrl.text.isEmpty) {
+      Helper.showPopup(context, "Please Enter all the fields");
+    } else {
+      CommanResponse response = await CreateCustomer()
+          .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
+      /* if (response.status!) {
       filterCustomerData(phoneCtrl.text);
     } */
-    {
-      Customer tempCustomer = Customer(
-          // profileImage: image,
-          // ward: Ward(id: "1", name: "1"),
-          email: emailCtrl.text.trim(),
-          id: phoneCtrl.text.trim(),
-          name: nameCtrl.text.trim(),
-          phone: phoneCtrl.text.trim(),
-          isSynced: false,
-          modifiedDateTime: DateTime.now());
-      List<Customer> customers = [];
-      customers.add(tempCustomer);
-      await DbCustomer().addCustomers(customers);
-      //     filterCustomerData(_phoneCtrl.text);
+      {
+        Customer tempCustomer = Customer(
+            // profileImage: image,
+            // ward: Ward(id: "1", name: "1"),
+            email: emailCtrl.text.trim(),
+            id: phoneCtrl.text.trim(),
+            name: nameCtrl.text.trim(),
+            phone: phoneCtrl.text.trim(),
+            isSynced: false,
+            modifiedDateTime: DateTime.now());
+        List<Customer> customers = [];
+        customers.add(tempCustomer);
+        await DbCustomer().addCustomers(customers);
+        //     filterCustomerData(_phoneCtrl.text);
+      }
     }
   }
 }

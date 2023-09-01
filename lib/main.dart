@@ -1,4 +1,3 @@
-
 //import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +46,7 @@ void main() async {
 
   //Registering hive database type adapters
   registerHiveTypeAdapters();
-   isUserLoggedIn = await DbHubManager().getManager() != null;
+  isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
 
   await SyncHelper().launchFlow(isUserLoggedIn);
@@ -55,8 +54,7 @@ void main() async {
   isTabletMode = Device.get().isTablet;
   if (isTabletMode) {
     await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft],
-    );
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
     runApp(const TabletApp());
   } else {
     await SystemChrome.setPreferredOrientations(

@@ -72,6 +72,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
             mainAxisSize: MainAxisSize.max,
             children: [
               TitleAndSearchBar(
+                inputFormatter: [],
                 title: "Choose Category",
                 onSubmit: (text) {
                   if (text.length >= 3) {
@@ -104,12 +105,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 searchBoxWidth: size.width / 4,
               ),
               hightSpacer20,
-           categories.isEmpty
-                          ? const Center(
-                              child: Text(
-                              "No items found",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )):   getCategoryListWidg(),
+              categories.isEmpty
+                  ? const Center(
+                      child: Text(
+                      "No items found",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+                  : getCategoryListWidg(),
               hightSpacer20,
               ListView.builder(
                 primary: false,
