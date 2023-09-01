@@ -186,10 +186,14 @@ class _CartWidgetState extends State<CartWidget> {
       onTap: () async {
         _prepareCart();
         if (currentCart != null) {
-          isOrderProcessed = await _placeOrderHandler();
+          if (selectedCashMode == true) {
+            Helper.showPopupForTablet(context, "Coming Soon..");
+          } else {
+            isOrderProcessed = await _placeOrderHandler();
 
-          // to be showed on successfull order placed
-          _showOrderPlacedSuccessPopup();
+            // to be showed on successfull order placed
+            _showOrderPlacedSuccessPopup();
+          }
         } else {
           Helper.showPopupForTablet(context, "Please add items in cart");
         }
@@ -221,6 +225,7 @@ class _CartWidgetState extends State<CartWidget> {
             ),
           )
         : Expanded(
+            flex: 2,
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -237,7 +242,7 @@ class _CartWidgetState extends State<CartWidget> {
 
     return Container(
       width: double.infinity,
-      height: 100,
+      // height: 100,
       margin: const EdgeInsets.only(bottom: 8, top: 15),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,7 +254,7 @@ class _CartWidgetState extends State<CartWidget> {
               height: 55,
               child: Image.memory(
                 item.productImage,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
             ),
           ),
@@ -257,7 +262,7 @@ class _CartWidgetState extends State<CartWidget> {
           widthSpacer(10),
           Expanded(
             child: SizedBox(
-                height: 85,
+                height: 100,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -287,18 +292,21 @@ class _CartWidgetState extends State<CartWidget> {
                       )
                     ]),
                     hightSpacer10,
-                    Expanded(
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
-                              style: getTextStyle(
-                                  fontSize: SMALL_FONT_SIZE,
-                                  fontWeight: FontWeight.normal),
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ))),
+                    ///////////////////////////////////////////////
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Expanded(
+                          child: Text(
+                            "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
+                            style: getTextStyle(
+                                fontSize: SMALL_FONT_SIZE,
+                                fontWeight: FontWeight.normal),
+                            textAlign: TextAlign.start,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                            softWrap: false,
+                          ),
+                        )),
                     hightSpacer10,
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -532,6 +540,7 @@ class _CartWidgetState extends State<CartWidget> {
               customer: selectedCustomer,
               isHighlighted: true,
               isSubtitle: true,
+              isNumVisible: false,
             ),
           )
         : Container();
@@ -587,7 +596,7 @@ class _CartWidgetState extends State<CartWidget> {
         transactionId: '',
         paymentMethod: selectedCashMode
             ? "Cash"
-            : "Cash", //TODO:: Need to check when payment gateway is implemented
+            : "Card", //TODO:: Need to check when payment gateway is implemented
         paymentStatus: "Paid",
         transactionSynced: false,
         parkOrderId:

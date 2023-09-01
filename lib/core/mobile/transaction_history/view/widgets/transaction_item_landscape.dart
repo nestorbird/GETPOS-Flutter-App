@@ -67,7 +67,7 @@ class TransactionItemLandscape extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'ID: ${order.id}',
+                    'Order ID: ${order.id}',
                     overflow: TextOverflow.clip,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,

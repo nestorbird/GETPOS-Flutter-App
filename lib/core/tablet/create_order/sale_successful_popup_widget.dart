@@ -42,7 +42,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           ),
           hightSpacer30,
           Text(
-            "Sale successful",
+            "Order Successful",
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
                 color: BLACK_COLOR,
@@ -53,9 +53,9 @@ class SaleSuccessfulPopup extends StatelessWidget {
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
                 isAmountAndItemsVisible: false,
-                buttonTitle: "Print Reciept",
+                buttonTitle: "Print Receipt",
                 onTap: () {
-                  Navigator.pop(context, "print_receipt");
+                  Navigator.pop(context, "home");
                 },
               )),
           Padding(

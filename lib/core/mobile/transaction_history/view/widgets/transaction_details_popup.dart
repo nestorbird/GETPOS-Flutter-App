@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/database/models/attribute.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -52,7 +53,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      'ID: ${order.id}',
+                      'Order ID: ${order.id}',
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
@@ -143,11 +144,26 @@ class TransactionDetailsPopup extends StatelessWidget {
                 ),
               ),
               widthSpacer(15),
-              Text(
-                order.items[index].name,
-                style: getTextStyle(
-                    fontSize: MEDIUM_PLUS_FONT_SIZE,
-                    fontWeight: FontWeight.w500),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    order.items[index].name,
+                    style: getTextStyle(
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    "${_getItemVariants(order.items[index].attributes)} x ${order.items[index].orderedQuantity}",
+                    style: getTextStyle(
+                        fontSize: SMALL_FONT_SIZE,
+                        fontWeight: FontWeight.normal),
+                    textAlign: TextAlign.start,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 5,
+                    softWrap: false,
+                  ),
+                ],
               ),
               const Spacer(),
               Text(
@@ -300,4 +316,20 @@ class TransactionDetailsPopup extends StatelessWidget {
           ],
         ),
       );
+}
+
+String _getItemVariants(List<Attribute> itemVariants) {
+  String variants = '';
+  if (itemVariants.isNotEmpty) {
+    for (var variantData in itemVariants) {
+      for (var selectedOption in variantData.options) {
+        if (!selectedOption.selected) {
+          variants = variants.isEmpty
+              ? '${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]'
+              : "$variants, ${selectedOption.name} [$appCurrency ${selectedOption.price.toStringAsFixed(2)}]";
+        }
+      }
+    }
+  }
+  return variants;
 }

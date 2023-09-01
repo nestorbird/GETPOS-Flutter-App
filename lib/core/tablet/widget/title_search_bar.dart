@@ -87,7 +87,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
               ),
             ),
             const SizedBox(
-              width: 1,
+              width: 10,
             ),
             widget.parkedOrderVisible ? const Spacer() : Container(),
             Visibility(
@@ -127,15 +127,17 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
     );
   }
 
-  Widget get parkOrderBtnWidget => SizedBox(
-        // width: double.infinity,
-        child: ButtonWidget(
-          onPressed: () => widget.parkOrderClicked!(),
-          title: "Parked Order",
-          colorBG: BLACK_COLOR,
-          width: 200,
-          borderRadius: 15,
-          fontSize: LARGE_MINUS_FONT_SIZE,
+  Widget get parkOrderBtnWidget => Expanded(
+        child: SizedBox(
+          // width: double.infinity,
+          child: ButtonWidget(
+            onPressed: () => widget.parkOrderClicked!(),
+            title: "Parked Order",
+            colorBG: BLACK_COLOR,
+            width: 200,
+            borderRadius: 15,
+            fontSize: LARGE_MINUS_FONT_SIZE,
+          ),
         ),
       );
 }
