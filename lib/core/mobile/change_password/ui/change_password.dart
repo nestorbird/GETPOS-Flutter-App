@@ -51,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
         },
         title: CHANGE_PASSWORD_BTN_TXT,
         colorBG: MAIN_COLOR,
-        //    width: MediaQuery.of(context).size.width - 100,
+        width: MediaQuery.of(context).size.width,
       ),
     );
 

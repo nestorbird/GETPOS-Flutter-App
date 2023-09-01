@@ -159,31 +159,37 @@ class _ItemOptionsState extends State<ItemOptions> {
         child: Row(
           children: [
             option.selected
-                ? Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: MAIN_COLOR),
-                      // border: Border.all(color: Colors.yellow.shade800),
-                      color: MAIN_COLOR,
-                      // color: Colors.yellow.shade800,
-                      borderRadius:
-                          BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
-                    ),
-                    child: const Icon(
-                      Icons.check,
-                      size: 18.0,
-                      color: WHITE_COLOR,
-                    ))
-                : Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: BLACK_COLOR),
-                      borderRadius:
-                          BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
-                    ),
-                    child: const Icon(
-                      null,
-                      size: 20.0,
+                ? Visibility(
+                    visible: option.selected,
+                    child: Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: MAIN_COLOR),
+                          // border: Border.all(color: Colors.yellow.shade800),
+                          color: MAIN_COLOR,
+                          // color: Colors.yellow.shade800,
+                          borderRadius:
+                              BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
+                        ),
+                        child: const Icon(
+                          Icons.check,
+                          size: 18.0,
+                          color: WHITE_COLOR,
+                        )),
+                  )
+                : Visibility(
+                    visible: option.selected,
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: BLACK_COLOR),
+                        borderRadius:
+                            BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
+                      ),
+                      child: const Icon(
+                        null,
+                        size: 20.0,
+                      ),
                     ),
                   ),
             widthSpacer(5),

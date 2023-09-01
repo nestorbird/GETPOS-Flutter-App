@@ -31,8 +31,9 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      child: Container(margin: EdgeInsets.all(20),
-        width: MediaQuery.of(context).size.width,
+      child: Container(
+        margin: EdgeInsets.all(20),
+        width: width,
         height: height,
         decoration: BoxDecoration(
           color: colorBG,

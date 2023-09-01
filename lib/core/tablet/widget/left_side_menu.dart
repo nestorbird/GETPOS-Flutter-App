@@ -42,18 +42,18 @@ class LeftSideMenu extends StatelessWidget {
             ),
           ),
           hightSpacer15,
-          // _leftMenuSectionItem("Home", HOME_TAB_ICON, 30, () {
-          //   selectedView.value = "Home";
-          // }),
+          /*    _leftMenuSectionItem("Home", HOME_TAB_ICON, 30, () {
+            selectedView.value = "Home";
+          }),*/
           // hightSpacer10,
           _leftMenuSectionItem("Order", ORDER_TAB_ICON, 30, () {
             selectedView.value = "Order";
             // debugPrint("order");
           }),
-          hightSpacer10,
+          /*   hightSpacer10,
           _leftMenuSectionItem("Product", PRODUCE_TAB_ICON, 30, () {
             selectedView.value = "Product";
-          }),
+          }),*/
           hightSpacer10,
           _leftMenuSectionItem("Customer", CUSTOMER_TAB_ICON, 30, () {
             selectedView.value = "Customer";

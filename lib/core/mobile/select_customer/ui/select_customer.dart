@@ -58,8 +58,6 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
                     searchHint: SEARCH_HINT_TXT,
                     searchTextController: searchCustomerController,
                     onTextChanged: (text) {
-                    
-
                       log('Changed text :: $text');
                       if (text.isNotEmpty) {
                         filterCustomerData(text);
@@ -112,6 +110,7 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
         child: Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             child: ButtonWidget(
+                width: MediaQuery.of(context).size.width,
                 onPressed: () {
                   Navigator.pop(context, selectedCustomer);
                 },

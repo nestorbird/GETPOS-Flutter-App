@@ -53,13 +53,13 @@ class HomeTablet extends StatelessWidget {
 
   _getSelectedView() {
     switch (selectedTab.value) {
-      case "Home":
+/*case "Home":
         //return const HomeLandscape();
-        return CreateOrderLandscape(selectedView: selectedTab);
+        return CreateOrderLandscape(selectedView: selectedTab);*/
       case "Order":
         return CreateOrderLandscape(selectedView: selectedTab);
-      case "Product":
-        return const ProductsLandscape();
+      /*   case "Product":
+        return const ProductsLandscape();*/
       case "Customer":
         return const CustomersLandscape();
       case "My Profile":

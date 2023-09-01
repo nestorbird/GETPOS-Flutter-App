@@ -36,7 +36,7 @@ class TransactionItemLandscape extends StatelessWidget {
                   Text(
                     order.customer.name,
                     style: getTextStyle(
-                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w600),
+                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w900),
                   ),
                   hightSpacer10,
                   Text(
@@ -45,7 +45,7 @@ class TransactionItemLandscape extends StatelessWidget {
                         : order.customer.phone,
                     style: getTextStyle(
                         fontSize: MEDIUM_FONT_SIZE,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w900),
                   ),
                 ],
               ),
@@ -58,7 +58,7 @@ class TransactionItemLandscape extends StatelessWidget {
                 style: getTextStyle(
                     fontSize: LARGE_MINUS_FONT_SIZE,
                     color: MAIN_COLOR,
-                    fontWeight: FontWeight.w500),
+                    fontWeight: FontWeight.w900),
               ),
             ),
             Expanded(
@@ -67,11 +67,11 @@ class TransactionItemLandscape extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'ID: ${order.id}',
+                    'Order ID: ${order.id}',
                     overflow: TextOverflow.clip,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w900),
                   ),
                   hightSpacer10,
                   Text(
@@ -81,7 +81,7 @@ class TransactionItemLandscape extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: getTextStyle(
                         fontSize: MEDIUM_MINUS_FONT_SIZE,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w900),
                   ),
                 ],
               ),

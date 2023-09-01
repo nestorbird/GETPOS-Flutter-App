@@ -87,23 +87,29 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   Future<void> _handleChangePassBtnAction() async {
     String newPass = _newPassCtrl.text.trim();
     String confirmPass = _confirmPassCtrl.text.trim();
-    if (newPass.isNotEmpty &&
-        confirmPass.isNotEmpty &&
-        newPass == confirmPass) {
-      CommanResponse response =
-          await ChangeHubManagerPassword().changePassword(newPass);
-
-      if (response.status!) {
-        _confirmPassCtrl.clear();
-        _newPassCtrl.clear();
-        if (!mounted) return;
-        Helper.showSnackBar(context, PASSWORD_UPDATED_MSG);
-      } else {
-        if (!mounted) return;
-        Helper.showSnackBar(context, response.message);
-      }
+    if (newPass.isEmpty || confirmPass.isEmpty) {
+      Helper.showPopup(context, "Please Enter Password");
     } else {
-      Helper.showPopup(context, CHANGE_PASSWORD_INVALID_TEXT);
+      if (newPass.isNotEmpty &&
+          confirmPass.isNotEmpty &&
+          newPass == confirmPass) {
+        CommanResponse response =
+            await ChangeHubManagerPassword().changePassword(newPass);
+
+        if (response.status!) {
+          _confirmPassCtrl.clear();
+          _newPassCtrl.clear();
+          if (!mounted) return;
+          Helper.showPopup(context, PASSWORD_UPDATED_MSG);
+        } else {
+          if (!mounted) return;
+          Helper.showPopup(context, response.message);
+        }
+      } else if (newPass != confirmPass) {
+        Helper.showPopup(context, passwordMismatch);
+      } else {
+        Helper.showPopup(context, invalidPasswordMsg);
+      }
     }
   }
 }

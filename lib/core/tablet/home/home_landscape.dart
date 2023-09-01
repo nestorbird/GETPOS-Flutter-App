@@ -51,26 +51,28 @@ class HomeLandscapeState extends State<HomeLandscape> {
       children: [
         TitleAndSearchBar(
           title: "Choose Category",
-          onSubmit: (text) {
-
-          },
-          onTextChanged: (changedtext) {
-
-          },
+          onSubmit: (text) {},
+          onTextChanged: (changedtext) {},
           searchCtrl: searchCtrl,
-          searchHint: "Search products",
+          searchHint: "Search products / Category",
         ),
         hightSpacer20,
         getCategoryListWidget(),
         hightSpacer20,
-        Expanded(
-          child: ListView.builder(
-              primary: true,
-              itemCount: categories.length,
-              itemBuilder: (context, index) {
-                return getCategoryItemsWidget(categories[index]);
-              }),
-        ),
+        categories.isEmpty
+            ? const Center(
+                child: Text(
+                "No items found",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ))
+            : Expanded(
+                child: ListView.builder(
+                    primary: true,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return getCategoryItemsWidget(categories[index]);
+                    }),
+              ),
       ],
     );
   }
@@ -92,61 +94,69 @@ class HomeLandscapeState extends State<HomeLandscape> {
               scrollDirection: Axis.horizontal,
               itemCount: cat.items.length,
               itemBuilder: (BuildContext context, index) {
-                return InkWell(
-                  onTap: () {
-                    //TODO:: SS - Need to add the logic for the category tap
-                    // var item = OrderItem.fromJson(cat.items[index].toJson());
-                    // _openItemDetailDialog(context, item);
-                    // debugPrint("Item clicked $index");
-                  },
-                  child: Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                          margin: paddingXY(x: 5, y: 5),
-                          padding: paddingXY(y: 0, x: 10),
-                          width: 145,
-                          height: 105,
-                          decoration: BoxDecoration(
-                              color: WHITE_COLOR,
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              hightSpacer20,
-                              SizedBox(
-                                height: 40,
-                                child: Text(
-                                  cat.items[index].name,
-                                  style: getTextStyle(
-                                      // color: DARK_GREY_COLOR,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: MEDIUM_FONT_SIZE),
+                return cat.items.isEmpty
+                    ? const Center(
+                        child: Text(
+                        "No items found",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ))
+                    : InkWell(
+                        onTap: () {
+                          //TODO:: SS - Need to add the logic for the category tap
+                          // var item = OrderItem.fromJson(cat.items[index].toJson());
+                          // _openItemDetailDialog(context, item);
+                          // debugPrint("Item clicked $index");
+                        },
+                        child: Stack(
+                          alignment: Alignment.topCenter,
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                margin: paddingXY(x: 5, y: 5),
+                                padding: paddingXY(y: 0, x: 10),
+                                width: 145,
+                                height: 105,
+                                decoration: BoxDecoration(
+                                    color: WHITE_COLOR,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    hightSpacer20,
+                                    SizedBox(
+                                      height: 40,
+                                      child: Text(
+                                        cat.items[index].name,
+                                        style: getTextStyle(
+                                            // color: DARK_GREY_COLOR,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: MEDIUM_FONT_SIZE),
+                                      ),
+                                    ),
+                                    hightSpacer5,
+                                    Text(
+                                      "$appCurrency ${cat.items[index].price}",
+                                      textAlign: TextAlign.right,
+                                      style: getTextStyle(
+                                          color: MAIN_COLOR,
+                                          fontSize: MEDIUM_FONT_SIZE),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              hightSpacer5,
-                              Text(
-                                "$appCurrency ${cat.items[index].price}",
-                                textAlign: TextAlign.right,
-                                style: getTextStyle(
-                                    color: MAIN_COLOR,
-                                    fontSize: MEDIUM_FONT_SIZE),
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              height: 60,
+                              width: 60,
+                              child:
+                                  Image.memory(cat.items[index].productImage),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.memory(cat.items[index].productImage),
-                      ),
-                    ],
-                  ),
-                );
+                      );
               }),
         ),
       ],
@@ -160,31 +170,37 @@ class HomeLandscapeState extends State<HomeLandscape> {
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
           itemBuilder: (BuildContext context, index) {
-            return InkWell(
-              onTap: () => _handleCustomerPopup(),
-              child: Container(
-                margin: paddingXY(y: 5),
-                width: 80,
-                decoration: BoxDecoration(
-                  color: WHITE_COLOR,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.memory(categories[index].image),
-                    hightSpacer4,
-                    Text(
-                      categories[index].name,
-                      style: getTextStyle(
-                        fontWeight: FontWeight.w500,
+            return categories.isEmpty
+                ? const Center(
+                    child: Text(
+                    "No items found",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ))
+                : InkWell(
+                    onTap: () => _handleCustomerPopup(),
+                    child: Container(
+                      margin: paddingXY(y: 5),
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color: WHITE_COLOR,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.memory(categories[index].image),
+                          hightSpacer4,
+                          Text(
+                            categories[index].name,
+                            style: getTextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            );
+                  );
           }),
     );
   }

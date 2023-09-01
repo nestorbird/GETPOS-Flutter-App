@@ -168,9 +168,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           onPressed: () async {
             await _handleForgotPassBtnClick();
           },
+          width: MediaQuery.of(context).size.width,
           title: FORGOT_BTN_TXT,
           colorBG: MAIN_COLOR,
-         
         ),
       );
 

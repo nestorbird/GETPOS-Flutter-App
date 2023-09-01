@@ -245,5 +245,5 @@ const double SMALL_FONT_SIZE = 10;
 const double SMALL_PLUS_FONT_SIZE = 12;
 const double MEDIUM_MINUS_FONT_SIZE = 13;
 const double MEDIUM_FONT_SIZE = 14;
-const double MEDIUM_PLUS_FONT_SIZE = 15;
+const double MEDIUM_PLUS_FONT_SIZE = 16;
 const double LARGE_MINUS_FONT_SIZE = 18;

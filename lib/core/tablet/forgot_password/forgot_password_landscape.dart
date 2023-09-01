@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 
+import '../../../network/api_constants/api_paths.dart';
 import '../../mobile/forgot_password/ui/verify_otp.dart';
 import '../../service/forgot_password/api/forgot_password_api.dart';
 
@@ -26,12 +28,13 @@ class ForgotPasswordLandscape extends StatefulWidget {
 
 class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
   late TextEditingController _emailCtrl;
-
+  late TextEditingController _urlCtrl;
   @override
   void initState() {
     super.initState();
     _emailCtrl = TextEditingController();
-
+    _urlCtrl = TextEditingController();
+    _urlCtrl.text = instanceUrl;
     // _getAppVersion();
   }
 
@@ -49,7 +52,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
           "Forgot Password",
           style: getTextStyle(
             // color: MAIN_COLOR,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
             fontSize: 26.0,
           ),
         ),
@@ -68,17 +71,48 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
       );
 
   /// EMAIL SECTION
-  Widget get emailTxtboxSection => Padding(
-        // margin: horizontalSpace(),
+  Widget get emailTxtboxSection => Container(
+        margin: horizontalSpace(),
         padding: smallPaddingAll(),
-        child: SizedBox(
-          height: 55,
-          child: TextFieldWidget(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Padding(
+            padding: leftSpace(x: 10),
+            child: Text(
+              "Email",
+              style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
+            ),
+          ),
+          hightSpacer15,
+          TextFieldWidget(
             boxDecoration: txtFieldBoxShadowDecoration,
             txtCtrl: _emailCtrl,
             verticalContentPadding: 16,
             hintText: "Enter registered email id",
           ),
+        ]),
+      );
+
+  ///Input field for entering the instance URL
+  Widget instanceUrlTxtboxSection(context) => Container(
+        margin: horizontalSpace(),
+        padding: smallPaddingAll(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: leftSpace(x: 10),
+              child: Text(
+                URL_TXT,
+                style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
+              ),
+            ),
+            hightSpacer15,
+            TextFieldWidget(
+              boxDecoration: txtFieldBoxShadowDecoration,
+              txtCtrl: _urlCtrl,
+              hintText: URL_HINT,
+            ),
+          ],
         ),
       );
 
@@ -89,7 +123,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
           onPressed: () => Get.back(),
           title: "Cancel",
           colorBG: DARK_GREY_COLOR,
-          // width: MediaQuery.of(context).size.width - 150,
+          width: 200,
           height: 60,
           fontSize: LARGE_PLUS_FONT_SIZE,
         ),
@@ -103,7 +137,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
           },
           title: "Continue",
           colorBG: MAIN_COLOR,
-          // width: MediaQuery.of(context).size.width - 150,
+          width: 200,
           height: 60,
           fontSize: LARGE_PLUS_FONT_SIZE,
         ),
@@ -135,6 +169,8 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
                       child: subHeadingLblWidget,
                     ),
                     hightSpacer50,
+                    instanceUrlTxtboxSection(context),
+                    hightSpacer50,
                     emailTxtboxSection,
                     hightSpacer20,
                     hightSpacer20,
@@ -165,11 +201,12 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
 
   /// HANDLE FORGOT PASS BTN CLICK
   Future<void> _handleForgotPassBtnClick() async {
-    if (_emailCtrl.text.trim().isNotEmpty) {
+    String url = "https://${_urlCtrl.text}/api/";
+
+    try {
       Helper.showLoaderDialog(context);
-      //TODO:: Siddhant - Need to pass the instance URL here
       CommanResponse response = await ForgotPasswordApi()
-          .sendResetPasswordMail(_emailCtrl.text.trim(), "");
+          .sendResetPasswordMail(_emailCtrl.text.trim(), url.trim());
       if (response.status!) {
         if (!mounted) return;
         Helper.hideLoader(context);
@@ -178,10 +215,10 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
-        Helper.showSnackBar(context, response.message);
+        Helper.showPopup(context, response.message);
       }
-    } else {
-      Helper.showSnackBar(context, FORGOT_TXT_FIELD_EMPTY);
+    } catch (e) {
+      log('Exception ocurred in Forgot Password :: $e');
     }
   }
 }

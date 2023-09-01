@@ -40,7 +40,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
     managerName = "John";
     profilePic = Uint8List.fromList([]);
     _getManagerName();
