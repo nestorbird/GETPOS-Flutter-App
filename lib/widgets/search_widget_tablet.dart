@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../configs/theme_config.dart';
@@ -16,6 +17,7 @@ class SearchWidgetTablet extends StatefulWidget {
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
   TextInputType keyboardType;
+  List<TextInputFormatter>? inputFormatter;
 
   SearchWidgetTablet(
       {Key? key,
@@ -23,7 +25,9 @@ class SearchWidgetTablet extends StatefulWidget {
       this.searchTextController,
       this.onTextChanged,
       this.onSubmit,
-      this.keyboardType = TextInputType.text})
+      this.keyboardType = TextInputType.text,
+       this.inputFormatter
+      })
       : super(key: key);
 
   @override
@@ -74,6 +78,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
         ),
         onSubmitted: (text) => widget.onSubmit!(text),
         onChanged: (updatedText) => widget.onTextChanged!(updatedText),
+        inputFormatters: widget.inputFormatter,
       ),
     );
   }

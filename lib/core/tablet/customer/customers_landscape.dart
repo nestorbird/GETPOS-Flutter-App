@@ -47,8 +47,8 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
       child: Column(
         children: [
           TitleAndSearchBar(
-            title: "Customers",
-            keyboardType: TextInputType.phone,
+            title: "Customerss",
+            keyboardType: TextInputType.number,
             onSubmit: (text) {
               if (text.isNotEmpty) {
                 filterCustomerData(text);
@@ -79,14 +79,14 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
 
   Widget customerGrid() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      padding: const EdgeInsets.fromLTRB(12, 10, 15, 15),
       child: GridView.builder(
         itemCount: customers.isEmpty ? 10 : customers.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          childAspectRatio: 5,
+          childAspectRatio: 6.5,
         ),
         shrinkWrap: true,
         physics: const ScrollPhysics(),
