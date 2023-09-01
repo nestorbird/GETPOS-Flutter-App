@@ -17,6 +17,7 @@ import '../../../../../widgets/customer_tile.dart';
 import '../../../../../widgets/search_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 
+import '../../../network/api_helper/api_status.dart';
 import '../../service/select_customer/api/get_customer.dart';
 
 // ignore: must_be_immutable
@@ -63,6 +64,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
           alignment: Alignment.topRight,
           child: InkWell(
             onTap: () {
+              //on close
               Get.back(result: null);
             },
             child: Padding(
@@ -210,6 +212,10 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
     CommanResponse response = await GetCustomer().getByMobileno(searchText);
     if (response.status! && response.message == SUCCESS) {
       filterCustomerData(searchText);
+    } else if (response.apiStatus == ApiStatus.NO_DATA_AVAILABLE) {
+      setState(() {
+        customer = null;
+      });
     }
   }
 }

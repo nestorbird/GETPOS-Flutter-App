@@ -98,7 +98,7 @@ class _CartWidgetState extends State<CartWidget> {
                   ),
                 ),
                 Text(
-                  "${widget.orderList.length}",
+                  "${_orderedQty()} Items",
                   // "$qty Items",
                   style: getTextStyle(
                     color: MAIN_COLOR,
@@ -138,6 +138,15 @@ class _CartWidgetState extends State<CartWidget> {
     );
   }
 
+  int _orderedQty() {
+    double totalQty = 0.0;
+    for (var product in widget.orderList) {
+      totalQty += product.orderedQuantity;
+    }
+
+    return totalQty.toInt();
+  }
+
   _handleCustomerPopup() async {
     final result = await Get.defaultDialog(
       // contentPadding: paddingXY(x: 0, y: 0),
@@ -148,6 +157,7 @@ class _CartWidgetState extends State<CartWidget> {
         customer: selectedCustomer,
       ),
     );
+    log("Type :: ${result.runtimeType}");
     if (result.runtimeType == String) {
       selectedCustomer = await Get.defaultDialog(
         // contentPadding: paddingXY(x: 0, y: 0),
@@ -158,10 +168,16 @@ class _CartWidgetState extends State<CartWidget> {
           phoneNo: result,
         ),
       );
+      // setState(() {
+      //   widget.customer = selectedCustomer;
+      // });
     }
     if (result != null) {
       selectedCustomer = result;
       debugPrint("Customer selected");
+      setState(() {
+        widget.customer = selectedCustomer;
+      });
     }
   }
 
@@ -336,12 +352,7 @@ class _CartWidgetState extends State<CartWidget> {
                                         } else {
                                           widget.orderList.remove(item);
                                         }
-                                        setState(() {
-                                          // for (var item in widget.orderList) {
-                                          //   qty = item.orderedQuantity.toInt() +
-                                          //       qty;
-                                          // }
-                                        });
+                                        setState(() {});
                                       },
                                       child: const Icon(
                                         Icons.remove,
@@ -363,12 +374,7 @@ class _CartWidgetState extends State<CartWidget> {
                                       onTap: () {
                                         item.orderedQuantity =
                                             item.orderedQuantity + 1;
-                                        setState(() {
-                                          // for (var item in widget.orderList) {
-                                          //   qty = item.orderedQuantity.toInt() +
-                                          //       qty;
-                                          // }
-                                        });
+                                        setState(() {});
                                       },
                                       child: const Icon(
                                         Icons.add,
@@ -541,7 +547,7 @@ class _CartWidgetState extends State<CartWidget> {
             onTap: () => _handleCustomerPopup(),
             child: CustomerTile(
               isCheckBoxEnabled: false,
-              isDeleteButtonEnabled: true,
+              isDeleteButtonEnabled: false,
               customer: selectedCustomer,
               isHighlighted: true,
               isSubtitle: true,
