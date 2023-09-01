@@ -47,7 +47,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
       child: Column(
         children: [
           TitleAndSearchBar(
-            title: "Customer",
+            title: "Customers",
             keyboardType: TextInputType.phone,
             onSubmit: (text) {
               if (text.isNotEmpty) {
@@ -64,7 +64,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
               }
             },
             searchCtrl: searchCtrl,
-            searchHint: "Customer mobile number",
+            searchHint: "Enter customer mobile number",
           ),
           hightSpacer20,
           isCustomersFound

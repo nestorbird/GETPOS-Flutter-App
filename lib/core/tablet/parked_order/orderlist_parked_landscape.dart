@@ -43,21 +43,39 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TitleAndSearchBar(
-          title: "Parked Order",
-          onSubmit: (val) {},
-          onTextChanged: (val) {},
-          searchCtrl: searchCtrl,
-          searchHint: "Order Id",
-        ),
-        hightSpacer20,
-        Expanded(
-          child: productGrid(),
-        ),
-      ],
-    );
+    return Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: [
+            TitleAndSearchBar(
+              title: "Parked Orders",
+              onSubmit: (text) {
+                if (text.length >= 3) {
+                  _filterProductsCategories(text);
+                } else {
+                  getParkedOrders();
+                }
+              },
+              onTextChanged: (changedtext) {
+                if (changedtext.length >= 3) {
+                  _filterProductsCategories(changedtext);
+                } else {
+                  getParkedOrders();
+                }
+              },
+              searchCtrl: searchCtrl,
+              searchHint: "Enter your mobile",
+            ),
+            hightSpacer20,
+            parkedOrders.isEmpty
+                ? const Center(
+                    child: Text("No order founds ",
+                        style: TextStyle(fontWeight: FontWeight.bold)))
+                : Expanded(
+                    child: productGrid(),
+                  ),
+          ],
+        ));
   }
 
   Widget productGrid() {
@@ -79,7 +97,7 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
             return const ShimmerWidget();
           } else if (orderFromLocalDB.isEmpty && !fetchingData) {
             return Text(
-              "No Parked Orders",
+              "No orders found",
               textAlign: TextAlign.center,
               style: getTextStyle(fontSize: LARGE_FONT_SIZE),
             );
@@ -107,5 +125,15 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
     Helper.activateParkedOrder(parkedOrder);
     DbParkedOrder().deleteOrder(parkedOrder);
     widget.selectedView.value = "Order";
+  }
+
+  void _filterProductsCategories(String searchTxt) {
+    parkedOrders = parkedOrders
+        .where((element) => element.customer.phone
+            .toLowerCase()
+            .contains(searchTxt.toLowerCase()))
+        .toList();
+
+    setState(() {});
   }
 }

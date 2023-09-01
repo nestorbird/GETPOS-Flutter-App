@@ -137,7 +137,8 @@ class TransactionDetailsPopup extends StatelessWidget {
                   height: 50,
                   color: MAIN_COLOR,
                   child: Image.network(
-                    order.items[index].productImageUrl!,
+                    order.items[index].productImageUrl ??
+                        "assets/images/burgar_img.png",
                     fit: BoxFit.fill,
                   ),
                 ),

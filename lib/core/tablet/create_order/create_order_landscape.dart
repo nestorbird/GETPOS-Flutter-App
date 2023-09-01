@@ -75,24 +75,41 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 title: "Choose Category",
                 onSubmit: (text) {
                   if (text.length >= 3) {
-                    _filterProductsCategories(text);
+                    categories.isEmpty
+                        ? const Center(
+                            child: Text(
+                            "No items found",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                        : _filterProductsCategories(text);
                   } else {
                     getProducts();
                   }
                 },
                 onTextChanged: (changedtext) {
                   if (changedtext.length >= 3) {
-                    _filterProductsCategories(changedtext);
+                    categories.isEmpty
+                        ? const Center(
+                            child: Text(
+                            "No items found",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                        : _filterProductsCategories(changedtext);
                   } else {
                     getProducts();
                   }
                 },
                 searchCtrl: searchCtrl,
-                searchHint: "Search product",
+                searchHint: "Search product / category",
                 searchBoxWidth: size.width / 4,
               ),
               hightSpacer20,
-              getCategoryListWidget(),
+           categories.isEmpty
+                          ? const Center(
+                              child: Text(
+                              "No items found",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )):   getCategoryListWidg(),
               hightSpacer20,
               ListView.builder(
                 primary: false,
@@ -101,7 +118,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      getCategoryItemsWidget(categories[index]),
+                      categories.isEmpty
+                          ? const Center(
+                              child: Text(
+                              "No items found",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ))
+                          : getCategoryItemsWidget(categories[index]),
                       hightSpacer10
                     ],
                   );
@@ -348,7 +371,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     setState(() {});
   }
 
-  getCategoryListWidget() {
+  getCategoryListWidg() {
     return SizedBox(
       height: 100,
       child: ListView.builder(
@@ -356,48 +379,55 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
           itemCount: categories.length,
           itemBuilder: (BuildContext context, index) {
             return InkWell(
-              child: Container(
-                margin: paddingXY(y: 5),
-                width: 75,
-                decoration: BoxDecoration(
-                  color: WHITE_COLOR,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.only(left: 5),
-                      height: 60,
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.amber),
-                      child: categories[index].image.isNotEmpty
-                          ? Image.memory(
-                              categories[index].items.first.productImage,
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.fill,
-                            )
-                          : Image.asset(
-                              BURGAR_IMAGE,
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.fill,
+              child: categories.isEmpty
+                  ? const Center(
+                      child: Text(
+                      "No items found",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.black),
+                    ))
+                  : Container(
+                      margin: paddingXY(y: 5),
+                      width: 75,
+                      decoration: BoxDecoration(
+                        color: WHITE_COLOR,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(left: 5),
+                            height: 60,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.amber),
+                            child: categories[index].image.isNotEmpty
+                                ? Image.memory(
+                                    categories[index].items.first.productImage,
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Image.asset(
+                                    BURGAR_IMAGE,
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.fill,
+                                  ),
+                          ),
+                          Text(
+                            categories[index].name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: getTextStyle(
+                              fontWeight: FontWeight.w600,
                             ),
-                    ),
-                    Text(
-                      categories[index].name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: getTextStyle(
-                        fontWeight: FontWeight.w600,
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
             );
           }),
     );

@@ -145,7 +145,7 @@ class _CartWidgetState extends State<CartWidget> {
         customer: selectedCustomer,
       ),
     );
-    if (result.runtimeType == String) {
+    if (result.runtimeType == Customer) {
       selectedCustomer = await Get.defaultDialog(
         // contentPadding: paddingXY(x: 0, y: 0),
         title: "",

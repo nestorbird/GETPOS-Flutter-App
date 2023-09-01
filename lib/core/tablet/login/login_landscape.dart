@@ -188,7 +188,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             boxDecoration: txtFieldBoxShadowDecoration,
             txtCtrl: _emailCtrl,
             verticalContentPadding: 16,
-            hintText: "Email",
+            hintText: "Enter your email",
           ),
         ),
       );
@@ -202,7 +202,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             boxDecoration: txtFieldBoxShadowDecoration,
             txtCtrl: _passCtrl,
             verticalContentPadding: 16,
-            hintText: "Password",
+            hintText: "Enter your password",
             password: true,
           ),
         ),
@@ -308,7 +308,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             String url = "https://${_urlCtrl.text}/api/";
             await login(_emailCtrl.text, _passCtrl.text, url);
           },
-          title: "Login",
+          title: "Log In",
           colorBG: MAIN_COLOR,
           // width: MediaQuery.of(context).size.width - 150,
           height: 60,

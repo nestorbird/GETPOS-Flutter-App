@@ -48,42 +48,42 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              widget.title,
-              style: getTextStyle(
-                  fontSize: LARGE_PLUS_FONT_SIZE, color: BLACK_COLOR),
-            ),
-            const Spacer(),
-            Visibility(
-              visible: widget.searchBoxVisible,
-              child: Container(
-                width: widget.searchBoxWidth,
-                padding: horizontalSpace(x: 10),
-                child: SearchWidgetTablet(
-                  searchHint: widget.searchHint,
-                  searchTextController: widget.searchCtrl,
-                  onTextChanged: (val) => widget.onTextChanged!(val),
-                  onSubmit: (val) => widget.onSubmit!(val),
-                  keyboardType: widget.keyboardType,
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                widget.title,
+                style: getTextStyle(
+                    fontSize: LARGE_PLUS_FONT_SIZE, color: BLACK_COLOR),
+              ),
+              const Spacer(),
+              Visibility(
+                visible: widget.searchBoxVisible,
+                child: Container(
+                  width: widget.searchBoxWidth,
+                  padding: horizontalSpace(x: 10),
+                  child: SearchWidgetTablet(
+                    searchHint: widget.searchHint,
+                    searchTextController: widget.searchCtrl,
+                    onTextChanged: (val) => widget.onTextChanged!(val),
+                    onSubmit: (val) => widget.onSubmit!(val),
+                    keyboardType: widget.keyboardType,
+                  ),
                 ),
               ),
-            ),
-            widget.parkedOrderVisible ? const Spacer() : Container(),
-            Visibility(
-              visible: widget.parkedOrderVisible,
-              child: parkOrderBtnWidget,
-            ),
-          ],
-        ),
-        hightSpacer10,
-        Visibility(
+              widget.parkedOrderVisible ? const Spacer() : Container(),
+              Visibility(
+                visible: widget.parkedOrderVisible,
+                child: parkOrderBtnWidget,
+              ),
+            ],
+          ),
+          hightSpacer10,
+/*Visibility(
           visible: !widget.hideOperatorDetails,
           child: Padding(
             padding: topSpace(y: 10),
@@ -108,18 +108,17 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
               ],
             ),
           ),
-        )
-      ],
-    );
+      ],*/
+        ]);
   }
 
   Widget get parkOrderBtnWidget => SizedBox(
-        // width: double.infinity,
+        width: 200,
         child: ButtonWidget(
           onPressed: () => widget.parkOrderClicked!(),
           title: "Parked Order",
           colorBG: BLACK_COLOR,
-          width: 200,
+          width: 100,
           borderRadius: 15,
           fontSize: LARGE_MINUS_FONT_SIZE,
         ),
