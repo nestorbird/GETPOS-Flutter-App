@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:lottie/lottie.dart';
 import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
 import '../../../constants/asset_paths.dart';
@@ -33,12 +33,14 @@ class SaleSuccessfulPopup extends StatelessWidget {
                     ),
                   ))),
           Center(
-            child: SvgPicture.asset(
+            child: Lottie.asset(SUCCESS_IMAGE,
+                animate:
+                    true), /*SvgPicture.asset(
               SUCCESS_IMAGE,
               height: SALE_SUCCESS_IMAGE_HEIGHT,
               width: SALE_SUCCESS_IMAGE_WIDTH,
               fit: BoxFit.contain,
-            ),
+            ),*/
           ),
           hightSpacer30,
           Text(

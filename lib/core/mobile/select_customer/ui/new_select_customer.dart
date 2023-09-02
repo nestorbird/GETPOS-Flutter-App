@@ -66,7 +66,10 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(12)],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(12)
+                  ],
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
@@ -105,8 +108,8 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                             isSubtitle: true,
                             isHighlighted: true,
                             onCheckChanged: (p0) {
-                                 Navigator.pop(context, customers[position]);
-           },
+                              Navigator.pop(context, customers[position]);
+                            },
                           );
                         }
                       })

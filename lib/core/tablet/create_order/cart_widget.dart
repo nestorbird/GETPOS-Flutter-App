@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/core/tablet/create_order/create_order_landscape.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -208,7 +209,7 @@ class _CartWidgetState extends State<CartWidget> {
           if (selectedCashMode == true) {
             Helper.showPopupForTablet(context, "Coming Soon..");
           } else {
-            isOrderProcessed = await _placeOrderHandler();
+            await _placeOrderHandler();
 
             // to be showed on successfull order placed
             _showOrderPlacedSuccessPopup();
@@ -583,9 +584,11 @@ class _CartWidgetState extends State<CartWidget> {
       content: const SaleSuccessfulPopup(),
     );
     if (response == "home") {
-      widget.onHome();
+      selectedCustomer = null;
+      widget.onNewOrder();
     } else if (response == "print_receipt") {
-      widget.onPrintReceipt();
+      selectedCustomer = null;
+      widget.onNewOrder();
     } else if (response == "new_order") {
       selectedCustomer = null;
       widget.onNewOrder();
@@ -613,9 +616,8 @@ class _CartWidgetState extends State<CartWidget> {
         manager: Helper.hubManager!,
         items: currentCart!.items,
         transactionId: '',
-        paymentMethod: selectedCashMode
-            ? "Cash"
-            : "Card", //TODO:: Need to check when payment gateway is implemented
+        paymentMethod: "Cash",
+        //TODO:: Need to check when payment gateway is implemented
         paymentStatus: "Paid",
         transactionSynced: false,
         parkOrderId:

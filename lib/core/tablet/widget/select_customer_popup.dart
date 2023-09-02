@@ -86,7 +86,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   // height: 100,
                   padding: horizontalSpace(),
                   //changes needed to be done here(malvika)
-                  child: SearchWidget(
+                  child: SearchWidget(inputFormatters: [],
                     searchHint: SEARCH_HINT_TXT,
                     searchTextController: searchCtrl,
                     onTextChanged: (text) {
@@ -123,7 +123,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                             ),
                           ),
                           child: Text(
-                            "No records were found, please add the details below in order to continue",
+                            "No records were found, please click on continue to add new customer",
                             style: getTextStyle(
                                 color: MAIN_COLOR,
                                 fontSize: MEDIUM_PLUS_FONT_SIZE,

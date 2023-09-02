@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './widget/parked_data_item.dart';
 import '../../../../../constants/app_constants.dart';
@@ -53,8 +54,11 @@ class _OrderListScreenState extends State<OrderListScreen> {
             Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
-                  searchHint: 'Enter customer mobile no.',
-                  searchTextController: searchCtrl,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(12)
+                  ],
+                  searchHint: 'Enter customer mobile no.', searchTextController: searchCtrl,
                   onTextChanged: (text) {
                     if (text.length >= 3) {
                       filterSalesData(text);

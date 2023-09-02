@@ -45,7 +45,7 @@ class TransactionItemLandscape extends StatelessWidget {
                         : order.customer.phone,
                     style: getTextStyle(
                         fontSize: MEDIUM_FONT_SIZE,
-                        fontWeight: FontWeight.w900),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -58,7 +58,7 @@ class TransactionItemLandscape extends StatelessWidget {
                 style: getTextStyle(
                     fontSize: LARGE_MINUS_FONT_SIZE,
                     color: MAIN_COLOR,
-                    fontWeight: FontWeight.w900),
+                    fontWeight: FontWeight.w500),
               ),
             ),
             Expanded(
@@ -71,7 +71,7 @@ class TransactionItemLandscape extends StatelessWidget {
                     overflow: TextOverflow.clip,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        fontWeight: FontWeight.w900),
+                        fontWeight: FontWeight.w500),
                   ),
                   hightSpacer10,
                   Text(
@@ -81,7 +81,7 @@ class TransactionItemLandscape extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: getTextStyle(
                         fontSize: MEDIUM_MINUS_FONT_SIZE,
-                        fontWeight: FontWeight.w900),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

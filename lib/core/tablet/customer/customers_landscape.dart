@@ -47,8 +47,11 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
       // padding: paddingXY(),
       child: Column(
         children: [
-          TitleAndSearchBar(inputFormatter: [FilteringTextInputFormatter.digitsOnly],
-               
+          TitleAndSearchBar(
+            inputFormatter: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(12)
+            ],
             title: "Customer",
             keyboardType: TextInputType.number,
             onSubmit: (text) {

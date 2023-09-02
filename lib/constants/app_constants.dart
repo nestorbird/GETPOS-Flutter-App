@@ -234,11 +234,11 @@ const double MY_ACCOUNT_ICON_PADDING_RIGHT = 24;
 const double MY_ACCOUNT_ICON_PADDING_BOTTOM = 8;
 
 // SALE SUCCESS
-const double SALE_SUCCESS_IMAGE_HEIGHT = 150;
+const double SALE_SUCCESS_IMAGE_HEIGHT = 120;
 const double SALE_SUCCESS_IMAGE_WIDTH = 150;
 
 // FONT SIZES
-const double LARGE_FONT_SIZE = 20;
+const double LARGE_FONT_SIZE = 16;
 const double LARGE_PLUS_FONT_SIZE = 22;
 const double SMALL_MINUS_FONT_SIZE = 8;
 const double SMALL_FONT_SIZE = 10;

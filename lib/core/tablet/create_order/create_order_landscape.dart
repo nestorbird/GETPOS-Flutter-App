@@ -303,9 +303,10 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.start,
                                             style: getTextStyle(
+
                                                 // color: DARK_GREY_COLOR,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: SMALL_PLUS_FONT_SIZE),
+                                                // fontWeight: FontWeight.w500,
+                                                fontSize: MEDIUM_FONT_SIZE),
                                           ),
                                         ),
                                         hightSpacer4,
@@ -390,7 +391,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     ))
                   : Container(
                       margin: paddingXY(y: 5),
-                      width: 75,
+                      width: 100,
                       decoration: BoxDecoration(
                         color: WHITE_COLOR,
                         borderRadius: BorderRadius.circular(10),
@@ -424,7 +425,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: getTextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontSize: LARGE_FONT_SIZE,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],

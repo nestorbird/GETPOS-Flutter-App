@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
   }
 
   /// HANDLE BACK BTN PRESS ON LOGIN SCREEN
-  _showExitConfirmationDialog(BuildContext context) {
+  /* _showExitConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -82,48 +82,48 @@ class _LoginState extends State<Login> {
         );
       },
     );
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _showExitConfirmationDialog(context),
-      child: SafeArea(
-          child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: WHITE_COLOR,
-        body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                hightSpacer50,
-                Image.asset(APP_ICON, width: 100, height: 100),
-                hightSpacer50,
-                instanceUrlTxtboxSection(context),
-                hightSpacer20,
-                headingLblWidget(context),
-                hightSpacer15,
-                emailTxtBoxSection(context),
-                hightSpacer10,
-                passwordTxtBoxSection(context),
-                hightSpacer10,
-                forgotPasswordSection(context),
-                hightSpacer30,
-                termAndPolicySection(context),
-                hightSpacer32,
-                loginBtnWidget(context),
-                hightSpacer25
-                // const Spacer(),
-                // Center(
-                //     child: Text(
-                //   version ?? APP_VERSION_FALLBACK,
-                //   style: getHintStyle(),
-                // )),
-                // hightSpacer10
-              ],
-            )),
-      )),
-    );
+    return //WillPopScope(
+        //  onWillPop: _showExitConfirmationDialog(context),
+        //  child:
+        SafeArea(
+            child: Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: WHITE_COLOR,
+      body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              hightSpacer50,
+              Image.asset(APP_ICON, width: 100, height: 100),
+              hightSpacer50,
+              instanceUrlTxtboxSection(context),
+              hightSpacer20,
+              headingLblWidget(context),
+              hightSpacer15,
+              emailTxtBoxSection(context),
+              hightSpacer10,
+              passwordTxtBoxSection(context),
+              hightSpacer10,
+              forgotPasswordSection(context),
+              hightSpacer30,
+              termAndPolicySection(context),
+              hightSpacer32,
+              loginBtnWidget(context),
+              hightSpacer25
+              // const Spacer(),
+              // Center(
+              //     child: Text(
+              //   version ?? APP_VERSION_FALLBACK,
+              //   style: getHintStyle(),
+              // )),
+              // hightSpacer10
+            ],
+          )),
+    ));
   }
 
   /// HANDLE LOGIN BTN ACTION

@@ -85,6 +85,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                   // height: 100,
                   padding: horizontalSpace(),
                   child: TextFieldWidget(
+                    
                     boxDecoration: txtFieldBorderDecoration,
                     txtCtrl: phoneCtrl,
                     hintText: "Enter phone no.",
@@ -161,9 +162,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   }
 
   Future<void> _newCustomerAPI() async {
-    if (emailCtrl.text.isEmpty ||
-        nameCtrl.text.isEmpty ||
-        phoneCtrl.text.isEmpty) {
+    if (nameCtrl.text.isEmpty || phoneCtrl.text.isEmpty) {
       Helper.showPopup(context, "Please Enter all the fields");
     } else {
       CommanResponse response = await CreateCustomer()
