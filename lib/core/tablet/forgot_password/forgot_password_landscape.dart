@@ -170,7 +170,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
                     ),
                     hightSpacer50,
                     instanceUrlTxtboxSection(context),
-                    hightSpacer50,
+                    hightSpacer20,
                     emailTxtboxSection,
                     hightSpacer20,
                     hightSpacer20,

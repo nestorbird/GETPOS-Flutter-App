@@ -16,7 +16,7 @@ class LongButton extends StatefulWidget {
 
   String? totalAmount;
   String? totalItems;
-
+  bool isTab;
   Function? onTap;
 
   LongButton(
@@ -24,6 +24,7 @@ class LongButton extends StatefulWidget {
       required this.isAmountAndItemsVisible,
       required this.buttonTitle,
       this.totalAmount,
+      this.isTab=false,
       this.totalItems,
       this.onTap})
       : super(key: key);
@@ -108,7 +109,7 @@ class _LongButtonState extends State<LongButton> {
                                 onPressed: () => widget.onTap!(),
                                 child: Text(widget.buttonTitle,
                                     style: getTextStyle(
-                                      fontSize: MEDIUM_MINUS_FONT_SIZE,
+                                      fontSize:widget.isTab? MEDIUM_PLUS_FONT_SIZE:MEDIUM_MINUS_FONT_SIZE,
                                       fontWeight: FontWeight.bold,
                                       color: WHITE_COLOR,
                                     ))),

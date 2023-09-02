@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/core/tablet/create_order/cart_widget.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
@@ -33,11 +34,27 @@ class SaleSuccessfulPopup extends StatelessWidget {
                     ),
                   ))),
           Center(
-            child: SvgPicture.asset(
-              SUCCESS_IMAGE,
-              height: SALE_SUCCESS_IMAGE_HEIGHT,
-              width: SALE_SUCCESS_IMAGE_WIDTH,
-              fit: BoxFit.contain,
+            child: CircleAvatar(
+              radius: 90,
+              backgroundColor: Color.fromARGB(255, 255, 223, 229),
+              child: CircleAvatar(
+                radius: 50,
+                backgroundColor: MAIN_COLOR,
+                child: CircleAvatar(
+                  radius: 40,
+                  backgroundColor: Colors.white,
+                  child: SvgPicture.asset(
+                    SUCCESS_IMAGE,
+                    color: MAIN_COLOR,
+                  ),
+                  // child: SvgPicture.asset(
+                  //   SUCCESS_IMAGE,
+                  //   height: SALE_SUCCESS_IMAGE_HEIGHT,
+                  //   width: SALE_SUCCESS_IMAGE_WIDTH,
+                  //   fit: BoxFit.contain,
+                  // ),
+                ),
+              ),
             ),
           ),
           hightSpacer30,
@@ -46,30 +63,32 @@ class SaleSuccessfulPopup extends StatelessWidget {
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
                 color: BLACK_COLOR,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.bold),
           ),
           hightSpacer30,
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "Print Receipt",
                 onTap: () {
                   Navigator.pop(context, "home");
                 },
               )),
+          // Padding(
+          //     padding: const EdgeInsets.only(left: 35, right: 35),
+          //     child: LongButton(
+          //       isAmountAndItemsVisible: false,
+          //       buttonTitle: RETURN_TO_HOME_TXT,
+          //       onTap: () {
+          //         Navigator.pop(context, "home");
+          //       },
+          //     )),
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isAmountAndItemsVisible: false,
-                buttonTitle: RETURN_TO_HOME_TXT,
-                onTap: () {
-                  Navigator.pop(context, "home");
-                },
-              )),
-          Padding(
-              padding: const EdgeInsets.only(left: 35, right: 35),
-              child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
                 onTap: () {

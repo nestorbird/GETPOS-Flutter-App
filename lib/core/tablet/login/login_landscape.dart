@@ -43,7 +43,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _urlCtrl = TextEditingController();
     _emailCtrl.text = "";
     _passCtrl.text = "";
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "getpos.in";
 
     // _getAppVersion();
   }

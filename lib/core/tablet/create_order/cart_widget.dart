@@ -318,8 +318,8 @@ class _CartWidgetState extends State<CartWidget> {
                           child: Text(
                             "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
                             style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.normal),
+                                fontSize: SMALL_PLUS_FONT_SIZE,
+                                fontWeight: FontWeight.w500),
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5,
@@ -615,7 +615,7 @@ class _CartWidgetState extends State<CartWidget> {
         transactionId: '',
         paymentMethod: selectedCashMode
             ? "Cash"
-            : "Card", //TODO:: Need to check when payment gateway is implemented
+            : "Cash", //TODO:: Need to check when payment gateway is implemented
         paymentStatus: "Paid",
         transactionSynced: false,
         parkOrderId:

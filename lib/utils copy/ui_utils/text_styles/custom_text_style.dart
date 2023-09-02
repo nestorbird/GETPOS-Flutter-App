@@ -6,7 +6,6 @@ import '../../../constants/app_constants.dart';
 
 // Pass in the height and it return a vertical spacer
 //
-
 TextStyle getTextStyle(
         {fontWeight = FontWeight.bold,
         fontSize = SMALL_FONT_SIZE,

@@ -104,12 +104,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 searchBoxWidth: size.width / 4,
               ),
               hightSpacer20,
-           categories.isEmpty
-                          ? const Center(
-                              child: Text(
-                              "No items found",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )):   getCategoryListWidg(),
+              categories.isEmpty
+                  ? const Center(
+                      child: Text(
+                      "No items found",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+                  : getCategoryListWidg(),
               hightSpacer20,
               ListView.builder(
                 primary: false,
@@ -281,7 +282,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                     margin: paddingXY(x: 5, y: 20),
                                     padding: paddingXY(y: 0, x: 10),
                                     width: 145,
-                                    height: 90,
+                                    height: 100,
                                     decoration: BoxDecoration(
                                         color: WHITE_COLOR,
                                         borderRadius:
@@ -294,16 +295,17 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                       children: [
                                         hightSpacer40,
                                         SizedBox(
-                                          //height: 30,
+                                          height: 20,
                                           child: Text(
                                             cat.items[index].name,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
+                                            textAlign: TextAlign.center,
                                             style: getTextStyle(
-                                                // color: DARK_GREY_COLOR,
+                                                // color: Colors.red,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: SMALL_PLUS_FONT_SIZE),
+                                                fontSize:
+                                                    MEDIUM_MINUS_FONT_SIZE),
                                           ),
                                         ),
                                         hightSpacer4,
@@ -325,7 +327,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                     child: Container(
                                       margin: const EdgeInsets.only(
                                           left: 5, right: 5),
-                                      height: 55,
+                                      height: 58,
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       decoration: const BoxDecoration(
                                           shape: BoxShape.circle),
@@ -373,7 +375,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 
   getCategoryListWidg() {
     return SizedBox(
-      height: 100,
+      height: 120,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
@@ -388,7 +390,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     ))
                   : Container(
                       margin: paddingXY(y: 5),
-                      width: 75,
+                      width: 90,
                       decoration: BoxDecoration(
                         color: WHITE_COLOR,
                         borderRadius: BorderRadius.circular(10),
@@ -412,8 +414,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                   )
                                 : Image.asset(
                                     BURGAR_IMAGE,
-                                    height: 50,
-                                    width: 50,
+                                    height: 55,
+                                    width: 55,
                                     fit: BoxFit.fill,
                                   ),
                           ),
@@ -422,8 +424,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: getTextStyle(
-                              fontWeight: FontWeight.w600,
-                            ),
+                                fontWeight: FontWeight.w700,
+                                fontSize: SMALL_PLUS_FONT_SIZE),
                           ),
                         ],
                       ),
