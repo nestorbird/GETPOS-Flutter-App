@@ -52,7 +52,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(12)
             ],
-            title: "Customer",
+            title: "Customers",
             keyboardType: TextInputType.number,
             onSubmit: (text) {
               if (text.isNotEmpty) {

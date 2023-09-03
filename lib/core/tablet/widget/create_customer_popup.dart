@@ -79,7 +79,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                     fontWeight: FontWeight.bold,
                     color: BLACK_COLOR),
               ),
-              hightSpacer15,
+              hightSpacer20,
               Container(
                   width: 400,
                   // height: 100,
@@ -143,7 +143,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                   ),
                   child: Center(
                     child: Text(
-                      "Add & Create order",
+                      "Add & Create Order",
                       textAlign: TextAlign.center,
                       style: getTextStyle(
                           fontSize: LARGE_FONT_SIZE,

@@ -36,7 +36,7 @@ class TransactionItemLandscape extends StatelessWidget {
                   Text(
                     order.customer.name,
                     style: getTextStyle(
-                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w900),
+                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w500),
                   ),
                   hightSpacer10,
                   Text(
@@ -64,7 +64,8 @@ class TransactionItemLandscape extends StatelessWidget {
             Expanded(
               flex: 4,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     'Order ID: ${order.id}',
@@ -75,10 +76,11 @@ class TransactionItemLandscape extends StatelessWidget {
                   ),
                   hightSpacer10,
                   Text(
+                    textAlign: TextAlign.start,
                     // '27th Jul 2021, 11:00AM ',
                     '${order.date} ${order.time}',
                     overflow: TextOverflow.clip,
-                    textAlign: TextAlign.center,
+                    // textAlign: TextAlign.right,
                     style: getTextStyle(
                         fontSize: MEDIUM_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w500),

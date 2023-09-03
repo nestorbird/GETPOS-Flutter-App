@@ -174,10 +174,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          cat.name,
-          style: getTextStyle(
-            fontSize: LARGE_FONT_SIZE,
+        Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Text(
+            cat.name,
+            style: getTextStyle(
+              fontSize: LARGE_FONT_SIZE,
+            ),
           ),
         ),
         hightSpacer10,

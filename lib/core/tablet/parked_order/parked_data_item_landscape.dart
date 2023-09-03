@@ -109,7 +109,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
       DbParkedOrder().deleteOrder(order);
       onDelete();
       await AlertDialogWidget()
-          .show("Parked Order Deleted Successfully", OPTION_YES);
+          .show("Parked order deleted successfully", OPTION_CONTINUE);
     }
   }
 

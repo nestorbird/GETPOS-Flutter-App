@@ -32,7 +32,7 @@ class TitleAndSearchBar extends StatefulWidget {
       required this.title,
       this.searchHint,
       this.searchCtrl,
-      this.searchBoxWidth = 330,
+      this.searchBoxWidth = 350,
       this.searchBoxVisible = true,
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
@@ -132,7 +132,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
           // width: double.infinity,
           child: ButtonWidget(
             onPressed: () => widget.parkOrderClicked!(),
-            title: "Parked Order",
+            title: "Parked Orders",
             colorBG: BLACK_COLOR,
             width: 200,
             borderRadius: 15,
