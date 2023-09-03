@@ -48,30 +48,32 @@ class SaleSuccessfulPopup extends StatelessWidget {
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
                 color: BLACK_COLOR,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.bold),
           ),
           hightSpacer30,
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "Print Receipt",
                 onTap: () {
                   Navigator.pop(context, "home");
                 },
               )),
+          // Padding(
+          //     padding: const EdgeInsets.only(left: 35, right: 35),
+          //     child: LongButton(
+          //       isAmountAndItemsVisible: false,
+          //       buttonTitle: RETURN_TO_HOME_TXT,
+          //       onTap: () {
+          //         Navigator.pop(context, "home");
+          //       },
+          //     )),
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isAmountAndItemsVisible: false,
-                buttonTitle: RETURN_TO_HOME_TXT,
-                onTap: () {
-                  Navigator.pop(context, "home");
-                },
-              )),
-          Padding(
-              padding: const EdgeInsets.only(left: 35, right: 35),
-              child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
                 onTap: () {

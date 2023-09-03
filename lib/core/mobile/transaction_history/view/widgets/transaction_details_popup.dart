@@ -154,11 +154,14 @@ class TransactionDetailsPopup extends StatelessWidget {
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
                         fontWeight: FontWeight.w500),
                   ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Text(
                     "${_getItemVariants(order.items[index].attributes)} x ${order.items[index].orderedQuantity}",
                     style: getTextStyle(
-                        fontSize: SMALL_FONT_SIZE,
-                        fontWeight: FontWeight.normal),
+                        fontSize: SMALL_PLUS_FONT_SIZE,
+                        fontWeight: FontWeight.w500),
                     textAlign: TextAlign.start,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 5,

@@ -20,25 +20,32 @@ class LeftSideMenu extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            //padding: morePaddingAll(),
-            decoration: const BoxDecoration(
-                // color: MAIN_COLOR,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(0),
-                    topRight: Radius.circular(15))),
-            child: Padding(
-              padding: verticalSpace(x: 0),
-              child: Image.asset(
-                APP_ICON_TABLET,
-                fit: BoxFit.fill,
+          InkWell(
+            onTap: () {
+              // print("tap");
+              selectedView.value = "Order";
+              
+            },
+            child: Container(
+              //padding: morePaddingAll(),
+              decoration: const BoxDecoration(
+                  // color: MAIN_COLOR,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(0),
+                      topRight: Radius.circular(15))),
+              child: Padding(
+                padding: verticalSpace(x: 0),
+                child: Image.asset(
+                  APP_ICON_TABLET,
+                  fit: BoxFit.fill,
+                ),
+                // child: Text(
+                //   "POS",
+                //   textAlign: TextAlign.center,
+                //   style: getTextStyle(
+                //       color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
+                // ),
               ),
-              // child: Text(
-              //   "POS",
-              //   textAlign: TextAlign.center,
-              //   style: getTextStyle(
-              //       color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
-              // ),
             ),
           ),
           hightSpacer15,

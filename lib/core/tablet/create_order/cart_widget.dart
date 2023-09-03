@@ -319,8 +319,8 @@ class _CartWidgetState extends State<CartWidget> {
                           child: Text(
                             "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
                             style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.normal),
+                                fontSize: SMALL_PLUS_FONT_SIZE,
+                                fontWeight: FontWeight.w500),
                             textAlign: TextAlign.start,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 5,

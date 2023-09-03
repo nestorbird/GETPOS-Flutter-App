@@ -119,6 +119,7 @@ class TabletApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: isUserLoggedIn ? HomeTablet() : const LoginLandscape(),
+      
     );
   }
 }
