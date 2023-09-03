@@ -63,7 +63,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
               child: SvgPicture.asset(
                 CROSS_ICON,
                 color: BLACK_COLOR,
-                width: 20,
+                width: 20,height: 20,
               ),
             ),
           ),
@@ -85,7 +85,6 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                   // height: 100,
                   padding: horizontalSpace(),
                   child: TextFieldWidget(
-                    
                     boxDecoration: txtFieldBorderDecoration,
                     txtCtrl: phoneCtrl,
                     hintText: "Enter phone no.",
@@ -119,7 +118,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                   _newCustomerAPI();
                   customer = Customer(
                       id: emailCtrl.text,
-                      name: nameCtrl.text,
+                      name: nameCtrl.text ?? "Guest",
                       email: emailCtrl.text,
                       phone: phoneCtrl.text,
                       isSynced: false,
@@ -162,11 +161,11 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   }
 
   Future<void> _newCustomerAPI() async {
-    if (nameCtrl.text.isEmpty || phoneCtrl.text.isEmpty) {
+    if (phoneCtrl.text.isEmpty || nameCtrl.text.isEmpty) {
       Helper.showPopup(context, "Please Enter all the fields");
     } else {
       CommanResponse response = await CreateCustomer()
-          .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
+          .createNew(phoneCtrl.text, nameCtrl.text ?? "Guest", emailCtrl.text);
       /* if (response.status!) {
       filterCustomerData(phoneCtrl.text);
     } */

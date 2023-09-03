@@ -73,7 +73,7 @@ class _CustomerTileState extends State<CustomerTile> {
                 child: Padding(
                   padding: horizontalSpace(),
                   child: Text(
-                      widget.customer != null ? widget.customer!.name : "",
+                      widget.customer != null ? widget.customer!.name : "Guest",
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           color: MAIN_COLOR,
@@ -85,7 +85,7 @@ class _CustomerTileState extends State<CustomerTile> {
                 ),
               ),
               Visibility(
-                visible:widget.isNumVisible,
+                visible: widget.isNumVisible,
                 child: Padding(
                   padding: miniPaddingAll(),
                   child: Text(

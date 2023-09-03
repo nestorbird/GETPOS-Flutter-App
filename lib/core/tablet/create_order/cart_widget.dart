@@ -150,11 +150,11 @@ class _CartWidgetState extends State<CartWidget> {
 
   _handleCustomerPopup() async {
     final result = await Get.defaultDialog(
-      // contentPadding: paddingXY(x: 0, y: 0),
-      title: "",
-      titlePadding: paddingXY(x: 0, y: 0),
+      contentPadding: EdgeInsets.zero,
+      //   title: "",
+//titlePadding: paddingXY(x: 0, y: 0),
       // custom: Container(),
-      content: SelectCustomerPopup(
+      custom: SelectCustomerPopup(
         customer: selectedCustomer,
       ),
     );
@@ -204,18 +204,20 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
-        _prepareCart();
-        if (currentCart != null) {
-          if (selectedCashMode == true) {
-            Helper.showPopupForTablet(context, "Coming Soon..");
-          } else {
-            await _placeOrderHandler();
-
-            // to be showed on successfull order placed
-            _showOrderPlacedSuccessPopup();
-          }
+        if (selectedCashMode == true) {
+          Helper.showPopupForTablet(context, "Coming Soon..");
         } else {
-          Helper.showPopupForTablet(context, "Please add items in cart");
+          _prepareCart();
+          if (currentCart != null) {
+            {
+              await _placeOrderHandler();
+
+              // to be showed on successfull order placed
+              _showOrderPlacedSuccessPopup();
+            }
+          } else {
+            Helper.showPopupForTablet(context, "Please add items in cart");
+          }
         }
       },
       child: Container(
@@ -553,7 +555,7 @@ class _CartWidgetState extends State<CartWidget> {
     selectedCustomer = widget.customer;
     return selectedCustomer != null
         ? InkWell(
-            onTap: () => _handleCustomerPopup(),
+            //   onTap: () => _handleCustomerPopup(),
             child: CustomerTile(
               isCheckBoxEnabled: false,
               isDeleteButtonEnabled: false,

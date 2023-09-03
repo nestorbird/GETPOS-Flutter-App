@@ -85,7 +85,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                   child: SvgPicture.asset(
                     CROSS_ICON,
                     color: MAIN_COLOR,
-                    width: 15,
+                    width: 20,height:20 ,
                   ),
                 ),
               )

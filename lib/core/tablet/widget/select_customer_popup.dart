@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import '../../../../../configs/theme_config.dart';
@@ -73,6 +74,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                 CROSS_ICON,
                 color: BLACK_COLOR,
                 width: 20,
+                height: 20,
               ),
             ),
           ),
@@ -86,10 +88,18 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   // height: 100,
                   padding: horizontalSpace(),
                   //changes needed to be done here(malvika)
-                  child: SearchWidget(inputFormatters: [],
+                  child: SearchWidget(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(12)
+                    ],
                     searchHint: SEARCH_HINT_TXT,
                     searchTextController: searchCtrl,
                     onTextChanged: (text) {
+                      if (text.length < 10) {
+                        customer = null;
+                        filterCustomerData(text);
+                      }
                       if (text.isNotEmpty && text.length == 10) {
                         filterCustomerData(text);
                       }
@@ -109,7 +119,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                       isHighlighted: true,
                       isSubtitle: true,
                     )
-                  : (customer == null && searchCtrl.text.length == 10)
+                  : (customer == null && searchCtrl.text.length >= 10)
                       ? Container(
                           width: 380,
                           height: 75,
@@ -131,7 +141,8 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                             textAlign: TextAlign.left,
                           ),
                         )
-                      : Container(
+                      : SizedBox(),
+              /*Container(
                           width: 380,
                           height: 65,
                           margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
@@ -143,17 +154,19 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                               width: 0.5,
                               color: MAIN_COLOR.withOpacity(0.4),
                             ),
-                          )),
+                          )),*/
               hightSpacer40,
               InkWell(
-                onTap: () {
-                  log(customer.toString());
-                  if (customer != null) {
-                    Get.back(result: customer);
-                  } else if (customer == null) {
-                    Get.back(result: searchCtrl.text);
-                  }
-                },
+                onTap: searchCtrl.text.length < 10
+                    ? () {}
+                    : () {
+                        log(customer.toString());
+                        if (customer != null) {
+                          Get.back(result: customer);
+                        } else if (customer == null) {
+                          Get.back(result: searchCtrl.text);
+                        }
+                      },
                 child: Container(
                   width: 380,
                   height: 50,

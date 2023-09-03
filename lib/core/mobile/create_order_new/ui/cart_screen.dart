@@ -251,8 +251,8 @@ class _CartScreenState extends State<CartScreen> {
                             icon: SvgPicture.asset(
                               CROSS_ICON,
                               color: BLACK_COLOR,
-                              height: 15,
-                              width: 15,
+                              height: 20,
+                              width: 20,
                             ))),
                     hightSpacer10,
                     Text(

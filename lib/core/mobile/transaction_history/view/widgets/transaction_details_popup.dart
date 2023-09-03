@@ -33,8 +33,8 @@ class TransactionDetailsPopup extends StatelessWidget {
                 child: SvgPicture.asset(
                   CROSS_ICON,
                   color: BLACK_COLOR,
-                  width: 15,
-                  height: 15,
+                  width: 20,
+                  height: 20,
                 ),
               ),
             ),

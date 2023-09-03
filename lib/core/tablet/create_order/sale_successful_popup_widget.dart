@@ -27,8 +27,8 @@ class SaleSuccessfulPopup extends StatelessWidget {
                     onTap: () => Navigator.pop(context, "home"),
                     child: SvgPicture.asset(
                       CROSS_ICON,
-                      height: 16,
-                      width: 16,
+                      height: 20,
+                      width: 20,
                       color: BLACK_COLOR,
                     ),
                   ))),
