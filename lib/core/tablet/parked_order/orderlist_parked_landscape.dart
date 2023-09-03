@@ -64,12 +64,12 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
                 }
               },
               searchCtrl: searchCtrl,
-              searchHint: "Enter your mobile",
+              searchHint: "Enter customer mobile number",
             ),
             hightSpacer20,
             parkedOrders.isEmpty
                 ? const Center(
-                    child: Text("No order founds ",
+                    child: Text("No order found ",
                         style: TextStyle(fontWeight: FontWeight.bold)))
                 : Expanded(
                     child: productGrid(),

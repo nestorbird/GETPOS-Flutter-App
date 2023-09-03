@@ -29,7 +29,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                 Get.back();
               },
               child: Padding(
-                padding: const EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 15),
                 child: SvgPicture.asset(
                   CROSS_ICON,
                   color: BLACK_COLOR,
@@ -111,7 +111,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                 _subtotalSection("Subtotal", "$appCurrency 0.00"),
                 _subtotalSection("Discount", "- $appCurrency 0.00",
                     isDiscount: true),
-                _subtotalSection("Tax (0%)", "$appCurrency 0.00"),
+                // _subtotalSection("Tax (0%)", "$appCurrency 0.00"),
                 _totalSection("Total", "$appCurrency ${order.orderAmount}"),
               ],
             ),
@@ -154,18 +154,21 @@ class TransactionDetailsPopup extends StatelessWidget {
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
                         fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    "${_getItemVariants(order.items[index].attributes)} x ${order.items[index].orderedQuantity}",
-                    style: getTextStyle(
-                        fontSize: SMALL_PLUS_FONT_SIZE,
-                        fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.start,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 5,
-                    softWrap: false,
+                  SizedBox(
+                    width: 350,
+                    child: Text(
+                      "${_getItemVariants(order.items[index].attributes)} x ${order.items[index].orderedQuantity}",
+                      style: getTextStyle(
+                          fontSize: SMALL_PLUS_FONT_SIZE,
+                          fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                      softWrap: false,
+                    ),
                   ),
                 ],
               ),
@@ -250,28 +253,28 @@ class TransactionDetailsPopup extends StatelessWidget {
                 color: MAIN_COLOR,
                 fontSize: MEDIUM_PLUS_FONT_SIZE),
           ),
-          Column(
-            children: [
-              Text(
-                "Deal 20",
-                style: getTextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: MAIN_COLOR,
-                    fontSize: MEDIUM_PLUS_FONT_SIZE),
-              ),
-              const SizedBox(height: 2),
-              Row(
-                children: List.generate(
-                    15,
-                    (index) => Container(
-                          width: 2,
-                          height: 1,
-                          margin: const EdgeInsets.symmetric(horizontal: 1),
-                          color: MAIN_COLOR,
-                        )),
-              )
-            ],
-          ),
+          // Column(
+          //   children: [
+          //     // Text(
+          //     //   "Deal 20",
+          //     //   style: getTextStyle(
+          //     //       fontWeight: FontWeight.w600,
+          //     //       color: MAIN_COLOR,
+          //     //       fontSize: MEDIUM_PLUS_FONT_SIZE),
+          //     // ),
+          //     const SizedBox(height: 2),
+          //     Row(
+          //       children: List.generate(
+          //           15,
+          //           (index) => Container(
+          //                 width: 2,
+          //                 height: 1,
+          //                 margin: const EdgeInsets.symmetric(horizontal: 1),
+          //                 color: MAIN_COLOR,
+          //               )),
+          //     )
+          //   ],
+          // ),
         ],
       ),
     );
@@ -310,12 +313,12 @@ class TransactionDetailsPopup extends StatelessWidget {
               style: getTextStyle(
                   fontWeight: FontWeight.w700,
                   color: BLACK_COLOR,
-                  fontSize: MEDIUM_PLUS_FONT_SIZE),
+                  fontSize: LARGE_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
-                  fontWeight: FontWeight.w700, fontSize: MEDIUM_PLUS_FONT_SIZE),
+                  fontWeight: FontWeight.w700, fontSize: LARGE_FONT_SIZE),
             ),
           ],
         ),

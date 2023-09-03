@@ -219,7 +219,7 @@ class _CartWidgetState extends State<CartWidget> {
       },
       child: Container(
         width: double.infinity,
-        padding: paddingXY(y: 10),
+        padding: paddingXY(y: 18),
         margin: paddingXY(y: 10, x: 5),
         decoration: BoxDecoration(
             color: widget.orderList.isNotEmpty
@@ -314,17 +314,15 @@ class _CartWidgetState extends State<CartWidget> {
                     ///////////////////////////////////////////////
                     Align(
                         alignment: Alignment.topLeft,
-                        child: Expanded(
-                          child: Text(
-                            "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
-                            style: getTextStyle(
-                                fontSize: SMALL_PLUS_FONT_SIZE,
-                                fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.start,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                            softWrap: false,
-                          ),
+                        child: Text(
+                          "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
+                          style: getTextStyle(
+                              fontSize: SMALL_FONT_SIZE,
+                              fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5,
+                          softWrap: false,
                         )),
                     hightSpacer10,
                     Row(

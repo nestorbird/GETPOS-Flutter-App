@@ -47,7 +47,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
       child: Column(
         children: [
           TitleAndSearchBar(
-            title: "Customerss",
+            title: "Customers",
             keyboardType: TextInputType.number,
             onSubmit: (text) {
               if (text.isNotEmpty) {

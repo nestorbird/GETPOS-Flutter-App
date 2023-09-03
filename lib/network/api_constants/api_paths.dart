@@ -4,8 +4,7 @@ import '../../constants/app_constants.dart';
 import '../api_helper/api_server.dart';
 
 ///Base API URL for development environment
-const DEV_URL = 
-'https://getpos.in/api/';
+const DEV_URL = 'https://getpos.in/api/';
 const DEV_ERP_URL = 'getpos.in';
 // const DEV_URL = 'https://agriboratest.nestorhawk.com/api/';
 

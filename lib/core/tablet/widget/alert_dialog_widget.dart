@@ -32,7 +32,7 @@ class AlertDialogWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                        color: GREEN_COLOR,
+                        color: MAIN_COLOR,
                         borderRadius: BorderRadius.circular(12)),
                     child: Text(positiveOption,
                         textAlign: TextAlign.center,

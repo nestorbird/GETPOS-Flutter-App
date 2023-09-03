@@ -70,7 +70,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
         hightSpacer10,
         TitleAndSearchBar(
           parkedOrderVisible: true,
-          title: "Order History",
+          title: "Orders History",
           onSubmit: (text) {
             // context
             //     .read<TransactionBloc>()
@@ -102,7 +102,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
             debugPrint("parked order clicked");
           },
           searchCtrl: searchCtrl,
-          searchHint: "Customer mobile number",
+          searchHint: "Enter customer mobile number",
         ),
         hightSpacer20,
         BlocBuilder<TransactionBloc, TransactionState>(
