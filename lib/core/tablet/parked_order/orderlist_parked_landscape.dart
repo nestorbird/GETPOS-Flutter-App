@@ -48,8 +48,8 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: [
-            TitleAndSearchBar(inputFormatter: [FilteringTextInputFormatter.digitsOnly],
-              
+            TitleAndSearchBar(
+              inputFormatter: [FilteringTextInputFormatter.digitsOnly],
               title: "Parked Orders",
               onSubmit: (text) {
                 if (text.length >= 3) {

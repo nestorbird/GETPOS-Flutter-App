@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../configs/theme_config.dart';
@@ -68,13 +69,10 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Center(
-                child: SvgPicture.asset(
-                  SUCCESS_IMAGE,
-                  height: SALE_SUCCESS_IMAGE_HEIGHT,
-                  width: SALE_SUCCESS_IMAGE_WIDTH,
-                  fit: BoxFit.contain,
-                ),
+             Center(
+            child: Lottie.asset(SUCCESS_IMAGE,
+                animate:
+                    true),
               ),
               hightSpacer30,
               Text(
@@ -93,13 +91,13 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
                   _printInvoice();
                 },
               ),
-              LongButton(
-                isAmountAndItemsVisible: false,
-                buttonTitle: RETURN_TO_HOME_TXT,
-                onTap: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-              ),
+              // LongButton(
+              //   isAmountAndItemsVisible: false,
+              //   buttonTitle: RETURN_TO_HOME_TXT,
+              //   onTap: () {
+              //     Navigator.popUntil(context, (route) => route.isFirst);
+              //   },
+              // ),
               LongButton(
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",

@@ -157,7 +157,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
   }
 
   _addNewCustomerUI() {
-    return Column(
+    return SingleChildScrollView(child:Column(
       children: [
         Center(
             child: Padding(
@@ -174,18 +174,18 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
             child: Text(
           "Add Customer",
           style: getTextStyle(
-            fontSize: LARGE_MINUS_FONT_SIZE,
+            fontSize: LARGE_PLUS_FONT_SIZE,
             fontWeight: FontWeight.w600,
           ),
         )),
         hightSpacer20,
-        Padding(
+      IgnorePointer (ignoring: true,child: Padding(
           padding: horizontalSpace(x: 20),
           child: TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _phoneCtrl,
               hintText: "Phone No.",
-              txtColor: BLACK_COLOR),
+              txtColor: BLACK_COLOR)),
         ),
         hightSpacer20,
         Padding(
@@ -227,7 +227,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               title: "Cancel",
             )),
       ],
-    );
+    ));
   }
 
   Future<void> _newCustomerAPI() async {

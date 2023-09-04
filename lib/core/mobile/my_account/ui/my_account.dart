@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/route_manager.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -146,24 +147,33 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   Future<void> handleLogout() async {
-    var offlineOrders = await DbSaleOrder().getOfflineOrders();
-    if (offlineOrders.isEmpty) {
-      if (!mounted) return;
-      var res = await Helper.showConfirmationPopup(
-          context, LOGOUT_QUESTION, OPTION_YES,
-          hasCancelAction: true);
-      if (res != OPTION_CANCEL.toLowerCase()) {
-        await SyncHelper().logoutFlow();
-        if (!mounted) return;
-        Navigator.pop(context);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Login()));
-      }
-    } else {
-      if (!mounted) return;
-      await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
-      // print("You clicked $res");
-    }
+    await SyncHelper().logoutFlow();
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const Login()),
+        (Route<dynamic> route) => false);
+    // var offlineOrders = await DbSaleOrder().getOfflineOrders();
+    // if (offlineOrders.isEmpty) {
+    //   if (!mounted) return;
+    //   var res = await Helper.showConfirmationPopup(
+    //       context, LOGOUT_QUESTION, OPTION_YES,
+    //       //   await SyncHelper().logoutFlow();
+    //       // Get.offAll(() => const Login());
+    //       hasCancelAction: true);
+    //   if (res != OPTION_CANCEL.toLowerCase()) {
+    //     // await SyncHelper().logoutFlow();
+    //     // if (!mounted) return;sss
+    //     // Navigator.pop(context);
+    //     // Navigator.pushReplacement(
+    //     //     context, MaterialPageRoute(builder: (context) => const Login()));
+    //   }
+    // } else {
+    //   if (!mounted) return;
+    //   await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+    //   // print("You clicked $res");
+    // }
+    // await SyncHelper().logoutFlow();
+    // Get.offAll(() => const Login());
   }
 
   Widget _getProfileImage() {

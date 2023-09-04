@@ -89,41 +89,42 @@ class _LoginState extends State<Login> {
     return //WillPopScope(
         //  onWillPop: _showExitConfirmationDialog(context),
         //  child:
-        SafeArea(
+        WillPopScope(
+            onWillPop: _onBackPressed,
             child: Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: WHITE_COLOR,
-      body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              hightSpacer50,
-              Image.asset(APP_ICON, width: 100, height: 100),
-              hightSpacer50,
-              instanceUrlTxtboxSection(context),
-              hightSpacer20,
-              headingLblWidget(context),
-              hightSpacer15,
-              emailTxtBoxSection(context),
-              hightSpacer10,
-              passwordTxtBoxSection(context),
-              hightSpacer10,
-              forgotPasswordSection(context),
-              hightSpacer30,
-              termAndPolicySection(context),
-              hightSpacer32,
-              loginBtnWidget(context),
-              hightSpacer25
-              // const Spacer(),
-              // Center(
-              //     child: Text(
-              //   version ?? APP_VERSION_FALLBACK,
-              //   style: getHintStyle(),
-              // )),
-              // hightSpacer10
-            ],
-          )),
-    ));
+              resizeToAvoidBottomInset: true,
+              backgroundColor: WHITE_COLOR,
+              body: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      hightSpacer50,
+                      Image.asset(APP_ICON, width: 100, height: 100),
+                      hightSpacer50,
+                      instanceUrlTxtboxSection(context),
+                      hightSpacer20,
+                      headingLblWidget(context),
+                      hightSpacer15,
+                      emailTxtBoxSection(context),
+                      hightSpacer10,
+                      passwordTxtBoxSection(context),
+                      hightSpacer10,
+                      forgotPasswordSection(context),
+                      hightSpacer30,
+                      termAndPolicySection(context),
+                      hightSpacer32,
+                      loginBtnWidget(context),
+                      hightSpacer25
+                      // const Spacer(),
+                      // Center(
+                      //     child: Text(
+                      //   version ?? APP_VERSION_FALLBACK,
+                      //   style: getHintStyle(),
+                      // )),
+                      // hightSpacer10
+                    ],
+                  )),
+            ));
   }
 
   /// HANDLE LOGIN BTN ACTION
@@ -375,5 +376,13 @@ class _LoginState extends State<Login> {
   bool isValidInstanceUrl() {
     String url = "https://${_urlCtrl.text}/api/";
     return Helper.isValidUrl(url);
+  }
+
+  Future<bool> _onBackPressed() async {
+    var res = await Helper.showConfirmationPopup(
+        context, CLOSE_APP_QUESTION, OPTION_YES,
+        hasCancelAction: true);
+
+    return false;
   }
 }

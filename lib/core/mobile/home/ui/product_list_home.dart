@@ -135,9 +135,9 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       children: [
                                         Text(WELCOME_BACK,
                                             style: getTextStyle(
-                                              fontSize: SMALL_FONT_SIZE,
+                                              fontSize: SMALL_PLUS_FONT_SIZE,
                                               color: MAIN_COLOR,
-                                              fontWeight: FontWeight.w500,
+                                              fontWeight: FontWeight.w600,
                                             )),
                                         hightSpacer5,
                                         Text(

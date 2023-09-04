@@ -62,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
     _getHubManager();
     //totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
-   // paymentMethod = "Cash";
+    // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }
 
@@ -70,17 +70,21 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-              child: Column(
+      appBar: AppBar(
+        elevation: 0,
+        shadowColor: WHITE_COLOR,
+        automaticallyImplyLeading: false,
+        backgroundColor: WHITE_COLOR,
+        title: const CustomAppbar(
+          title: "Cart",
+          hideSidemenu: true,
+        ),
+      ),
+      body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomAppbar(
-                title: "Cart",
-                hideSidemenu: true,
-              ),
-
               Padding(
                   padding: paddingXY(x: 16, y: 16),
                   child: Text(
@@ -142,9 +146,7 @@ class _CartScreenState extends State<CartScreen> {
                       isDiscount: true)),
               hightSpacer10,
             ],
-          ))
-        ],
-      ),
+          )),
       bottomNavigationBar: bottomBarWidget(),
     ));
   }
@@ -176,7 +178,7 @@ class _CartScreenState extends State<CartScreen> {
               )),
           Expanded(
               child: GestureDetector(
-                  onTap: () =>  createSale(!_isCODSelected?"Card":"Cash"),
+                  onTap: () => createSale(!_isCODSelected ? "Card" : "Cash"),
                   child: Container(
                       height: 70,
                       margin: const EdgeInsets.only(left: 10),
@@ -267,11 +269,12 @@ class _CartScreenState extends State<CartScreen> {
                         isAmountAndItemsVisible: false,
                         buttonTitle: 'Create A New Order',
                         onTap: () {
-                        Navigator.pushAndRemoveUntil(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>const ProductListHome()), (route) => route.isFirst);
-                             
+                                  builder: (context) =>
+                                      const ProductListHome()),
+                              (route) => route.isFirst);
                         }),
                     LongButton(
                         isAmountAndItemsVisible: false,
@@ -280,8 +283,10 @@ class _CartScreenState extends State<CartScreen> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>const ProductListHome()), (route) => route.isFirst);
-                              }),
+                                  builder: (context) =>
+                                      const ProductListHome()),
+                              (route) => route.isFirst);
+                        }),
                     LongButton(
                         isAmountAndItemsVisible: false,
                         buttonTitle: 'View Parked Orders',
@@ -474,42 +479,41 @@ class _CartScreenState extends State<CartScreen> {
       );
 
   createSale(String paymentMethod) async {
-    paymentMethod =paymentMethod;
-if(paymentMethod=="Card"){ return Helper.showPopup(context,
-              "Comming Soon" );
+    paymentMethod = paymentMethod;
+    if (paymentMethod == "Card") {
+      return Helper.showPopup(context, "Comming Soon");
+    } else {
+      DateTime currentDateTime = DateTime.now();
+      String date =
+          DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
+      log('Date : $date');
+      String time = DateFormat().add_jm().format(currentDateTime).toString();
+      log('Time : $time');
+      String orderId = await Helper.getOrderId();
+      log('Order No : $orderId');
 
-}else{
-
-    DateTime currentDateTime = DateTime.now();
-    String date =
-        DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
-    log('Date : $date');
-    String time = DateFormat().add_jm().format(currentDateTime).toString();
-    log('Time : $time');
-    String orderId = await Helper.getOrderId();
-    log('Order No : $orderId');
-
-    SaleOrder saleOrder = SaleOrder(
-        id: orderId,
-        orderAmount: totalAmount,
-        date: date,
-        time: time,
-        customer: widget.order.customer,
-        manager: hubManager!,
-        items: widget.order.items,
-        transactionId: '',
-        paymentMethod: paymentMethod,
-        paymentStatus: "Paid",
-        transactionSynced: false,
-        parkOrderId:
-            "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-        tracsactionDateTime: currentDateTime);
-    if (!mounted) return;
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
-  }}
+      SaleOrder saleOrder = SaleOrder(
+          id: orderId,
+          orderAmount: totalAmount,
+          date: date,
+          time: time,
+          customer: widget.order.customer,
+          manager: hubManager!,
+          items: widget.order.items,
+          transactionId: '',
+          paymentMethod: paymentMethod,
+          paymentStatus: "Paid",
+          transactionSynced: false,
+          parkOrderId:
+              "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
+          tracsactionDateTime: currentDateTime);
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
+    }
+  }
 
   // double _getItemTotal(items) {
   //   double total = 0;

@@ -192,8 +192,7 @@ class _ItemOptionsState extends State<ItemOptions> {
             Text(
               option.name,
               style: getTextStyle(
-                  fontSize: SMALL_PLUS_FONT_SIZE,
-                  fontWeight: FontWeight.normal),
+                  fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
             ),
             const Spacer(),
             Text(

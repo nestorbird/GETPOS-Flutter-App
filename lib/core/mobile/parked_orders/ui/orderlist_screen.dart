@@ -58,7 +58,8 @@ class _OrderListScreenState extends State<OrderListScreen> {
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(12)
                   ],
-                  searchHint: 'Enter customer mobile no.', searchTextController: searchCtrl,
+                  searchHint: 'Enter customer mobile no.',
+                  searchTextController: searchCtrl,
                   onTextChanged: (text) {
                     if (text.length >= 3) {
                       filterSalesData(text);

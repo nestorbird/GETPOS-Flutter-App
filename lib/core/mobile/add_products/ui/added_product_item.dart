@@ -73,7 +73,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
               children: [
                 Text(
                   widget.product.name,
-                  style: getTextStyle(fontSize: LARGE_PLUS_FONT_SIZE),
+                  style: getTextStyle(fontSize: LARGE_FONT_SIZE),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
@@ -85,7 +85,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           child: Padding(
                               padding: miniPaddingAll(),
                               child: SvgPicture.asset(DELETE_IMAGE,
-                                  height: 16,
+                                  height: 18,
                                   color: DARK_GREY_COLOR,
                                   fit: BoxFit.contain)))),
                   Visibility(

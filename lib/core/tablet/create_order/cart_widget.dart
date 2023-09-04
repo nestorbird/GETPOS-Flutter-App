@@ -137,7 +137,7 @@ class _CartWidgetState extends State<CartWidget> {
       selectedCustomer = await Get.defaultDialog(
         // contentPadding: paddingXY(x: 0, y: 0),
         title: "",
-        titlePadding: paddingXY(x: 0, y: 0),
+        titlePadding: paddingXY(x: 1, y: 1),
         // custom: Container(),
         content: CreateCustomerPopup(
           phoneNo: result,
@@ -224,27 +224,29 @@ class _CartWidgetState extends State<CartWidget> {
             flex: 2,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (OrderItem item in widget.orderList) itemListWidget(item),
                   (widget.orderList.length <= 1)
-                      ? const SizedBox(height: 180)
-                      : const SizedBox(height: 30),
+                      ? const SizedBox(height: 330)
+                      : (widget.orderList.length <= 2)
+                          ? const SizedBox(height: 200)
+                          : const SizedBox(height: 30),
 
-                  widget.orderList.isEmpty
-                      ? const SizedBox()
-                      : _promoCodeSection(),
+                  // widget.orderList.isEmpty
+                  //     ? const SizedBox()
+                  //     : _promoCodeSection(),
                   widget.orderList.isEmpty
                       ? const SizedBox()
                       : const SizedBox(height: 16),
-                  widget.orderList.isEmpty
-                      ? const SizedBox()
-                      : _subtotalSection("Subtotal",
-                          "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
-                  widget.orderList.isEmpty
-                      ? const SizedBox()
-                      : _subtotalSection("Discount", "- $appCurrency 0.00",
-                          isDiscount: true),
+                  // widget.orderList.isEmpty
+                  //     ? const SizedBox()
+                  //     : _subtotalSection("Subtotal",
+                  //         "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+                  // widget.orderList.isEmpty
+                  //     ? const SizedBox()
+                  //     : _subtotalSection("Discount", "- $appCurrency 0.00",
+                  //         isDiscount: true),
                   // widget.orderList.isEmpty
                   //     ? const SizedBox()
                   //     : _subtotalSection("Tax ($taxPercentage%)",
@@ -260,8 +262,7 @@ class _CartWidgetState extends State<CartWidget> {
                   _showActionButton()
                 ],
               ),
-            ),
-          );
+            ));
   }
 
   Widget itemListWidget(OrderItem item) {
@@ -304,119 +305,118 @@ class _CartWidgetState extends State<CartWidget> {
               widthSpacer(10),
               Expanded(
                 child: SizedBox(
-                    height: 120,
+                    // height: 120,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(children: [
-                          Expanded(
-                              child: Text(
-                            item.name,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(children: [
+                      Expanded(
+                          child: Text(
+                        item.name,
+                        style: getTextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: BLACK_COLOR,
+                            fontSize: MEDIUM_FONT_SIZE),
+                      )),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            widget.orderList.remove(item);
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                          child: SvgPicture.asset(
+                            DELETE_IMAGE,
+                            color: Colors.black,
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      )
+                    ]),
+                    hightSpacer10,
+                    ///////////////////////////////////////////////
+                    Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
+                          style: getTextStyle(
+                              fontSize: MEDIUM_FONT_SIZE,
+                              fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5,
+                          softWrap: false,
+                        )),
+                    hightSpacer10,
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "$appCurrency ${item.price.toStringAsFixed(2)}",
                             style: getTextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: BLACK_COLOR,
+                                fontWeight: FontWeight.w600,
+                                color: GREEN_COLOR,
                                 fontSize: MEDIUM_FONT_SIZE),
-                          )),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                widget.orderList.remove(item);
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                              child: SvgPicture.asset(
-                                DELETE_IMAGE,
-                                color: Colors.black,
-                                width: 20,
-                                height: 20,
-                              ),
-                            ),
-                          )
+                          ),
+                          // const Spacer(),
+                          // const Icon(Icons.delete)
+                          Container(
+                              width: 100,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: MAIN_COLOR,
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      BORDER_CIRCULAR_RADIUS_06)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  InkWell(
+                                      onTap: () {
+                                        if (item.orderedQuantity > 1) {
+                                          item.orderedQuantity =
+                                              item.orderedQuantity - 1;
+                                        } else {
+                                          widget.orderList.remove(item);
+                                        }
+                                        setState(() {});
+                                      },
+                                      child: const Icon(
+                                        Icons.remove,
+                                        size: 18,
+                                      )),
+                                  greySizedBox,
+                                  Container(
+                                      color: MAIN_COLOR.withOpacity(0.1),
+                                      child: Text(
+                                        item.orderedQuantity.toInt().toString(),
+                                        style: getTextStyle(
+                                          fontSize: MEDIUM_FONT_SIZE,
+                                          fontWeight: FontWeight.w600,
+                                          color: MAIN_COLOR,
+                                        ),
+                                      )),
+                                  greySizedBox,
+                                  ///////////////
+                                  InkWell(
+                                      onTap: () {
+                                        item.orderedQuantity =
+                                            item.orderedQuantity + 1;
+                                        setState(() {});
+                                      },
+                                      child: const Icon(
+                                        Icons.add,
+                                        size: 18,
+                                      )),
+                                ],
+                              ))
                         ]),
-                        hightSpacer10,
-                        ///////////////////////////////////////////////
-                        Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
-                              style: getTextStyle(
-                                  fontSize: MEDIUM_FONT_SIZE,
-                                  fontWeight: FontWeight.w500),
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 5,
-                              softWrap: false,
-                            )),
-                        hightSpacer10,
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "$appCurrency ${item.price.toStringAsFixed(2)}",
-                                style: getTextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: GREEN_COLOR,
-                                    fontSize: MEDIUM_FONT_SIZE),
-                              ),
-                              // const Spacer(),
-                              // const Icon(Icons.delete)
-                              Container(
-                                  width: 100,
-                                  height: 20,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: MAIN_COLOR,
-                                      ),
-                                      borderRadius: BorderRadius.circular(
-                                          BORDER_CIRCULAR_RADIUS_06)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      InkWell(
-                                          onTap: () {
-                                            if (item.orderedQuantity > 1) {
-                                              item.orderedQuantity =
-                                                  item.orderedQuantity - 1;
-                                            } else {
-                                              widget.orderList.remove(item);
-                                            }
-                                            setState(() {});
-                                          },
-                                          child: const Icon(
-                                            Icons.remove,
-                                            size: 18,
-                                          )),
-                                      greySizedBox,
-                                      Container(
-                                          color: MAIN_COLOR.withOpacity(0.1),
-                                          child: Text(
-                                            item.orderedQuantity
-                                                .toInt()
-                                                .toString(),
-                                            style: getTextStyle(
-                                              fontSize: MEDIUM_FONT_SIZE,
-                                              fontWeight: FontWeight.w600,
-                                              color: MAIN_COLOR,
-                                            ),
-                                          )),
-                                      greySizedBox,
-                                      InkWell(
-                                          onTap: () {
-                                            item.orderedQuantity =
-                                                item.orderedQuantity + 1;
-                                            setState(() {});
-                                          },
-                                          child: const Icon(
-                                            Icons.add,
-                                            size: 18,
-                                          )),
-                                    ],
-                                  ))
-                            ]),
-                      ],
-                    )),
+                  ],
+                )),
               ),
             ],
           ),
@@ -439,7 +439,7 @@ class _CartWidgetState extends State<CartWidget> {
     return variants;
   }
 
-  Widget _promoCodeSection() {
+  /* Widget _promoCodeSection() {
     return Container(
       // height: 60,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -483,30 +483,30 @@ class _CartWidgetState extends State<CartWidget> {
         ],
       ),
     );
-  }
+  }*/
 
-  Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
-        padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: getTextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
-                  fontSize: MEDIUM_PLUS_FONT_SIZE),
-            ),
-            Text(
-              amount,
-              style: getTextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
-                  fontSize: MEDIUM_PLUS_FONT_SIZE),
-            ),
-          ],
-        ),
-      );
+  // Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
+  //       padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
+  //       child: Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //         children: [
+  //           Text(
+  //             title,
+  //             style: getTextStyle(
+  //                 fontWeight: FontWeight.w500,
+  //                 color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+  //                 fontSize: MEDIUM_PLUS_FONT_SIZE),
+  //           ),
+  //           Text(
+  //             amount,
+  //             style: getTextStyle(
+  //                 fontWeight: FontWeight.w600,
+  //                 color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+  //                 fontSize: MEDIUM_PLUS_FONT_SIZE),
+  //           ),
+  //         ],
+  //       ),
+  //     );
 
   Widget _totalSection(title, amount) => Padding(
         padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
@@ -589,13 +589,13 @@ class _CartWidgetState extends State<CartWidget> {
         : Container();
   }
 
-  void _calculateOrderAmount() {
+  /* void _calculateOrderAmount() {
     double amount = 0;
     for (var item in currentCart!.items) {
       amount += item.orderedPrice * item.orderedQuantity;
     }
     currentCart!.orderAmount = amount;
-  }
+  }*/
 
   void _showOrderPlacedSuccessPopup() async {
     var response = await Get.defaultDialog(
@@ -681,10 +681,10 @@ class _CartWidgetState extends State<CartWidget> {
         customer: selectedCustomer!,
         manager: Helper.hubManager!,
         items: widget.orderList,
-        orderAmount: 0,
+        orderAmount: totalAmount,
         transactionDateTime: DateTime.now(),
       );
-      _calculateOrderAmount();
+      //_calculateOrderAmount();
       DbParkedOrder().saveOrder(currentCart!);
       Helper.activeParkedOrder = null;
     }
@@ -700,6 +700,7 @@ class _CartWidgetState extends State<CartWidget> {
     for (OrderItem item in items) {
       //taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
+      log("${item.orderedPrice} ${item.orderedQuantity}$subTotalAmount");
       subTotalAmount =
           subTotalAmount + (item.orderedPrice * item.orderedQuantity);
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
@@ -711,7 +712,8 @@ class _CartWidgetState extends State<CartWidget> {
             for (var options in attribute.options) {
               if (options.selected) {
                 //taxPercentage = taxPercentage + options.tax;
-                subTotalAmount = subTotalAmount + options.price;
+                subTotalAmount =
+                    subTotalAmount + options.price * item.orderedQuantity;
                 log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
               }
             }
