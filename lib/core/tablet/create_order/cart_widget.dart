@@ -81,59 +81,33 @@ class _CartWidgetState extends State<CartWidget> {
     return Container(
       padding: paddingXY(x: 10, y: 10),
       color: WHITE_COLOR,
-      width: 300,
+      width: 310,
       height: Get.height,
       child: Column(
         children: [
           _selectedCustomerSection(),
           const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Cart",
-                  style: getTextStyle(
-                    fontSize: LARGE_FONT_SIZE,
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Cart",
+                style: getTextStyle(
+                    fontSize: LARGE_PLUS_FONT_SIZE,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "${_orderedQty()} Items",
+                // "$qty Items",
+                style: getTextStyle(
+                  color: MAIN_COLOR,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE,
                 ),
-                Text(
-                  "${_orderedQty()} Items",
-                  // "$qty Items",
-                  style: getTextStyle(
-                    color: MAIN_COLOR,
-                    fontSize: MEDIUM_PLUS_FONT_SIZE,
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
           const Divider(color: Colors.black38),
           _cartItemListSection(),
-          widget.orderList.isEmpty ? const SizedBox() : _promoCodeSection(),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : const SizedBox(height: 16),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _subtotalSection("Subtotal",
-                  "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _subtotalSection("Discount", "- $appCurrency 0.00",
-                  isDiscount: true),
-          // widget.orderList.isEmpty
-          //     ? const SizedBox()
-          //     : _subtotalSection("Tax ($taxPercentage%)",
-          //         "$appCurrency ${taxAmount.toStringAsFixed(2)}"),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _totalSection(
-                  "Total", "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
-          widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
-          hightSpacer10,
-          _showActionButton()
         ],
       ),
     );
@@ -250,8 +224,40 @@ class _CartWidgetState extends State<CartWidget> {
             flex: 2,
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   for (OrderItem item in widget.orderList) itemListWidget(item),
+                  (widget.orderList.length <= 1)
+                      ? const SizedBox(height: 180)
+                      : const SizedBox(height: 30),
+
+                  widget.orderList.isEmpty
+                      ? const SizedBox()
+                      : _promoCodeSection(),
+                  widget.orderList.isEmpty
+                      ? const SizedBox()
+                      : const SizedBox(height: 16),
+                  widget.orderList.isEmpty
+                      ? const SizedBox()
+                      : _subtotalSection("Subtotal",
+                          "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+                  widget.orderList.isEmpty
+                      ? const SizedBox()
+                      : _subtotalSection("Discount", "- $appCurrency 0.00",
+                          isDiscount: true),
+                  // widget.orderList.isEmpty
+                  //     ? const SizedBox()
+                  //     : _subtotalSection("Tax ($taxPercentage%)",
+                  //         "$appCurrency ${taxAmount.toStringAsFixed(2)}"),
+                  widget.orderList.isEmpty
+                      ? const SizedBox()
+                      : _totalSection("Total",
+                          "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
+                  widget.orderList.isEmpty
+                      ? const SizedBox()
+                      : _paymentModeSection(),
+                  hightSpacer10,
+                  _showActionButton()
                 ],
               ),
             ),
@@ -263,141 +269,158 @@ class _CartWidgetState extends State<CartWidget> {
         SizedBox(width: 1.0, child: Container(color: MAIN_COLOR));
 
     return Container(
-      width: double.infinity,
-      // height: 100,
-      margin: const EdgeInsets.only(bottom: 8, top: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: SizedBox(
-              width: 55,
-              height: 55,
-              child: Image.memory(
-                item.productImage,
-                fit: BoxFit.cover,
-              ),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black45,
+              spreadRadius: 1,
+              blurRadius: 0,
+              offset: Offset(1, 1), // changes position of shadow
             ),
-          ),
-          // Image.asset(BURGAR_IMAGE),
-          widthSpacer(10),
-          Expanded(
-            child: SizedBox(
-                height: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(children: [
-                      Expanded(
-                          child: Text(
-                        item.name,
-                        style: getTextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: BLACK_COLOR,
-                            fontSize: SMALL_PLUS_FONT_SIZE),
-                      )),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            widget.orderList.remove(item);
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                          child: SvgPicture.asset(
-                            DELETE_IMAGE,
-                            width: 16,
-                            height: 16,
-                          ),
-                        ),
-                      )
-                    ]),
-                    hightSpacer10,
-                    ///////////////////////////////////////////////
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                          "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
-                          style: getTextStyle(
-                              fontSize: SMALL_FONT_SIZE,
-                              fontWeight: FontWeight.w500),
-                          textAlign: TextAlign.start,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 5,
-                          softWrap: false,
-                        )),
-                    hightSpacer10,
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "$appCurrency ${item.price.toStringAsFixed(2)}",
+          ],
+        ),
+        //  width: double.infinity,
+        // height: 100,
+        margin: const EdgeInsets.only(bottom: 8, top: 15),
+        child: Padding(
+          padding: EdgeInsets.all(5),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: SizedBox(
+                  width: 55,
+                  height: 55,
+                  child: Image.memory(
+                    item.productImage,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              // Image.asset(BURGAR_IMAGE),
+              widthSpacer(10),
+              Expanded(
+                child: SizedBox(
+                    height: 120,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(children: [
+                          Expanded(
+                              child: Text(
+                            item.name,
                             style: getTextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: GREEN_COLOR,
-                                fontSize: SMALL_PLUS_FONT_SIZE),
-                          ),
-                          // const Spacer(),
-                          // const Icon(Icons.delete)
-                          Container(
-                              width: 100,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: MAIN_COLOR,
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                      BORDER_CIRCULAR_RADIUS_06)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InkWell(
-                                      onTap: () {
-                                        if (item.orderedQuantity > 1) {
-                                          item.orderedQuantity =
-                                              item.orderedQuantity - 1;
-                                        } else {
-                                          widget.orderList.remove(item);
-                                        }
-                                        setState(() {});
-                                      },
-                                      child: const Icon(
-                                        Icons.remove,
-                                        size: 18,
-                                      )),
-                                  greySizedBox,
-                                  Container(
-                                      color: MAIN_COLOR.withOpacity(0.1),
-                                      child: Text(
-                                        item.orderedQuantity.toInt().toString(),
-                                        style: getTextStyle(
-                                          fontSize: MEDIUM_FONT_SIZE,
-                                          fontWeight: FontWeight.w600,
-                                          color: MAIN_COLOR,
-                                        ),
-                                      )),
-                                  greySizedBox,
-                                  InkWell(
-                                      onTap: () {
-                                        item.orderedQuantity =
-                                            item.orderedQuantity + 1;
-                                        setState(() {});
-                                      },
-                                      child: const Icon(
-                                        Icons.add,
-                                        size: 18,
-                                      )),
-                                ],
-                              ))
+                                fontWeight: FontWeight.bold,
+                                color: BLACK_COLOR,
+                                fontSize: MEDIUM_FONT_SIZE),
+                          )),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                widget.orderList.remove(item);
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                              child: SvgPicture.asset(
+                                DELETE_IMAGE,
+                                color: Colors.black,
+                                width: 20,
+                                height: 20,
+                              ),
+                            ),
+                          )
                         ]),
-                  ],
-                )),
+                        hightSpacer10,
+                        ///////////////////////////////////////////////
+                        Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
+                              style: getTextStyle(
+                                  fontSize: MEDIUM_FONT_SIZE,
+                                  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 5,
+                              softWrap: false,
+                            )),
+                        hightSpacer10,
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "$appCurrency ${item.price.toStringAsFixed(2)}",
+                                style: getTextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: GREEN_COLOR,
+                                    fontSize: MEDIUM_FONT_SIZE),
+                              ),
+                              // const Spacer(),
+                              // const Icon(Icons.delete)
+                              Container(
+                                  width: 100,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: MAIN_COLOR,
+                                      ),
+                                      borderRadius: BorderRadius.circular(
+                                          BORDER_CIRCULAR_RADIUS_06)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            if (item.orderedQuantity > 1) {
+                                              item.orderedQuantity =
+                                                  item.orderedQuantity - 1;
+                                            } else {
+                                              widget.orderList.remove(item);
+                                            }
+                                            setState(() {});
+                                          },
+                                          child: const Icon(
+                                            Icons.remove,
+                                            size: 18,
+                                          )),
+                                      greySizedBox,
+                                      Container(
+                                          color: MAIN_COLOR.withOpacity(0.1),
+                                          child: Text(
+                                            item.orderedQuantity
+                                                .toInt()
+                                                .toString(),
+                                            style: getTextStyle(
+                                              fontSize: MEDIUM_FONT_SIZE,
+                                              fontWeight: FontWeight.w600,
+                                              color: MAIN_COLOR,
+                                            ),
+                                          )),
+                                      greySizedBox,
+                                      InkWell(
+                                          onTap: () {
+                                            item.orderedQuantity =
+                                                item.orderedQuantity + 1;
+                                            setState(() {});
+                                          },
+                                          child: const Icon(
+                                            Icons.add,
+                                            size: 18,
+                                          )),
+                                    ],
+                                  ))
+                            ]),
+                      ],
+                    )),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   String _getItemVariants(List<Attribute> itemVariants) {

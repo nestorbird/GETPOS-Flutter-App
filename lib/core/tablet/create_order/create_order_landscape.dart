@@ -64,7 +64,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     return Row(
       children: [
         SizedBox(
-          width: size.width - 405,
+          width: size.width - 415,
           height: size.height,
           child: SingleChildScrollView(
               child: Column(
@@ -105,13 +105,6 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 searchBoxWidth: size.width / 4,
               ),
               hightSpacer20,
-              categories.isEmpty
-                  ? const Center(
-                      child: Text(
-                      "No items found",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ))
-                  : getCategoryListWidg(),
               categories.isEmpty
                   ? const Center(
                       child: Text(

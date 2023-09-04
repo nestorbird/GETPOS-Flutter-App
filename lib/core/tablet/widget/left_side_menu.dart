@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/constants/app_constants.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/asset_paths.dart';
@@ -24,10 +25,9 @@ class LeftSideMenu extends StatelessWidget {
             onTap: () {
               // print("tap");
               selectedView.value = "Order";
-              
             },
             child: Container(
-              //padding: morePaddingAll(),
+              padding: morePaddingAll(),
               decoration: const BoxDecoration(
                   // color: MAIN_COLOR,
                   borderRadius: BorderRadius.only(
@@ -83,7 +83,7 @@ class LeftSideMenu extends StatelessWidget {
     return InkWell(
       onTap: () => action(),
       child: Obx(() => Container(
-            margin: paddingXY(y: 5),
+            margin: EdgeInsets.fromLTRB(4, 1, 4, 5),
             // height: 75,
             decoration: BoxDecoration(
               color: title.toLowerCase() == selectedView.toLowerCase()
@@ -117,6 +117,7 @@ class LeftSideMenu extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       style: getTextStyle(
+                        fontSize: MEDIUM_FONT_SIZE,
                         fontWeight: FontWeight.w500,
                         color: title.toLowerCase() == selectedView.toLowerCase()
                             ? WHITE_COLOR
@@ -125,7 +126,8 @@ class LeftSideMenu extends StatelessWidget {
                     ),
                   ),
                 ),
-                hightSpacer10,
+                Text(""),
+                hightSpacer40,
               ],
             ),
           )),

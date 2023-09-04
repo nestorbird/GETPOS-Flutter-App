@@ -82,7 +82,6 @@ class _ItemOptionsState extends State<ItemOptions> {
                               widget.orderItem.orderedQuantity + 1;
                           _calculateItemPrice();
                           // _selectedCustomerSection();
-                          
                         }
                       });
                     },
@@ -125,9 +124,9 @@ class _ItemOptionsState extends State<ItemOptions> {
                     title: Text(
                       "Item Total",
                       style: getTextStyle(
-                          fontSize: SMALL_FONT_SIZE,
+                          fontSize: MEDIUM_FONT_SIZE,
                           color: WHITE_COLOR,
-                          fontWeight: FontWeight.normal),
+                          fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                         "$appCurrency ${itemTotal.toStringAsFixed(2)}",
@@ -160,7 +159,7 @@ class _ItemOptionsState extends State<ItemOptions> {
           children: [
             option.selected
                 ? Visibility(
-                    visible: option.selected,
+                    visible: true,
                     child: Container(
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
@@ -177,19 +176,16 @@ class _ItemOptionsState extends State<ItemOptions> {
                           color: WHITE_COLOR,
                         )),
                   )
-                : Visibility(
-                    visible: option.selected,
-                    child: Container(
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: BLACK_COLOR),
-                        borderRadius:
-                            BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
-                      ),
-                      child: const Icon(
-                        null,
-                        size: 20.0,
-                      ),
+                : Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: BLACK_COLOR),
+                      borderRadius:
+                          BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
+                    ),
+                    child: const Icon(
+                      null,
+                      size: 20.0,
                     ),
                   ),
             widthSpacer(5),
@@ -203,8 +199,7 @@ class _ItemOptionsState extends State<ItemOptions> {
             Text(
               "$appCurrency ${option.price.toStringAsFixed(2)}",
               style: getTextStyle(
-                  fontSize: SMALL_PLUS_FONT_SIZE,
-                  fontWeight: FontWeight.normal),
+                  fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
             ),
           ],
         ),

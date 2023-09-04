@@ -100,12 +100,12 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                         customer = null;
                         filterCustomerData(text);
                       }
-                      if (text.isNotEmpty && text.length == 10) {
+                      if (text.isNotEmpty && text.length >= 10) {
                         filterCustomerData(text);
                       }
                     },
                     onSubmit: (text) {
-                      if (text.isNotEmpty && text.length == 10) {
+                      if (text.isNotEmpty && text.length >= 10) {
                         filterCustomerData(text);
                       }
                     },
@@ -171,7 +171,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   width: 380,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: searchCtrl.text.length == 10
+                    color: searchCtrl.text.length >= 10
                         ? MAIN_COLOR
                         : MAIN_COLOR.withOpacity(0.3),
                     borderRadius: BorderRadius.circular(10),
