@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/core/service/login/api/verify_instance_service.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -103,6 +104,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   Future<void> login(String email, String password, String url) async {
     try {
       Helper.showLoaderDialog(context);
+
+      ///
+      CommanResponse res = await VerificationUrl.checkAppStatus();
+if(res.message==true){
       CommanResponse response = await LoginService.login(email, password, url);
 
       if (response.status!) {
@@ -110,25 +115,31 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         // await addDataIntoDB();
         if (!mounted) return;
         Helper.hideLoader(ctx);
+    
         Get.offAll(() => HomeTablet());
       } else {
         if (!mounted) return;
         Helper.hideLoader(ctx);
         Helper.showPopup(ctx, response.message!);
+      }}
+      else{
+    Helper.showPopup(context, "Please update your app to latest version",
+            barrierDismissible: true);
       }
     } catch (e) {
       Helper.hideLoader(ctx);
       log('Exception Caught :: $e');
       Helper.showSnackBar(context, SOMETHING_WRONG);
-    }
-  }
+    }}
+  
+
 
   /// HANDLE BACK BTN PRESS ON LOGIN SCREEN
   Future<bool> _onBackPressed() async {
     var res = await Helper.showConfirmationPopup(
         context, CLOSE_APP_QUESTION, OPTION_YES,
         hasCancelAction: true);
-   
+
     return false;
   }
 

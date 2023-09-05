@@ -109,7 +109,8 @@ class Helper {
   }
 
   //Function to show the popup with one button with on pressed functionality to close popup.
-  static showPopup(BuildContext context, String message) async {
+  static showPopup(BuildContext context, String message,
+      {bool? barrierDismissible = false}) async {
     await showGeneralDialog(
         context: context,
         transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -125,10 +126,13 @@ class Helper {
           return SizedBox(
             height: 100,
             child: SimplePopup(
+              barrier: barrierDismissible,
               message: message,
               buttonText: OPTION_OK.toUpperCase(),
               onOkPressed: () {
-                Navigator.pop(context);
+                barrierDismissible == true
+                    ? SystemNavigator.pop()
+                    : Navigator.pop(context);
               },
             ),
           );
@@ -153,7 +157,7 @@ class Helper {
           return SizedBox(
             height: 100,
             child: Padding(
-              padding: const EdgeInsets.only(left: 400 , right: 400),
+              padding: const EdgeInsets.only(left: 400, right: 400),
               child: SimplePopup(
                 message: message,
                 buttonText: OPTION_OK.toUpperCase(),

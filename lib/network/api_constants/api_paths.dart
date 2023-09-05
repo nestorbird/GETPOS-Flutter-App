@@ -33,6 +33,7 @@ final BASE_URL = ENVIRONMENT == ApiServer.DEV
 
 ///LOGIN API PATH
 const LOGIN_PATH = 'method/nbpos.nbpos.api.login';
+const Verify_URL = 'https://control-centre.nestorbird.com/api/method/control_centre.api.validate';
 
 ///CUSTOMERS LIST API PATH
 const CUSTOMERS_PATH = 'method/nbpos.nbpos.api.get_customer_list_by_hubmanager';

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:nb_posx/utils%20copy/helper.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -12,10 +14,12 @@ class SimplePopup extends StatefulWidget {
   final String buttonText;
   final Function onOkPressed;
   final bool hasCancelAction;
+  bool? barrier = false;
 
-  const SimplePopup(
+  SimplePopup(
       {Key? key,
       required this.message,
+      this.barrier,
       required this.buttonText,
       required this.onOkPressed,
       this.hasCancelAction = false})
@@ -28,72 +32,84 @@ class SimplePopup extends StatefulWidget {
 class _SimplePopupState extends State<SimplePopup> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 100,
-        margin: morePaddingAll(x: 20),
-        child: Center(
-            child: Card(
-          shape: cardBorderShape(),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              hightSpacer15,
-              Text(
-                widget.message,
-                textAlign: TextAlign.center,
-                style: getTextStyle(fontSize: MEDIUM_PLUS_FONT_SIZE),
-              ),
-              hightSpacer20,
-              const Divider(),
-              widget.hasCancelAction
-                  ? SizedBox(
-                      height: 30,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          InkWell(
-                              onTap: () => widget.onOkPressed(),
-                              child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.5,
-                                  child: Center(
-                                      child: Text(
-                                    widget.buttonText,
-                                    style: getTextStyle(
-                                        fontSize: MEDIUM_MINUS_FONT_SIZE),
-                                  )))),
-                          const VerticalDivider(
-                            thickness: 1,
+    return WillPopScope(
+        onWillPop: widget.barrier == true ? _onBackPressed : _onBack,
+        child: Container(
+            height: 100,
+            margin: morePaddingAll(x: 20),
+            child: Center(
+                child: Card(
+              shape: cardBorderShape(),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  hightSpacer15,
+                  Text(
+                    widget.message,
+                    textAlign: TextAlign.center,
+                    style: getTextStyle(fontSize: MEDIUM_PLUS_FONT_SIZE),
+                  ),
+                  hightSpacer20,
+                  const Divider(),
+                  widget.hasCancelAction
+                      ? SizedBox(
+                          height: 30,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                  onTap: () => widget.onOkPressed(),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          2.5,
+                                      child: Center(
+                                          child: Text(
+                                        widget.buttonText,
+                                        style: getTextStyle(
+                                            fontSize: MEDIUM_MINUS_FONT_SIZE),
+                                      )))),
+                              const VerticalDivider(
+                                thickness: 1,
+                              ),
+                              InkWell(
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: SizedBox(
+                                      width: MediaQuery.of(context).size.width /
+                                          2.5,
+                                      child: Center(
+                                          child: Text(
+                                        OPTION_CANCEL,
+                                        style: getTextStyle(
+                                            fontSize: MEDIUM_MINUS_FONT_SIZE,
+                                            color: DARK_GREY_COLOR),
+                                      ))))
+                            ],
                           ),
-                          InkWell(
-                              onTap: () => Navigator.of(context).pop(),
-                              child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width / 2.5,
-                                  child: Center(
-                                      child: Text(
-                                    OPTION_CANCEL,
-                                    style: getTextStyle(
-                                        fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                        color: DARK_GREY_COLOR),
-                                  ))))
-                        ],
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () => Navigator.of(context).pop(),
-                      child: SizedBox(
-                          height: 20,
-                          width: MediaQuery.of(context).size.width - 30,
-                          child: Center(
-                              child: Text(
-                            widget.buttonText,
-                            style:
-                                getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
-                          )))),
-              hightSpacer10
-            ],
-          ),
-        )));
+                        )
+                      : InkWell(
+                          onTap: () => widget.onOkPressed(),
+                          child: SizedBox(
+                              height: 20,
+                              width: MediaQuery.of(context).size.width - 30,
+                              child: Center(
+                                  child: Text(
+                                widget.buttonText,
+                                style: getTextStyle(
+                                    fontSize: MEDIUM_MINUS_FONT_SIZE),
+                              )))),
+                  hightSpacer10
+                ],
+              ),
+            ))));
+  }
+
+  /// HANDLE BACK BTN PRESS ON LOGIN SCREEN
+  Future<bool> _onBackPressed() async {
+    SystemNavigator.pop();
+    return false;
+  }
+
+  Future<bool> _onBack() async {
+    return true;
   }
 }

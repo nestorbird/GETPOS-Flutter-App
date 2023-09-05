@@ -31,7 +31,20 @@ class APIUtils {
       throw FetchDataException(FAILURE_OCCURED);
     }
   }
+  static Future<Map<String, dynamic>> getRequestVerify(String apiUrl) async {
+    try {
+      //Remote Call to API with url and headers
+      http.Response apiResponse = await http.get(_apiPathVerify(apiUrl));
 
+      //Checking for the response code and handling the result.
+      return _returnResponse(apiResponse);
+    }
+
+    //Handling the condition when socket exception received.
+    on SocketException {
+      throw FetchDataException(FAILURE_OCCURED);
+    }
+  }
   static Future<Map<String, dynamic>> getRequestWithCompleteUrl(
       String apiUrl) async {
     try {
@@ -93,6 +106,12 @@ class APIUtils {
   static Uri _apiPath(String url) {
     //Parsing the apiURl to Uri
     Uri uri = Uri.parse(instanceUrl + url);
+    log('API URL :: $uri');
+    return uri;
+  }
+ static Uri _apiPathVerify(String url) {
+    //Parsing the apiURl to Uri
+    Uri uri = Uri.parse( url);
     log('API URL :: $uri');
     return uri;
   }

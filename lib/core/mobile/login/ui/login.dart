@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
+import 'package:nb_posx/core/service/login/api/verify_instance_service.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -90,7 +91,18 @@ class _LoginState extends State<Login> {
         //  onWillPop: _showExitConfirmationDialog(context),
         //  child:
         WillPopScope(
-            onWillPop: _onBackPressed,
+            onWillPop: () async {
+              CommanResponse res = await VerificationUrl.checkAppStatus();
+              if (res.message == true) {
+                _onBackPressed() {}
+                return true;
+              } else {
+                Helper.showPopup(
+                    context, "Please update your app to latest version",
+                    barrierDismissible: true);
+                return false;
+              }
+            },
             child: Scaffold(
               resizeToAvoidBottomInset: true,
               backgroundColor: WHITE_COLOR,
@@ -137,22 +149,28 @@ class _LoginState extends State<Login> {
       } else {
         try {
           Helper.showLoaderDialog(context);
+          CommanResponse res = await VerificationUrl.checkAppStatus();
+          if (res.message == true) {
+            CommanResponse response =
+                await LoginService.login(email, password, url);
+            print(response);
 
-          CommanResponse response =
-              await LoginService.login(email, password, url);
-          print(response);
-
-          if (response.status!) {
-            //Adding static data into the database
-            // await addDataIntoDB();
-            if (!mounted) return;
-            Helper.hideLoader(context);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => ProductListHome()));
+            if (response.status!) {
+              //Adding static data into the database
+              // await addDataIntoDB();
+              if (!mounted) return;
+              Helper.hideLoader(context);
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => ProductListHome()));
+            } else {
+              if (!mounted) return;
+              Helper.hideLoader(context);
+              Helper.showPopup(context, response.message!);
+            }
           } else {
-            if (!mounted) return;
-            Helper.hideLoader(context);
-            Helper.showPopup(context, response.message!);
+            Helper.showPopup(
+                context, "Please update your app to latest version",
+                barrierDismissible: true);
           }
         } catch (e) {
           Helper.hideLoader(context);
