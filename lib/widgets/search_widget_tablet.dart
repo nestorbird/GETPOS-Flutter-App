@@ -18,16 +18,15 @@ class SearchWidgetTablet extends StatefulWidget {
   Function(String text)? onSubmit;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
-
+  FocusNode? focusNode;
   SearchWidgetTablet(
       {Key? key,
-      this.searchHint,
+      this.searchHint,this.focusNode,
       this.searchTextController,
       this.onTextChanged,
       this.onSubmit,
       this.keyboardType = TextInputType.text,
-       this.inputFormatter
-      })
+      this.inputFormatter})
       : super(key: key);
 
   @override
@@ -40,6 +39,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
     return Container(
       decoration: searchTxtFieldBorderDecoration,
       child: TextField(
+        focusNode: widget.focusNode,
         style: getTextStyle(
             fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
         cursorColor: BLACK_COLOR,

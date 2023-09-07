@@ -165,29 +165,22 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   }
 
   Future<void> _newCustomerAPI() async {
-    if (phoneCtrl.text.isEmpty || nameCtrl.text.isEmpty) {
-      Helper.showPopup(context, "Please Enter all the fields");
+    CommanResponse response = await CreateCustomer()
+        .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
+    if (response.status!) {
     } else {
-      CommanResponse response = await CreateCustomer()
-          .createNew(phoneCtrl.text, nameCtrl.text ?? "Guest", emailCtrl.text);
-      /* if (response.status!) {
-      filterCustomerData(phoneCtrl.text);
-    } */
-      {
-        Customer tempCustomer = Customer(
-            // profileImage: image,
-            // ward: Ward(id: "1", name: "1"),
-            email: emailCtrl.text.trim(),
-            id: phoneCtrl.text.trim(),
-            name: nameCtrl.text.trim(),
-            phone: phoneCtrl.text.trim(),
-            isSynced: false,
-            modifiedDateTime: DateTime.now());
-        List<Customer> customers = [];
-        customers.add(tempCustomer);
-        await DbCustomer().addCustomers(customers);
-        //     filterCustomerData(_phoneCtrl.text);
-      }
+      Customer tempCustomer = Customer(
+          // profileImage: image,
+          // ward: Ward(id: "1", name: "1"),
+          email: emailCtrl.text.trim(),
+          id: phoneCtrl.text.trim(),
+          name: nameCtrl.text.trim(),
+          phone: phoneCtrl.text.trim(),
+          isSynced: false,
+          modifiedDateTime: DateTime.now());
+      List<Customer> customers = [];
+      customers.add(tempCustomer);
+      await DbCustomer().addCustomers(customers);
     }
   }
 }

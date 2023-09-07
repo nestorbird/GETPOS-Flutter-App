@@ -18,9 +18,11 @@ import '../../../../../database/models/customer.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/customer_tile.dart';
+import '../../../database/db_utils/db_hub_manager.dart';
 import '../../../database/db_utils/db_parked_order.dart';
 import '../../../database/db_utils/db_sale_order.dart';
 import '../../../database/models/attribute.dart';
+import '../../../database/models/hub_manager.dart';
 import '../../../database/models/park_order.dart';
 import '../../../database/models/sale_order.dart';
 import '../../service/create_order/api/create_sales_order.dart';
@@ -629,13 +631,13 @@ class _CartWidgetState extends State<CartWidget> {
     log('Order No : $orderId');
 
     double totalAmount = Helper().getTotal(currentCart!.items);
-
+    HubManager manager = await DbHubManager().getManager() as HubManager;
     SaleOrder saleOrder = SaleOrder(
         id: orderId,
         orderAmount: totalAmount,
         date: date,
         time: time,
-        customer: currentCart!.customer,
+        customer: widget.customer!,
         manager: Helper.hubManager!,
         items: currentCart!.items,
         transactionId: '',

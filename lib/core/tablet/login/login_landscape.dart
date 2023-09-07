@@ -42,8 +42,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "";
-    _passCtrl.text = "";
+    _emailCtrl.text = "demouser@nestorbird.com";
+    _passCtrl.text = "demouser@123";
     _urlCtrl.text = "getpos.in";
 
     // _getAppVersion();
@@ -260,7 +260,7 @@ if(res.message==true){
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        if (isValidInstanceUrl()) {
+                       
                           Navigator.push(
                               ctx,
                               MaterialPageRoute(
@@ -269,9 +269,7 @@ if(res.message==true){
                                           TopicTypes.TERMS_AND_CONDITIONS,
                                       apiUrl:
                                           "https://${_urlCtrl.text}/api/")));
-                        } else {
-                          Helper.showPopup(context, INVALID_URL);
-                        }
+                       
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
@@ -287,7 +285,7 @@ if(res.message==true){
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        if (isValidInstanceUrl()) {
+                     {
                           Navigator.push(
                               ctx,
                               MaterialPageRoute(
@@ -295,9 +293,7 @@ if(res.message==true){
                                       topicTypes: TopicTypes.PRIVACY_POLICY,
                                       apiUrl:
                                           "https://${_urlCtrl.text}/api/")));
-                        } else {
-                          Helper.showPopup(context, INVALID_URL);
-                        }
+                        } 
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
@@ -326,8 +322,8 @@ if(res.message==true){
       );
 
   ///Method to check whether the API URL is correct.
-  bool isValidInstanceUrl() {
+ /* bool isValidInstanceUrl() {
     String url = "https://${_urlCtrl.text}/api/";
     return Helper.isValidUrl(url);
-  }
+  }*/
 }

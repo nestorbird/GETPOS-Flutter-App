@@ -357,13 +357,13 @@ class Helper {
   }
 
   ///Function to check whether the input URL is valid or not
-  static bool isValidUrl(String url) {
+  /*static bool isValidUrl(String url) {
     // Regex to check valid URL
     String regex =
         "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
 
     return RegExp(regex).hasMatch(url);
-  }
+  }*/
 
   //TODO:: Need to handle the print receipt here
   ///Helper method to print the invoice in PDF format and through printer device.

@@ -88,7 +88,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
     String newPass = _newPassCtrl.text.trim();
     String confirmPass = _confirmPassCtrl.text.trim();
     if (newPass.isEmpty || confirmPass.isEmpty) {
-      Helper.showPopup(context, "Please Enter Password");
+      Helper.showPopup(context, "Please enter password");
     } else {
       if (newPass.isNotEmpty &&
           confirmPass.isNotEmpty &&

@@ -26,7 +26,7 @@ class TitleAndSearchBar extends StatefulWidget {
   Function? parkOrderClicked;
   TextInputType keyboardType;
   List<TextInputFormatter> inputFormatter;
-
+  FocusNode? focusNode;
   TitleAndSearchBar(
       {Key? key,
       required this.title,
@@ -36,7 +36,7 @@ class TitleAndSearchBar extends StatefulWidget {
       this.searchBoxVisible = true,
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
-      this.onTextChanged,
+      this.onTextChanged,this.focusNode,
       this.parkOrderClicked,
       this.onSubmit,
       required this.inputFormatter,
@@ -77,6 +77,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
                 width: widget.searchBoxWidth,
                 padding: horizontalSpace(x: 10),
                 child: SearchWidgetTablet(
+                  focusNode: widget.focusNode,
                   searchHint: widget.searchHint,
                   searchTextController: widget.searchCtrl,
                   onTextChanged: (val) => widget.onTextChanged!(val),

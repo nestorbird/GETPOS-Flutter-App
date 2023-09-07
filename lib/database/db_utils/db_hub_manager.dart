@@ -18,8 +18,8 @@ class DbHubManager {
     }
     return null;
   }
-
-  updateCashBalance(double orderAmount) async {
+  
+updateCashBalance(double orderAmount) async {
     box = await Hive.openBox<HubManager>(HUB_MANAGER_BOX);
     HubManager manager = box.get(0) as HubManager;
     manager.cashBalance = manager.cashBalance + orderAmount;

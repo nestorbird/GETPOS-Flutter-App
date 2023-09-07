@@ -42,10 +42,9 @@ class _LoginState extends State<Login> {
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "";
-    _passCtrl.text = "";
-    _urlCtrl.text = instanceUrl;
-
+    _emailCtrl.text = "demouser@nestorbird.com";
+    _passCtrl.text = "demouser@123";
+    _urlCtrl.text = "getpos.in";
     _getAppVersion();
   }
 
@@ -143,9 +142,9 @@ class _LoginState extends State<Login> {
   Future<void> login(String email, String password, String url) async {
     {
       if (email.isEmpty) {
-        Helper.showPopup(context, "Please Enter Email");
+        Helper.showPopup(context, "Please enter email");
       } else if (password.isEmpty) {
-        Helper.showPopup(context, "Please Enter Password");
+        Helper.showPopup(context, "Please enter password");
       } else {
         try {
           Helper.showLoaderDialog(context);
@@ -319,7 +318,7 @@ class _LoginState extends State<Login> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        if (isValidInstanceUrl()) {
+                     
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -328,9 +327,7 @@ class _LoginState extends State<Login> {
                                             TopicTypes.TERMS_AND_CONDITIONS,
                                         apiUrl: "https://${_urlCtrl.text}/api/",
                                       )));
-                        } else {
-                          Helper.showPopup(context, INVALID_URL);
-                        }
+                     
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
@@ -346,7 +343,7 @@ class _LoginState extends State<Login> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        if (isValidInstanceUrl()) {
+                    
                           Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -354,9 +351,7 @@ class _LoginState extends State<Login> {
                                         topicTypes: TopicTypes.PRIVACY_POLICY,
                                         apiUrl: "https://${_urlCtrl.text}/api/",
                                       )));
-                        } else {
-                          Helper.showPopup(context, INVALID_URL);
-                        }
+                      
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
@@ -391,10 +386,10 @@ class _LoginState extends State<Login> {
       );
 
   ///Method to check whether the API URL is correct.
-  bool isValidInstanceUrl() {
+ /* bool isValidInstanceUrl() {
     String url = "https://${_urlCtrl.text}/api/";
     return Helper.isValidUrl(url);
-  }
+  }*/
 
   Future<bool> _onBackPressed() async {
     var res = await Helper.showConfirmationPopup(

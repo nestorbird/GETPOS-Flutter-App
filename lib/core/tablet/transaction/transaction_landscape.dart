@@ -5,9 +5,12 @@ import 'package:get/get.dart';
 
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../widgets/shimmer_widget.dart';
+import '../../../network/api_helper/comman_response.dart';
+import '../../../utils/helper.dart';
 import '../../mobile/transaction_history/bloc/transaction_bloc.dart';
 import '../../mobile/transaction_history/view/widgets/bottomloader.dart';
 import '../../mobile/transaction_history/view/widgets/transaction_item_landscape.dart';
+import '../../service/login/api/verify_instance_service.dart';
 import '../widget/title_search_bar.dart';
 
 class TransactionLandscape extends StatefulWidget {
@@ -29,7 +32,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
   // bool isCustomersFound = true;
 
   @override
-  void initState() {
+  void initState() {   verify();
     super.initState();
     searchCtrl = TextEditingController();
     _scrollController.addListener(_onScroll);
@@ -37,7 +40,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
 
   @override
   void dispose() {
-    searchCtrl.dispose();
+    searchCtrl.dispose();   _focusNode.dispose();
     _scrollController
       ..removeListener(_onScroll)
       ..dispose();
@@ -63,13 +66,20 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
     final currentScroll = _scrollController.offset;
     return currentScroll >= (maxScroll * 0.8);
   }
+  final FocusNode _focusNode = FocusNode();
 
+
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return GestureDetector (onTap: _handleTap,child: Column(
       children: [
         hightSpacer10,
-        TitleAndSearchBar(
+          TitleAndSearchBar(focusNode: _focusNode,
           inputFormatter: [FilteringTextInputFormatter.digitsOnly],
           parkedOrderVisible: true,
           title: "Orders History",
@@ -130,7 +140,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           }
         }),
       ],
-    );
+    ));
   }
 
   Widget transactionsGrid(TransactionState state) {
@@ -163,5 +173,13 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
         },
       ),
     );
+  }
+  verify() async {
+    CommanResponse res = await VerificationUrl.checkAppStatus();
+    if (res.message == true) {
+    } else {
+      Helper.showPopup(context, "Please update your app to latest version",
+          barrierDismissible: true);
+    }
   }
 }

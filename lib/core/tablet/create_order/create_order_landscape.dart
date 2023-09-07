@@ -15,7 +15,9 @@ import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../database/models/order_item.dart';
+import '../../../network/api_helper/comman_response.dart';
 import '../../../widgets/item_options.dart';
+import '../../service/login/api/verify_instance_service.dart';
 import '../widget/create_customer_popup.dart';
 import '../widget/select_customer_popup.dart';
 import '../widget/title_search_bar.dart';
@@ -44,6 +46,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
+    verify();
     getProducts();
     if (Helper.activeParkedOrder != null) {
       log("park order is active");
@@ -52,115 +55,127 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     }
   }
 
+  final FocusNode _focusNode = FocusNode();
+
   @override
   void dispose() {
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return Row(
-      children: [
-        SizedBox(
-          width: size.width - 415,
-          height: size.height,
-          child: SingleChildScrollView(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              TitleAndSearchBar(
-                inputFormatter: [],
-                title: "Choose Category",
-                onSubmit: (text) {
-                  if (text.length >= 3) {
-                    categories.isEmpty
-                        ? const Center(
-                            child: Text(
-                            "No items found",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                        : _filterProductsCategories(text);
-                  } else {
-                    getProducts();
-                  }
+    return GestureDetector(
+        onTap: _handleTap,
+        child: Row(
+          children: [
+            SizedBox(
+              width: size.width - 415,
+              height: size.height,
+              child: SingleChildScrollView(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  TitleAndSearchBar(
+                    focusNode: _focusNode,
+                    inputFormatter: [],
+                    title: "Choose Category",
+                    onSubmit: (text) {
+                      if (text.length >= 3) {
+                        categories.isEmpty
+                            ? const Center(
+                                child: Text(
+                                "No items found",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))
+                            : _filterProductsCategories(text);
+                      } else {
+                        getProducts();
+                      }
+                    },
+                    onTextChanged: (changedtext) {
+                      if (changedtext.length >= 3) {
+                        categories.isEmpty
+                            ? const Center(
+                                child: Text(
+                                "No items found",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))
+                            : _filterProductsCategories(changedtext);
+                      } else {
+                        getProducts();
+                      }
+                    },
+                    searchCtrl: searchCtrl,
+                    searchHint: "Search product / category",
+                    searchBoxWidth: size.width / 4,
+                  ),
+                  hightSpacer20,
+                  categories.isEmpty
+                      ? const Center(
+                          child: Text(
+                          "No items found",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ))
+                      : getCategoryListWidg(),
+                  hightSpacer20,
+                  ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          categories.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                  "No items found",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ))
+                              : getCategoryItemsWidget(categories[index]),
+                          hightSpacer10
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              )),
+            ),
+            Padding(
+              padding: leftSpace(x: 5),
+              child: CartWidget(
+                customer: customer,
+                orderList: items,
+                onHome: () {
+                  widget.selectedView.value = "Home";
+                  items.clear();
+                  customer = null;
+                  setState(() {});
                 },
-                onTextChanged: (changedtext) {
-                  if (changedtext.length >= 3) {
-                    categories.isEmpty
-                        ? const Center(
-                            child: Text(
-                            "No items found",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                        : _filterProductsCategories(changedtext);
-                  } else {
-                    getProducts();
-                  }
+                onPrintReceipt: () {
+                  widget.selectedView.value = "Home";
+                  items.clear();
+                  customer = null;
+                  setState(() {});
                 },
-                searchCtrl: searchCtrl,
-                searchHint: "Search product / category",
-                searchBoxWidth: size.width / 4,
-              ),
-              hightSpacer20,
-              categories.isEmpty
-                  ? const Center(
-                      child: Text(
-                      "No items found",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ))
-                  : getCategoryListWidg(),
-              hightSpacer20,
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      categories.isEmpty
-                          ? const Center(
-                              child: Text(
-                              "No items found",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ))
-                          : getCategoryItemsWidget(categories[index]),
-                      hightSpacer10
-                    ],
-                  );
+                onNewOrder: () {
+                  customer = null;
+                  items = [];
+                  setState(() {});
                 },
-              ),
-            ],
-          )),
-        ),
-        Padding(
-          padding: leftSpace(x: 5),
-          child: CartWidget(
-            customer: customer,
-            orderList: items,
-            onHome: () {
-              widget.selectedView.value = "Home";
-              items.clear();
-              customer = null;
-              setState(() {});
-            },
-            onPrintReceipt: () {
-              widget.selectedView.value = "Home";
-              items.clear();
-              customer = null;
-              setState(() {});
-            },
-            onNewOrder: () {
-              customer = null;
-              items = [];
-              setState(() {});
-            },
-          ), //_cartWidget()
-        ),
-      ],
-    );
+              ), //_cartWidget()
+            ),
+          ],
+        ));
   }
 
   getCategoryItemsWidget(Category cat) {
@@ -257,6 +272,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     padding: const EdgeInsets.only(right: 15),
                     child: GestureDetector(
                         onTap: () {
+                          _handleTap();
+
                           if (customer == null) {
                             _handleCustomerPopup();
                           } else {
@@ -483,5 +500,14 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         .toList();
 
     setState(() {});
+  }
+
+  verify() async {
+    CommanResponse res = await VerificationUrl.checkAppStatus();
+    if (res.message == true) {
+    } else {
+      Helper.showPopup(context, "Please update your app to latest version",
+          barrierDismissible: true);
+    }
   }
 }

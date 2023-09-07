@@ -38,15 +38,24 @@ class HomeLandscapeState extends State<HomeLandscape> {
     getProducts();
   }
 
+ final FocusNode _focusNode = FocusNode();
+
   @override
   void dispose() {
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return GestureDetector (onTap: _handleTap,child:Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -76,7 +85,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                     }),
               ),
       ],
-    );
+    ));
   }
 
   getCategoryItemsWidget(Category cat) {

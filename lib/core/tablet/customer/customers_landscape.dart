@@ -6,6 +6,9 @@ import '../../../../../database/models/customer.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../widgets/customer_tile.dart';
 import '../../../../../widgets/shimmer_widget.dart';
+import '../../../network/api_helper/comman_response.dart';
+import '../../../utils/helper.dart';
+import '../../service/login/api/verify_instance_service.dart';
 import '../widget/title_search_bar.dart';
 
 class CustomersLandscape extends StatefulWidget {
@@ -21,7 +24,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
   bool isCustomersFound = true;
 
   @override
-  void initState() {
+  void initState() {   verify();
     searchCtrl = TextEditingController();
     super.initState();
     getCustomersFromDB(0);
@@ -33,21 +36,31 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
     isCustomersFound = customers.isNotEmpty;
     if (val == 0) setState(() {});
   }
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
+  }
+
+
+  
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       // color: const Color(0xFFF9F8FB),
       // padding: paddingXY(),
-      child: Column(
+      child:GestureDetector (onTap: _handleTap,child:Column(
         children: [
-          TitleAndSearchBar(
+          TitleAndSearchBar(focusNode:_focusNode ,
             inputFormatter: [
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(12)
@@ -79,7 +92,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
                 ),
         ],
       ),
-    );
+    ));
   }
 
   Widget customerGrid() {
@@ -127,5 +140,13 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
     }
 
     setState(() {});
+  }
+  verify() async {
+    CommanResponse res = await VerificationUrl.checkAppStatus();
+    if (res.message == true) {
+    } else {
+      Helper.showPopup(context, "Please update your app to latest version",
+          barrierDismissible: true);
+    }
   }
 }

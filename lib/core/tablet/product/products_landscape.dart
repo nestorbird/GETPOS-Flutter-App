@@ -43,19 +43,30 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
   @override
   void dispose() {
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  final FocusNode _focusNode = FocusNode();
+
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return SingleChildScrollView(
-        child: Column(
+        child:GestureDetector (onTap: _handleTap,child: Column(
+      children: [ Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        TitleAndSearchBar(inputFormatter: [],
-               
+        TitleAndSearchBar(
+          inputFormatter: [],
+          focusNode: _focusNode,
           title: "Choose Category",
           onSubmit: (text) {
             if (text.length >= 3) {
@@ -92,7 +103,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
           },
         ),
       ],
-    ));
+    )])));
   }
 
   getCategoryItemsWidget(Category cat) {
