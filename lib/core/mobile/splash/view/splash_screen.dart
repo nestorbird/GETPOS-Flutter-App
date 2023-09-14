@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
+import 'package:nb_posx/core/mobile/theme_setting_screen.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 
 import '../../../../configs/theme_config.dart';
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    isUserLoggedIn ? ProductListHome() : const Login()))));
+                    isUserLoggedIn ? ProductListHome() : const ThemeChange()))));
   }
 
   @override
