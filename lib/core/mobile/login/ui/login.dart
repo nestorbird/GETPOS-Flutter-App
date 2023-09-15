@@ -76,34 +76,39 @@ class _LoginState extends State<Login> {
         backgroundColor: WHITE_COLOR,
         body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child: Column(
-              children: [
-                hightSpacer50,
-                Image.asset(APP_ICON, width: 100, height: 100),
-                hightSpacer50,
-                instanceUrlTxtboxSection(context),
-                hightSpacer20,
-                headingLblWidget(context),
-                hightSpacer15,
-                emailTxtBoxSection(context),
-                hightSpacer10,
-                passwordTxtBoxSection(context),
-                hightSpacer10,
-                forgotPasswordSection(context),
-                hightSpacer30,
-                termAndPolicySection(context),
-                hightSpacer32,
-                loginBtnWidget(context),
-                hightSpacer25
-                // const Spacer(),
-                // Center(
-                //     child: Text(
-                //   version ?? APP_VERSION_FALLBACK,
-                //   style: getHintStyle(),
-                // )),
-                // hightSpacer10
-              ],
-            )),
+            child:
+             SizedBox(
+              height: MediaQuery.of(context).size.height,
+               child: Column(
+                
+                children: [
+                  hightSpacer50,
+                  Image.asset(APP_ICON, width: 100, height: 100),
+                  hightSpacer50,
+                  // instanceUrlTxtboxSection(context),
+                  // hightSpacer20,
+                  headingLblWidget(context),
+                  hightSpacer15,
+                  emailTxtBoxSection(context),
+                  hightSpacer10,
+                  passwordTxtBoxSection(context),
+                  hightSpacer10,
+                  forgotPasswordSection(context),
+                  hightSpacer30,
+                  termAndPolicySection(context),
+                  hightSpacer32,
+                  loginBtnWidget(context),
+                  hightSpacer25
+                  // const Spacer(),
+                  // Center(
+                  //     child: Text(
+                  //   version ?? APP_VERSION_FALLBACK,
+                  //   style: getHintStyle(),
+                  // )),
+                  // hightSpacer10
+                ],
+                         ),
+             )),
       )),
     );
   }
@@ -153,28 +158,28 @@ class _LoginState extends State<Login> {
   }
 
   ///Input field for entering the instance URL
-  Widget instanceUrlTxtboxSection(context) => Container(
-        margin: horizontalSpace(),
-        padding: smallPaddingAll(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: leftSpace(x: 10),
-              child: Text(
-                URL_TXT,
-                style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
-              ),
-            ),
-            hightSpacer15,
-            TextFieldWidget(
-              boxDecoration: txtFieldBorderDecoration,
-              txtCtrl: _urlCtrl,
-              hintText: URL_HINT,
-            ),
-          ],
-        ),
-      );
+  // Widget instanceUrlTxtboxSection(context) => Container(
+  //       margin: horizontalSpace(),
+  //       padding: smallPaddingAll(),
+  //       child: Column(
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Padding(
+  //             padding: leftSpace(x: 10),
+  //             child: Text(
+  //               URL_TXT,
+  //               style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
+  //             ),
+  //           ),
+  //           hightSpacer15,
+  //           TextFieldWidget(
+  //             boxDecoration: txtFieldBorderDecoration,
+  //             txtCtrl: _urlCtrl,
+  //             hintText: URL_HINT,
+  //           ),
+  //         ],
+  //       ),
+  //     );
 
   /// LOGIN BUTTON
   Widget loginBtnWidget(context) => Center(

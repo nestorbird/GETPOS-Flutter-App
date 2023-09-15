@@ -18,3 +18,7 @@ Widget hightSpacer32 = getHeightSpacer(32);
 Widget hightSpacer40 = getHeightSpacer(40);
 Widget hightSpacer45 = getHeightSpacer(45);
 Widget hightSpacer50 = getHeightSpacer(50);
+Widget hightSpacer75 = getHeightSpacer(75);
+Widget hightSpacer85 = getHeightSpacer(85);
+Widget hightSpacer100 = getHeightSpacer(100);
+Widget hightSpacer120= getHeightSpacer(120);

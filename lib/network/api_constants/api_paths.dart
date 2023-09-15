@@ -4,8 +4,7 @@ import '../../constants/app_constants.dart';
 import '../api_helper/api_server.dart';
 
 ///Base API URL for development environment
-const DEV_URL = 
-'https://getpos.in/api/';
+const DEV_URL = 'https://getpos.in/api/';
 const DEV_ERP_URL = 'getpos.in';
 // const DEV_URL = 'https://agriboratest.nestorhawk.com/api/';
 
@@ -31,6 +30,9 @@ final BASE_URL = ENVIRONMENT == ApiServer.DEV
     : ENVIRONMENT == ApiServer.TEST
         ? TEST_URL
         : PROD_URL;
+
+///THEME CHANGE PATH
+const THEME_PATH = 'method/nbpos.nbpos.api.get_theme_settings';
 
 ///LOGIN API PATH
 const LOGIN_PATH = 'method/nbpos.nbpos.api.login';

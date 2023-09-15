@@ -14,13 +14,16 @@ const ENVIRONMENT = ApiServer.DEV;
 const OFFLINE_DATA_FOR = 7;
 const APP_VERSION = "App version";
 const APP_VERSION_FALLBACK = "1.0";
-
+//THEME CHANGE
+const invalidErrorText = "Invalid Url";
+const notAnActiveUrl="Not an active Url";
 //LOGIN SCREEN
 const invalidPasswordMsg =
     "Enter at least 6 digits, should be one special characters,one uppercase,one lowercase,one digit.";
 //  "Invalid Password \n1. Include at least 8 digits and three special characters \n2. Include at least one upper case characters (A-Z)\n3. Include at least one lower case character (a-z)\n4. Include a number (0-9)\n5. Include a symbol (!, #, \$, etc.)";
 const passwordMismatch = "Password is mismatch";
 const LOGIN_TXT = 'Log In';
+
 const ACCESS_YOUR_ACCOUNT = 'Access your account';
 const EMAIL_TXT = 'Email';
 const PASSWORD_TXT = 'Password';
@@ -72,7 +75,7 @@ const SEARCH_PRODUCT_HINT_TXT = 'Search product / category';
 const SEARCH_HINT_TXT = 'Enter customer mobile number';
 const SEARCH_CUSTOMER_MSG_TXT = 'Type in customer mobile number...';
 const SELECT_CONTINUE_TXT = 'SELECT & CONTINUE';
-
+const CONTINUE_TXT = 'CONTINUE';
 // PRODUCT SCREEN
 const SEARCH_PRODUCT_TXT = 'Search product / category';
 

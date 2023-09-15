@@ -28,8 +28,6 @@ import '../../../../database/models/sale_order.dart';
 import '../../../../utils/helper.dart';
 import '../../add_products/ui/added_product_item.dart';
 import '../../sale_success/ui/sale_success_screen.dart';
-import '../../select_customer/ui/new_select_customer.dart';
-import 'new_create_order.dart';
 
 // ignore: must_be_immutable
 class CartScreen extends StatefulWidget {
