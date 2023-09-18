@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -118,7 +119,7 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
             ],
           ),
           hightSpacer10,
-          Divider(thickness: 1, color: DARK_GREY_COLOR.withOpacity(0.3)),
+          Divider(thickness: 1, color: AppColors.getAsset().withOpacity(0.3)),
           hightSpacer20,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

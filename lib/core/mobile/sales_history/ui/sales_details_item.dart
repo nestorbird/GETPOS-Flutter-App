@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
@@ -77,14 +78,14 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
                       '$ITEM_CODE_TXT - ${widget.product!.id}',
                       style: getTextStyle(
                           fontWeight: FontWeight.normal,
-                          color: DARK_GREY_COLOR),
+                          color:  AppColors.getAsset()),
                     ),
                     const Spacer(),
                     Text(
                       '$appCurrency ${widget.product!.price}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR,
+                          color:  AppColors.getPrimary(),
                           fontWeight: FontWeight.w500),
                     ),
                   ],

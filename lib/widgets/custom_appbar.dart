@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -24,7 +25,7 @@ class CustomAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextStyle headerStyle =
-        getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE, color: DARK_GREY_COLOR);
+        getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE, color: AppColors.getAsset());
 
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5),

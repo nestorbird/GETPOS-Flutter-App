@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
@@ -85,7 +86,7 @@ class _CartScreenState extends State<CartScreen> {
                     widget.order.customer.name,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: MAIN_COLOR,
+                        color: AppColors.getPrimary(),
                         fontWeight: FontWeight.bold),
                   )),
 
@@ -179,8 +180,8 @@ class _CartScreenState extends State<CartScreen> {
                       height: 70,
                       margin: const EdgeInsets.only(left: 10),
                       padding: const EdgeInsets.only(left: 15, right: 15),
-                      decoration: const BoxDecoration(
-                          color: MAIN_COLOR,
+                      decoration: BoxDecoration(
+                          color: AppColors.getPrimary(),
                           borderRadius: BorderRadius.all(Radius.circular(7))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -314,7 +315,7 @@ class _CartScreenState extends State<CartScreen> {
           decoration: BoxDecoration(
               color: selected ? OFF_WHITE_COLOR : WHITE_COLOR,
               border: Border.all(
-                  color: selected ? MAIN_COLOR : DARK_GREY_COLOR, width: 0.4),
+                  color: selected ?  AppColors.getPrimary() :  AppColors.getAsset(), width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_10)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -327,7 +328,7 @@ class _CartScreenState extends State<CartScreen> {
               Text(title,
                   style: getTextStyle(
                       fontSize: MEDIUM_MINUS_FONT_SIZE,
-                      color: DARK_GREY_COLOR)),
+                      color:  AppColors.getAsset(),)),
             ],
           ),
         ),
@@ -408,8 +409,8 @@ class _CartScreenState extends State<CartScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: MAIN_COLOR.withOpacity(0.1),
-          border: Border.all(width: 1, color: MAIN_COLOR.withOpacity(0.5)),
+          color: AppColors.getPrimary().withOpacity(0.1),
+          border: Border.all(width: 1, color:  AppColors.getPrimary().withOpacity(0.5)),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -418,7 +419,7 @@ class _CartScreenState extends State<CartScreen> {
             "Promo Code",
             style: getTextStyle(
                 fontWeight: FontWeight.w500,
-                color: MAIN_COLOR,
+                color:  AppColors.getPrimary(),
                 fontSize: MEDIUM_PLUS_FONT_SIZE),
           ),
           Column(
@@ -427,7 +428,7 @@ class _CartScreenState extends State<CartScreen> {
                 "",
                 style: getTextStyle(
                     fontWeight: FontWeight.w600,
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE),
               ),
               const SizedBox(height: 2),
@@ -438,7 +439,7 @@ class _CartScreenState extends State<CartScreen> {
                           width: 2,
                           height: 1,
                           margin: const EdgeInsets.symmetric(horizontal: 1),
-                          color: MAIN_COLOR,
+                          color:  AppColors.getPrimary(),
                         )),
               )
             ],
@@ -457,14 +458,14 @@ class _CartScreenState extends State<CartScreen> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary(): BLACK_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  color: isDiscount ?  AppColors.getSecondary() : BLACK_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
@@ -23,7 +24,7 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         child: ButtonWidget(
           onPressed: () => Get.back(),
           title: "Cancel",
-          colorBG: DARK_GREY_COLOR,
+          primaryColor: AppColors.getAsset(),
           width: 150,
           height: 50,
           fontSize: LARGE_PLUS_FONT_SIZE,
@@ -35,7 +36,7 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         child: ButtonWidget(
           onPressed: () => handleLogout(),
           title: "Logout",
-          colorBG: MAIN_COLOR,
+          primaryColor:AppColors.getPrimary(),
           width: 150,
           height: 50,
           fontSize: LARGE_PLUS_FONT_SIZE,

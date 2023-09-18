@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 
@@ -79,7 +80,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         'Parked Order',
                         style: getTextStyle(
                             fontSize: LARGE_MINUS_FONT_SIZE,
-                            color: DARK_GREY_COLOR),
+                            color:  AppColors.getAsset()),
                       ),
                     ),
                     Align(
@@ -106,8 +107,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           Container(
                               padding: const EdgeInsets.all(6),
                               margin: const EdgeInsets.only(left: 20),
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle, color: MAIN_COLOR),
+                              decoration:  BoxDecoration(
+                                  shape: BoxShape.circle, color:  AppColors.getPrimary()),
                               child: Text(
                                 widget.order != null
                                     ? widget.order.items.length
@@ -130,7 +131,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             flex: 2,
                             child: ParkedOrderHeaderData(
                               heading: "Customer Name",
-                              headingColor: DARK_GREY_COLOR,
+                              headingColor:  AppColors.getAsset(),
                               content: widget.order.customer.name,
                             )),
                         Expanded(
@@ -138,7 +139,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             child: ParkedOrderHeaderData(
                               heading: "Mobile",
                               content: widget.order.customer.phone,
-                              headingColor: DARK_GREY_COLOR,
+                              headingColor:  AppColors.getAsset(),
                               // crossAlign: CrossAxisAlignment.center,
                             )),
                         InkWell(
@@ -146,7 +147,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               "Do you want to delete this parked order?"),
                           child: Container(
                             decoration: BoxDecoration(
-                                color: MAIN_COLOR,
+                                color:  AppColors.getPrimary(),
                                 borderRadius: BorderRadius.circular(20)),
                             padding: miniPaddingAll(),
                             child: SvgPicture.asset(
@@ -166,7 +167,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             flex: 2,
                             child: ParkedOrderHeaderData(
                               heading: "Date & Time",
-                              headingColor: DARK_GREY_COLOR,
+                              headingColor:  AppColors.getAsset(),
                               content: Helper.getFormattedDateTime(
                                   widget.order.transactionDateTime),
                             )),
@@ -180,10 +181,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             flex: 2,
                             child: ParkedOrderHeaderData(
                               heading: "Order Amount",
-                              headingColor: DARK_GREY_COLOR,
+                              headingColor:  AppColors.getAsset(),
                               content:
                                   "$appCurrency ${totalAmount.toStringAsFixed(2)}",
-                              contentColor: MAIN_COLOR,
+                              contentColor:  AppColors.getPrimary(),
                             )),
                       ],
                     )),
@@ -285,7 +286,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: MAIN_COLOR,
+          color:  AppColors.getPrimary(),
         ),
         child: Row(
           children: [
@@ -352,7 +353,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         height: 60,
         width: MediaQuery.of(context).size.width / 4,
         decoration: BoxDecoration(
-            color: GREEN_COLOR, borderRadius: BorderRadius.circular(5)),
+            color: AppColors.getSecondary(), borderRadius: BorderRadius.circular(5)),
         child: Text(
           "Add more products",
           textAlign: TextAlign.center,

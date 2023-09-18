@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
@@ -143,7 +144,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: getTextStyle(
-                                          color: DARK_GREY_COLOR,
+                                          color: AppColors.getAsset(),
                                           fontWeight: FontWeight.w500,
                                           fontSize: SMALL_PLUS_FONT_SIZE),
                                     ),
@@ -153,7 +154,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                                     "$appCurrency ${cat.items[index].price}",
                                     textAlign: TextAlign.right,
                                     style: getTextStyle(
-                                        color: MAIN_COLOR,
+                                        color: AppColors.getPrimary(),
                                         fontSize: MEDIUM_FONT_SIZE),
                                   ),
                                 ],

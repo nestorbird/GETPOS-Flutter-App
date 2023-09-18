@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
@@ -103,7 +104,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           decoration: BoxDecoration(
               color: selected ? OFF_WHITE_COLOR : WHITE_COLOR,
               border: Border.all(
-                  color: selected ? MAIN_COLOR : DARK_GREY_COLOR, width: 0.4),
+                  color: selected ?  AppColors.getPrimary() :  AppColors.getAsset(), width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_20)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +116,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               hightSpacer20,
               Text(title,
                   style: getTextStyle(
-                      fontSize: LARGE_FONT_SIZE, color: DARK_GREY_COLOR)),
+                      fontSize: LARGE_FONT_SIZE, color: AppColors.getAsset())),
             ],
           ),
         ),

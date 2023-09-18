@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
@@ -52,7 +53,7 @@ class _SalesDetailsScreenState extends State<SalesDetailsScreen> {
                           content:
                               '$appCurrency ${widget.saleOrder!.orderAmount}',
                           headingColor: BLACK_COLOR,
-                          contentColor: MAIN_COLOR,
+                          contentColor: AppColors.getPrimary(),
                           crossAlign: CrossAxisAlignment.center,
                         )),
                     Expanded(

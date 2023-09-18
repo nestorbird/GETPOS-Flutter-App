@@ -1,7 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -11,12 +9,9 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
-import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
-import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
-import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
@@ -35,7 +30,7 @@ class ThemeChange extends StatefulWidget {
 class _ThemeChangeState extends State<ThemeChange> {
   late TextEditingController _urlCtrl;
   String? version;
-  AppColors appColors = AppColors();
+
   @override
   void initState() {
     super.initState();
@@ -43,12 +38,14 @@ class _ThemeChangeState extends State<ThemeChange> {
     _urlCtrl = TextEditingController();
 
     _urlCtrl.text = instanceUrl;
-    //updateColorsFromThemeResponse(appColors);
+
+    //api call
   }
 
   @override
   void dispose() {
     _urlCtrl.dispose();
+    
     super.dispose();
   }
 
@@ -134,9 +131,7 @@ class _ThemeChangeState extends State<ThemeChange> {
                   }
                 },
                 title: CONTINUE_TXT,
-
-                //to do here:
-                primaryColor: AppColors.getPrimary(),
+                primaryColor:AppColors.getPrimary() ,
                 width: MediaQuery.of(context).size.width,
               ),
             ),
@@ -163,8 +158,8 @@ class _ThemeChangeState extends State<ThemeChange> {
           Helper.hideLoader(context);
           Helper.showPopup(context, "Please Enter URL");
 
-          // Navigator.pushReplacement(
-          //     context, MaterialPageRoute(builder: (context) => Login()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Login()));
         } else {
           // ignore: use_build_context_synchronously
           //
@@ -181,33 +176,39 @@ class _ThemeChangeState extends State<ThemeChange> {
       }
     }
   }
+// Future<void> theme(String email, String password, String url) async {
+//     {
+//       if (email.isEmpty) {
+//         Helper.showPopup(context, "Please Enter Email");
+//       } else if (password.isEmpty) {
+//         Helper.showPopup(context, "Please Enter Password");
+//       } else {
+//         try {
+//           Helper.showLoaderDialog(context);
 
-  Future<void> theme(String url, BuildContext context) async {
-    try {
-      if (url.isEmpty) {
-        Helper.showPopup(context, "Please Enter Url");
-      } else {
-        CommanResponse response = await ThemeService.fetchTheme(url);
-        print(response);
+//           CommanResponse response =
+//               await LoginService.login(email, password, url);
+//           print(response);
 
-        if (response.status!) {
-          // Adding static data into the database
-          // await addDataIntoDB();
-          if (!mounted) return;
-          Helper.hideLoader(context);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Login()));
-        } else {
-          if (!mounted) return;
-          Helper.hideLoader(context);
-          Helper.showPopup(context, response.message!);
-        }
-      }
-    } catch (e) {
-      Helper.hideLoader(context);
-      log('Exception Caught :: $e');
-      debugPrintStack();
-      Helper.showSnackBar(context, SOMETHING_WRONG);
-    }
-  }
+//           if (response.status!) {
+//             //Adding static data into the database
+//             // await addDataIntoDB();
+//             if (!mounted) return;
+//             Helper.hideLoader(context);
+//             Navigator.pushReplacement(context,
+//                 MaterialPageRoute(builder: (context) => ProductListHome()));
+//           } else {
+//             if (!mounted) return;
+//             Helper.hideLoader(context);
+//             Helper.showPopup(context, response.message!);
+//           }
+//         } catch (e) {
+//           Helper.hideLoader(context);
+//           log('Exception Caught :: $e');
+//           debugPrintStack();
+//           Helper.showSnackBar(context, SOMETHING_WRONG);
+//         }
+//       }
+//     }
+//   }
 }

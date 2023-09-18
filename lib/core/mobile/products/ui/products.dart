@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
@@ -120,7 +121,7 @@ class _ProductsState extends State<Products> {
                               style: categories[position].isExpanded
                                   ? getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color: DARK_GREY_COLOR,
+                                      color:  AppColors.getAsset(),
                                       fontWeight: FontWeight.w500)
                                   : getTextStyle(
                                       fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -134,7 +135,7 @@ class _ProductsState extends State<Products> {
                                     child: Text(
                                       "${categories[position].items.length} items",
                                       style: getTextStyle(
-                                          color: MAIN_COLOR,
+                                          color:  AppColors.getPrimary(),
                                           fontWeight: FontWeight.normal,
                                           fontSize: SMALL_PLUS_FONT_SIZE),
                                     ),

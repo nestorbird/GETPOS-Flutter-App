@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -87,7 +88,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                     boxDecoration: txtFieldBorderDecoration,
                     txtCtrl: phoneCtrl,
                     hintText: "Enter phone no.",
-                    txtColor: DARK_GREY_COLOR,
+                    txtColor: AppColors.getAsset(),
                   )),
               hightSpacer20,
               Container(
@@ -98,7 +99,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                     boxDecoration: txtFieldBorderDecoration,
                     txtCtrl: nameCtrl,
                     hintText: "Enter name",
-                    txtColor: DARK_GREY_COLOR,
+                    txtColor: AppColors.getAsset(),
                   )),
               hightSpacer20,
               Container(
@@ -109,7 +110,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                     boxDecoration: txtFieldBorderDecoration,
                     txtCtrl: emailCtrl,
                     hintText: "Enter email (optional)",
-                    txtColor: DARK_GREY_COLOR,
+                    txtColor: AppColors.getAsset(),
                   )),
               hightSpacer40,
               InkWell(
@@ -133,7 +134,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                   width: 380,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     // phoneCtrl.text.length == 10 && nameCtrl.text.isNotEmpty
                     //     ? MAIN_COLOR
                     //     : MAIN_COLOR.withOpacity(0.3),

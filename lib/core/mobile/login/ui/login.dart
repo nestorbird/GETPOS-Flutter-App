@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -190,7 +191,7 @@ class _LoginState extends State<Login> {
             await login(_emailCtrl.text, _passCtrl.text, url);
           },
           title: LOGIN_TXT,
-          colorBG: MAIN_COLOR,
+          primaryColor:  AppColors.getPrimary(),
           width: MediaQuery.of(context).size.width,
         ),
       );
@@ -263,7 +264,7 @@ class _LoginState extends State<Login> {
               child: Text(
                 FORGET_PASSWORD_SMALL_TXT,
                 style: getTextStyle(
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     fontSize: MEDIUM_MINUS_FONT_SIZE,
                     fontWeight: FontWeight.normal),
               ),
@@ -280,7 +281,7 @@ class _LoginState extends State<Login> {
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color: DARK_GREY_COLOR,
+                  color:  AppColors.getAsset(),
                   fontSize: MEDIUM_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
@@ -302,13 +303,13 @@ class _LoginState extends State<Login> {
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color:  AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color:  AppColors.getAsset(),
                         fontWeight: FontWeight.normal,
                         fontSize: MEDIUM_FONT_SIZE)),
                 TextSpan(
@@ -328,7 +329,7 @@ class _LoginState extends State<Login> {
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color:  AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_FONT_SIZE)),
               ]),
@@ -340,7 +341,7 @@ class _LoginState extends State<Login> {
         child: Text(
           LOGIN_TXT.toUpperCase(),
           style: getTextStyle(
-            color: MAIN_COLOR,
+            color:  AppColors.getPrimary(),
             fontWeight: FontWeight.bold,
             fontSize: LARGE_FONT_SIZE,
           ),

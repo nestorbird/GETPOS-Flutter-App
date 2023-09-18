@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -53,14 +54,14 @@ class _LongButtonState extends State<LongButton> {
                                     0.0,
                                   ],
                                 colors: [
-                                    MAIN_COLOR,
-                                    MAIN_COLOR.withOpacity(0.9)
+                                    AppColors.getPrimary(),
+                                   AppColors.getPrimary().withOpacity(0.9)
                                   ])
-                            : const LinearGradient(
-                                begin: Alignment(0.0, 0.5),
-                                end: Alignment(0.5, 0.5),
-                                stops: [0.0, 0.0],
-                                colors: [MAIN_COLOR, MAIN_COLOR],
+                            :  LinearGradient(
+                                begin:const Alignment(0.0, 0.5),
+                                end:const Alignment(0.5, 0.5),
+                                stops: const [0.0, 0.0],
+                                colors: [AppColors.getPrimary(), AppColors.getPrimary()],
                               )),
                     child: Padding(
                       padding: mediumPaddingAll(),

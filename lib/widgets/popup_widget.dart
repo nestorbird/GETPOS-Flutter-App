@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -76,7 +77,7 @@ class _SimplePopupState extends State<SimplePopup> {
                                     OPTION_CANCEL,
                                     style: getTextStyle(
                                         fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                        color: DARK_GREY_COLOR),
+                                        color: AppColors.getAsset()),
                                   ))))
                         ],
                       ),

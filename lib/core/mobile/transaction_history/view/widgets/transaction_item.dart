@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
@@ -53,7 +54,7 @@ class TransactionItem extends StatelessWidget {
                   Text(
                     '$appCurrency ${order.orderAmount.toStringAsFixed(2)}',
                     style: getTextStyle(
-                        fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
+                        fontSize: SMALL_PLUS_FONT_SIZE, color: AppColors.getPrimary()),
                   ),
                 ],
               ),

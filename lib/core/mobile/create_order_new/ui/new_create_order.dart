@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -73,7 +74,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                 _selectedCust!.name,
                 style: getTextStyle(
                     fontSize: LARGE_FONT_SIZE,
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     fontWeight: FontWeight.w500),
               ),
               InkWell(
@@ -84,7 +85,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                   padding: miniPaddingAll(),
                   child: SvgPicture.asset(
                     CROSS_ICON,
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     width: 15,
                   ),
                 ),
@@ -146,7 +147,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                       margin: morePaddingAll(),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: MAIN_COLOR,
+                        color:  AppColors.getPrimary(),
                       ),
                       child: ListTile(
                         onTap: () {
@@ -226,7 +227,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                               style: categories[position].isExpanded
                                   ? getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color: DARK_GREY_COLOR,
+                                      color:  AppColors.getAsset(),
                                       fontWeight: FontWeight.w500)
                                   : getTextStyle(
                                       fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -240,7 +241,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                                     child: Text(
                                       "${categories[position].items.length} items",
                                       style: getTextStyle(
-                                          color: MAIN_COLOR,
+                                          color:  AppColors.getPrimary(),
                                           fontWeight: FontWeight.normal,
                                           fontSize: SMALL_PLUS_FONT_SIZE),
                                     ),

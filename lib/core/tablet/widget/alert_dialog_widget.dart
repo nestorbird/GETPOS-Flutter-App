@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
@@ -32,7 +33,7 @@ class AlertDialogWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     decoration: BoxDecoration(
-                        color: GREEN_COLOR,
+                        color: AppColors.getSecondary(),
                         borderRadius: BorderRadius.circular(12)),
                     child: Text(positiveOption,
                         textAlign: TextAlign.center,
@@ -52,7 +53,7 @@ class AlertDialogWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           decoration: BoxDecoration(
-                              color: DARK_GREY_COLOR.withOpacity(0.3),
+                              color: AppColors.getAsset().withOpacity(0.3),
                               borderRadius: BorderRadius.circular(12)),
                           child: Text("No",
                               textAlign: TextAlign.center,

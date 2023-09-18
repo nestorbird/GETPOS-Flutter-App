@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -60,7 +61,7 @@ class _CustomerTileState extends State<CustomerTile> {
                   ? OFF_WHITE_COLOR
                   : WHITE_COLOR,
           border: Border.all(
-              color: isSelected ? MAIN_COLOR : GREY_COLOR,
+              color: isSelected ?  AppColors.getPrimary() : GREY_COLOR,
               width: isSelected ? 0.3 : 1.0),
           borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
       child: Column(
@@ -76,7 +77,7 @@ class _CustomerTileState extends State<CustomerTile> {
                       widget.customer != null ? widget.customer!.name : "",
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR,
+                          color:  AppColors.getPrimary(),
                           fontWeight: widget.isHighlighted!
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -92,7 +93,7 @@ class _CustomerTileState extends State<CustomerTile> {
                     widget.customer != null ? widget.customer!.phone : "",
                     style: getTextStyle(
                         fontSize: MEDIUM_FONT_SIZE,
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold),
                   ),
                 ),

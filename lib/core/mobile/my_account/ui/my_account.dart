@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -95,7 +96,7 @@ class _MyAccountState extends State<MyAccount> {
               padding: smallPaddingAll(),
               child: Text(email ?? "",
                   style: getTextStyle(
-                      color: MAIN_COLOR,
+                      color:  AppColors.getPrimary(),
                       fontSize: MEDIUM_MINUS_FONT_SIZE,
                       fontWeight: FontWeight.normal)),
             ),
@@ -174,7 +175,7 @@ class _MyAccountState extends State<MyAccount> {
           )
         : CircleAvatar(
             radius: 64,
-            backgroundColor: MAIN_COLOR,
+            backgroundColor:  AppColors.getPrimary(),
             foregroundImage: MemoryImage(profilePic),
           );
   }

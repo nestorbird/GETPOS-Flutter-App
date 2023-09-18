@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
@@ -164,7 +165,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
             style: getTextStyle(
                 fontSize: MEDIUM_PLUS_FONT_SIZE,
                 fontWeight: FontWeight.w500,
-                color: MAIN_COLOR),
+                color:  AppColors.getPrimary()),
           ),
         )),
         Center(
@@ -212,6 +213,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                 }
               },
               title: "Add and Create Order",
+              primaryColor:  AppColors.getPrimary(),
             )),
         hightSpacer20,
         SizedBox(
@@ -220,7 +222,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              colorBG: DARK_GREY_COLOR,
+              primaryColor:  AppColors.getAsset(),
               title: "Cancel",
             )),
       ],

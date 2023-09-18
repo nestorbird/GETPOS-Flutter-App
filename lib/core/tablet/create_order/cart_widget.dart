@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -101,7 +102,7 @@ class _CartWidgetState extends State<CartWidget> {
                   "${_orderedQty()} Items",
                   // "$qty Items",
                   style: getTextStyle(
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                   ),
                 )
@@ -192,7 +193,7 @@ class _CartWidgetState extends State<CartWidget> {
     //           padding: paddingXY(y: 20),
     //           margin: paddingXY(y: 20, x: 5),
     //           decoration: BoxDecoration(
-    //               color: MAIN_COLOR, borderRadius: BorderRadius.circular(10)),
+    //               color: AppColors.getPrimary(), borderRadius: BorderRadius.circular(10)),
     //           child: Text(
     //             "Select Customer",
     //             textAlign: TextAlign.center,
@@ -223,8 +224,8 @@ class _CartWidgetState extends State<CartWidget> {
         margin: paddingXY(y: 10, x: 5),
         decoration: BoxDecoration(
             color: widget.orderList.isNotEmpty
-                ? MAIN_COLOR
-                : MAIN_COLOR.withOpacity(0.2),
+                ? AppColors.getPrimary()
+                : AppColors.getPrimary().withOpacity(0.2),
             borderRadius: BorderRadius.circular(10)),
         child: Text(
           "Place Order",
@@ -257,7 +258,7 @@ class _CartWidgetState extends State<CartWidget> {
 
   Widget itemListWidget(OrderItem item) {
     final Widget greySizedBox =
-        SizedBox(width: 1.0, child: Container(color: MAIN_COLOR));
+        SizedBox(width: 1.0, child: Container(color: AppColors.getPrimary()));
 
     return Container(
       width: double.infinity,
@@ -334,7 +335,7 @@ class _CartWidgetState extends State<CartWidget> {
                             "$appCurrency ${item.price.toStringAsFixed(2)}",
                             style: getTextStyle(
                                 fontWeight: FontWeight.w600,
-                                color: GREEN_COLOR,
+                                color: AppColors.getSecondary(),
                                 fontSize: SMALL_PLUS_FONT_SIZE),
                           ),
                           // const Spacer(),
@@ -344,7 +345,7 @@ class _CartWidgetState extends State<CartWidget> {
                               height: 20,
                               decoration: BoxDecoration(
                                   border: Border.all(
-                                    color: MAIN_COLOR,
+                                    color: AppColors.getPrimary(),
                                   ),
                                   borderRadius: BorderRadius.circular(
                                       BORDER_CIRCULAR_RADIUS_06)),
@@ -368,13 +369,13 @@ class _CartWidgetState extends State<CartWidget> {
                                       )),
                                   greySizedBox,
                                   Container(
-                                      color: MAIN_COLOR.withOpacity(0.1),
+                                      color: AppColors.getPrimary().withOpacity(0.1),
                                       child: Text(
                                         item.orderedQuantity.toInt().toString(),
                                         style: getTextStyle(
                                           fontSize: MEDIUM_FONT_SIZE,
                                           fontWeight: FontWeight.w600,
-                                          color: MAIN_COLOR,
+                                          color: AppColors.getPrimary(),
                                         ),
                                       )),
                                   greySizedBox,
@@ -421,8 +422,8 @@ class _CartWidgetState extends State<CartWidget> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: MAIN_COLOR.withOpacity(0.1),
-          border: Border.all(width: 1, color: MAIN_COLOR.withOpacity(0.5)),
+          color: AppColors.getPrimary().withOpacity(0.1),
+          border: Border.all(width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -431,7 +432,7 @@ class _CartWidgetState extends State<CartWidget> {
             "Promo Code",
             style: getTextStyle(
                 fontWeight: FontWeight.w500,
-                color: MAIN_COLOR,
+                color: AppColors.getPrimary(),
                 fontSize: MEDIUM_PLUS_FONT_SIZE),
           ),
           Column(
@@ -440,7 +441,7 @@ class _CartWidgetState extends State<CartWidget> {
                 "",
                 style: getTextStyle(
                     fontWeight: FontWeight.w600,
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE),
               ),
               const SizedBox(height: 2),
@@ -451,7 +452,7 @@ class _CartWidgetState extends State<CartWidget> {
                           width: 2,
                           height: 1,
                           margin: const EdgeInsets.symmetric(horizontal: 1),
-                          color: MAIN_COLOR,
+                          color: AppColors.getPrimary(),
                         )),
               )
             ],
@@ -470,14 +471,14 @@ class _CartWidgetState extends State<CartWidget> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary() : BLACK_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary() : BLACK_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],
@@ -529,8 +530,8 @@ class _CartWidgetState extends State<CartWidget> {
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(
-                color: isSelected ? Colors.black : MAIN_COLOR, width: 0.5),
-            color: isSelected ? Colors.white : MAIN_COLOR.withOpacity(0.1),
+                color: isSelected ? Colors.black : AppColors.getPrimary(), width: 0.5),
+            color: isSelected ? Colors.white : AppColors.getPrimary().withOpacity(0.1),
             borderRadius: BorderRadius.circular(8)),
         padding: paddingXY(x: 16, y: 6),
         child: Row(

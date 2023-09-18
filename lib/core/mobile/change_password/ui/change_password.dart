@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
@@ -50,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           await _handleChangePassBtnAction();
         },
         title: CHANGE_PASSWORD_BTN_TXT,
-        colorBG: MAIN_COLOR,
+     primaryColor: AppColors.getPrimary(),
         width: MediaQuery.of(context).size.width,
       ),
     );
@@ -78,7 +79,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 CHANGE_PASSWORD_TITLE.toUpperCase(),
                 style: getTextStyle(
                     fontWeight: FontWeight.bold,
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     fontSize: LARGE_FONT_SIZE),
               ),
             ),

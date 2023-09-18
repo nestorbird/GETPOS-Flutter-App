@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/database/db_utils/db_parked_order.dart';
 
 import '../../../../../configs/theme_config.dart';
@@ -66,7 +67,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
                 '$appCurrency ${order.orderAmount}',
                 style: getTextStyle(
                     fontSize: LARGE_MINUS_FONT_SIZE,
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     fontWeight: FontWeight.w500),
               ),
             ),
@@ -79,7 +80,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
                     onTap: () => _handleDelete(context),
                     child: SvgPicture.asset(
                       DELETE_IMAGE,
-                      color: MAIN_COLOR,
+                      color:  AppColors.getPrimary(),
                       width: 15,
                     ),
                   ),

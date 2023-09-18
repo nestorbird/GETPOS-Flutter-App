@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -115,17 +116,17 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                           height: 75,
                           padding: morePaddingAll(),
                           decoration: BoxDecoration(
-                            color: MAIN_COLOR.withOpacity(0.05),
+                            color: AppColors.getPrimary().withOpacity(0.05),
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               width: 1,
-                              color: MAIN_COLOR.withOpacity(0.4),
+                              color: AppColors.getPrimary().withOpacity(0.4),
                             ),
                           ),
                           child: Text(
                             "No records were found, please add the details below in order to continue",
                             style: getTextStyle(
-                                color: MAIN_COLOR,
+                                color: AppColors.getPrimary(),
                                 fontSize: MEDIUM_PLUS_FONT_SIZE,
                                 fontWeight: FontWeight.normal),
                             textAlign: TextAlign.left,
@@ -137,11 +138,11 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                           margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                           padding: mediumPaddingAll(),
                           decoration: BoxDecoration(
-                            color: MAIN_COLOR.withOpacity(0.05),
+                            color:  AppColors.getPrimary().withOpacity(0.05),
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
                               width: 0.5,
-                              color: MAIN_COLOR.withOpacity(0.4),
+                              color:  AppColors.getPrimary().withOpacity(0.4),
                             ),
                           )),
               hightSpacer40,
@@ -159,8 +160,8 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   height: 50,
                   decoration: BoxDecoration(
                     color: searchCtrl.text.length == 10
-                        ? MAIN_COLOR
-                        : MAIN_COLOR.withOpacity(0.3),
+                        ?  AppColors.getPrimary()
+                        :  AppColors.getPrimary().withOpacity(0.3),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(

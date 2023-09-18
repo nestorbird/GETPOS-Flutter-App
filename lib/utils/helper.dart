@@ -284,9 +284,9 @@ class Helper {
     if (paymentStatus == "Unpaid") {
       return Colors.red;
     } else if (paymentStatus == "Paid") {
-      return GREEN_COLOR;
+      return const Color(0xFF62B146);
     } else {
-      return MAIN_COLOR;
+      return  const Color(0xFFDC1E44);
     }
   }
 

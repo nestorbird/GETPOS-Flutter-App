@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
@@ -170,7 +171,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           },
           width: MediaQuery.of(context).size.width,
           title: FORGOT_BTN_TXT,
-          colorBG: MAIN_COLOR,
+          primaryColor:  AppColors.getPrimary(),
         ),
       );
 
@@ -181,7 +182,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           style: getTextStyle(
               fontWeight: FontWeight.bold,
               fontSize: LARGE_FONT_SIZE,
-              color: MAIN_COLOR),
+              color:  AppColors.getPrimary()),
         ),
       );
 }

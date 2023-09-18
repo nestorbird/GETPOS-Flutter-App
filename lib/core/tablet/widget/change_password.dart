@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
@@ -77,7 +78,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
           },
           title: CHANGE_PASSWORD_BTN_TXT,
           fontSize: LARGE_FONT_SIZE,
-          colorBG: MAIN_COLOR,
+          primaryColor: AppColors.getAsset(),
           width: double.infinity,
           height: 60,
         ),

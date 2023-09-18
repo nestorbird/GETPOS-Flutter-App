@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -52,7 +53,7 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                 width: 90,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                  color: MAIN_COLOR.withOpacity(0.1),
+                  color: AppColors.getPrimary().withOpacity(0.1),
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 child: _getOrderedProductImage()),
@@ -86,7 +87,7 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                       '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR,
+                          color:  AppColors.getPrimary(),
                           fontWeight: FontWeight.w600),
                     ),
                   ],

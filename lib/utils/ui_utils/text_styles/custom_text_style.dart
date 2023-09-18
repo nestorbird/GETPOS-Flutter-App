@@ -18,7 +18,7 @@ TextStyle getBoldStyle() => GoogleFonts.montserrat(
     );
 
 TextStyle getItalicStyle(
-        {fontSize, fontWeight = FontWeight.normal, color = DARK_GREY_COLOR}) =>
+        {fontSize, fontWeight = FontWeight.normal, color =const Color(0xFF707070)}) =>
     GoogleFonts.montserrat(
         fontSize: fontSize,
         fontWeight: fontWeight,

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../utils/ui_utils/text_styles/custom_text_style.dart';
@@ -43,7 +44,7 @@ class HeaderCurve extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint0 = Paint()
-      ..color = MAIN_COLOR
+      ..color = AppColors.getPrimary()
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
 

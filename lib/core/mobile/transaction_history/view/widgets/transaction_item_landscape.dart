@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
@@ -57,7 +58,7 @@ class TransactionItemLandscape extends StatelessWidget {
                 '$appCurrency ${order.orderAmount}',
                 style: getTextStyle(
                     fontSize: LARGE_MINUS_FONT_SIZE,
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontWeight: FontWeight.w900),
               ),
             ),

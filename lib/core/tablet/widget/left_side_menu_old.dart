@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
@@ -34,9 +35,9 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
         children: [
           Container(
             padding: morePaddingAll(),
-            decoration: const BoxDecoration(
-                color: MAIN_COLOR,
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                color:AppColors.getPrimary(),
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15))),
             child: Text(
@@ -67,7 +68,7 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
                 title: "Do you want to logout?",
                 content: Container(),
                 confirm: const Text("Yes"),
-                confirmTextColor: MAIN_COLOR,
+                confirmTextColor:AppColors.getPrimary(),
                 cancel: const Text("Cancel"));
           }),
         ],
@@ -84,7 +85,7 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
         height: 75,
         decoration: BoxDecoration(
           color: title.toLowerCase() == widget.selectedView.toLowerCase()
-              ? MAIN_COLOR
+              ?  AppColors.getPrimary()
               : WHITE_COLOR,
           borderRadius: BorderRadius.circular(5),
           boxShadow: const [BoxShadow(blurRadius: 0.05)],

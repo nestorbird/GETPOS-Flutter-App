@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
                           WELCOME_BACK,
                           style: getTextStyle(
                             fontSize: SMALL_FONT_SIZE,
-                            color: MAIN_COLOR,
+                            color: const Color(0xFFDC1E44),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                           managerName,
                           style: getTextStyle(
                               fontSize: LARGE_FONT_SIZE,
-                              color: DARK_GREY_COLOR),
+                              color:  const Color(0xFF707070)),
                           overflow: TextOverflow.ellipsis,
                         ),
                         hightSpacer30,

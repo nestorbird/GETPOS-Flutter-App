@@ -30,7 +30,7 @@ class HomeTile extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: OFF_WHITE_COLOR,
-            border: Border.all(color: MAIN_COLOR, width: 0.4),
+            border: Border.all(color:  const Color(0xFFDC1E44), width: 0.4),
             borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_30)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

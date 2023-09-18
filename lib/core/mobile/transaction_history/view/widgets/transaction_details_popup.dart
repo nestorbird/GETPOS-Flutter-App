@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/database/models/attribute.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -88,14 +89,14 @@ class TransactionDetailsPopup extends StatelessWidget {
                     Text(
                       "${order.items.length} Items",
                       style: getTextStyle(
-                          color: MAIN_COLOR,
+                          color: AppColors.getPrimary(),
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
                       '$appCurrency ${order.orderAmount}',
                       style: getTextStyle(
-                          color: MAIN_COLOR,
+                          color:  AppColors.getPrimary(),
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w600),
                     )
@@ -136,7 +137,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                 child: Container(
                   width: 50,
                   height: 50,
-                  color: MAIN_COLOR,
+                  color:  AppColors.getPrimary(),
                   child: Image.network(
                     order.items[index].productImageUrl ??
                         "assets/images/burgar_img.png",
@@ -170,7 +171,7 @@ class TransactionDetailsPopup extends StatelessWidget {
               Text(
                 "$appCurrency ${order.items[index].price.toStringAsFixed(2)}",
                 style: getTextStyle(
-                    color: GREEN_COLOR,
+                    color: AppColors.getSecondary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),
@@ -178,7 +179,7 @@ class TransactionDetailsPopup extends StatelessWidget {
               Text(
                 " x${order.items[index].orderedQuantity.round() == 0 ? index + 1 : order.items[index].orderedQuantity.round()}",
                 style: getTextStyle(
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),
@@ -197,7 +198,7 @@ class TransactionDetailsPopup extends StatelessWidget {
     //             child: Container(
     //               width: 50,
     //               height: 50,
-    //               color: MAIN_COLOR,
+    //               color: AppColors.getPrimary(),
     //             ),
     //             borderRadius: BorderRadius.circular(50),
     //           ),
@@ -219,7 +220,7 @@ class TransactionDetailsPopup extends StatelessWidget {
     //           Text(
     //             " x${order.items.first.stock.round()}",
     //             style: getTextStyle(
-    //                 color: MAIN_COLOR,
+    //                 color: AppColors.getPrimary(),
     //                 fontSize: MEDIUM_PLUS_FONT_SIZE,
     //                 fontWeight: FontWeight.w500),
     //           ),
@@ -234,8 +235,8 @@ class TransactionDetailsPopup extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: MAIN_COLOR.withOpacity(0.1),
-          border: Border.all(width: 1, color: MAIN_COLOR.withOpacity(0.5)),
+          color: AppColors.getPrimary().withOpacity(0.1),
+          border: Border.all(width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -244,7 +245,7 @@ class TransactionDetailsPopup extends StatelessWidget {
             "Promo Code",
             style: getTextStyle(
                 fontWeight: FontWeight.w500,
-                color: MAIN_COLOR,
+                color: AppColors.getPrimary(),
                 fontSize: MEDIUM_PLUS_FONT_SIZE),
           ),
           Column(
@@ -253,7 +254,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                 "Deal 20",
                 style: getTextStyle(
                     fontWeight: FontWeight.w600,
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE),
               ),
               const SizedBox(height: 2),
@@ -264,7 +265,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                           width: 2,
                           height: 1,
                           margin: const EdgeInsets.symmetric(horizontal: 1),
-                          color: MAIN_COLOR,
+                          color: AppColors.getPrimary(),
                         )),
               )
             ],
@@ -283,14 +284,14 @@ class TransactionDetailsPopup extends StatelessWidget {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary() : BLACK_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ? GREEN_COLOR : BLACK_COLOR,
+                  color: isDiscount ?  AppColors.getSecondary() : BLACK_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],

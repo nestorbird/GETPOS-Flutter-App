@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../../configs/theme_config.dart';
@@ -311,7 +312,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                           "$appCurrency ${cat.items[index].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.end,
                                           style: getTextStyle(
-                                              color: MAIN_COLOR,
+                                              color: AppColors.getSecondary(),
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],
@@ -340,7 +341,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                     margin: const EdgeInsets.only(left: 45),
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: GREEN_COLOR),
+                                        color: const Color(0xFF62B146)),
                                     child: Text(
                                       cat.items[index].stock.toInt().toString(),
                                       style: getTextStyle(

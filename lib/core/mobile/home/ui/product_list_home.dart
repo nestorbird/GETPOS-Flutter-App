@@ -136,7 +136,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         Text(WELCOME_BACK,
                                             style: getTextStyle(
                                               fontSize: SMALL_FONT_SIZE,
-                                              color: MAIN_COLOR,
+                                              color:const Color(0xFFDC1E44),
                                               fontWeight: FontWeight.w500,
                                             )),
                                         hightSpacer5,
@@ -144,7 +144,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           managerName,
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
-                                              color: DARK_GREY_COLOR),
+                                              color:const Color(0xFF707070)),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -199,7 +199,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       : '',
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color: MAIN_COLOR),
+                                      color:const Color(0xFFDC1E44)),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Stack(
@@ -237,7 +237,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                   left: 20),
                                               decoration: const BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: MAIN_COLOR),
+                                                  color: Color(0xFFDC1E44)),
                                               child: Text(
                                                 parkOrder != null
                                                     ? parkOrder!.items.length
@@ -696,7 +696,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     width: 145,
                                     height: 90,
                                     decoration: BoxDecoration(
-                                        color: MAIN_COLOR.withOpacity(0.04),
+                                        color:const Color(0xFFDC1E44).withOpacity(0.04),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -726,7 +726,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           "$appCurrency ${categories[catPosition].items[itemPosition].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.center,
                                           style: getTextStyle(
-                                              color: MAIN_COLOR,
+                                              color:const Color(0xFFDC1E44),
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],
@@ -758,7 +758,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     margin: const EdgeInsets.only(left: 45),
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: GREEN_COLOR),
+                                        color: const Color(0xFF62B146)),
                                     child: Text(
                                       categories[catPosition]
                                           .items[itemPosition]

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -227,7 +228,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
               child: Text(
                 FORGET_PASSWORD_SMALL_TXT,
                 style: getTextStyle(
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontSize: LARGE_MINUS_FONT_SIZE,
                     fontWeight: FontWeight.w600),
               ),
@@ -244,7 +245,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color: DARK_GREY_COLOR,
+                  color: AppColors.getAsset(),
                   fontSize: LARGE_MINUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
@@ -266,13 +267,13 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.normal,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
@@ -292,7 +293,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
               ]),
@@ -309,7 +310,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             await login(_emailCtrl.text, _passCtrl.text, url);
           },
           title: "Log In",
-          colorBG: MAIN_COLOR,
+          primaryColor: AppColors.getPrimary(),
           // width: MediaQuery.of(context).size.width - 150,
           height: 60,
           fontSize: LARGE_PLUS_FONT_SIZE,

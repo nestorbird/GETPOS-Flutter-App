@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -141,7 +142,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                                       "$appCurrency ${cat.items[index].price}",
                                       textAlign: TextAlign.right,
                                       style: getTextStyle(
-                                          color: MAIN_COLOR,
+                                          color: AppColors.getPrimary(),
                                           fontSize: MEDIUM_FONT_SIZE),
                                     ),
                                   ],

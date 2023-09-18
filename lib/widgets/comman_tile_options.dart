@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -48,7 +49,7 @@ class _CommanTileOptionsState extends State<CommanTileOptions> {
             height: 70,
             width: 70,
             child: Card(
-              color: MAIN_COLOR.withOpacity(.1),
+              color:AppColors.getSecondary().withOpacity(.1),
               shape: cardBorderShape(),
               elevation: 0.0,
               child: Container(),
@@ -96,9 +97,9 @@ class _CommanTileOptionsState extends State<CommanTileOptions> {
             ? Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
-                  border: Border.all(color: MAIN_COLOR),
+                  border: Border.all(color:AppColors.getPrimary()),
                   // border: Border.all(color: Colors.yellow.shade800),
-                  color: MAIN_COLOR,
+                  color: AppColors.getPrimary(),
                   // color: Colors.yellow.shade800,
                   borderRadius:
                       BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),

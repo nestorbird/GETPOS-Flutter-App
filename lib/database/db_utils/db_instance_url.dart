@@ -10,8 +10,8 @@ class DbInstanceUrl {
   Future<void> saveUrl(String url) async {
     box = await Hive.openBox<String>(URL_BOX);
     await box.put(URL_KEY, url);
-    log("Saved Url in DB:");
-    log(url);
+    log("Saved Url in DB:$url");
+    
   }
 
   Future<String> getUrl() async {

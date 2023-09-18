@@ -141,7 +141,8 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         height: 60,
         margin: const EdgeInsets.only(left: 15, right: 15, bottom: 30),
         decoration: const BoxDecoration(
-            color: MAIN_COLOR,
+          //statically declaring it as red
+            color: const Color(0xFFDC1E44),
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: TextButton(
             onPressed: () {

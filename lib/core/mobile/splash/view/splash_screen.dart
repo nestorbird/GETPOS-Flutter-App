@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 
@@ -36,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: MAIN_COLOR,
+        backgroundColor:const Color(0xFFDC1E44),
         body: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15),
           child: Stack(

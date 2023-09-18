@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 
 import '../../../../configs/theme_config.dart';
@@ -35,7 +36,7 @@ class AddedProductItem extends StatefulWidget {
 
 class _AddedProductItemState extends State<AddedProductItem> {
   final Widget _greySizedBox =
-      SizedBox(width: 1.0, child: Container(color: MAIN_COLOR));
+      SizedBox(width: 1.0, child: Container(color: AppColors.getPrimary(),));
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
           width: 90,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            color: MAIN_COLOR.withOpacity(0.1),
+            color:AppColors.getPrimary().withOpacity(0.1),
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: widget.product.productImage.isEmpty
@@ -86,7 +87,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                               padding: miniPaddingAll(),
                               child: SvgPicture.asset(DELETE_IMAGE,
                                   height: 16,
-                                  color: DARK_GREY_COLOR,
+                                  color:AppColors.getAsset(),
                                   fit: BoxFit.contain)))),
                   Visibility(
                       visible: widget.isUsedinVariantsPopup,
@@ -121,7 +122,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                     style: getTextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: SMALL_PLUS_FONT_SIZE,
-                        color: MAIN_COLOR),
+                        color:AppColors.getPrimary()),
                   ),
                   Visibility(
                       visible: widget.isUsedinVariantsPopup,
@@ -130,7 +131,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                         style: getTextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color: GREEN_COLOR,
+                          color: AppColors.getSecondary(),
                         ),
                       )),
                 ],
@@ -140,7 +141,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                   height: 25,
                   decoration: BoxDecoration(
                       border: Border.all(
-                        color: MAIN_COLOR,
+                        color:AppColors.getPrimary(),
                       ),
                       borderRadius:
                           BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
@@ -155,13 +156,13 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           )),
                       _greySizedBox,
                       Container(
-                          color: MAIN_COLOR.withOpacity(0.1),
+                          color: AppColors.getPrimary().withOpacity(0.1),
                           child: Text(
                             selectedQty,
                             style: getTextStyle(
                               fontSize: MEDIUM_FONT_SIZE,
                               fontWeight: FontWeight.w600,
-                              color: MAIN_COLOR,
+                              color: AppColors.getPrimary(),
                             ),
                           )),
                       _greySizedBox,

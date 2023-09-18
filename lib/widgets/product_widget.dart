@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -63,7 +64,7 @@ class _ProductWidgetState extends State<ProductWidget> {
             Container(
               height: widget.enableAddProductButton ? 100 : 120,
               decoration: BoxDecoration(
-                  color: MAIN_COLOR.withOpacity(.1),
+                  color:AppColors.getPrimary().withOpacity(.1),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(10),
@@ -93,7 +94,7 @@ class _ProductWidgetState extends State<ProductWidget> {
               padding: const EdgeInsets.only(left: 10, top: 8, bottom: 5),
               child: Text("$appCurrency $price",
                   style: getTextStyle(
-                      color: MAIN_COLOR,
+                      color:AppColors.getPrimary(),
                       fontWeight: FontWeight.w600,
                       fontSize: MEDIUM_MINUS_FONT_SIZE)),
             ),
@@ -102,7 +103,7 @@ class _ProductWidgetState extends State<ProductWidget> {
               child: Text(
                   "$ADD_PRODUCTS_AVAILABLE_STOCK_TXT - ${stockQty.round()}",
                   style: getTextStyle(
-                      color: DARK_GREY_COLOR, fontWeight: FontWeight.w400)),
+                      color: AppColors.getAsset(), fontWeight: FontWeight.w400)),
             ),
             Visibility(
                 visible: !widget.enableAddProductButton,

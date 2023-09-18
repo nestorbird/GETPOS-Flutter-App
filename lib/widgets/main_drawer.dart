@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -19,7 +20,7 @@ class MainDrawer extends StatelessWidget {
       child: ListView(
         children: [
           Container(
-            color: MAIN_COLOR,
+            color:AppColors.getPrimary(),
             padding: morePaddingAll(),
             child: Row(
               children: [
@@ -92,7 +93,7 @@ class MainDrawer extends StatelessWidget {
           title,
           style: getTextStyle(
               fontWeight: FontWeight.w400,
-              color: DARK_GREY_COLOR,
+              color: AppColors.getAsset(),
               fontSize: MEDIUM_FONT_SIZE),
         ),
       ),

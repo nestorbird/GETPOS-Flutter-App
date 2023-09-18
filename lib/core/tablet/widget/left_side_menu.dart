@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/asset_paths.dart';
@@ -80,7 +81,7 @@ class LeftSideMenu extends StatelessWidget {
             // height: 75,
             decoration: BoxDecoration(
               color: title.toLowerCase() == selectedView.toLowerCase()
-                  ? MAIN_COLOR
+                  ?  AppColors.getPrimary()
                   : WHITE_COLOR,
               borderRadius: BorderRadius.circular(12),
               // boxShadow: const [BoxShadow(blurRadius: 0.05)],
@@ -97,7 +98,7 @@ class LeftSideMenu extends StatelessWidget {
                       iconData,
                       color: title.toLowerCase() == selectedView.toLowerCase()
                           ? WHITE_COLOR
-                          : DARK_GREY_COLOR,
+                          : AppColors.getAsset(),
                       width: width,
                     ),
                   ),

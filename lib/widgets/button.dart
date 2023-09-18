@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 
 import '../configs/theme_config.dart';
@@ -8,7 +9,8 @@ import '../utils/ui_utils/text_styles/custom_text_style.dart';
 class ButtonWidget extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String title;
-  final Color colorBG;
+  // final Color colorBG;
+  final Color primaryColor;
   final double width;
   final double height;
   final double fontSize;
@@ -18,7 +20,8 @@ class ButtonWidget extends StatelessWidget {
   const ButtonWidget(
       {Key? key,
       required this.onPressed,
-      this.colorBG = MAIN_COLOR,
+      //this.colorBG = MAIN_COLOR,
+    required this.primaryColor,
       this.colorTxt = WHITE_COLOR,
       this.fontSize = 16,
       this.height = 50,
@@ -36,7 +39,7 @@ class ButtonWidget extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: colorBG,
+          color: primaryColor,
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: Center(

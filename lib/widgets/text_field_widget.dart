@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -11,7 +12,7 @@ class TextFieldWidget extends StatelessWidget {
       {Key? key,
       required TextEditingController txtCtrl,
       required String hintText,
-      this.txtColor = DARK_GREY_COLOR,
+      this.txtColor =const Color(0xFF707070),
       required this.boxDecoration,
       this.verticalContentPadding = 10,
       this.password = false})
@@ -36,7 +37,7 @@ class TextFieldWidget extends StatelessWidget {
             fontSize: LARGE_MINUS_FONT_SIZE,
             fontWeight: FontWeight.w600),
         controller: _txtCtrl,
-        cursorColor: DARK_GREY_COLOR,
+        cursorColor: AppColors.getAsset(),
         autocorrect: false,
         textInputAction: TextInputAction.next,
         // textAlignVertical: TextAlignVertical.bottom,
@@ -44,7 +45,7 @@ class TextFieldWidget extends StatelessWidget {
         decoration: InputDecoration(
           hintText: _hintText,
           hintStyle: getHintStyle(),
-          focusColor: DARK_GREY_COLOR,
+          focusColor: AppColors.getAsset(),
           contentPadding: paddingXY(x: 16, y: verticalContentPadding),
           border: InputBorder.none,
         ),
