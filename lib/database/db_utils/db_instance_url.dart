@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -8,6 +10,8 @@ class DbInstanceUrl {
   Future<void> saveUrl(String url) async {
     box = await Hive.openBox<String>(URL_BOX);
     await box.put(URL_KEY, url);
+    log("Saved Url in DB:");
+    log(url);
   }
 
   Future<String> getUrl() async {

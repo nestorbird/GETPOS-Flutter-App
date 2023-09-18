@@ -115,7 +115,13 @@ class _ThemeChangeState extends State<ThemeChange> {
             Center(
               child: ButtonWidget(
                 onPressed: () async {
-                  if (isValidInstanceUrl() == true) {
+                  //to save the Url in DB
+                  await DbInstanceUrl().saveUrl(_urlCtrl.text);
+// to Show loader after saving Url in DB
+                  Helper.showLoaderDialog(context);
+
+                  String url = "https://${_urlCtrl.text}/api/";
+                  if (isValidInstanceUrl(url) == true) {
                     pingPong(_urlCtrl.text);
                   } else {
                     Helper.showPopup(context, invalidErrorText);
@@ -130,8 +136,8 @@ class _ThemeChangeState extends State<ThemeChange> {
         ),
       );
 
-  bool isValidInstanceUrl() {
-    String url = "https://${_urlCtrl.text}/api/";
+  bool isValidInstanceUrl(String url) {
+    //String url = "https://${_urlCtrl.text}/api/";
     return Helper.isValidUrl(url);
   }
 
@@ -157,6 +163,7 @@ class _ThemeChangeState extends State<ThemeChange> {
 
           log('API Request failed with status code ${response.statusCode}');
           log('Response body: ${response.body}');
+          log('Dbinstance Url:');
         }
       } catch (e) {
         // Handle any exceptions during the request
