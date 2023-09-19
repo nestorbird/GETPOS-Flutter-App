@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
+import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -135,7 +136,8 @@ class _LoginState extends State<Login> {
             if (!mounted) return;
             Helper.hideLoader(context);
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => ProductListHome()));
+                MaterialPageRoute(builder: (context) => const ProductListHome()));
+               
           } else {
             if (!mounted) return;
             Helper.hideLoader(context);

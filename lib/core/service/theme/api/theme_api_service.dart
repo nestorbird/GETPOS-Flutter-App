@@ -11,13 +11,13 @@ import '../../../../../network/api_helper/comman_response.dart';
 import '../../../../../network/service/api_utils.dart';
 import '../../../../../utils/helper.dart';
 import '../../../../database/db_utils/db_instance_url.dart';
- // Import your ThemeResponse class here
+// Import your ThemeResponse class here
 
 class ThemeService {
   static Future<CommanResponse> fetchTheme(String url) async {
-    if (!_isValidUrl(url)) {
-      return CommanResponse(status: false, message: INVALID_URL);
-    }
+    // if (!_isValidUrl(url)) {
+    //   return CommanResponse(status: false, message: INVALID_URL);
+    // }
 
     // Check for the internet connection
     var isInternetAvailable = await Helper.isNetworkAvailable();
@@ -25,10 +25,9 @@ class ThemeService {
     await DbInstanceUrl().saveUrl(url);
     String savedUrl = await DbInstanceUrl().getUrl();
     log('Saved URL :: $savedUrl');
-    instanceUrl = url;
+    instanceUrl = "https://getpos.in/api/";
 
     if (isInternetAvailable) {
-      
       String apiUrl = THEME_PATH;
       // Call  theme settings API
       var apiResponse = await APIUtils.getRequest(apiUrl);
@@ -67,13 +66,14 @@ class ThemeService {
           apiStatus: ApiStatus.NO_INTERNET);
     }
   }
+}
 
   /// Function to check whether the input URL is valid or not
-  static bool _isValidUrl(String url) {
-    // Regex to check valid URL
-    String regex =
-        "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
+  // static bool _isValidUrl(String url) {
+  //   // Regex to check valid URL
+  //   String regex =
+  //       "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
 
-    return RegExp(regex).hasMatch(url);
-  }
-}
+  //   return RegExp(regex).hasMatch(url);
+  // }
+

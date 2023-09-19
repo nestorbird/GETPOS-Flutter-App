@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) =>
-                    isUserLoggedIn ? ProductListHome() : const ThemeChange()))));
+                    isUserLoggedIn ? const ProductListHome() : const ThemeChange()))));
   }
 
   @override

@@ -11,8 +11,10 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
+import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
 import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
+import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -83,7 +85,7 @@ class _ThemeChangeState extends State<ThemeChange> {
                       children: [
                         //hightSpacer75,
                         Image.asset(APP_ICON, width: 100, height: 100),
-                        hightSpacer100,
+                        hightSpacer50,
 
                         instanceUrlTxtboxSection(context),
                         hightSpacer120,
@@ -103,7 +105,7 @@ class _ThemeChangeState extends State<ThemeChange> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: leftSpace(x: 10),
+              padding: leftSpace(x: 20),
               child: Text(
                 URL_TXT,
                 style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
@@ -122,20 +124,21 @@ class _ThemeChangeState extends State<ThemeChange> {
                   //to save the Url in DB
                   await DbInstanceUrl().saveUrl(_urlCtrl.text);
 // to Show loader after saving Url in DB
-                  Helper.showLoaderDialog(context);
+                  // Helper.showLoaderDialog(context);
 
                   //  await theme(primary,secondary,asset);
 
                   String url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true) {
                     pingPong(_urlCtrl.text);
+                    // theme(url, context);
+                  } else if (url.isEmpty) {
+                    Helper.showPopup(context, "Please Enter Url");
                   } else {
                     Helper.showPopup(context, invalidErrorText);
                   }
                 },
                 title: CONTINUE_TXT,
-
-                //to do here:
                 primaryColor: AppColors.getPrimary(),
                 width: MediaQuery.of(context).size.width,
               ),
@@ -159,12 +162,15 @@ class _ThemeChangeState extends State<ThemeChange> {
         if (response.statusCode == 200) {
           log('API Response:');
           log(response.body);
+          //not going inside the api
+          await theme(url);
+
           if (!mounted) return;
           Helper.hideLoader(context);
-          Helper.showPopup(context, "Please Enter URL");
+          // Helper.showPopup(context, "Please Enter URL");
 
-          // Navigator.pushReplacement(
-          //     context, MaterialPageRoute(builder: (context) => Login()));
+          //  Navigator.pushReplacement(
+          //  context, MaterialPageRoute(builder: (context) => Login()));
         } else {
           // ignore: use_build_context_synchronously
           //
@@ -177,31 +183,38 @@ class _ThemeChangeState extends State<ThemeChange> {
         // Handle any exceptions during the request
 
         log('Error: $e');
-        Helper.showPopup(context, "Not an active Url");
+        //  Helper.showPopup(context, "Not an active Url");
+        // Helper.hideLoader(context);
       }
     }
   }
 
-  Future<void> theme(String url, BuildContext context) async {
+  Future<void> theme(String url) async {
     try {
-      if (url.isEmpty) {
-        Helper.showPopup(context, "Please Enter Url");
-      } else {
-        CommanResponse response = await ThemeService.fetchTheme(url);
-        print(response);
+      Helper.showLoaderDialog(context);
+      //api theme path get and append
+      //  String apiUrl = "$BASE_URL$THEME_PATH";
+      String apiUrl = "https://$url/api/$THEME_PATH";
+      CommanResponse response = await ThemeService.fetchTheme(apiUrl);
+      log('$response');
 
-        if (response.status!) {
-          // Adding static data into the database
-          // await addDataIntoDB();
-          if (!mounted) return;
-          Helper.hideLoader(context);
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Login()));
-        } else {
-          if (!mounted) return;
-          Helper.hideLoader(context);
-          Helper.showPopup(context, response.message!);
-        }
+      if (response.status!) {
+        //Adding static data into the database
+        // await addDataIntoDB();
+        log('$response');
+      //  if (!mounted) return;
+        Helper.hideLoader(context);
+        // log('$context');
+        // (() => Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => const Login())));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Login()));
+      } else {
+        if (!mounted) return;
+        Helper.hideLoader(context);
+        Helper.showPopup(context, response.message!);
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => const Login()));
       }
     } catch (e) {
       Helper.hideLoader(context);

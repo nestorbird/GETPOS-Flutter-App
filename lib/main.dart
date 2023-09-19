@@ -1,4 +1,3 @@
-
 //import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -47,7 +47,7 @@ void main() async {
 
   //Registering hive database type adapters
   registerHiveTypeAdapters();
-   isUserLoggedIn = await DbHubManager().getManager() != null;
+  isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
 
   await SyncHelper().launchFlow(isUserLoggedIn);
@@ -120,7 +120,7 @@ class TabletApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: isUserLoggedIn ? HomeTablet() : const LoginLandscape(),
+      home: isUserLoggedIn ? HomeTablet() : const ThemeChange(),
     );
   }
 }

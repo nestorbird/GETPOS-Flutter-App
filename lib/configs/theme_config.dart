@@ -25,6 +25,8 @@ const OFF_WHITE_COLOR = const Color(0xFFFEF9FA);
 
 const LIGHT_BLACK_COLOR = const Color(0xFF4A4A4A);
 
+//const  defaultPrimaryColor = Color(0xFFDC1E44);
+
 // class AppColors {
 //   // Creating a Field/Property
 

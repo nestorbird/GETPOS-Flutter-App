@@ -77,10 +77,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                       children: [
                         headingLblWidget(),
                         hightSpacer50,
-                        instanceUrlTxtboxSection(context),
-                        hightSpacer50,
+                        // instanceUrlTxtboxSection(context),
+                        // hightSpacer50,
                         subHeadingLblWidget(),
-                        hightSpacer50,
+                        hightSpacer25,
                         emailTxtboxSection(),
                         hightSpacer20,
                         passwordTxtboxSection(),
@@ -136,19 +136,19 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   }
 
   ///Input field for entering the instance URL
-  Widget instanceUrlTxtboxSection(context) => Padding(
-        // margin: horizontalSpace(),
-        padding: smallPaddingAll(),
-        child: SizedBox(
-          height: 55,
-          child: TextFieldWidget(
-            boxDecoration: txtFieldBoxShadowDecoration,
-            txtCtrl: _urlCtrl,
-            verticalContentPadding: 16,
-            hintText: URL_HINT,
-          ),
-        ),
-      );
+  // Widget instanceUrlTxtboxSection(context) => Padding(
+  //       // margin: horizontalSpace(),
+  //       padding: smallPaddingAll(),
+  //       child: SizedBox(
+  //         height: 55,
+  //         child: TextFieldWidget(
+  //           boxDecoration: txtFieldBoxShadowDecoration,
+  //           txtCtrl: _urlCtrl,
+  //           verticalContentPadding: 16,
+  //           hintText: URL_HINT,
+  //         ),
+  //       ),
+  //     );
 
   /// LOGIN TXT(HEADING) IN CENTER
   ///

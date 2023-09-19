@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -9,9 +11,13 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
+import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
+import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
+import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
+import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
@@ -29,8 +35,9 @@ class ThemeChange extends StatefulWidget {
 
 class _ThemeChangeState extends State<ThemeChange> {
   late TextEditingController _urlCtrl;
+  late BuildContext ctx;
   String? version;
-
+  AppColors appColors = AppColors();
   @override
   void initState() {
     super.initState();
@@ -38,14 +45,12 @@ class _ThemeChangeState extends State<ThemeChange> {
     _urlCtrl = TextEditingController();
 
     _urlCtrl.text = instanceUrl;
-
-    //api call
+    //updateColorsFromThemeResponse(appColors);
   }
 
   @override
   void dispose() {
     _urlCtrl.dispose();
-    
     super.dispose();
   }
 
@@ -63,79 +68,110 @@ class _ThemeChangeState extends State<ThemeChange> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Center(
-      child: WillPopScope(
-        onWillPop: _onBackPressed,
-        child: SafeArea(
-          child: Scaffold(
-            resizeToAvoidBottomInset: true,
-            backgroundColor: WHITE_COLOR,
-            body: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        //hightSpacer75,
-                        Image.asset(APP_ICON, width: 100, height: 100),
-                        hightSpacer100,
+    ctx = context;
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: WHITE_COLOR,
+        body: Stack(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Container(
+                  //color
+                    width: 550,
+                    padding: paddingXY(),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          //hightSpacer75,
 
-                        instanceUrlTxtboxSection(context),
-                        hightSpacer120,
-                      ])),
+                          headingLblWidget(),
+
+                          hightSpacer50,
+                          subHeadingLblWidget(),
+                          hightSpacer25,
+                          instanceUrlTxtboxSection(context),
+                          hightSpacer50,
+                          continueButtonWidget(_urlCtrl.text),
+                          hightSpacer20,
+                        ])),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
-  Widget instanceUrlTxtboxSection(context) => Container(
-        margin: horizontalSpace(),
+  Widget headingLblWidget() => Center(
+        // child: Text(
+        //   "POS",
+        //   style: getTextStyle(
+        //     color: MAIN_COLOR,
+        //     fontWeight: FontWeight.bold,
+        //     fontSize: 72.0,
+        //   ),
+        // ),
+        child: Image.asset(
+          APP_ICON,
+          height: 150,
+          width: 150,
+        ),
+      );
 
-        // padding: smallPaddingAll(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: leftSpace(x: 10),
-              child: Text(
-                URL_TXT,
-                style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
-              ),
-            ),
-            hightSpacer15,
-            TextFieldWidget(
-              boxDecoration: txtFieldBorderDecoration,
-              txtCtrl: _urlCtrl,
-              hintText: URL_HINT,
-            ),
-            hightSpacer100,
-            Center(
-              child: ButtonWidget(
-                onPressed: () async {
-                  //to save the Url in DB
-                  await DbInstanceUrl().saveUrl(_urlCtrl.text);
+  Widget subHeadingLblWidget() => Center(
+        child: Text(
+          URL_TXT,
+          style: getTextStyle(
+            // color: MAIN_COLOR,
+            fontWeight: FontWeight.bold,
+            fontSize: LARGE_FONT_SIZE,
+          ),
+        ),
+      );
+  //Input field for entering the instance URL
+  Widget instanceUrlTxtboxSection(context) => Padding(
+        // margin: horizontalSpace(),
+        padding: smallPaddingAll(),
+        child: SizedBox(
+          height: 55,
+          child: TextFieldWidget(
+            boxDecoration: txtFieldBoxShadowDecoration,
+            txtCtrl: _urlCtrl,
+            verticalContentPadding: 16,
+            hintText: URL_HINT,
+          ),
+        ),
+      );
+
+  Widget continueButtonWidget(context) => Center(
+        child: ButtonWidget(
+          onPressed: () async {
+            //to save the Url in DB
+            await DbInstanceUrl().saveUrl(_urlCtrl.text);
 // to Show loader after saving Url in DB
-                  Helper.showLoaderDialog(context);
+            // Helper.showLoaderDialog(context);
 
-                  //  await theme(primary,secondary,asset);
+            //  await theme(primary,secondary,asset);
 
-                  String url = "https://${_urlCtrl.text}/api/";
-                  if (isValidInstanceUrl(url) == true) {
-                    pingPong(_urlCtrl.text);
-                  } else {
-                    Helper.showPopup(context, invalidErrorText);
-                  }
-                },
-                title: CONTINUE_TXT,
-                primaryColor:AppColors.getPrimary() ,
-                width: MediaQuery.of(context).size.width,
-              ),
-            ),
-          ],
+            String url = "https://${_urlCtrl.text}/api/";
+            if (isValidInstanceUrl(url) == true) {
+              pingPong(_urlCtrl.text);
+              // theme(url, context);
+            } else if (url.isEmpty) {
+              Helper.showPopup(context, "Please Enter Url");
+            } else {
+              Helper.showPopup(context, invalidErrorText);
+            }
+          },
+          title: CONTINUE_TXT,
+          primaryColor: AppColors.getPrimary(),
+          height: 60,
+          fontSize: LARGE_PLUS_FONT_SIZE,
+          // width: MediaQuery.of(context).size.width,
         ),
       );
 
@@ -154,12 +190,15 @@ class _ThemeChangeState extends State<ThemeChange> {
         if (response.statusCode == 200) {
           log('API Response:');
           log(response.body);
+          //not going inside the api
+          await theme(url, context);
+
           if (!mounted) return;
           Helper.hideLoader(context);
-          Helper.showPopup(context, "Please Enter URL");
+          // Helper.showPopup(context, "Please Enter URL");
 
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Login()));
+          //  Navigator.pushReplacement(
+          //  context, MaterialPageRoute(builder: (context) => Login()));
         } else {
           // ignore: use_build_context_synchronously
           //
@@ -172,43 +211,44 @@ class _ThemeChangeState extends State<ThemeChange> {
         // Handle any exceptions during the request
 
         log('Error: $e');
-        Helper.showPopup(context, "Not an active Url");
+        //  Helper.showPopup(context, "Not an active Url");
+        // Helper.hideLoader(context);
       }
     }
   }
-// Future<void> theme(String email, String password, String url) async {
-//     {
-//       if (email.isEmpty) {
-//         Helper.showPopup(context, "Please Enter Email");
-//       } else if (password.isEmpty) {
-//         Helper.showPopup(context, "Please Enter Password");
-//       } else {
-//         try {
-//           Helper.showLoaderDialog(context);
 
-//           CommanResponse response =
-//               await LoginService.login(email, password, url);
-//           print(response);
+  Future<void> theme(String url, BuildContext context) async {
+    try {
+      Helper.showLoaderDialog(context);
+      //api theme path get and append
+      //  String apiUrl = "$BASE_URL$THEME_PATH";
+      String apiUrl = "https://$url/api/$THEME_PATH";
+      CommanResponse response = await ThemeService.fetchTheme(apiUrl);
+      log('$response');
 
-//           if (response.status!) {
-//             //Adding static data into the database
-//             // await addDataIntoDB();
-//             if (!mounted) return;
-//             Helper.hideLoader(context);
-//             Navigator.pushReplacement(context,
-//                 MaterialPageRoute(builder: (context) => ProductListHome()));
-//           } else {
-//             if (!mounted) return;
-//             Helper.hideLoader(context);
-//             Helper.showPopup(context, response.message!);
-//           }
-//         } catch (e) {
-//           Helper.hideLoader(context);
-//           log('Exception Caught :: $e');
-//           debugPrintStack();
-//           Helper.showSnackBar(context, SOMETHING_WRONG);
-//         }
-//       }
-//     }
-//   }
+      if (response.status!) {
+        //Adding static data into the database
+        // await addDataIntoDB();
+        log('$response');
+        if (!mounted) return;
+        Helper.hideLoader(context);
+        log('$context');
+        (() => Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const Login())));
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => const Login()));
+      } else {
+        if (!mounted) return;
+        Helper.hideLoader(context);
+        Helper.showPopup(context, response.message!);
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => const Login()));
+      }
+    } catch (e) {
+      Helper.hideLoader(context);
+      log('Exception Caught :: $e');
+      debugPrintStack();
+      Helper.showSnackBar(context, SOMETHING_WRONG);
+    }
+  }
 }

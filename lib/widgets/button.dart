@@ -23,8 +23,10 @@ class ButtonWidget extends StatelessWidget {
       //this.colorBG = MAIN_COLOR,
     required this.primaryColor,
       this.colorTxt = WHITE_COLOR,
+      
       this.fontSize = 16,
       this.height = 50,
+      
       required this.title,
       this.borderRadius = BORDER_CIRCULAR_RADIUS_07,
       this.width = 250})
