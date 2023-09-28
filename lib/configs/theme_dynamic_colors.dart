@@ -14,16 +14,16 @@ class AppColors {
   static Color getSecondary() => secondary ?? const Color(0xFF62B146);
   static Color getAsset() => asset ?? const Color(0xFF707070);
 // to set the colors
-  setPrimary(Color setter) {
-    primary = setter;
+  setPrimary(int setter) {
+    primary = Color(setter);
   }
 
-  setSecondary(Color setter) {
-    secondary = setter;
+  setSecondary(int setter) {
+    secondary = Color(setter);
   }
 
-  setAsset(Color setter) {
-    asset = setter;
+  setAsset(int setter) {
+    asset = Color(setter);
   }
 
   // Method to update colors from ThemeResponse

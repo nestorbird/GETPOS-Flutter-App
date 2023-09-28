@@ -1,23 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:nb_posx/configs/theme_config.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
-import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
-import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
-import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
-import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
+import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
@@ -122,13 +118,12 @@ class _ThemeChangeState extends State<ThemeChange> {
               child: ButtonWidget(
                 onPressed: () async {
                   //to save the Url in DB
-                  await DbInstanceUrl().saveUrl(_urlCtrl.text);
 // to Show loader after saving Url in DB
                   // Helper.showLoaderDialog(context);
 
                   //  await theme(primary,secondary,asset);
 
-                  String url = "https://${_urlCtrl.text}/api/";
+                  String url = "https://${_urlCtrl.text}/";
                   if (isValidInstanceUrl(url) == true) {
                     pingPong(_urlCtrl.text);
                     // theme(url, context);
@@ -162,8 +157,8 @@ class _ThemeChangeState extends State<ThemeChange> {
         if (response.statusCode == 200) {
           log('API Response:');
           log(response.body);
-          //not going inside the api
-          await theme(url);
+          await DbInstanceUrl().saveUrl(_urlCtrl.text);
+          await getTheme(url);
 
           if (!mounted) return;
           Helper.hideLoader(context);
@@ -172,9 +167,6 @@ class _ThemeChangeState extends State<ThemeChange> {
           //  Navigator.pushReplacement(
           //  context, MaterialPageRoute(builder: (context) => Login()));
         } else {
-          // ignore: use_build_context_synchronously
-          //
-
           log('API Request failed with status code ${response.statusCode}');
           log('Response body: ${response.body}');
           log('Dbinstance Url:');
@@ -189,28 +181,26 @@ class _ThemeChangeState extends State<ThemeChange> {
     }
   }
 
-  Future<void> theme(String url) async {
+  Future<void> getTheme(String url) async {
     try {
       Helper.showLoaderDialog(context);
       //api theme path get and append
       //  String apiUrl = "$BASE_URL$THEME_PATH";
       String apiUrl = "https://$url/api/$THEME_PATH";
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
-      log('$response');
 
-      if (response.status!) {
+      if (response.apiStatus == ApiStatus.REQUEST_SUCCESS) {
         //Adding static data into the database
         // await addDataIntoDB();
-        log('$response');
-      //  if (!mounted) return;
+        //  if (!mounted) return;
         Helper.hideLoader(context);
         // log('$context');
         // (() => Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => const Login())));
-        Navigator.push(
+        await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
       } else {
-        if (!mounted) return;
+        // if (!mounted) return;
         Helper.hideLoader(context);
         Helper.showPopup(context, response.message!);
         // Navigator.pushReplacement(context,

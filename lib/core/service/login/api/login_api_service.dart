@@ -32,10 +32,10 @@ class LoginService {
     //Check for the internet connection
     var isInternetAvailable = await Helper.isNetworkAvailable();
 
-    await DbInstanceUrl().saveUrl(url);
+    //await DbInstanceUrl().saveUrl(url);
     String savedUrl = await DbInstanceUrl().getUrl();
     log('Saved URL :: $savedUrl');
-    instanceUrl = url;
+    //instanceUrl = url;
 
     if (isInternetAvailable) {
       //Login api url from api_constants

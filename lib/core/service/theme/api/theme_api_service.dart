@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -22,10 +24,10 @@ class ThemeService {
     // Check for the internet connection
     var isInternetAvailable = await Helper.isNetworkAvailable();
 
-    await DbInstanceUrl().saveUrl(url);
+    //await DbInstanceUrl().saveUrl(url);
     String savedUrl = await DbInstanceUrl().getUrl();
     log('Saved URL :: $savedUrl');
-    instanceUrl = "https://getpos.in/api/";
+    instanceUrl = "https://$savedUrl/api/";
 
     if (isInternetAvailable) {
       String apiUrl = THEME_PATH;
@@ -38,7 +40,29 @@ class ThemeService {
       // API success
       // ignore: unnecessary_null_comparison
       if (themeResponse.message != null) {
-        // You can access theme settings data like themeResponse.message.data.primary
+        var dbPreferences = DBPreferences();
+
+        dbPreferences.savePreference(BASE_URL, instanceUrl);
+
+        dbPreferences.savePreference(PRIMARY_COLOR,
+            themeResponse.message.data.primary.replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(SECONDARY_COLOR,
+            themeResponse.message.data.secondary.replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(ACCENT_COLOR,
+            themeResponse.message.data.asset.replaceAll('#', '0xFF'));
+
+        int primaryColor =
+            int.parse(await dbPreferences.getPreference(PRIMARY_COLOR));
+
+        int secondaryColor =
+            int.parse(await dbPreferences.getPreference(SECONDARY_COLOR));
+
+        int accentColor =
+            int.parse(await dbPreferences.getPreference(ACCENT_COLOR));
+
+        AppColors.primary = Color(primaryColor);
+        AppColors.secondary = Color(secondaryColor);
+        AppColors.asset = Color(accentColor);
 
         // Return the Success Theme Response
         return CommanResponse(
@@ -76,4 +100,3 @@ class ThemeService {
 
   //   return RegExp(regex).hasMatch(url);
   // }
-
