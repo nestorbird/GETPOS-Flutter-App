@@ -5,12 +5,10 @@ import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 
 class AppColors {
   static Color? primary;
-  //static Color  defaultPrimaryColor = Color(0xFFDC1E44);
   static Color? secondary;
   static Color? asset;
 //to get the colors
   static Color getPrimary() => primary ?? const Color(0xFFDC1E44);
-  //static Color getPrimary() => primary!;
   static Color getSecondary() => secondary ?? const Color(0xFF62B146);
   static Color getAsset() => asset ?? const Color(0xFF707070);
 // to set the colors

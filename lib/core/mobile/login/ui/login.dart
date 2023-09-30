@@ -85,7 +85,7 @@ class _LoginState extends State<Login> {
                 
                 children: [
                   hightSpacer50,
-                  Image.asset(APP_ICON, width: 100, height: 100),
+                  Image.asset(App_ICON2, width: 100, height: 100),
                   hightSpacer50,
                   // instanceUrlTxtboxSection(context),
                   // hightSpacer20,

@@ -81,6 +81,7 @@ class _ThemeChangeState extends State<ThemeChange> {
                 physics: const BouncingScrollPhysics(),
                 child: Container(
                   //color
+                  
                     width: 550,
                     padding: paddingXY(),
                     child: Column(
