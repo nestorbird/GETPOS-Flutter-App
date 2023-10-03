@@ -42,7 +42,7 @@ class _PasswordUpdatedState extends State<PasswordUpdated> {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
         title: PASSWORD_UPDATED_BTN_TXT,
-       primaryColor: AppColors.getPrimary(),
+        primaryColor: AppColors.getPrimary(),
         width: 350,
         //width: MediaQuery.of(context).size.width / 2.5,
       ),
@@ -54,7 +54,7 @@ class _PasswordUpdatedState extends State<PasswordUpdated> {
             hightSpacer50,
             hightSpacer50,
             hightSpacer50,
-            Image.asset(APP_ICON, width: 100, height: 100),
+            Image.asset(App_ICON, width: 100, height: 100),
             hightSpacer50,
             // appLogo,
             hightSpacer50,

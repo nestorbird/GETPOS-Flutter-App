@@ -75,7 +75,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   hightSpacer50,
                   // hightSpacer50,
                   // appLogo
-                  Image.asset(APP_ICON, width: 100, height: 100),
+                  Image.asset(App_ICON, width: 100, height: 100),
                   hightSpacer50,
                   hightSpacer25,
                   headingLblWidget(),

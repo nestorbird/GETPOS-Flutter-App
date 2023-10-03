@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                           managerName,
                           style: getTextStyle(
                               fontSize: LARGE_FONT_SIZE,
-                              color:  const Color(0xFF707070)),
+                              color: const Color(0xFF707070)),
                           overflow: TextOverflow.ellipsis,
                         ),
                         hightSpacer30,

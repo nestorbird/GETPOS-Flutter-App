@@ -84,7 +84,7 @@ class _ThemeChangeState extends State<ThemeChange> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         //hightSpacer75,
-                        Image.asset(App_ICON2, width: 100, height: 100),
+                        Image.asset(App_ICON, width: 100, height: 100),
                         hightSpacer50,
 
                         instanceUrlTxtboxSection(context),
@@ -201,13 +201,13 @@ class _ThemeChangeState extends State<ThemeChange> {
       if (response.status!) {
         //Adding static data into the database
         // await addDataIntoDB();
-        log('$response');
-      //  if (!mounted) return;
+        //log('$response');
+        //  if (!mounted) return;
         Helper.hideLoader(context);
         // log('$context');
         // (() => Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => const Login())));
-        Navigator.push(
+        await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
       } else {
         if (!mounted) return;

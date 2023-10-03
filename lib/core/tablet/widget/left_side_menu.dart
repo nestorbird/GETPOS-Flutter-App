@@ -31,7 +31,7 @@ class LeftSideMenu extends StatelessWidget {
             child: Padding(
               padding: verticalSpace(x: 0),
               child: Image.asset(
-                APP_ICON_TABLET,
+                App_ICON_TABLET,
                 fit: BoxFit.fill,
               ),
               // child: Text(

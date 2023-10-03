@@ -78,14 +78,12 @@ class _LoginState extends State<Login> {
         backgroundColor: WHITE_COLOR,
         body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
-            child:
-             SizedBox(
+            child: SizedBox(
               height: MediaQuery.of(context).size.height,
-               child: Column(
-                
+              child: Column(
                 children: [
                   hightSpacer50,
-                  Image.asset(App_ICON2, width: 100, height: 100),
+                  Image.asset(App_ICON, width: 100, height: 100),
                   hightSpacer50,
                   // instanceUrlTxtboxSection(context),
                   // hightSpacer20,
@@ -109,8 +107,8 @@ class _LoginState extends State<Login> {
                   // )),
                   // hightSpacer10
                 ],
-                         ),
-             )),
+              ),
+            )),
       )),
     );
   }
@@ -128,16 +126,18 @@ class _LoginState extends State<Login> {
 
           CommanResponse response =
               await LoginService.login(email, password, url);
-          print(response);
+          log("$response");
 
           if (response.status!) {
             //Adding static data into the database
             // await addDataIntoDB();
-            if (!mounted) return;
-            Helper.hideLoader(context);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const ProductListHome()));
-               
+            // if (!mounted) return;
+            log("$response");
+           // Helper.hideLoader(context);
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProductListHome()));
           } else {
             if (!mounted) return;
             Helper.hideLoader(context);
@@ -193,7 +193,7 @@ class _LoginState extends State<Login> {
             await login(_emailCtrl.text, _passCtrl.text, url);
           },
           title: LOGIN_TXT,
-          primaryColor:  AppColors.getPrimary(),
+          primaryColor: AppColors.getPrimary(),
           width: MediaQuery.of(context).size.width,
         ),
       );
@@ -266,7 +266,7 @@ class _LoginState extends State<Login> {
               child: Text(
                 FORGET_PASSWORD_SMALL_TXT,
                 style: getTextStyle(
-                    color:  AppColors.getPrimary(),
+                    color: AppColors.getPrimary(),
                     fontSize: MEDIUM_MINUS_FONT_SIZE,
                     fontWeight: FontWeight.normal),
               ),
@@ -283,7 +283,7 @@ class _LoginState extends State<Login> {
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color:  AppColors.getAsset(),
+                  color: AppColors.getAsset(),
                   fontSize: MEDIUM_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
@@ -305,13 +305,13 @@ class _LoginState extends State<Login> {
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
-                        color:  AppColors.getAsset(),
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color:  AppColors.getAsset(),
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.normal,
                         fontSize: MEDIUM_FONT_SIZE)),
                 TextSpan(
@@ -331,7 +331,7 @@ class _LoginState extends State<Login> {
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
-                        color:  AppColors.getAsset(),
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_FONT_SIZE)),
               ]),
@@ -343,7 +343,7 @@ class _LoginState extends State<Login> {
         child: Text(
           LOGIN_TXT.toUpperCase(),
           style: getTextStyle(
-            color:  AppColors.getPrimary(),
+            color: AppColors.getPrimary(),
             fontWeight: FontWeight.bold,
             fontSize: LARGE_FONT_SIZE,
           ),

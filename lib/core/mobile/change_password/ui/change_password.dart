@@ -68,7 +68,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               hideSidemenu: true,
             ),
             hightSpacer20,
-            Image.asset(APP_ICON, width: 100, height: 100),
+            Image.asset(App_ICON, width: 100, height: 100),
             hightSpacer20,
 
             hightSpacer50,

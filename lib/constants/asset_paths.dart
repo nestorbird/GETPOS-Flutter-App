@@ -49,10 +49,10 @@ const FINANCE_ACTIVE_TAB_IMAGE =
 const CHANGE_PASS_TAB_IMAGE = "assets/tablet_icons/change_pass_icon.svg";
 const CHANGE_PASS_ACTIVE_TAB_IMAGE =
     "assets/tablet_icons/change_pass_selected_icon.svg";
-const APP_ICON = "assets/images/app_logo.png";
-const App_ICON2 = "assets/images/app_logo2.png";
-const APP_ICON_TABLET = "assets/images/app_logo_tablet.png";
-const App_ICON2_TABLET = "assets/images/app_logo2_tablet.png";
+
+const App_ICON = "assets/images/app_logo.png";
+
+const App_ICON_TABLET = "assets/images/app_logo_tablet.png";
 // const CUSTOMER_SMALL_IMAGE = 'assets/icons/customer_small.svg';
 // const FORWARD_ARROW_IMAGE = 'assets/icons/forward_arrow.svg';
 // const PAYMENT_MPESA_ICON = 'assets/icons/mpesa_icon.svg';

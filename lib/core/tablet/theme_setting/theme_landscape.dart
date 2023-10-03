@@ -117,7 +117,7 @@ class _ThemeChangeState extends State<ThemeChange> {
         //   ),
         // ),
         child: Image.asset(
-          APP_ICON,
+          App_ICON,
           height: 150,
           width: 150,
         ),

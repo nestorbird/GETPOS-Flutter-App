@@ -5,7 +5,7 @@
     <uses-permission-sdk-23 android:name="android.permission.INTERNET"/>
 
    <application
-        android:label="Get POS"
+        android:label="Duncan POS"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

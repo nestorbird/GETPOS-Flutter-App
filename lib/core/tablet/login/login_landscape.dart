@@ -162,7 +162,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         //   ),
         // ),
         child: Image.asset(
-          APP_ICON,
+          App_ICON,
           height: 150,
           width: 150,
         ),
