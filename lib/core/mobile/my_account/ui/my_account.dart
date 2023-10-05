@@ -1,8 +1,14 @@
+//import 'dart:html';
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -30,12 +36,15 @@ class MyAccount extends StatefulWidget {
 
 class _MyAccountState extends State<MyAccount> {
   String? name, email, phone, version;
+
   late Uint8List profilePic;
 
   @override
   void initState() {
     super.initState();
+
     profilePic = Uint8List.fromList([]);
+
     getManagerName();
   }
 
@@ -96,7 +105,7 @@ class _MyAccountState extends State<MyAccount> {
               padding: smallPaddingAll(),
               child: Text(email ?? "",
                   style: getTextStyle(
-                      color:  AppColors.getPrimary(),
+                      color: AppColors.getPrimary(),
                       fontSize: MEDIUM_MINUS_FONT_SIZE,
                       fontWeight: FontWeight.normal)),
             ),
@@ -155,15 +164,45 @@ class _MyAccountState extends State<MyAccount> {
           hasCancelAction: true);
       if (res != OPTION_CANCEL.toLowerCase()) {
         await SyncHelper().logoutFlow();
-        if (!mounted) return;
-        Navigator.pop(context);
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Login()));
+        //if (!mounted) return;
+        // Navigator.pop(context);
+        // ignore: use_build_context_synchronously
+        //if (!mounted) return;
+
+        await fetchDataAndNavigate();
       }
     } else {
       if (!mounted) return;
       await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
       // print("You clicked $res");
+    }
+  }
+
+  Future<void> fetchDataAndNavigate() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the database
+      await DBPreferences().delete();
+      log("Cleared the DB");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ThemeChange(),
+        ),
+      );
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
     }
   }
 
@@ -175,7 +214,7 @@ class _MyAccountState extends State<MyAccount> {
           )
         : CircleAvatar(
             radius: 64,
-            backgroundColor:  AppColors.getPrimary(),
+            backgroundColor: AppColors.getPrimary(),
             foregroundImage: MemoryImage(profilePic),
           );
   }

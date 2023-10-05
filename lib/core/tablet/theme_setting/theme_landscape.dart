@@ -45,7 +45,7 @@ class _ThemeChangeState extends State<ThemeChange> {
     _urlCtrl = TextEditingController();
 
     _urlCtrl.text = instanceUrl;
-    //updateColorsFromThemeResponse(appColors);
+   
   }
 
   @override
@@ -80,9 +80,7 @@ class _ThemeChangeState extends State<ThemeChange> {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Container(
-                  //color
-                  
-                    width: 550,
+                  width: 550,
                     padding: paddingXY(),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -153,11 +151,8 @@ class _ThemeChangeState extends State<ThemeChange> {
           onPressed: () async {
             //to save the Url in DB
             await DbInstanceUrl().saveUrl(_urlCtrl.text);
-// to Show loader after saving Url in DB
-            // Helper.showLoaderDialog(context);
-
-            //  await theme(primary,secondary,asset);
-
+          
+//to save the url in a string
             String url = "https://${_urlCtrl.text}/api/";
             if (isValidInstanceUrl(url) == true) {
               pingPong(_urlCtrl.text);
@@ -231,7 +226,7 @@ class _ThemeChangeState extends State<ThemeChange> {
         //Adding static data into the database
         // await addDataIntoDB();
         log('$response');
-        if (!mounted) return;
+        //if (!mounted) return;
         Helper.hideLoader(context);
         log('$context');
         (() => Navigator.pushReplacement(

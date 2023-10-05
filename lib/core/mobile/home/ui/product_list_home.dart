@@ -726,7 +726,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           "$appCurrency ${categories[catPosition].items[itemPosition].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.center,
                                           style: getTextStyle(
-                                              color:const Color(0xFFDC1E44),
+                                              color:Color.fromARGB(255, 220, 147, 30),
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],

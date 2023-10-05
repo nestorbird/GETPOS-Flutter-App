@@ -48,7 +48,7 @@ class SyncHelper {
     await DbSaleOrder().delete();
     await DBPreferences().delete();
     await DbInstanceUrl().deleteUrl();
-    instanceUrl = 'duncanpos.in';
+    instanceUrl = 'getpos.in';
     return true;
   }
 

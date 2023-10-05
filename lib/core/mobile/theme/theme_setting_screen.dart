@@ -15,6 +15,8 @@ import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
 import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
+import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -45,6 +47,7 @@ class _ThemeChangeState extends State<ThemeChange> {
     _urlCtrl = TextEditingController();
 
     _urlCtrl.text = instanceUrl;
+
     //updateColorsFromThemeResponse(appColors);
   }
 
@@ -123,10 +126,6 @@ class _ThemeChangeState extends State<ThemeChange> {
                 onPressed: () async {
                   //to save the Url in DB
                   await DbInstanceUrl().saveUrl(_urlCtrl.text);
-// to Show loader after saving Url in DB
-                  // Helper.showLoaderDialog(context);
-
-                  //  await theme(primary,secondary,asset);
 
                   String url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true) {
@@ -139,7 +138,8 @@ class _ThemeChangeState extends State<ThemeChange> {
                   }
                 },
                 title: CONTINUE_TXT,
-                primaryColor: AppColors.getPrimary(),
+                primaryColor: const Color.fromARGB(255, 138, 95, 80),
+                //primaryColor: AppColors.getPrimary(),
                 width: MediaQuery.of(context).size.width,
               ),
             ),
@@ -169,8 +169,8 @@ class _ThemeChangeState extends State<ThemeChange> {
           Helper.hideLoader(context);
           // Helper.showPopup(context, "Please Enter URL");
 
-          //  Navigator.pushReplacement(
-          //  context, MaterialPageRoute(builder: (context) => Login()));
+          // Navigator.pushReplacement(
+          // context, MaterialPageRoute(builder: (context) => const  Login()));
         } else {
           // ignore: use_build_context_synchronously
           //
@@ -199,14 +199,14 @@ class _ThemeChangeState extends State<ThemeChange> {
       log('$response');
 
       if (response.status!) {
-        //Adding static data into the database
-        // await addDataIntoDB();
         //log('$response');
         //  if (!mounted) return;
         Helper.hideLoader(context);
         // log('$context');
         // (() => Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => const Login())));
+//to save url in DB
+        await DbInstanceUrl().saveUrl(url);
         await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
       } else {

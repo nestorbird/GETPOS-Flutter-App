@@ -4,17 +4,17 @@ import '../../constants/app_constants.dart';
 import '../api_helper/api_server.dart';
 
 ///Base API URL for development environment
-const DEV_URL = 'https://duncanpos.in/api/';
-const DEV_ERP_URL = 'duncanpos.in';
+const DEV_URL = 'https://getpos.in/api/';
+const DEV_ERP_URL = 'getpos.in';
 // const DEV_URL = 'https://agriboratest.nestorhawk.com/api/';
 
 ///Base API URL for staging/test environment
 const TEST_URL = 'https://tst.erp.nbpos.com/api/';
-const TEST_ERP_URL = 'duncanpos.in';
+const TEST_ERP_URL = 'getpos.in';
 
 ///Base API URL for production environment
 const PROD_URL = 'https://prd.erp.nbpos.com/api/';
-const PROD_ERP_URL = 'duncanpos.in';
+const PROD_ERP_URL = 'getpos.in';
 
 ///Default URL for POS instance
 String instanceUrl = ENVIRONMENT == ApiServer.DEV

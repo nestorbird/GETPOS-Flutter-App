@@ -92,11 +92,4 @@ class ThemeService {
   }
 }
 
-  /// Function to check whether the input URL is valid or not
-  // static bool _isValidUrl(String url) {
-  //   // Regex to check valid URL
-  //   String regex =
-  //       "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
-
-  //   return RegExp(regex).hasMatch(url);
-  // }
+ 

@@ -29,15 +29,16 @@ class _SplashScreenState extends State<SplashScreen> {
         (() => Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    isUserLoggedIn ? const ProductListHome() : const ThemeChange()))));
+                builder: (context) => isUserLoggedIn
+                    ? const ProductListHome()
+                    : const ThemeChange()))));
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor:const Color(0xFFDC1E44),
+        backgroundColor: const Color.fromARGB(255, 254, 253, 253),
         body: Padding(
           padding: const EdgeInsets.only(left: 15, right: 15),
           child: Stack(
@@ -49,14 +50,14 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: 200,
               )),
               const SizedBox(height: 15),
-              Padding(
-                  padding: const EdgeInsets.only(bottom: 30),
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Text(
-                        POWERED_BY_TXT,
-                        style: getTextStyle(color: WHITE_COLOR, fontSize: 16.0),
-                      )))
+              // Padding(
+              //     padding: const EdgeInsets.only(bottom: 30),
+              //     child: Align(
+              //         alignment: Alignment.bottomCenter,
+              //         child: Text(
+              //           POWERED_BY_TXT,
+              //           style: getTextStyle(color: BLACK_COLOR, fontSize: 16.0),
+              //         )))
             ],
           ),
         ),

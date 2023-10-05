@@ -7,8 +7,8 @@ import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 /// COLOR CONSTANTS
 ///
 
-const ORANGE_COLOR = const Color(0xFFF39000);
-const LIGHT_ORANGE_COLOR = const Color(0xFFFDF4E5);
+//const ORANGE_COLOR = const Color(0xFFF39000);
+//const LIGHT_ORANGE_COLOR = const Color(0xFFFDF4E5);
 
 //const GREEN_COLOR = const Color(0xFF62B146);
 
