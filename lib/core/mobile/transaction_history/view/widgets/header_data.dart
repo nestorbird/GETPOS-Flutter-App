@@ -17,8 +17,8 @@ class TransactionHeaderData extends StatefulWidget {
       this.heading,
       this.content,
       this.crossAlign = CrossAxisAlignment.start,
-      this.headingColor = BLACK_COLOR,
-      this.contentColor = BLACK_COLOR})
+      this.headingColor = const Color(0xFF000000),
+      this.contentColor = const Color(0xFF000000)})
       : super(key: key);
 
   @override

@@ -161,19 +161,19 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                           "${parkOrder!.items.length} Item",
                           style: getTextStyle(
                               fontSize: SMALL_FONT_SIZE,
-                              color: WHITE_COLOR,
+                              color: AppColors.fontWhiteColor,
                               fontWeight: FontWeight.normal),
                         ),
                         subtitle: Text("$appCurrency ${_getItemTotal()}",
                             style: getTextStyle(
                                 fontSize: LARGE_FONT_SIZE,
                                 fontWeight: FontWeight.w600,
-                                color: WHITE_COLOR)),
+                                color: AppColors.fontWhiteColor)),
                         trailing: Text("View Cart",
                             style: getTextStyle(
                                 fontSize: LARGE_FONT_SIZE,
                                 fontWeight: FontWeight.w400,
-                                color: WHITE_COLOR)),
+                                color: AppColors.fontWhiteColor)),
                       ),
                     ),
                   ),

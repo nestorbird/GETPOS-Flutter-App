@@ -32,7 +32,7 @@ class HeaderCurveWidget extends StatelessWidget {
           Center(
               child: Text(
             "POS",
-            style: getTextStyle(color: WHITE_COLOR, fontSize: 40.0),
+            style: getTextStyle(color: AppColors.fontWhiteColor, fontSize: 40.0),
           ))
         ],
       ),

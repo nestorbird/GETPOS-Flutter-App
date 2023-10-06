@@ -80,7 +80,7 @@ class _CartWidgetState extends State<CartWidget> {
 
     return Container(
       padding: paddingXY(x: 10, y: 10),
-      color: WHITE_COLOR,
+      color: AppColors.fontWhiteColor,
       width: 300,
       height: Get.height,
       child: Column(
@@ -198,7 +198,7 @@ class _CartWidgetState extends State<CartWidget> {
     //             "Select Customer",
     //             textAlign: TextAlign.center,
     //             style:
-    //                 getTextStyle(color: WHITE_COLOR, fontSize: LARGE_FONT_SIZE),
+    //                 getTextStyle(color: AppColors.fontWhiteColor, fontSize: LARGE_FONT_SIZE),
     //           ),
     //         ),
     //       )
@@ -231,7 +231,7 @@ class _CartWidgetState extends State<CartWidget> {
           "Place Order",
           textAlign: TextAlign.center,
           style:
-              getTextStyle(color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
+              getTextStyle(color: AppColors.fontWhiteColor, fontSize: LARGE_MINUS_FONT_SIZE),
         ),
       ),
     );
@@ -292,7 +292,7 @@ class _CartWidgetState extends State<CartWidget> {
                         item.name,
                         style: getTextStyle(
                             fontWeight: FontWeight.w500,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             fontSize: SMALL_PLUS_FONT_SIZE),
                       )),
                       InkWell(
@@ -471,14 +471,14 @@ class _CartWidgetState extends State<CartWidget> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? AppColors.getSecondary() : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ? AppColors.getSecondary() : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],
@@ -494,7 +494,7 @@ class _CartWidgetState extends State<CartWidget> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w700,
-                  color: BLACK_COLOR,
+                  color: AppColors.getTextandCancelIcon(),
                   fontSize: LARGE_MINUS_FONT_SIZE),
             ),
             Text(

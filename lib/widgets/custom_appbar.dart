@@ -19,13 +19,13 @@ class CustomAppbar extends StatelessWidget {
       required this.title,
       this.showBackBtn = true,
       this.hideSidemenu = false,
-      this.backBtnColor = BLACK_COLOR})
+      this.backBtnColor = const Color(0xFF000000)})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextStyle headerStyle =
-        getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE, color: AppColors.getAsset());
+    TextStyle headerStyle = getTextStyle(
+        fontSize: LARGE_MINUS_FONT_SIZE, color: AppColors.getAsset());
 
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5),

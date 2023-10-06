@@ -52,7 +52,7 @@ class _SalesDetailsScreenState extends State<SalesDetailsScreen> {
                           heading: SALE_AMOUNT_TXT,
                           content:
                               '$appCurrency ${widget.saleOrder!.orderAmount}',
-                          headingColor: BLACK_COLOR,
+                          headingColor: AppColors.getTextandCancelIcon(),
                           contentColor: AppColors.getPrimary(),
                           crossAlign: CrossAxisAlignment.center,
                         )),

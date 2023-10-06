@@ -33,7 +33,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10),
                 child: SvgPicture.asset(
                   CROSS_ICON,
-                  color: BLACK_COLOR,
+                  color: AppColors.getTextandCancelIcon(),
                   width: 15,
                   height: 15,
                 ),
@@ -102,8 +102,8 @@ class TransactionDetailsPopup extends StatelessWidget {
                     )
                   ],
                 ),
-                const Divider(
-                  color: GREY_COLOR,
+                 Divider(
+                  color: AppColors.shadowBorder,
                   thickness: 1,
                 ),
                 _getOrderDetails(),
@@ -284,14 +284,14 @@ class TransactionDetailsPopup extends StatelessWidget {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? AppColors.getSecondary() : BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ?  AppColors.getSecondary() : BLACK_COLOR,
+                  color: isDiscount ?  AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],
@@ -307,7 +307,7 @@ class TransactionDetailsPopup extends StatelessWidget {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w700,
-                  color: BLACK_COLOR,
+                  color: AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(

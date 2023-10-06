@@ -72,7 +72,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
               padding: const EdgeInsets.only(right: 10),
               child: SvgPicture.asset(
                 CROSS_ICON,
-                color: BLACK_COLOR,
+                color: AppColors.getTextandCancelIcon(),
                 width: 20,
               ),
             ),
@@ -169,7 +169,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                       "Continue",
                       textAlign: TextAlign.center,
                       style: getTextStyle(
-                          fontSize: LARGE_FONT_SIZE, color: WHITE_COLOR),
+                          fontSize: LARGE_FONT_SIZE, color: AppColors.fontWhiteColor),
                     ),
                   ),
                 ),

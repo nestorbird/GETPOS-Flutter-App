@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
@@ -9,7 +10,7 @@ import '../../../constants/app_constants.dart';
 TextStyle getTextStyle(
         {fontWeight = FontWeight.bold,
         fontSize = SMALL_FONT_SIZE,
-        color = BLACK_COLOR}) =>
+        color =  AppColors.getTextandCancelIcon}) =>
     GoogleFonts.montserrat(
         fontWeight: fontWeight, fontSize: fontSize, color: color);
 

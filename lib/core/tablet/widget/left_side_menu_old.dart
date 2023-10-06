@@ -28,7 +28,7 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
     return Container(
       width: 80,
       height: Get.size.height,
-      color: WHITE_COLOR,
+      color: AppColors.fontWhiteColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -44,7 +44,7 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
               "POS",
               textAlign: TextAlign.center,
               style: getTextStyle(
-                  color: WHITE_COLOR, fontSize: MEDIUM_PLUS_FONT_SIZE),
+                  color: AppColors.fontWhiteColor, fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ),
           _leftMenuSectionItem("Home", CREATE_ORDER_IMAGE, 50, () {
@@ -86,10 +86,10 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
         decoration: BoxDecoration(
           color: title.toLowerCase() == widget.selectedView.toLowerCase()
               ?  AppColors.getPrimary()
-              : WHITE_COLOR,
+              : AppColors.fontWhiteColor,
           borderRadius: BorderRadius.circular(5),
           boxShadow: const [BoxShadow(blurRadius: 0.05)],
-          border: Border.all(width: 1, color: GREY_COLOR),
+          border: Border.all(width: 1, color: AppColors.shadowBorder!),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -105,8 +105,8 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
               style: getTextStyle(
                 fontWeight: FontWeight.w400,
                 color: title.toLowerCase() == widget.selectedView.toLowerCase()
-                    ? WHITE_COLOR
-                    : BLACK_COLOR,
+                    ? AppColors.fontWhiteColor
+                    : AppColors.getTextandCancelIcon(),
               ),
             ),
             hightSpacer10,

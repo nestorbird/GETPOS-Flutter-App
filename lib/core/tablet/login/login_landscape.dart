@@ -63,7 +63,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: WHITE_COLOR,
+        backgroundColor: AppColors.fontWhiteColor,
         body: Stack(
           children: [
             Center(

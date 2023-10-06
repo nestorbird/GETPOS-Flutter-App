@@ -104,14 +104,14 @@ class _CommanTileOptionsState extends State<CommanTileOptions> {
                   borderRadius:
                       BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.check,
                   size: 20.0,
-                  color: WHITE_COLOR,
+                  color: AppColors.fontWhiteColor,
                 ))
             : Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: BLACK_COLOR),
+                  border: Border.all(color: AppColors.getTextandCancelIcon()),
                   borderRadius:
                       BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                 ),

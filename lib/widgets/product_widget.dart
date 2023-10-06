@@ -86,7 +86,7 @@ class _ProductWidgetState extends State<ProductWidget> {
               padding: const EdgeInsets.only(left: 10, top: 2),
               child: Text("$ITEM_CODE_TXT - ${widget.product!.id}",
                   style: getItalicStyle(
-                    color: LIGHT_GREY_COLOR,
+                    color: AppColors.hintText,
                     fontSize: SMALL_MINUS_FONT_SIZE,
                   )),
             ),
@@ -113,7 +113,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       "$ADD_PRODUCTS_STOCK_UPDATE_ON_TXT $productStockUpdateDate",
                       maxLines: 2,
                       style: getItalicStyle(
-                        color: LIGHT_GREY_COLOR,
+                        color: AppColors.hintText,
                         fontSize: SMALL_MINUS_FONT_SIZE,
                       )),
                 )),
@@ -123,7 +123,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     padding: const EdgeInsets.only(top: 6, bottom: 10),
                     child: SizedBox(
                       child: Container(
-                        color: GREY_COLOR,
+                        color: AppColors.shadowBorder,
                         height: 0.2,
                       ),
                     ))),

@@ -69,7 +69,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           padding: smallPaddingAll(),
                           child: SvgPicture.asset(
                             BACK_IMAGE,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             width: 25,
                           ),
                         ),
@@ -117,7 +117,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                                     : "0",
                                 style: getTextStyle(
                                     fontSize: SMALL_FONT_SIZE,
-                                    color: WHITE_COLOR),
+                                    color: AppColors.fontWhiteColor),
                               ))
                         ]))
                   ],
@@ -152,7 +152,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             padding: miniPaddingAll(),
                             child: SvgPicture.asset(
                               DELETE_IMAGE,
-                              color: WHITE_COLOR,
+                              color: AppColors.fontWhiteColor,
                               width: 15,
                             ),
                           ),
@@ -196,7 +196,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     style: getTextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: BLACK_COLOR),
+                        color: AppColors.getTextandCancelIcon()),
                   ),
                 ),
                 productList(widget.order.items)
@@ -301,14 +301,14 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                       : "${widget.order.items.length} Item",
                   style: getTextStyle(
                       fontSize: SMALL_FONT_SIZE,
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       fontWeight: FontWeight.normal),
                 ),
                 Text("$appCurrency ${totalAmount.toStringAsFixed(2)}",
                     style: getTextStyle(
                         fontSize: LARGE_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w600,
-                        color: WHITE_COLOR))
+                        color: AppColors.fontWhiteColor))
               ],
             ),
             Expanded(
@@ -325,7 +325,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                     style: getTextStyle(
                         fontSize: LARGE_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w400,
-                        color: WHITE_COLOR)),
+                        color: AppColors.fontWhiteColor)),
               ),
             ),
             widthSpacer(15)
@@ -358,7 +358,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
           "Add more products",
           textAlign: TextAlign.center,
           style: getTextStyle(
-              color: WHITE_COLOR,
+              color: AppColors.fontWhiteColor,
               fontSize: MEDIUM_FONT_SIZE,
               fontWeight: FontWeight.normal),
         ),

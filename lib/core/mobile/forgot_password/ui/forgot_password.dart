@@ -64,7 +64,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           padding: smallPaddingAll(),
                           child: SvgPicture.asset(
                             BACK_IMAGE,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             width: 25,
                           ),
                         ),

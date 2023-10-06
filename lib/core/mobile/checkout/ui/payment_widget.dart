@@ -51,7 +51,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 width: 50,
                 child: Card(
                   elevation: 0.0,
-                  color: WHITE_COLOR,
+                  color: AppColors.fontWhiteColor,
                   shape: cardBorderShape(radius: CARD_BORDER_SIDE_RADIUS_08),
                   child: Padding(
                       padding: mediumPaddingAll(),
@@ -82,14 +82,14 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                         borderRadius:
                             BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08),
                       ),
-                      child: const Icon(
+                      child:  Icon(
                         Icons.check,
                         size: 20.0,
-                        color: WHITE_COLOR,
+                        color: AppColors.fontWhiteColor,
                       ))
                   : Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: BLACK_COLOR),
+                        border: Border.all(color: AppColors.getTextandCancelIcon()),
                         borderRadius:
                             BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08),
                       ),
@@ -105,7 +105,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
               child: SizedBox(
                 height: 0.5,
                 child: Container(
-                  color: GREY_COLOR,
+                  color: AppColors.shadowBorder,
                 ),
               )),
           Visibility(visible: widget.isChecked!, child: _getBottomWidget)
@@ -143,17 +143,17 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                     LengthLimitingTextInputFormatter(12)
                   ],
                   style: getTextStyle(
-                      color: GREY_COLOR,
+                      color: AppColors.shadowBorder,
                       fontSize: MEDIUM_FONT_SIZE,
                       fontWeight: FontWeight.w600),
                   controller: widget.textEditingController,
-                  cursorColor: LIGHT_GREY_COLOR,
+                  cursorColor: AppColors.hintText,
                   autocorrect: false,
                   textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     hintText: ENTER_UR_TRANSACTION_ID,
                     hintStyle: getHintStyle(),
-                    focusColor: LIGHT_GREY_COLOR,
+                    focusColor: AppColors.hintText,
                     contentPadding: leftSpace(),
                     border: InputBorder.none,
                   ),

@@ -73,7 +73,7 @@ class _ThemeChangeState extends State<ThemeChange> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: WHITE_COLOR,
+        backgroundColor: AppColors.fontWhiteColor,
         body: Stack(
           children: [
             Center(

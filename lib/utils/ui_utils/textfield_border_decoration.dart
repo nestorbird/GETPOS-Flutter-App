@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../configs/theme_config.dart';
 import '../../constants/app_constants.dart';
@@ -12,14 +13,14 @@ BoxDecoration searchTxtFieldBorderDecoration = BoxDecoration(
     borderRadius: BorderRadius.circular(8));
 
 BoxDecoration txtFieldBoxShadowDecoration = BoxDecoration(
-    color: WHITE_COLOR,
+    color: AppColors.fontWhiteColor,
     border: Border.all(color:const Color(0xFF707070), width: BORDER_WIDTH),
-    boxShadow: const [
+    boxShadow:  [
       BoxShadow(
-        color: GREY_COLOR,
+        color: AppColors.shadowBorder!,
         spreadRadius: 1,
         blurRadius: 5,
-        offset: Offset(0, 2),
+        offset: const Offset(0, 2),
       )
     ],
     borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08));

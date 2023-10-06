@@ -14,15 +14,15 @@ class ButtonWidget extends StatelessWidget {
   final double width;
   final double height;
   final double fontSize;
-  final Color colorTxt;
+  late Color? colorTxt= AppColors.fontWhiteColor!;
   final double borderRadius;
 
-  const ButtonWidget(
-      {Key? key,
+     ButtonWidget  (
+    {Key? key,
       required this.onPressed,
       //this.colorBG = MAIN_COLOR,
     required this.primaryColor,
-      this.colorTxt = WHITE_COLOR,
+     this.colorTxt,
       
       this.fontSize = 16,
       this.height = 50,

@@ -75,7 +75,7 @@ class _LoginState extends State<Login> {
       child: SafeArea(
           child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: WHITE_COLOR,
+        backgroundColor: AppColors.fontWhiteColor,
         body: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: SizedBox(
@@ -357,7 +357,7 @@ class _LoginState extends State<Login> {
           style: getTextStyle(
               fontSize: SMALL_PLUS_FONT_SIZE,
               fontWeight: FontWeight.w500,
-              color: BLACK_COLOR),
+              color: AppColors.getTextandCancelIcon()),
         ),
       );
 

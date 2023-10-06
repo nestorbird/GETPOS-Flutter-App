@@ -150,7 +150,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: WHITE_COLOR,
+        backgroundColor: AppColors.fontWhiteColor,
         body: Stack(
           children: [
             // SvgPicture.asset(

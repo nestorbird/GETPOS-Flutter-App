@@ -21,7 +21,7 @@ class TransactionItemLandscape extends StatelessWidget {
       onTap: () => _handleOrderDetails(),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: GREY_COLOR, width: 0.4),
+          border: Border.all(color: AppColors.shadowBorder!, width: 0.4),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: morePaddingAll(),

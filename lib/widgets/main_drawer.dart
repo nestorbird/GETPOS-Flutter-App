@@ -26,14 +26,14 @@ class MainDrawer extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   MENU_ICON,
-                  color: WHITE_COLOR,
+                  color: AppColors.fontWhiteColor,
                   width: 20,
                 ),
                 widthSpacer(10),
                 Text(
                   "Menu",
                   style: getTextStyle(
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       fontSize: LARGE_FONT_SIZE,
                       fontWeight: FontWeight.w400),
                 ),
@@ -46,7 +46,7 @@ class MainDrawer extends StatelessWidget {
                     padding: miniPaddingAll(),
                     child: SvgPicture.asset(
                       CROSS_ICON,
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       width: 15,
                     ),
                   ),

@@ -30,7 +30,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
       onTap: () => onSelect(),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: GREY_COLOR, width: 0.4),
+          border: Border.all(color: AppColors.shadowBorder!, width: 0.4),
           borderRadius: BorderRadius.circular(5),
         ),
         padding: morePaddingAll(),

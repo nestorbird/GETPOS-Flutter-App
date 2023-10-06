@@ -59,10 +59,12 @@ class ThemeService {
 
         int accentColor =
             int.parse(await dbPreferences.getPreference(ACCENT_COLOR));
-
+int textandCancelIcon =
+            int.parse(await dbPreferences.getPreference(ACCENT_COLOR));
         AppColors.primary = Color(primaryColor);
         AppColors.secondary = Color(secondaryColor);
         AppColors.asset = Color(accentColor);
+        AppColors.textandCancelIcon = Color(textandCancelIcon);
 
         // Return the Success Theme Response
         return CommanResponse(
@@ -91,5 +93,3 @@ class ThemeService {
     }
   }
 }
-
- 

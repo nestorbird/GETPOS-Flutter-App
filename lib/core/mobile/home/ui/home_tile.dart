@@ -1,3 +1,5 @@
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
@@ -29,7 +31,7 @@ class HomeTile extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: OFF_WHITE_COLOR,
+            color: AppColors.active,
             border: Border.all(color: const Color(0xFFDC1E44), width: 0.4),
             borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_30)),
         child: Column(

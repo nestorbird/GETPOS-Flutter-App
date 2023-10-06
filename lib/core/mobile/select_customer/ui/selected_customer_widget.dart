@@ -96,9 +96,9 @@ class _SelectedCustomerWidgetState extends State<SelectedCustomerWidget> {
                             ))),
                   ),
                   hightSpacer10,
-                  const Divider(
+                 Divider(
                     height: 1,
-                    color: GREY_COLOR,
+                    color: AppColors.shadowBorder,
                   ),
                   TextButton(
                       onPressed: () => widget.onTapChangeCustomer!(),

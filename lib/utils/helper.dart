@@ -6,6 +6,7 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -100,7 +101,7 @@ class Helper {
       style: getTextStyle(
           fontSize: MEDIUM_MINUS_FONT_SIZE,
           fontWeight: FontWeight.normal,
-          color: WHITE_COLOR),
+          color: AppColors.fontWhiteColor),
     ));
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar)

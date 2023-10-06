@@ -131,7 +131,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                               width: 145,
                               height: 105,
                               decoration: BoxDecoration(
-                                  color: WHITE_COLOR,
+                                  color: AppColors.fontWhiteColor,
                                   borderRadius: BorderRadius.circular(10)),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +195,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                 margin: paddingXY(y: 5),
                 width: 70,
                 decoration: BoxDecoration(
-                  color: WHITE_COLOR,
+                  color: AppColors.fontWhiteColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(

@@ -17,7 +17,7 @@ class LeftSideMenu extends StatelessWidget {
     return Container(
       width: 80,
       height: Get.size.height,
-      color: WHITE_COLOR,
+      color: AppColors.fontWhiteColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -38,7 +38,7 @@ class LeftSideMenu extends StatelessWidget {
               //   "POS",
               //   textAlign: TextAlign.center,
               //   style: getTextStyle(
-              //       color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
+              //       color: AppColors.fontWhiteColor, fontSize: LARGE_MINUS_FONT_SIZE),
               // ),
             ),
           ),
@@ -82,10 +82,10 @@ class LeftSideMenu extends StatelessWidget {
             decoration: BoxDecoration(
               color: title.toLowerCase() == selectedView.toLowerCase()
                   ?  AppColors.getPrimary()
-                  : WHITE_COLOR,
+                  : AppColors.fontWhiteColor,
               borderRadius: BorderRadius.circular(12),
               // boxShadow: const [BoxShadow(blurRadius: 0.05)],
-              border: Border.all(width: 1, color: GREY_COLOR),
+              border: Border.all(width: 1, color: AppColors.shadowBorder!),
             ),
             child: Wrap(
               // mainAxisSize: MainAxisSize.min,
@@ -97,7 +97,7 @@ class LeftSideMenu extends StatelessWidget {
                     child: SvgPicture.asset(
                       iconData,
                       color: title.toLowerCase() == selectedView.toLowerCase()
-                          ? WHITE_COLOR
+                          ? AppColors.fontWhiteColor
                           : AppColors.getAsset(),
                       width: width,
                     ),
@@ -113,8 +113,8 @@ class LeftSideMenu extends StatelessWidget {
                       style: getTextStyle(
                         fontWeight: FontWeight.w500,
                         color: title.toLowerCase() == selectedView.toLowerCase()
-                            ? WHITE_COLOR
-                            : BLACK_COLOR,
+                            ? AppColors.fontWhiteColor
+                            : AppColors.getTextandCancelIcon(),
                       ),
                     ),
                   ),

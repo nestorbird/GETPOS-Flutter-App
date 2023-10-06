@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
@@ -188,7 +189,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     padding: smallPaddingAll(),
                                     child: SvgPicture.asset(
                                       BACK_IMAGE,
-                                      color: BLACK_COLOR,
+                                      color: AppColors.getTextandCancelIcon(),
                                       width: 25,
                                     ),
                                   ),
@@ -246,7 +247,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                     : "0",
                                                 style: getTextStyle(
                                                     fontSize: SMALL_FONT_SIZE,
-                                                    color: WHITE_COLOR),
+                                                    color: AppColors.fontWhiteColor),
                                               )))
                                     ])
                               ],
@@ -371,7 +372,7 @@ class _ProductListHomeState extends State<ProductListHome> {
               }),
               type: ExpandableFabType.up,
               distance: 80,
-              backgroundColor: LIGHT_BLACK_COLOR,
+              backgroundColor: AppColors.parkOrderButton,
               child: SvgPicture.asset(
                 FAB_MAIN_ICON,
                 height: 55,
@@ -399,13 +400,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_FINANCE_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -432,13 +433,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_ACCOUNT_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -467,13 +468,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_HISTORY_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -501,13 +502,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_CUSTOMERS_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -532,13 +533,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                 //       }),
                 //       shape: const RoundedRectangleBorder(
                 //           borderRadius: BorderRadius.all(Radius.circular(8))),
-                //       backgroundColor: WHITE_COLOR,
+                //       backgroundColor: AppColors.fontWhiteColor,
                 //       child: Column(
                 //         mainAxisAlignment: MainAxisAlignment.center,
                 //         children: [
                 //           SvgPicture.asset(
                 //             FAB_PRODUCTS_ICON,
-                //             color: BLACK_COLOR,
+                //             color: AppColors.getTextandCancelIcon(),
                 //             height: 25,
                 //             width: 25,
                 //           ),
@@ -566,13 +567,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_ORDERS_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -594,13 +595,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                 //       }),
                 //       shape: const RoundedRectangleBorder(
                 //           borderRadius: BorderRadius.all(Radius.circular(8))),
-                //       backgroundColor: WHITE_COLOR,
+                //       backgroundColor: AppColors.fontWhiteColor,
                 //       child: Column(
                 //         mainAxisAlignment: MainAxisAlignment.center,
                 //         children: [
                 //           SvgPicture.asset(
                 //             FAB_HOME_ICON,
-                //             color: BLACK_COLOR,
+                //             color: AppColors.getTextandCancelIcon(),
                 //             height: 25,
                 //             width: 25,
                 //           ),
@@ -735,7 +736,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                 ),
                                 Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: WHITE_COLOR),
+                                        border: Border.all(color: AppColors.fontWhiteColor!),
                                         shape: BoxShape.circle),
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -767,7 +768,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           .toString(),
                                       style: getTextStyle(
                                           fontSize: SMALL_FONT_SIZE,
-                                          color: WHITE_COLOR),
+                                          color: AppColors.fontWhiteColor),
                                     ))
                               ],
                             )));

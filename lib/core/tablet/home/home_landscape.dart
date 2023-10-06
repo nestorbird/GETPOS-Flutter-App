@@ -119,7 +119,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                                 width: 145,
                                 height: 105,
                                 decoration: BoxDecoration(
-                                    color: WHITE_COLOR,
+                                    color: AppColors.fontWhiteColor,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -183,7 +183,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                       margin: paddingXY(y: 5),
                       width: 80,
                       decoration: BoxDecoration(
-                        color: WHITE_COLOR,
+                        color: AppColors.fontWhiteColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(

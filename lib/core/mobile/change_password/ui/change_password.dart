@@ -62,9 +62,9 @@ class _ChangePasswordState extends State<ChangePassword> {
         child: Column(
           children: [
             hightSpacer40,
-            const CustomAppbar(
+            CustomAppbar(
               title: "",
-              backBtnColor: BLACK_COLOR,
+              backBtnColor: AppColors.getTextandCancelIcon(),
               hideSidemenu: true,
             ),
             hightSpacer20,
@@ -89,7 +89,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     child: Text(
                       CHANGE_PASSWORD_OTP_VERIFY_MSG,
                       style: getTextStyle(
-                          color: WHITE_COLOR,
+                          color: AppColors.fontWhiteColor,
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
                     ),
@@ -99,7 +99,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               child: Text(
                 CHANGE_PASSWORD_SET_MSG,
                 style: getTextStyle(
-                    color: WHITE_COLOR,
+                    color: AppColors.fontWhiteColor,
                     fontSize: SMALL_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),

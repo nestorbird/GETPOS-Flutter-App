@@ -14,7 +14,7 @@ class AlertDialogWidget {
     var body = Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12), color: WHITE_COLOR),
+          borderRadius: BorderRadius.circular(12), color: AppColors.fontWhiteColor),
       child: Column(
         children: [
           Text(
@@ -39,7 +39,7 @@ class AlertDialogWidget {
                         textAlign: TextAlign.center,
                         style: getTextStyle(
                             fontSize: MEDIUM_PLUS_FONT_SIZE,
-                            color: WHITE_COLOR)),
+                            color: AppColors.fontWhiteColor)),
                   ),
                 ),
               ),

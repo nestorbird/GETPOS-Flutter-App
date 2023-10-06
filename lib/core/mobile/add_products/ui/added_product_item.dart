@@ -97,7 +97,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                               padding: miniPaddingAll(),
                               child: SvgPicture.asset(CROSS_ICON,
                                   height: 12,
-                                  color: BLACK_COLOR,
+                                  color: AppColors.getTextandCancelIcon(),
                                   fit: BoxFit.contain))))
                 ]),
               ],

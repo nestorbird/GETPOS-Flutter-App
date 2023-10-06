@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
@@ -29,7 +30,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
                       CROSS_ICON,
                       height: 16,
                       width: 16,
-                      color: BLACK_COLOR,
+                      color: AppColors.getTextandCancelIcon(),
                     ),
                   ))),
           Center(
@@ -45,7 +46,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
             "Order Successful",
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
-                color: BLACK_COLOR,
+                color: AppColors.getTextandCancelIcon(),
                 fontWeight: FontWeight.w600),
           ),
           hightSpacer30,

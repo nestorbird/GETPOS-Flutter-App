@@ -12,18 +12,18 @@ import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 
 //const GREEN_COLOR = const Color(0xFF62B146);
 
-const BLACK_COLOR = const Color(0xFF000000);
+//const BLACK_COLOR = const Color(0xFF000000);
 
 //const DARK_GREY_COLOR = const Color(0xFF707070);
-const GREY_COLOR = const Color(0xFFC7C5C5);
-const LIGHT_GREY_COLOR = const Color(0xFFF3F2F5);
+//const GREY_COLOR = const Color(0xFFC7C5C5);
+//const LIGHT_GREY_COLOR = const Color(0xFFF3F2F5);
 
-const WHITE_COLOR = const Color(0xFFFFFFFF);
-const OFF_WHITE_COLOR = const Color(0xFFFEF9FA);
+//const WHITE_COLOR = const Color(0xFFFFFFFF);
+//const OFF_WHITE_COLOR = const Color(0xFFFEF9FA);
 
 //const MAIN_COLOR = const Color(0xFFDC1E44);
 
-const LIGHT_BLACK_COLOR = const Color(0xFF4A4A4A);
+//const LIGHT_BLACK_COLOR = const Color(0xFF4A4A4A);
 
 //const  defaultPrimaryColor = Color(0xFFDC1E44);
 

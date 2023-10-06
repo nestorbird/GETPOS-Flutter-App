@@ -77,7 +77,7 @@ class _ThemeChangeState extends State<ThemeChange> {
         child: SafeArea(
           child: Scaffold(
             resizeToAvoidBottomInset: true,
-            backgroundColor: WHITE_COLOR,
+            backgroundColor: AppColors.fontWhiteColor,
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
               child: SizedBox(

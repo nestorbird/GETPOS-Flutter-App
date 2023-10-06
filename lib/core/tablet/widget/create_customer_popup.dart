@@ -62,7 +62,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
               padding: const EdgeInsets.only(right: 10),
               child: SvgPicture.asset(
                 CROSS_ICON,
-                color: BLACK_COLOR,
+                color: AppColors.getTextandCancelIcon(),
                 width: 20,
               ),
             ),
@@ -77,7 +77,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                 style: getTextStyle(
                     fontSize: LARGE_FONT_SIZE,
                     fontWeight: FontWeight.bold,
-                    color: BLACK_COLOR),
+                    color: AppColors.getTextandCancelIcon()),
               ),
               hightSpacer15,
               Container(
@@ -147,7 +147,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                       textAlign: TextAlign.center,
                       style: getTextStyle(
                           fontSize: LARGE_FONT_SIZE,
-                          color: WHITE_COLOR,
+                          color: AppColors.fontWhiteColor,
                           fontWeight: FontWeight.w600),
                     ),
                   ),

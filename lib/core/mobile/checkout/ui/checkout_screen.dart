@@ -102,7 +102,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Container(
           height: 180,
           decoration: BoxDecoration(
-              color: selected ? OFF_WHITE_COLOR : WHITE_COLOR,
+              color: selected ? AppColors.active : AppColors.fontWhiteColor,
               border: Border.all(
                   color: selected ?  AppColors.getPrimary() :  AppColors.getAsset(), width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_20)),

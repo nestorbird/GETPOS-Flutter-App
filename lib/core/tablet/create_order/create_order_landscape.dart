@@ -203,7 +203,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //               width: 145,
                 //               height: 105,
                 //               decoration: BoxDecoration(
-                //                   color: WHITE_COLOR,
+                //                   color: AppColors.fontWhiteColor,
                 //                   borderRadius: BorderRadius.circular(10)),
                 //               child: Column(
                 //                 mainAxisAlignment: MainAxisAlignment.center,
@@ -284,7 +284,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                     width: 145,
                                     height: 90,
                                     decoration: BoxDecoration(
-                                        color: WHITE_COLOR,
+                                        color: AppColors.fontWhiteColor,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -321,7 +321,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                 ),
                                 Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: WHITE_COLOR),
+                                        border: Border.all(color: AppColors.fontWhiteColor!),
                                         shape: BoxShape.circle),
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -346,7 +346,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                       cat.items[index].stock.toInt().toString(),
                                       style: getTextStyle(
                                           fontSize: SMALL_FONT_SIZE,
-                                          color: WHITE_COLOR),
+                                          color: AppColors.fontWhiteColor),
                                     ))
                               ],
                             ))));
@@ -391,7 +391,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                       margin: paddingXY(y: 5),
                       width: 75,
                       decoration: BoxDecoration(
-                        color: WHITE_COLOR,
+                        color: AppColors.fontWhiteColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(

@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -82,7 +83,7 @@ class _HomeState extends State<Home> {
                     padding: mediumPaddingAll(),
                     child: SvgPicture.asset(
                       MENU_ICON,
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       width: 20,
                     ),
                   ),
@@ -119,7 +120,7 @@ class _HomeState extends State<Home> {
                       padding: mediumPaddingAll(),
                       child: SvgPicture.asset(
                         MENU_ICON,
-                        color: BLACK_COLOR,
+                        color: AppColors.getTextandCancelIcon(),
                         width: 20,
                       ),
                     ),

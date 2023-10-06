@@ -86,7 +86,7 @@ class _LongButtonState extends State<LongButton> {
                                       Text(
                                         '${widget.totalItems}\n$ITEMS_TXT',
                                         style: getTextStyle(
-                                            color: WHITE_COLOR,
+                                            color: AppColors.fontWhiteColor,
                                             fontWeight: FontWeight.normal),
                                       )
                                     ],
@@ -99,7 +99,7 @@ class _LongButtonState extends State<LongButton> {
                                     '$appCurrency${widget.totalAmount}',
                                     style: getTextStyle(
                                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                                        color: WHITE_COLOR),
+                                        color: AppColors.fontWhiteColor),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ))),
@@ -111,7 +111,7 @@ class _LongButtonState extends State<LongButton> {
                                     style: getTextStyle(
                                       fontSize: MEDIUM_MINUS_FONT_SIZE,
                                       fontWeight: FontWeight.bold,
-                                      color: WHITE_COLOR,
+                                      color: AppColors.fontWhiteColor,
                                     ))),
                           )
                         ],

@@ -97,7 +97,7 @@ class _CartScreenState extends State<CartScreen> {
                   style: getTextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: MEDIUM_PLUS_FONT_SIZE,
-                      color: BLACK_COLOR),
+                      color: AppColors.getTextandCancelIcon()),
                 ),
               ),
               productList(widget.order.items),
@@ -111,7 +111,7 @@ class _CartScreenState extends State<CartScreen> {
                     'Payment Methods',
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: BLACK_COLOR,
+                        color: AppColors.getTextandCancelIcon(),
                         fontWeight: FontWeight.bold),
                   )),
               Padding(
@@ -161,13 +161,13 @@ class _CartScreenState extends State<CartScreen> {
                 width: 80,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                    color: LIGHT_BLACK_COLOR,
-                    borderRadius: BorderRadius.all(Radius.circular(7))),
+                decoration: BoxDecoration(
+                    color: AppColors.parkOrderButton,
+                    borderRadius:const BorderRadius.all(Radius.circular(7))),
                 child: Text(
                   'Park Order',
                   style: getTextStyle(
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       fontSize: MEDIUM_FONT_SIZE,
                       fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
@@ -196,7 +196,7 @@ class _CartScreenState extends State<CartScreen> {
                                     : "${widget.order.items.length} Item",
                                 style: getTextStyle(
                                     fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                    color: WHITE_COLOR,
+                                    color: AppColors.fontWhiteColor,
                                     fontWeight: FontWeight.normal),
                               ),
                               Text(
@@ -204,14 +204,14 @@ class _CartScreenState extends State<CartScreen> {
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
                                       fontWeight: FontWeight.w600,
-                                      color: WHITE_COLOR)),
+                                      color: AppColors.fontWhiteColor)),
                             ],
                           ),
                           Text("Checkout",
                               style: getTextStyle(
                                   fontSize: LARGE_FONT_SIZE,
                                   fontWeight: FontWeight.w400,
-                                  color: WHITE_COLOR)),
+                                  color: AppColors.fontWhiteColor)),
                         ],
                       ))))
         ]),
@@ -249,7 +249,7 @@ class _CartScreenState extends State<CartScreen> {
                             }),
                             icon: SvgPicture.asset(
                               CROSS_ICON,
-                              color: BLACK_COLOR,
+                              color: AppColors.getTextandCancelIcon(),
                               height: 15,
                               width: 15,
                             ))),
@@ -259,7 +259,7 @@ class _CartScreenState extends State<CartScreen> {
                       style: getTextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: LARGE_FONT_SIZE,
-                          color: BLACK_COLOR),
+                          color: AppColors.getTextandCancelIcon()),
                     ),
                     hightSpacer30,
                     LongButton(
@@ -313,7 +313,7 @@ class _CartScreenState extends State<CartScreen> {
           height: 120,
           width: 100,
           decoration: BoxDecoration(
-              color: selected ? OFF_WHITE_COLOR : WHITE_COLOR,
+              color: selected ? AppColors.active : AppColors.fontWhiteColor,
               border: Border.all(
                   color: selected ?  AppColors.getPrimary() :  AppColors.getAsset(), width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_10)),
@@ -458,14 +458,14 @@ class _CartScreenState extends State<CartScreen> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? AppColors.getSecondary(): BLACK_COLOR,
+                  color: isDiscount ? AppColors.getSecondary(): AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ?  AppColors.getSecondary() : BLACK_COLOR,
+                  color: isDiscount ?  AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],

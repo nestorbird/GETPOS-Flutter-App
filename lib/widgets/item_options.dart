@@ -127,7 +127,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                       "Item Total",
                       style: getTextStyle(
                           fontSize: SMALL_FONT_SIZE,
-                          color: WHITE_COLOR,
+                          color: AppColors.fontWhiteColor,
                           fontWeight: FontWeight.normal),
                     ),
                     subtitle: Text(
@@ -135,12 +135,12 @@ class _ItemOptionsState extends State<ItemOptions> {
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.w600,
-                            color: WHITE_COLOR)),
+                            color: AppColors.fontWhiteColor)),
                     trailing: Text("Add Item",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.bold,
-                            color: WHITE_COLOR)),
+                            color: AppColors.fontWhiteColor)),
                   ),
                 ),
               )
@@ -172,10 +172,10 @@ class _ItemOptionsState extends State<ItemOptions> {
                           borderRadius:
                               BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                         ),
-                        child: const Icon(
+                        child:  Icon(
                           Icons.check,
                           size: 18.0,
-                          color: WHITE_COLOR,
+                          color: AppColors.fontWhiteColor,
                         )),
                   )
                 : Visibility(
@@ -183,7 +183,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        border: Border.all(color: BLACK_COLOR),
+                        border: Border.all(color: AppColors.getTextandCancelIcon()),
                         borderRadius:
                             BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                       ),

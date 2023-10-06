@@ -58,10 +58,10 @@ class _CustomerTileState extends State<CustomerTile> {
           color: isTabletMode
               ? const Color(0xFFF9F8FB)
               : isSelected
-                  ? OFF_WHITE_COLOR
-                  : WHITE_COLOR,
+                  ? AppColors.active
+                  : AppColors.fontWhiteColor,
           border: Border.all(
-              color: isSelected ?  AppColors.getPrimary() : GREY_COLOR,
+              color: isSelected ?  AppColors.getPrimary() : AppColors.shadowBorder!,
               width: isSelected ? 0.3 : 1.0),
           borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
       child: Column(
@@ -105,7 +105,7 @@ class _CustomerTileState extends State<CustomerTile> {
             child: Text(
               widget.customer != null ? widget.customer!.email : "",
               style: getTextStyle(
-                  color: BLACK_COLOR,
+                  color:AppColors.getTextandCancelIcon(),
                   fontSize: SMALL_PLUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
             ),

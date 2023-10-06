@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
@@ -47,7 +48,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         onTap: widget.onTap,
         style: getTextStyle(
             fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
-        cursorColor: BLACK_COLOR,
+        cursorColor: AppColors.getTextandCancelIcon(),
         controller: widget.searchTextController,
         keyboardType: widget.keyboardType,
         inputFormatters: widget.inputFormatters,
@@ -58,7 +59,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           hintText: widget.searchHint ?? SEARCH_HINT_TXT,
           contentPadding: const EdgeInsets.only(left: 10, right: 10),
           isDense: true,
-          suffixIconColor: WHITE_COLOR,
+          suffixIconColor: AppColors.fontWhiteColor,
           prefix: Padding(padding: leftSpace(x: 5)),
           suffixIcon: GestureDetector(
             onTap: () => widget.submit!(),
@@ -83,7 +84,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           //         ))
           //     : null,
           hintStyle: getHintStyle(),
-          focusColor: LIGHT_GREY_COLOR,
+          focusColor: AppColors.hintText,
           border: InputBorder.none,
         ),
         onSubmitted: (text) => widget.onSubmit!(text),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -34,8 +35,8 @@ class ParkedDataItem extends StatelessWidget {
       onTap: () => onClick(),
       child: Container(
         decoration: BoxDecoration(
-          // color: GREY_COLOR,
-          border: Border.all(color: GREY_COLOR),
+          // color: AppColors.shadowBorder,
+          border: Border.all(color: AppColors.shadowBorder!),
           borderRadius: BorderRadius.circular(10),
         ),
         margin: mediumPaddingAll(),
