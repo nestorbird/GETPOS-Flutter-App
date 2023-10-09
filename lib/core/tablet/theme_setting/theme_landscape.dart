@@ -26,14 +26,14 @@ import 'package:nb_posx/utils/ui_utils/textfield_border_decoration.dart';
 import 'package:nb_posx/widgets/button.dart';
 import 'package:nb_posx/widgets/text_field_widget.dart';
 
-class ThemeChange extends StatefulWidget {
-  const ThemeChange({Key? key}) : super(key: key);
+class ThemeChangeTablet extends StatefulWidget {
+  const ThemeChangeTablet({Key? key}) : super(key: key);
 
   @override
-  State<ThemeChange> createState() => _ThemeChangeState();
+  State<ThemeChangeTablet> createState() => _ThemeChangeTabletState();
 }
 
-class _ThemeChangeState extends State<ThemeChange> {
+class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
   late TextEditingController _urlCtrl;
   late BuildContext ctx;
   String? version;
@@ -186,18 +186,13 @@ class _ThemeChangeState extends State<ThemeChange> {
         if (response.statusCode == 200) {
           log('API Response:');
           log(response.body);
-          //not going inside the api
-          await theme(url, context);
+          
 
           if (!mounted) return;
           Helper.hideLoader(context);
-          // Helper.showPopup(context, "Please Enter URL");
-
-          //  Navigator.pushReplacement(
-          //  context, MaterialPageRoute(builder: (context) => Login()));
+          
         } else {
-          // ignore: use_build_context_synchronously
-          //
+          
 
           log('API Request failed with status code ${response.statusCode}');
           log('Response body: ${response.body}');
@@ -207,7 +202,7 @@ class _ThemeChangeState extends State<ThemeChange> {
         // Handle any exceptions during the request
 
         log('Error: $e');
-        //  Helper.showPopup(context, "Not an active Url");
+        Helper.showPopup(context, "Not an active Url");
         // Helper.hideLoader(context);
       }
     }

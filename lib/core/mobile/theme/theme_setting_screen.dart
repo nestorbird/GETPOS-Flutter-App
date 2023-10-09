@@ -193,32 +193,32 @@ class _ThemeChangeState extends State<ThemeChange> {
     try {
       Helper.showLoaderDialog(context);
       //api theme path get and append
-      //  String apiUrl = "$BASE_URL$THEME_PATH";
+     
       String apiUrl = "https://$url/api/$THEME_PATH";
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
       log('$response');
 
-      if (response.status!) {
+      if (response.status != null && response.status!) {
         //log('$response');
         //  if (!mounted) return;
         Helper.hideLoader(context);
-        // log('$context');
-        // (() => Navigator.pushReplacement(context,
-        //     MaterialPageRoute(builder: (context) => const Login())));
+        
 //to save url in DB
         await DbInstanceUrl().saveUrl(url);
+        log("hiiii");
         await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
-        Helper.showPopup(context, response.message!);
+        Helper.showPopup(context, response.message);
         // Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => const Login()));
       }
     } catch (e) {
       Helper.hideLoader(context);
       log('Exception Caught :: $e');
+      log("hi");
       debugPrintStack();
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }

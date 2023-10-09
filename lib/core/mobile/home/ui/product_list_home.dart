@@ -137,7 +137,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         Text(WELCOME_BACK,
                                             style: getTextStyle(
                                               fontSize: SMALL_FONT_SIZE,
-                                              color:const Color(0xFFDC1E44),
+                                              color:AppColors.primary,
                                               fontWeight: FontWeight.w500,
                                             )),
                                         hightSpacer5,
@@ -145,7 +145,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           managerName,
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
-                                              color:const Color(0xFF707070)),
+                                              color:AppColors.secondary),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -200,7 +200,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       : '',
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color:const Color(0xFFDC1E44)),
+                                      color:AppColors.primary),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Stack(
@@ -236,9 +236,9 @@ class _ProductListHomeState extends State<ProductListHome> {
                                               padding: const EdgeInsets.all(6),
                                               margin: const EdgeInsets.only(
                                                   left: 20),
-                                              decoration: const BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: Color(0xFFDC1E44)),
+                                                  color:AppColors.shadowBorder),
                                               child: Text(
                                                 parkOrder != null
                                                     ? parkOrder!.items.length
@@ -697,7 +697,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     width: 145,
                                     height: 90,
                                     decoration: BoxDecoration(
-                                        color:const Color(0xFFDC1E44).withOpacity(0.04),
+                                        color:AppColors.shadowBorder,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -727,7 +727,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           "$appCurrency ${categories[catPosition].items[itemPosition].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.center,
                                           style: getTextStyle(
-                                              color:Color.fromARGB(255, 220, 147, 30),
+                                              color:AppColors.textandCancelIcon,
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],

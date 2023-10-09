@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
                           WELCOME_BACK,
                           style: getTextStyle(
                             fontSize: SMALL_FONT_SIZE,
-                            color: const Color(0xFFDC1E44),
+                            color: AppColors.textandCancelIcon,
                             fontWeight: FontWeight.w500,
                           ),
                         ),

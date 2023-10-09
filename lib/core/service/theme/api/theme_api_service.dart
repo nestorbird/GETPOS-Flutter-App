@@ -50,7 +50,20 @@ class ThemeService {
             themeResponse.message.data.secondary.replaceAll('#', '0xFF'));
         dbPreferences.savePreference(ACCENT_COLOR,
             themeResponse.message.data.asset.replaceAll('#', '0xFF'));
-
+        dbPreferences.savePreference(
+            TEXT_AND_CANCELICON,
+            themeResponse.message.data.textandCancelIcon
+                .replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(SHADOW_BORDER,
+            themeResponse.message.data.shadowBorder.replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(HINT_TEXT,
+            themeResponse.message.data.hintText.replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(FONT_WHITE_COLOR,
+            themeResponse.message.data.fontWhiteColor.replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(PARK_ORDER_BUTTON,
+            themeResponse.message.data.parkOrderButton.replaceAll('#', '0xFF'));
+            dbPreferences.savePreference(ACTIVE,
+            themeResponse.message.data.active.replaceAll('#', '0xFF'));
         int primaryColor =
             int.parse(await dbPreferences.getPreference(PRIMARY_COLOR));
 
@@ -59,12 +72,27 @@ class ThemeService {
 
         int accentColor =
             int.parse(await dbPreferences.getPreference(ACCENT_COLOR));
-int textandCancelIcon =
-            int.parse(await dbPreferences.getPreference(ACCENT_COLOR));
+        int textandCancelIcon =
+            int.parse(await dbPreferences.getPreference(TEXT_AND_CANCELICON));
+        int shadowBorder =
+            int.parse(await dbPreferences.getPreference(SHADOW_BORDER));
+        int hintText = int.parse(await dbPreferences.getPreference(HINT_TEXT));
+        int fontWhiteColor =
+            int.parse(await dbPreferences.getPreference(FONT_WHITE_COLOR));
+        int parkOrderButton =
+            int.parse(await dbPreferences.getPreference(PARK_ORDER_BUTTON));
+        int active =
+            int.parse(await dbPreferences.getPreference(ACTIVE));
+
         AppColors.primary = Color(primaryColor);
         AppColors.secondary = Color(secondaryColor);
         AppColors.asset = Color(accentColor);
         AppColors.textandCancelIcon = Color(textandCancelIcon);
+        AppColors.shadowBorder = Color(shadowBorder);
+        AppColors.hintText = Color(hintText);
+        AppColors.fontWhiteColor = Color(fontWhiteColor);
+        AppColors.parkOrderButton = Color(parkOrderButton);
+        AppColors.active = Color(active);
 
         // Return the Success Theme Response
         return CommanResponse(

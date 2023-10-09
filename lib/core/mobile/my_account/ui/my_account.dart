@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
