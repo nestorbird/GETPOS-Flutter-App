@@ -48,6 +48,7 @@ class _CartScreenState extends State<CartScreen> {
   int totalItems = 0;
   double taxPercentage = 0;
   late HubManager? hubManager;
+  double quantity = 0.0;
 
   // String? transactionID;
   late String paymentMethod;
@@ -61,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
     _getHubManager();
     //totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
-   // paymentMethod = "Cash";
+    // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }
 
@@ -163,7 +164,7 @@ class _CartScreenState extends State<CartScreen> {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                     color: AppColors.parkOrderButton,
-                    borderRadius:const BorderRadius.all(Radius.circular(7))),
+                    borderRadius: const BorderRadius.all(Radius.circular(7))),
                 child: Text(
                   'Park Order',
                   style: getTextStyle(
@@ -175,7 +176,7 @@ class _CartScreenState extends State<CartScreen> {
               )),
           Expanded(
               child: GestureDetector(
-                  onTap: () =>  createSale(!_isCODSelected?"Card":"Cash"),
+                  onTap: () => createSale(!_isCODSelected ? "Card" : "Cash"),
                   child: Container(
                       height: 70,
                       margin: const EdgeInsets.only(left: 10),
@@ -266,11 +267,12 @@ class _CartScreenState extends State<CartScreen> {
                         isAmountAndItemsVisible: false,
                         buttonTitle: 'Create A New Order',
                         onTap: () {
-                        Navigator.pushAndRemoveUntil(
+                          Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>const ProductListHome()), (route) => route.isFirst);
-                             
+                                  builder: (context) =>
+                                      const ProductListHome()),
+                              (route) => route.isFirst);
                         }),
                     LongButton(
                         isAmountAndItemsVisible: false,
@@ -279,8 +281,10 @@ class _CartScreenState extends State<CartScreen> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>const ProductListHome()), (route) => route.isFirst);
-                              }),
+                                  builder: (context) =>
+                                      const ProductListHome()),
+                              (route) => route.isFirst);
+                        }),
                     LongButton(
                         isAmountAndItemsVisible: false,
                         buttonTitle: 'View Parked Orders',
@@ -315,7 +319,9 @@ class _CartScreenState extends State<CartScreen> {
           decoration: BoxDecoration(
               color: selected ? AppColors.active : AppColors.fontWhiteColor,
               border: Border.all(
-                  color: selected ?  AppColors.getPrimary() :  AppColors.getAsset(), width: 0.4),
+                  color:
+                      selected ? AppColors.getPrimary() : AppColors.getAsset(),
+                  width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_10)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -327,8 +333,9 @@ class _CartScreenState extends State<CartScreen> {
               hightSpacer20,
               Text(title,
                   style: getTextStyle(
-                      fontSize: MEDIUM_MINUS_FONT_SIZE,
-                      color:  AppColors.getAsset(),)),
+                    fontSize: MEDIUM_MINUS_FONT_SIZE,
+                    color: AppColors.getAsset(),
+                  )),
             ],
           ),
         ),
@@ -410,7 +417,8 @@ class _CartScreenState extends State<CartScreen> {
       width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.getPrimary().withOpacity(0.1),
-          border: Border.all(width: 1, color:  AppColors.getPrimary().withOpacity(0.5)),
+          border: Border.all(
+              width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -419,7 +427,7 @@ class _CartScreenState extends State<CartScreen> {
             "Promo Code",
             style: getTextStyle(
                 fontWeight: FontWeight.w500,
-                color:  AppColors.getPrimary(),
+                color: AppColors.getPrimary(),
                 fontSize: MEDIUM_PLUS_FONT_SIZE),
           ),
           Column(
@@ -439,7 +447,7 @@ class _CartScreenState extends State<CartScreen> {
                           width: 2,
                           height: 1,
                           margin: const EdgeInsets.symmetric(horizontal: 1),
-                          color:  AppColors.getPrimary(),
+                          color: AppColors.getPrimary(),
                         )),
               )
             ],
@@ -458,14 +466,18 @@ class _CartScreenState extends State<CartScreen> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? AppColors.getSecondary(): AppColors.getTextandCancelIcon(),
+                  color: isDiscount
+                      ? AppColors.getSecondary()
+                      : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ?  AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
+                  color: isDiscount
+                      ? AppColors.getSecondary()
+                      : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],
@@ -473,42 +485,41 @@ class _CartScreenState extends State<CartScreen> {
       );
 
   createSale(String paymentMethod) async {
-    paymentMethod =paymentMethod;
-if(paymentMethod=="Card"){ return Helper.showPopup(context,
-              "Comming Soon" );
+    paymentMethod = paymentMethod;
+    if (paymentMethod == "Card") {
+      return Helper.showPopup(context, "Comming Soon");
+    } else {
+      DateTime currentDateTime = DateTime.now();
+      String date =
+          DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
+      log('Date : $date');
+      String time = DateFormat().add_jm().format(currentDateTime).toString();
+      log('Time : $time');
+      String orderId = await Helper.getOrderId();
+      log('Order No : $orderId');
 
-}else{
-
-    DateTime currentDateTime = DateTime.now();
-    String date =
-        DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
-    log('Date : $date');
-    String time = DateFormat().add_jm().format(currentDateTime).toString();
-    log('Time : $time');
-    String orderId = await Helper.getOrderId();
-    log('Order No : $orderId');
-
-    SaleOrder saleOrder = SaleOrder(
-        id: orderId,
-        orderAmount: totalAmount,
-        date: date,
-        time: time,
-        customer: widget.order.customer,
-        manager: hubManager!,
-        items: widget.order.items,
-        transactionId: '',
-        paymentMethod: paymentMethod,
-        paymentStatus: "Paid",
-        transactionSynced: false,
-        parkOrderId:
-            "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-        tracsactionDateTime: currentDateTime);
-    if (!mounted) return;
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
-  }}
+      SaleOrder saleOrder = SaleOrder(
+          id: orderId,
+          orderAmount: totalAmount,
+          date: date,
+          time: time,
+          customer: widget.order.customer,
+          manager: hubManager!,
+          items: widget.order.items,
+          transactionId: '',
+          paymentMethod: paymentMethod,
+          paymentStatus: "Paid",
+          transactionSynced: false,
+          parkOrderId:
+              "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
+          tracsactionDateTime: currentDateTime);
+      if (!mounted) return;
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
+    }
+  }
 
   // double _getItemTotal(items) {
   //   double total = 0;
@@ -526,10 +537,13 @@ if(paymentMethod=="Card"){ return Helper.showPopup(context,
     totalItems = 0;
     taxPercentage = 0;
     for (OrderItem item in items) {
-      //taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+      // taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+      taxPercentage = item.tax;
+      quantity = item.orderedQuantity;
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
-      subTotalAmount =
-          subTotalAmount + (item.orderedPrice * item.orderedQuantity);
+      subTotalAmount = item.orderedQuantity * item.orderedPrice;
+      //item.orderedQuantity * taxPercentage;
+      //subTotalAmount =subTotalAmount + (item.orderedPrice * item.orderedQuantity);
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {
@@ -548,11 +562,11 @@ if(paymentMethod=="Card"){ return Helper.showPopup(context,
         }
       }
     }
-    //taxAmount = (subTotalAmount / 100) * taxPercentage;
+    taxAmount = subTotalAmount * taxPercentage / 100;
     totalAmount = subTotalAmount + taxAmount;
     widget.order.orderAmount = totalAmount;
     log('Subtotal :: $subTotalAmount');
-    log('Tax percentage :: $taxAmount');
+    log('Tax percentage :: $taxPercentage');
     log('Tax Amount :: $taxAmount');
     log('Total :: $totalAmount');
     setState(() {});

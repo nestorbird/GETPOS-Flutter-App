@@ -59,13 +59,14 @@ class _SearchWidgetState extends State<SearchWidget> {
           hintText: widget.searchHint ?? SEARCH_HINT_TXT,
           contentPadding: const EdgeInsets.only(left: 10, right: 10),
           isDense: true,
-          suffixIconColor: AppColors.fontWhiteColor,
+          //suffixIconColor: AppColors.parkOrderButton,
           prefix: Padding(padding: leftSpace(x: 5)),
           suffixIcon: GestureDetector(
             onTap: () => widget.submit!(),
             child: SvgPicture.asset(
               SEARCH_IMAGE,
               width: 30,
+              // color: AppColors.parkOrderButton,
             ),
           ),
           // suffixIcon: widget.searchTextController!.text.isNotEmpty
