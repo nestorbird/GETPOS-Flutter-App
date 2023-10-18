@@ -537,8 +537,23 @@ class _CartScreenState extends State<CartScreen> {
     totalItems = 0;
     taxPercentage = 0;
     for (OrderItem item in items) {
+     
       // taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
-      taxPercentage = item.tax;
+     
+    //  if (item.tax.isNotEmpty) {
+    // item.tax.forEach((tax) {
+    //   if (tax['tax_rate'] is double) {
+    //     taxPercentage += tax['tax_rate'];
+    //   } else if (tax['tax_rate'] is int) {
+    //     taxPercentage += (tax['tax_rate'] as int).toDouble();
+    //   }
+    // });
+  
+// taxPercentage += item.tax.;
+
+
+//       }
+      //taxPercentage = item.tax;
       quantity = item.orderedQuantity;
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
       subTotalAmount = item.orderedQuantity * item.orderedPrice;
@@ -556,13 +571,17 @@ class _CartScreenState extends State<CartScreen> {
                 subTotalAmount =
                     subTotalAmount + (option.price * item.orderedQuantity);
                 log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+              
+
               }
             }
           }
         }
       }
     }
+    
     taxAmount = subTotalAmount * taxPercentage / 100;
+    log('taxAmount:$taxAmount');
     totalAmount = subTotalAmount + taxAmount;
     widget.order.orderAmount = totalAmount;
     log('Subtotal :: $subTotalAmount');

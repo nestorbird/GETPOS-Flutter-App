@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:hive/hive.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 import '../db_utils/db_constants.dart';
 import 'attribute.dart';
@@ -47,7 +48,8 @@ class OrderItem extends HiveObject {
   String? productImageUrl;
 
   @HiveField(12, defaultValue: 0.0)
-  double tax;
+  //double tax;
+  List<Taxes> tax = [];
 
   OrderItem(
       {required this.id,
@@ -62,7 +64,7 @@ class OrderItem extends HiveObject {
       required this.productImage,
       required this.productUpdatedTime,
       required this.productImageUrl,
-      this.tax = 0});
+      required this.tax});
 
   OrderItem copyWith(
       {String? id,
@@ -78,7 +80,7 @@ class OrderItem extends HiveObject {
       Uint8List? productImage,
       DateTime? productUpdatedTime,
       String? productImageUrl,
-      double? tax}) {
+      List<Taxes>? tax}) {
     return OrderItem(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -109,6 +111,7 @@ class OrderItem extends HiveObject {
       'orderedPrice': orderedPrice,
       'productImage': productImage,
       'productUpdatedTime': productUpdatedTime.toIso8601String(),
+      'tax': tax
     };
   }
 

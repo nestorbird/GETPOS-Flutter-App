@@ -32,6 +32,7 @@ const OptionBoxTypeId = 16;
 const HubManagerBoxTypeId = 17;
 const CustomerBoxTypeId = 18;
 const OrderItemBoxTypeId = 19;
+const TaxBoxTypeId = 20;
 
 //PreferenceBox Constants
 const SelectedWard = 'SELECTED_WARDS';

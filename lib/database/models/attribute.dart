@@ -68,7 +68,7 @@ class Attribute extends HiveObject {
 
   @override
   String toString() =>
-      'Attribute(name: $name, moq: $moq type: $type, options: $options)';
+      'Attribute(name: $name, moq: $moq, type: $type, options: $options)';
 
   @override
   bool operator ==(Object other) {
