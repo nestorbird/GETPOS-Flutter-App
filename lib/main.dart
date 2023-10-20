@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import 'constants/app_constants.dart';
@@ -90,6 +91,8 @@ void registerHiveTypeAdapters() {
   Hive.registerAdapter(ParkOrderAdapter());
 
   Hive.registerAdapter(OrderItemAdapter());
+
+  Hive.registerAdapter(TaxesAdapter());
 }
 
 class MobileApp extends StatelessWidget {

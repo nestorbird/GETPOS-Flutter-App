@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../model/category_products_response.dart' as cat_resp;
@@ -32,8 +33,7 @@ class ProductsService {
           ? DateFormat("yyyy-MM-dd").format(DateTime.parse(lastSyncDateTime))
           : "";
 
-      var categoryProductsPath =
-          "$CATEGORY_PRODUCTS_PATH?from_date=";
+      var categoryProductsPath = "$CATEGORY_PRODUCTS_PATH?from_date=";
       //Call to products list api
       var apiResponse =
           await APIUtils.getRequestWithHeaders(categoryProductsPath);
@@ -77,23 +77,35 @@ class ProductsService {
               attributes.add(attrib);
             });
 
+            List<Taxes> taxes = [];
+            await Future.forEach(item.tax!, (taxObj) async {
+              var taxData = taxObj as cat_resp.Tax;
+              Taxes tax = Taxes(
+                itemTaxTemplate: taxData.itemTaxTemplate!,
+                taxType: taxData.taxType!,
+                taxRate: taxData.taxRate!,
+                 
+              );
+              taxes.add(tax);
+            });
             var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
 
             Product product = Product(
-                id: item.id!,
-                name: item.name!,
-                group: catData.itemGroup!,
-                description: '',
-                stock: item.stockQty!,
-                price: item.productPrice ?? 0.0,
-                attributes: attributes,
-                productImage: imageBytes,
-                productImageUrl: item.image,
-                productUpdatedTime: DateTime.now(),
-                tax: item.tax != null && item.tax!.isNotEmpty
-                    ? item.tax!.first.taxRate!
-                    : 0.0);
-
+              id: item.id!,
+              name: item.name!,
+              group: catData.itemGroup!,
+              description: '',
+              stock: item.stockQty!,
+              price: item.productPrice ?? 0.0,
+              attributes: attributes,
+              productImage: imageBytes,
+              productImageUrl: item.image,
+              productUpdatedTime: DateTime.now(),
+              // tax: item.tax != null && item.tax!.isNotEmpty
+              //     ? item.tax!.first.taxRate!
+              //     : 0.0);
+              tax: taxes
+            );
             products.add(product);
           });
           Category category = Category(
@@ -176,7 +188,7 @@ class ProductsService {
               attributes: [],
               productImage: image,
               productUpdatedTime: DateTime.parse(product.itemModified),
-              tax: 0.0);
+              tax: []);
 
           //Adding product into the products list
           products.add(tempProduct);

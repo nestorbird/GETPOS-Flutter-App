@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:hive/hive.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 import '../db_utils/db_constants.dart';
 import 'attribute.dart';
@@ -37,8 +38,9 @@ class Product extends HiveObject {
   @HiveField(8)
   DateTime productUpdatedTime;
 
-  @HiveField(9, defaultValue: 0.0)
-  double tax;
+  @HiveField(9)
+  //double tax;
+  List<Taxes> tax;
 
   String? productImageUrl;
 
@@ -68,7 +70,7 @@ class Product extends HiveObject {
       double? orderedPrice,
       Uint8List? productImage,
       DateTime? productUpdatedTime,
-      double? tax}) {
+     List<Taxes>? tax }) {
     return Product(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -94,7 +96,7 @@ class Product extends HiveObject {
       'attributes': attributes.map((x) => x.toMap()).toList(),
       'productImage': productImage,
       'productUpdatedTime': productUpdatedTime.toIso8601String(),
-      'tax': tax
+      'tax': tax.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -110,7 +112,11 @@ class Product extends HiveObject {
             map['attributes']?.map((x) => Attribute.fromMap(x))),
         productImage: map['productImage'],
         productUpdatedTime: map['productUpdatedTime'],
-        tax: map['tax']);
+       // tax: map['tax']
+        tax: (map['tax'] as List<Map<String, dynamic>>?)
+     ?.map((taxMap) => Taxes.fromMap(taxMap))
+     .toList() ?? []);
+       
   }
 
   String toJson() => json.encode(toMap());
@@ -136,7 +142,8 @@ class Product extends HiveObject {
         other.price == price &&
         other.attributes == attributes &&
         other.productImage == productImage &&
-        other.productUpdatedTime == productUpdatedTime;
+        other.productUpdatedTime == productUpdatedTime &&
+         other.tax == tax;
   }
 
   @override
@@ -149,6 +156,8 @@ class Product extends HiveObject {
         price.hashCode ^
         attributes.hashCode ^
         productImage.hashCode ^
-        productUpdatedTime.hashCode;
+        productUpdatedTime.hashCode ^
+        tax.hashCode
+        ;
   }
 }

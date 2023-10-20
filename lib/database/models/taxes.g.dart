@@ -18,17 +18,20 @@ class TaxesAdapter extends TypeAdapter<Taxes> {
     };
     return Taxes(
       itemTaxTemplate: fields[0] as String,
-      taxRate: fields[1] == null ? 0.0 : fields[1] as double,
+      taxType: fields[1] as String,
+      taxRate: fields[2] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Taxes obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.itemTaxTemplate)
       ..writeByte(1)
+      ..write(obj.taxType)
+      ..writeByte(2)
       ..write(obj.taxRate);
   }
 

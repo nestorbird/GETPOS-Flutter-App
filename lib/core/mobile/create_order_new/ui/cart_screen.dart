@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
@@ -46,7 +47,8 @@ class _CartScreenState extends State<CartScreen> {
   double subTotalAmount = 0.0;
   double taxAmount = 0.0;
   int totalItems = 0;
-  double taxPercentage = 0;
+  double? taxPercentage;
+  double totalTaxPercentage = 0.0;
   late HubManager? hubManager;
   double quantity = 0.0;
 
@@ -535,31 +537,37 @@ class _CartScreenState extends State<CartScreen> {
     subTotalAmount = 0.0;
     taxAmount = 0.0;
     totalItems = 0;
-    taxPercentage = 0;
+    taxPercentage = 0.0;
+    totalTaxPercentage = 0;
+
     for (OrderItem item in items) {
-     
       // taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
-     
-    //  if (item.tax.isNotEmpty) {
-    // item.tax.forEach((tax) {
-    //   if (tax['tax_rate'] is double) {
-    //     taxPercentage += tax['tax_rate'];
-    //   } else if (tax['tax_rate'] is int) {
-    //     taxPercentage += (tax['tax_rate'] as int).toDouble();
-    //   }
-    // });
-  
-// taxPercentage += item.tax.;
 
-
-//       }
+      //  if (item.tax.isNotEmpty) {
+      // item.tax.forEach((tax) {
+      //   if (tax['tax_rate'] is double) {
+      //     taxPercentage += tax['tax_rate'];
+      //   } else if (tax['tax_rate'] is int) {
+      //     taxPercentage += (tax['tax_rate'] as int).toDouble();
+      //   }
+      // });
+      if (item.tax.isNotEmpty) {
+        for (var tax in item.tax) {
+          taxPercentage = tax.taxRate;
+          log("Tax Percentage for type 1: $taxPercentage");
+          //totalTaxPercentage += taxPercentage!;
+        }
+        log("Tax Percentage for type 2: $taxPercentage");
+        //log(" Total Tax Percentage: $totalTaxPercentage");
+        //totalTaxPercentage += taxPercentage!;
+        subTotalAmount = item.orderedQuantity * item.orderedPrice;
+        log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      }
       //taxPercentage = item.tax;
       quantity = item.orderedQuantity;
-      log('Tax Percentage after adding ${item.name} :: $taxPercentage');
-      subTotalAmount = item.orderedQuantity * item.orderedPrice;
-      //item.orderedQuantity * taxPercentage;
-      //subTotalAmount =subTotalAmount + (item.orderedPrice * item.orderedQuantity);
-      log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      log('Tax Percentage after adding ${item.name} :: $totalTaxPercentage');
+      //subTotalAmount = item.orderedQuantity * item.orderedPrice;
+     // log('SubTotal after adding ${item.name} :: $subTotalAmount');
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {
           //taxPercentage = taxPercentage + attribute.tax;
@@ -571,21 +579,19 @@ class _CartScreenState extends State<CartScreen> {
                 subTotalAmount =
                     subTotalAmount + (option.price * item.orderedQuantity);
                 log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
-              
-
               }
             }
           }
         }
       }
     }
-    
-    taxAmount = subTotalAmount * taxPercentage / 100;
+
+   // taxAmount = subTotalAmount * totalTaxPercentage / 100;
     log('taxAmount:$taxAmount');
     totalAmount = subTotalAmount + taxAmount;
     widget.order.orderAmount = totalAmount;
     log('Subtotal :: $subTotalAmount');
-    log('Tax percentage :: $taxPercentage');
+    log('Total Tax percentage :: $totalTaxPercentage');
     log('Tax Amount :: $taxAmount');
     log('Total :: $totalAmount');
     setState(() {});

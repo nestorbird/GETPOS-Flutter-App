@@ -75,7 +75,7 @@ class GetPreviousOrder {
                 productImage: productImage,
                 productUpdatedTime: DateTime.now(),
                 productImageUrl: '',
-                tax: 0); //TODO:: Siddhant - Need to configure tax after deployment
+                tax: []); //TODO:: Siddhant - Need to configure tax after deployment
             orderedProducts.add(product);
           });
 

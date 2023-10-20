@@ -84,9 +84,12 @@ class GetSalesHistory {
                   orderedQuantity: orderedProduct.qty!,
                   productImage: Uint8List.fromList([]),
                   productImageUrl: orderedProduct.image,
-                  productUpdatedTime: DateTime.now());
+                  productUpdatedTime: DateTime.now(),
+                  tax:[]
+                  );
 
               orderedProducts.add(product);
+            
             }
 
             String transactionDateTime =

@@ -26,7 +26,7 @@ class ProductAdapter extends TypeAdapter<Product> {
       attributes: (fields[6] as List).cast<Attribute>(),
       productImage: fields[7] as Uint8List,
       productUpdatedTime: fields[8] as DateTime,
-      tax: fields[9] == null ? 0.0 : fields[9] as double,
+      tax: (fields[9] as List).cast<Taxes>(),
     );
   }
 

@@ -47,9 +47,8 @@ class OrderItem extends HiveObject {
   @HiveField(11, defaultValue: '')
   String? productImageUrl;
 
-  @HiveField(12, defaultValue: 0.0)
-  //double tax;
-  List<Taxes> tax = [];
+  @HiveField(12)
+  List<Taxes> tax;
 
   OrderItem(
       {required this.id,
@@ -121,22 +120,33 @@ class OrderItem extends HiveObject {
         (map["productImage"] as List).map((e) => e as int).toList();
 
     return OrderItem(
-        id: map['id'],
-        name: map['name'],
-        group: map['group'],
-        description: map['description'],
-        stock: map['stock'],
-        price: map['price'],
-        // List<OrderItem>.from(
-        // map['items']?.map((x) => OrderItem.fromMap(x)))
-        attributes: List<Attribute>.from(
-            map['attributes']?.map((x) => Attribute.fromMap(x))),
-        orderedQuantity: map['orderedQuantity'] ?? 0,
-        orderedPrice: map['orderedPrice'] ?? map['price'],
-        productImage: Uint8List.fromList(data), //map['productImage'],
-        productUpdatedTime: DateTime.parse(map['productUpdatedTime']),
-        productImageUrl: map['productImageUrl'],
-        tax: map['tax']);
+      id: map['id'],
+      name: map['name'],
+      group: map['group'],
+      description: map['description'],
+      stock: map['stock'],
+      price: map['price'],
+      // List<OrderItem>.from(
+      // map['items']?.map((x) => OrderItem.fromMap(x)))
+      attributes: List<Attribute>.from(
+          map['attributes']?.map((x) => Attribute.fromMap(x))),
+      orderedQuantity: map['orderedQuantity'] ?? 0,
+      orderedPrice: map['orderedPrice'] ?? map['price'],
+      productImage: Uint8List.fromList(data), //map['productImage'],
+      productUpdatedTime: DateTime.parse(map['productUpdatedTime']),
+      productImageUrl: map['productImageUrl'],
+    //      tax: (map['tax'] as List<Map<String, dynamic>>?)
+    //  ?.map((taxMap) => Taxes.fromMap(taxMap))
+    //  .toList() ?? []);
+     // tax:(map['tax'] as List<Map<String, dynamic>>?)?? map((taxMap) => Taxes.fromMap(taxMap))
+    //   tax: (map['tax'] as List<Map<String, dynamic>>?)
+    // ?.map((taxMap) => Taxes.fromMap(taxMap))
+    // ?.toList() ?? [];
+    tax:List<Taxes>.from(
+          map['tax']?.map((x) => Taxes.fromMap(x))),
+    );
+      //tax: map['tax']
+    
   }
 
   String toJson() => json.encode(toMap());
@@ -146,7 +156,7 @@ class OrderItem extends HiveObject {
 
   @override
   String toString() {
-    return 'OrderItem(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, productImage: $productImage, productUpdatedTime: $productUpdatedTime)';
+    return 'OrderItem(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, productImage: $productImage, productUpdatedTime: $productUpdatedTime, tax:$tax)';
   }
 
   @override
@@ -164,7 +174,8 @@ class OrderItem extends HiveObject {
         other.orderedQuantity == orderedQuantity &&
         other.orderedPrice == orderedPrice &&
         other.productImage == productImage &&
-        other.productUpdatedTime == productUpdatedTime;
+        other.productUpdatedTime == productUpdatedTime &&
+        other.tax == tax;
   }
 
   @override
@@ -179,6 +190,7 @@ class OrderItem extends HiveObject {
         orderedQuantity.hashCode ^
         orderedPrice.hashCode ^
         productImage.hashCode ^
-        productUpdatedTime.hashCode;
+        productUpdatedTime.hashCode ^
+        tax.hashCode;
   }
 }

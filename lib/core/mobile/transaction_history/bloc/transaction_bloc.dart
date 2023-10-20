@@ -191,7 +191,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
                   productImage: Uint8List.fromList([]),
                   productImageUrl: orderedProduct.image,
                   productUpdatedTime: DateTime.now(),
-                  tax: 0);
+                  tax: []);
 
               orderedProducts.add(product);
             }
