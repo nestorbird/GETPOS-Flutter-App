@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -43,8 +44,16 @@ class ProductsService {
           cat_resp.CategoryProductsResponse.fromJson(apiResponse);
       if (resp.message!.isNotEmpty) {
         List<Category> categories = [];
+        //TODO :: Debug on this line
+// resp.message!.forEach((catObj) { })
+
+        // await Future.forEach(resp.message!, (catObj) async {
+
+//resp.message!.forEach((catObj)async{
+
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
+       //   log("catObj:$catObj");
           //var image = Uint8List.fromList([]);
           var image = (catData.itemGroupImage == null ||
                   catData.itemGroupImage!.isEmpty)
@@ -80,32 +89,40 @@ class ProductsService {
             List<Taxes> taxes = [];
             await Future.forEach(item.tax!, (taxObj) async {
               var taxData = taxObj as cat_resp.Tax;
+              // if (item.stockQty! > 0 &&
+              //     item.productPrice! > 0 &&
+              //     taxData.taxRate! > 0) {
               Taxes tax = Taxes(
+                taxId: taxData.taxId!,
                 itemTaxTemplate: taxData.itemTaxTemplate!,
                 taxType: taxData.taxType!,
                 taxRate: taxData.taxRate!,
-                 
               );
               taxes.add(tax);
+              await DbTaxes().addTaxes(taxes);
+
+              await DBPreferences().savePreference(
+                  PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
+              log("DB taxes: $tax ");
+              //}
             });
             var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
 
             Product product = Product(
-              id: item.id!,
-              name: item.name!,
-              group: catData.itemGroup!,
-              description: '',
-              stock: item.stockQty!,
-              price: item.productPrice ?? 0.0,
-              attributes: attributes,
-              productImage: imageBytes,
-              productImageUrl: item.image,
-              productUpdatedTime: DateTime.now(),
-              // tax: item.tax != null && item.tax!.isNotEmpty
-              //     ? item.tax!.first.taxRate!
-              //     : 0.0);
-              tax: taxes
-            );
+                id: item.id!,
+                name: item.name!,
+                group: catData.itemGroup!,
+                description: '',
+                stock: item.stockQty!,
+                price: item.productPrice ?? 0.0,
+                attributes: attributes,
+                productImage: imageBytes,
+                productImageUrl: item.image,
+                productUpdatedTime: DateTime.now(),
+                // tax: item.tax != null && item.tax!.isNotEmpty
+                //     ? item.tax!.first.taxRate!
+                //     : 0.0);
+                tax: taxes);
             products.add(product);
           });
           Category category = Category(

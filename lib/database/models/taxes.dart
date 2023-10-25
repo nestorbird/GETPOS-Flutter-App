@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -9,29 +8,32 @@ part 'taxes.g.dart';
 @HiveType(typeId: TaxBoxTypeId)
 class Taxes extends HiveObject {
   @HiveField(0)
-  String itemTaxTemplate;
+  String taxId;
 
   @HiveField(1)
-   String taxType;
+  String itemTaxTemplate;
 
   @HiveField(2)
+  String taxType;
+
+  @HiveField(3)
   double taxRate;
- 
 
   Taxes({
+    required this.taxId,
     required this.itemTaxTemplate,
     required this.taxType,
     required this.taxRate,
-    
   });
 
   Taxes copyWith({
+    String? taxId,
     String? itemTaxTemplate,
     String? taxType,
     double? taxRate,
-    
   }) {
     return Taxes(
+      taxId: taxId ?? this.taxId,
       itemTaxTemplate: itemTaxTemplate ?? this.itemTaxTemplate,
       taxType: taxType ?? this.taxType,
       taxRate: taxRate ?? this.taxRate,
@@ -40,20 +42,19 @@ class Taxes extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
+      'taxId': taxId,
       'itemTaxTemplate': itemTaxTemplate,
       'taxType': taxType,
       'taxRate': taxRate,
-      
     };
   }
 
   factory Taxes.fromMap(Map<String, dynamic> map) {
     return Taxes(
+      taxId: map["taxId"] ?? "",
       itemTaxTemplate: map['itemTaxTemplate'] ?? '',
       taxType: map['taxType'] ?? '',
       taxRate: map['taxRate'] ?? '',
-      
-
     );
   }
   String toJson() => json.encode(toMap());
@@ -62,17 +63,23 @@ class Taxes extends HiveObject {
 //
   @override
   String toString() =>
-      'Taxes(itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate )';
+      'Taxes(taxId: $taxId,itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate )';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is Taxes &&
-        other.itemTaxTemplate == itemTaxTemplate && other.taxType == taxType &&
+        other.taxId == taxId &&
+        other.itemTaxTemplate == itemTaxTemplate &&
+        other.taxType == taxType &&
         other.taxRate == taxRate;
   }
 
   @override
-  int get hashCode => itemTaxTemplate.hashCode ^ taxType.hashCode ^ taxRate.hashCode;
+  int get hashCode =>
+      taxId.hashCode ^
+      itemTaxTemplate.hashCode ^
+      taxType.hashCode ^
+      taxRate.hashCode;
 }

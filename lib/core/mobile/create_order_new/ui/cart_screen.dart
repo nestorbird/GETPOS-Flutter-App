@@ -9,6 +9,8 @@ import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
+import 'package:nb_posx/core/service/product/model/category_products_response.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
@@ -45,13 +47,18 @@ class _CartScreenState extends State<CartScreen> {
   bool _isCODSelected = false;
   double totalAmount = 0.0;
   double subTotalAmount = 0.0;
-  double taxAmount = 0.0;
+  double? totalTaxAmount = 0.0;
   int totalItems = 0;
   double? taxPercentage;
   double totalTaxPercentage = 0.0;
   late HubManager? hubManager;
   double quantity = 0.0;
-
+  double? stateGovTax = 0.0;
+  double? centralGovTax = 0.0;
+  double? stateGovTaxAmount = 0.0;
+  double? centralGovTaxAmount = 0.0;
+// Taxes? stateGovTax;
+//         Taxes? centralGovTax;
   // String? transactionID;
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
@@ -535,47 +542,38 @@ class _CartScreenState extends State<CartScreen> {
   _configureTaxAndTotal(List<OrderItem> items) {
     totalAmount = 0.0;
     subTotalAmount = 0.0;
-    taxAmount = 0.0;
+    totalTaxAmount = 0.0;
     totalItems = 0;
     taxPercentage = 0.0;
     totalTaxPercentage = 0;
+    stateGovTax = 0.0;
+    centralGovTax = 0.0;
+    stateGovTaxAmount = 0.0;
+    centralGovTaxAmount = 0.0;
 
     for (OrderItem item in items) {
-      // taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
+     
 
-      //  if (item.tax.isNotEmpty) {
-      // item.tax.forEach((tax) {
-      //   if (tax['tax_rate'] is double) {
-      //     taxPercentage += tax['tax_rate'];
-      //   } else if (tax['tax_rate'] is int) {
-      //     taxPercentage += (tax['tax_rate'] as int).toDouble();
-      //   }
-      // });
       if (item.tax.isNotEmpty) {
-        for (var tax in item.tax) {
-          taxPercentage = tax.taxRate;
-          log("Tax Percentage for type 1: $taxPercentage");
-          //totalTaxPercentage += taxPercentage!;
-        }
-        log("Tax Percentage for type 2: $taxPercentage");
-        //log(" Total Tax Percentage: $totalTaxPercentage");
-        //totalTaxPercentage += taxPercentage!;
-        subTotalAmount = item.orderedQuantity * item.orderedPrice;
-        log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      
+
+        stateGovTax = item.tax[0].taxRate;
+        log("stateGovTax:$stateGovTax");
+        centralGovTax = item.tax[1].taxRate;
+        log("centralGovTax:$centralGovTax");
       }
-      //taxPercentage = item.tax;
+
       quantity = item.orderedQuantity;
-      log('Tax Percentage after adding ${item.name} :: $totalTaxPercentage');
-      //subTotalAmount = item.orderedQuantity * item.orderedPrice;
-     // log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      log("Quantity Ordered : $quantity");
+      subTotalAmount = item.orderedQuantity * item.orderedPrice;
+      log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      
+
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {
-          //taxPercentage = taxPercentage + attribute.tax;
-          //log('Tax Percentage after adding ${attribute.name} :: $taxPercentage');
           if (attribute.options.isNotEmpty) {
             for (var option in attribute.options) {
               if (option.selected) {
-                //taxPercentage = taxPercentage + option.tax;
                 subTotalAmount =
                     subTotalAmount + (option.price * item.orderedQuantity);
                 log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
@@ -584,15 +582,21 @@ class _CartScreenState extends State<CartScreen> {
           }
         }
       }
+      stateGovTaxAmount = subTotalAmount * stateGovTax! / 100;
+      log("State Government Tax Amount imposed on ${item.name} :: $stateGovTaxAmount");
+      centralGovTaxAmount = subTotalAmount * centralGovTax! / 100;
+      log("Central Government Tax Amount imposed on ${item.name} :: $centralGovTaxAmount");
     }
 
-   // taxAmount = subTotalAmount * totalTaxPercentage / 100;
-    log('taxAmount:$taxAmount');
-    totalAmount = subTotalAmount + taxAmount;
+    //taxAmount = subTotalAmount * centralGovTax! / 100;
+    //log('Total Tax Amount:$totalTaxAmount');
+    totalAmount = subTotalAmount + stateGovTaxAmount! + centralGovTaxAmount!;
+    log("Total Amount: $totalAmount");
     widget.order.orderAmount = totalAmount;
-    log('Subtotal :: $subTotalAmount');
-    log('Total Tax percentage :: $totalTaxPercentage');
-    log('Tax Amount :: $taxAmount');
+    // log('Subtotal :: $subTotalAmount');
+    //log('Total Tax percentage :: $totalTaxPercentage');
+
+    // log('Tax Amount :: $taxAmount');
     log('Total :: $totalAmount');
     setState(() {});
     //return taxPercentage;

@@ -14,6 +14,7 @@ const CATEGORY_BOX = 'categories';
 const ATTRIBUTE_BOX = 'attributes';
 const OPTION_BOX = 'options';
 const ORDER_ITEM_BOX = 'order_items';
+const TAX_BOX = 'taxes';
 const URL_BOX = 'url';
 
 //Temporary Variables

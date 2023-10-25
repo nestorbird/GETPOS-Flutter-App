@@ -201,11 +201,13 @@ class _ThemeChangeState extends State<ThemeChange> {
       if (response.status != null && response.status!) {
         //log('$response');
         //  if (!mounted) return;
+        // ignore: use_build_context_synchronously
         Helper.hideLoader(context);
         
 //to save url in DB
         await DbInstanceUrl().saveUrl(url);
         log("hiiii");
+        // ignore: use_build_context_synchronously
         await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
       } else {
@@ -216,6 +218,7 @@ class _ThemeChangeState extends State<ThemeChange> {
         //     MaterialPageRoute(builder: (context) => const Login()));
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       Helper.hideLoader(context);
       log('Exception Caught :: $e');
       log("hi");

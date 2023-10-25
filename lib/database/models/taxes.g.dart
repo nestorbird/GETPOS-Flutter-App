@@ -17,21 +17,24 @@ class TaxesAdapter extends TypeAdapter<Taxes> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Taxes(
-      itemTaxTemplate: fields[0] as String,
-      taxType: fields[1] as String,
-      taxRate: fields[2] as double,
+      taxId: fields[0] as String,
+      itemTaxTemplate: fields[1] as String,
+      taxType: fields[2] as String,
+      taxRate: fields[3] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Taxes obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
-      ..write(obj.itemTaxTemplate)
+      ..write(obj.taxId)
       ..writeByte(1)
-      ..write(obj.taxType)
+      ..write(obj.itemTaxTemplate)
       ..writeByte(2)
+      ..write(obj.taxType)
+      ..writeByte(3)
       ..write(obj.taxRate);
   }
 

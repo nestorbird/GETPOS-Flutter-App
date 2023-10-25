@@ -134,6 +134,7 @@ class _LoginState extends State<Login> {
             // if (!mounted) return;
             log("$response");
             // Helper.hideLoader(context);
+            // ignore: use_build_context_synchronously
             await Navigator.push(
                 context,
                 MaterialPageRoute(
