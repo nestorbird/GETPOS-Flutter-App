@@ -31,6 +31,7 @@ class Taxes extends HiveObject {
     String? itemTaxTemplate,
     String? taxType,
     double? taxRate,
+    double? taxAmount,
   }) {
     return Taxes(
       taxId: taxId ?? this.taxId,

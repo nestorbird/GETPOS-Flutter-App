@@ -5,11 +5,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
 import 'package:nb_posx/core/service/product/model/category_products_response.dart';
+import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
@@ -44,10 +46,11 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  String orderId = "";
   bool _isCODSelected = false;
   double totalAmount = 0.0;
   double subTotalAmount = 0.0;
-  double? totalTaxAmount = 0.0;
+  double totalTaxAmount = 0.0;
   int totalItems = 0;
   double? taxPercentage;
   double totalTaxPercentage = 0.0;
@@ -57,6 +60,7 @@ class _CartScreenState extends State<CartScreen> {
   double? centralGovTax = 0.0;
   double? stateGovTaxAmount = 0.0;
   double? centralGovTaxAmount = 0.0;
+  double taxAmount = 0.0;
 // Taxes? stateGovTax;
 //         Taxes? centralGovTax;
   // String? transactionID;
@@ -504,7 +508,7 @@ class _CartScreenState extends State<CartScreen> {
       log('Date : $date');
       String time = DateFormat().add_jm().format(currentDateTime).toString();
       log('Time : $time');
-      String orderId = await Helper.getOrderId();
+      orderId = await Helper.getOrderId();
       log('Order No : $orderId');
 
       SaleOrder saleOrder = SaleOrder(
@@ -538,68 +542,94 @@ class _CartScreenState extends State<CartScreen> {
   //   return total;
   // }
 
-  //TODO:: Siddhant - Need to correct the tax calculation logic here.
+  //Tax calculation with SGST and CGST
   _configureTaxAndTotal(List<OrderItem> items) {
     totalAmount = 0.0;
     subTotalAmount = 0.0;
     totalTaxAmount = 0.0;
     totalItems = 0;
-    taxPercentage = 0.0;
-    totalTaxPercentage = 0;
-    stateGovTax = 0.0;
-    centralGovTax = 0.0;
-    stateGovTaxAmount = 0.0;
-    centralGovTaxAmount = 0.0;
+    //   taxPercentage = 0.0;
+    //   totalTaxPercentage = 0;
+    //   stateGovTax = 0.0;
+    //  centralGovTax = 0.0;
+    //   stateGovTaxAmount = 0.0;
+    //   centralGovTaxAmount = 0.0;
 
     for (OrderItem item in items) {
-     
-
+//fetch the taxrate from list of taxes
       if (item.tax.isNotEmpty) {
-      
+        // forEach (Taxes tax item.tax) {
+        //   stateGovTax = tax.taxRate;
+        //   log("stateGovTax:$stateGovTax");
+        //   centralGovTax = tax.taxRate;
+        //   log("centralGovTax:$centralGovTax");
+        // }
+        //calculating subtotal amount to calculate taxes for items added in cart
+        quantity = item.orderedQuantity;
+        log("Quantity Ordered : $quantity");
+        subTotalAmount = item.orderedQuantity * item.orderedPrice;
+        log('SubTotal after adding ${item.name} :: $subTotalAmount');
 
-        stateGovTax = item.tax[0].taxRate;
-        log("stateGovTax:$stateGovTax");
-        centralGovTax = item.tax[1].taxRate;
-        log("centralGovTax:$centralGovTax");
-      }
-
-      quantity = item.orderedQuantity;
-      log("Quantity Ordered : $quantity");
-      subTotalAmount = item.orderedQuantity * item.orderedPrice;
-      log('SubTotal after adding ${item.name} :: $subTotalAmount');
-      
-
-      if (item.attributes.isNotEmpty) {
-        for (var attribute in item.attributes) {
-          if (attribute.options.isNotEmpty) {
-            for (var option in attribute.options) {
-              if (option.selected) {
-                subTotalAmount =
-                    subTotalAmount + (option.price * item.orderedQuantity);
-                log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+//calculating subtotal amount to calculate taxes for attributes in items
+        if (item.attributes.isNotEmpty) {
+          for (var attribute in item.attributes) {
+            if (attribute.options.isNotEmpty) {
+              for (var option in attribute.options) {
+                if (option.selected) {
+                  subTotalAmount =
+                      subTotalAmount + (option.price * item.orderedQuantity);
+                  log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+                }
               }
             }
           }
         }
+
+        item.tax.forEach((tax) async {
+          taxAmount = subTotalAmount * tax.taxRate / 100;
+          //   DbTaxes().saveTaxAmount(taxAmount);
+          log('Tax Amount : $taxAmount');
+          totalTaxAmount += taxAmount;
+          totalAmount = subTotalAmount + totalTaxAmount;
+        });
+
+        //DbTaxes().addTaxes(totalTaxAmount);
+        //   DbTaxes().saveTaxAmount(totalTaxAmount);
+        log("Total Tax Amount : $totalTaxAmount");
       }
-      stateGovTaxAmount = subTotalAmount * stateGovTax! / 100;
-      log("State Government Tax Amount imposed on ${item.name} :: $stateGovTaxAmount");
-      centralGovTaxAmount = subTotalAmount * centralGovTax! / 100;
-      log("Central Government Tax Amount imposed on ${item.name} :: $centralGovTaxAmount");
+      List<Taxation> taxation = [];
+      item.tax.forEach((tax) async {
+        taxation.add(Taxation(
+            id: orderId,
+            itemTaxTemplate: tax.itemTaxTemplate,
+            taxType: tax.taxType,
+            taxRate: tax.taxRate,
+            taxationAmount: taxAmount));
+      });
+      DbTaxes().saveOrderTax(orderId, taxation);
+      // if (item.tax.isNotEmpty) {
+      //   stateGovTax = item.tax[0].taxRate;
+      //   log("stateGovTax:$stateGovTax");
+      //   centralGovTax = item.tax[1].taxRate;
+      //   log("centralGovTax:$centralGovTax");
+      // }
+
+      //calculation of stategovtax amount and centralgovtax amount
+      // stateGovTaxAmount = subTotalAmount * stateGovTax! / 100;
+      // log("State Government Tax Amount imposed on ${item.name} :: $stateGovTaxAmount");
+      // centralGovTaxAmount = subTotalAmount * centralGovTax! / 100;
+      // log("Central Government Tax Amount imposed on ${item.name} :: $centralGovTaxAmount");
     }
 
-    //taxAmount = subTotalAmount * centralGovTax! / 100;
-    //log('Total Tax Amount:$totalTaxAmount');
-    totalAmount = subTotalAmount + stateGovTaxAmount! + centralGovTaxAmount!;
-    log("Total Amount: $totalAmount");
-    widget.order.orderAmount = totalAmount;
-    // log('Subtotal :: $subTotalAmount');
-    //log('Total Tax percentage :: $totalTaxPercentage');
+    //total amount with SGST amount and CGST amount
 
-    // log('Tax Amount :: $taxAmount');
+    // totalAmount = subTotalAmount + stateGovTaxAmount! + centralGovTaxAmount!;
+    log("Total Amount: $totalAmount");
+
     log('Total :: $totalAmount');
     setState(() {});
-    //return taxPercentage;
+
+    // DbTaxes().saveTaxes();
   }
 
   void _getHubManager() async {

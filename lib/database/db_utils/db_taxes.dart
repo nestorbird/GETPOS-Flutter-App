@@ -1,4 +1,8 @@
-import 'package:hive_flutter/hive_flutter.dart';
+import 'dart:developer';
+
+
+import 'package:hive/hive.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 
@@ -9,6 +13,7 @@ class DbTaxes {
 
   Future<void> addTaxes(List<Taxes> list) async {
     box = await Hive.openBox<Taxes>(TAX_BOX);
+   
 
     for (Taxes item in list) {
       await box.put(item.taxId, item);
@@ -46,19 +51,9 @@ class DbTaxes {
     return box.get(key);
   }
 
-  // Future<void> reduceInventory(List<Taxes> items) async {
-  //   box = await Hive.openBox<Taxes>(TAX_BOX);
-  //   for (Taxes item in items) {
-  //     Taxes itemInDB = box.get(item.id) as Taxes;
-  //     var availableQty = itemInDB.stock - item.orderedQuantity;
-  //     itemInDB.stock = availableQty;
-  //     itemInDB.orderedQuantity = 0;
-  //     itemInDB.productUpdatedTime = DateTime.now();
-  //     await itemInDB.save();
-  //   }
-  // }
+ 
 
-  Future<int> deleteProducts() async {
+  Future<int> deleteTaxes() async {
     box = await Hive.openBox<Taxes>(TAX_BOX);
     return box.clear();
   }
@@ -75,6 +70,15 @@ class DbTaxes {
       }
     }
     box.close();
+    return list;
+  }
+
+  Future<List> saveOrderTax(orderId, List<Taxation> list) async {
+    //box = await Hive.openBox<Taxation>(TAX_BOX);
+    for (Taxation item in list) {
+      await box.put(item.id, item);
+    }
+
     return list;
   }
 }

@@ -167,14 +167,7 @@ class _ThemeChangeState extends State<ThemeChange> {
 
           if (!mounted) return;
           Helper.hideLoader(context);
-          // Helper.showPopup(context, "Please Enter URL");
-
-          // Navigator.pushReplacement(
-          // context, MaterialPageRoute(builder: (context) => const  Login()));
         } else {
-          // ignore: use_build_context_synchronously
-          //
-
           log('API Request failed with status code ${response.statusCode}');
           log('Response body: ${response.body}');
           log('Dbinstance Url:');
@@ -183,8 +176,6 @@ class _ThemeChangeState extends State<ThemeChange> {
         // Handle any exceptions during the request
 
         log('Error: $e');
-        //  Helper.showPopup(context, "Not an active Url");
-        // Helper.hideLoader(context);
       }
     }
   }
@@ -193,20 +184,20 @@ class _ThemeChangeState extends State<ThemeChange> {
     try {
       Helper.showLoaderDialog(context);
       //api theme path get and append
-     
+
       String apiUrl = "https://$url/api/$THEME_PATH";
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
       log('$response');
 
       if (response.status != null && response.status!) {
-        //log('$response');
-        //  if (!mounted) return;
-        // ignore: use_build_context_synchronously
         Helper.hideLoader(context);
-        
+
 //to save url in DB
+        //await DbInstanceUrl().saveUrl(url);
+        String url = "https://${_urlCtrl.text}/api/";
         await DbInstanceUrl().saveUrl(url);
-        log("hiiii");
+      
+        log('url:$url');
         // ignore: use_build_context_synchronously
         await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
@@ -214,15 +205,14 @@ class _ThemeChangeState extends State<ThemeChange> {
         if (!mounted) return;
         Helper.hideLoader(context);
         Helper.showPopup(context, response.message);
-        // Navigator.pushReplacement(context,
-        //     MaterialPageRoute(builder: (context) => const Login()));
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
       Helper.hideLoader(context);
       log('Exception Caught :: $e');
-      log("hi");
+
       debugPrintStack();
+      // ignore: use_build_context_synchronously
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
   }

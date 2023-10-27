@@ -45,15 +45,15 @@ class ProductsService {
       if (resp.message!.isNotEmpty) {
         List<Category> categories = [];
         //TODO :: Debug on this line
-// resp.message!.forEach((catObj) { })
 
+// resp.message!.forEach((catObj){})
         // await Future.forEach(resp.message!, (catObj) async {
 
 //resp.message!.forEach((catObj)async{
 
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
-       //   log("catObj:$catObj");
+          //   log("catObj:$catObj");
           //var image = Uint8List.fromList([]);
           var image = (catData.itemGroupImage == null ||
                   catData.itemGroupImage!.isEmpty)
@@ -89,23 +89,25 @@ class ProductsService {
             List<Taxes> taxes = [];
             await Future.forEach(item.tax!, (taxObj) async {
               var taxData = taxObj as cat_resp.Tax;
-              // if (item.stockQty! > 0 &&
-              //     item.productPrice! > 0 &&
-              //     taxData.taxRate! > 0) {
+              if (item.stockQty! > 0 &&
+                  item.productPrice! > 0 &&
+                  taxData.taxRate! > 0) {
               Taxes tax = Taxes(
                 taxId: taxData.taxId!,
                 itemTaxTemplate: taxData.itemTaxTemplate!,
                 taxType: taxData.taxType!,
                 taxRate: taxData.taxRate!,
+                
               );
               taxes.add(tax);
-              await DbTaxes().addTaxes(taxes);
 
-              await DBPreferences().savePreference(
-                  PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
-              log("DB taxes: $tax ");
-              //}
+              }
             });
+            await DbTaxes().addTaxes(taxes);
+
+            await DBPreferences().savePreference(
+                PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
+
             var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
 
             Product product = Product(

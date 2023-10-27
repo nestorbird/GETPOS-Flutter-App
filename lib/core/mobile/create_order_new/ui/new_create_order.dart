@@ -74,7 +74,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                 _selectedCust!.name,
                 style: getTextStyle(
                     fontSize: LARGE_FONT_SIZE,
-                    color:  AppColors.getPrimary(),
+                    color: AppColors.getPrimary(),
                     fontWeight: FontWeight.w500),
               ),
               InkWell(
@@ -85,7 +85,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                   padding: miniPaddingAll(),
                   child: SvgPicture.asset(
                     CROSS_ICON,
-                    color:  AppColors.getPrimary(),
+                    color: AppColors.getPrimary(),
                     width: 15,
                   ),
                 ),
@@ -115,9 +115,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
           //   getCustomersFromDB();
           // }
         },
-      )
-      
-      );
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +145,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                       margin: morePaddingAll(),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color:  AppColors.getPrimary(),
+                        color: AppColors.getPrimary(),
                       ),
                       child: ListTile(
                         onTap: () {
@@ -227,7 +225,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                               style: categories[position].isExpanded
                                   ? getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color:  AppColors.getAsset(),
+                                      color: AppColors.getAsset(),
                                       fontWeight: FontWeight.w500)
                                   : getTextStyle(
                                       fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -241,7 +239,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                                     child: Text(
                                       "${categories[position].items.length} items",
                                       style: getTextStyle(
-                                          color:  AppColors.getPrimary(),
+                                          color: AppColors.getPrimary(),
                                           fontWeight: FontWeight.normal,
                                           fontSize: SMALL_PLUS_FONT_SIZE),
                                     ),
@@ -336,6 +334,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
           OrderItem newItem = product;
           parkOrder!.items.add(newItem);
           _calculateOrderAmount();
+        
         } else if (product.orderedQuantity == 0) {
           parkOrder!.items.remove(product);
           _calculateOrderAmount();

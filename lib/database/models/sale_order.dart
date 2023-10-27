@@ -50,6 +50,8 @@ class SaleOrder extends HiveObject {
 
   String? parkOrderId;
 
+  
+
   SaleOrder({
     required this.id,
     required this.date,

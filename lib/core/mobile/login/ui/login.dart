@@ -145,9 +145,11 @@ class _LoginState extends State<Login> {
             Helper.showPopup(context, response.message!);
           }
         } catch (e) {
+          // ignore: use_build_context_synchronously
           Helper.hideLoader(context);
           log('Exception Caught :: $e');
           debugPrintStack();
+          // ignore: use_build_context_synchronously
           Helper.showSnackBar(context, SOMETHING_WRONG);
         }
       }
@@ -158,33 +160,12 @@ class _LoginState extends State<Login> {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     setState(() {
       version = "$APP_VERSION - ${packageInfo.version}";
+      log('Version:$version');
     });
   }
 
-  ///Input field for entering the instance URL
-  // Widget instanceUrlTxtboxSection(context) => Container(
-  //       margin: horizontalSpace(),
-  //       padding: smallPaddingAll(),
-  //       child: Column(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Padding(
-  //             padding: leftSpace(x: 10),
-  //             child: Text(
-  //               URL_TXT,
-  //               style: getTextStyle(fontSize: MEDIUM_MINUS_FONT_SIZE),
-  //             ),
-  //           ),
-  //           hightSpacer15,
-  //           TextFieldWidget(
-  //             boxDecoration: txtFieldBorderDecoration,
-  //             txtCtrl: _urlCtrl,
-  //             hintText: URL_HINT,
-  //           ),
-  //         ],
-  //       ),
-  //     );
-
+  
+  
   /// LOGIN BUTTON
   Widget loginBtnWidget(context) => Center(
         child: ButtonWidget(
