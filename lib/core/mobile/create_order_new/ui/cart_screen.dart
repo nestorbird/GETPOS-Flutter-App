@@ -12,6 +12,7 @@ import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
 import 'package:nb_posx/core/service/product/model/category_products_response.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
@@ -516,6 +517,7 @@ class _CartScreenState extends State<CartScreen> {
           orderAmount: totalAmount,
           date: date,
           time: time,
+          taxes: [],
           customer: widget.order.customer,
           manager: hubManager!,
           items: widget.order.items,
@@ -584,35 +586,82 @@ class _CartScreenState extends State<CartScreen> {
             }
           }
         }
-
+//calculating tax amount
+        List<Taxation> taxation = [];
         item.tax.forEach((tax) async {
           taxAmount = subTotalAmount * tax.taxRate / 100;
-          //   DbTaxes().saveTaxAmount(taxAmount);
+
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           totalAmount = subTotalAmount + totalTaxAmount;
+          taxation.add(Taxation(
+              id: orderId,
+              itemTaxTemplate: tax.itemTaxTemplate,
+              taxType: tax.taxType,
+              taxRate: tax.taxRate,
+              taxationAmount: taxAmount));
+        });
+        log("Total Tax Amount : $totalTaxAmount");
+        DbTaxes().saveItemWiseTax(orderId, taxation);
+      } else {
+        // (List<OrderItem> items) {
+        //   totalAmount = 0.0;
+        //   subTotalAmount = 0.0;
+        //   totalTaxAmount = 0.0;
+        //   totalItems = 0;
+        //   for (OrderItem item in items) {
+        //     if (item.tax.isEmpty)
+        quantity = item.orderedQuantity;
+        log("Quantity Ordered : $quantity");
+        subTotalAmount = item.orderedQuantity * item.orderedPrice;
+        log('SubTotal after adding ${item.name} :: $subTotalAmount');
+
+//calculating subtotal amount to calculate taxes for attributes in items
+        if (item.attributes.isNotEmpty) {
+          for (var attribute in item.attributes) {
+            if (attribute.options.isNotEmpty) {
+              for (var option in attribute.options) {
+                if (option.selected) {
+                  subTotalAmount =
+                      subTotalAmount + (option.price * item.orderedQuantity);
+                  log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+                }
+              }
+            }
+          }
+        }
+//calculating tax amount
+        List<OrderTaxes> taxes = [];
+        item.tax.forEach((tax) async {
+          taxAmount = subTotalAmount * tax.taxRate / 100;
+
+          log('Tax Amount : $taxAmount');
+          totalTaxAmount += taxAmount;
+          totalAmount = subTotalAmount + totalTaxAmount;
+          taxes.add(OrderTaxes(
+              id: orderId,
+              itemTaxTemplate: tax.itemTaxTemplate,
+              taxType: tax.taxType,
+              taxRate: tax.taxRate,
+              taxationAmount: taxAmount));
         });
 
-        //DbTaxes().addTaxes(totalTaxAmount);
-        //   DbTaxes().saveTaxAmount(totalTaxAmount);
         log("Total Tax Amount : $totalTaxAmount");
+        DbTaxes().saveOrderWiseTax(orderId, taxes);
       }
-      List<Taxation> taxation = [];
-      item.tax.forEach((tax) async {
-        taxation.add(Taxation(
-            id: orderId,
-            itemTaxTemplate: tax.itemTaxTemplate,
-            taxType: tax.taxType,
-            taxRate: tax.taxRate,
-            taxationAmount: taxAmount));
-      });
-      DbTaxes().saveOrderTax(orderId, taxation);
-      // if (item.tax.isNotEmpty) {
-      //   stateGovTax = item.tax[0].taxRate;
-      //   log("stateGovTax:$stateGovTax");
-      //   centralGovTax = item.tax[1].taxRate;
-      //   log("centralGovTax:$centralGovTax");
-      // }
+      //to Optimize here by adding this code in for each above
+
+      //to Optimize here by adding this code in for each above
+      // List<Taxation> taxation = [];
+      // item.tax.forEach((tax) async {
+      //   taxation.add(Taxation(
+      //       id: orderId,
+      //       itemTaxTemplate: tax.itemTaxTemplate,
+      //       taxType: tax.taxType,
+      //       taxRate: tax.taxRate,
+      //       taxationAmount: taxAmount));
+      // });
+      // DbTaxes().saveItemWiseTax(orderId, taxation);
 
       //calculation of stategovtax amount and centralgovtax amount
       // stateGovTaxAmount = subTotalAmount * stateGovTax! / 100;
@@ -642,6 +691,15 @@ class _CartScreenState extends State<CartScreen> {
       orderAmount += item.orderedPrice * item.orderedQuantity;
     }
     widget.order.orderAmount = orderAmount;
+
+    //TO Confirm :
+    // for (OrderItem item in widget.order.items) {
+    //   orderAmount += item.orderedPrice * item.orderedQuantity;
+    //    if(item.tax.isEmpty){
+    //   _configureTaxAndTotal(widget.order.items);
+    //    }
+    // }
+
     _configureTaxAndTotal(widget.order.items);
     //widget.order.save();
     //DbParkedOrder().saveOrder(widget.order);

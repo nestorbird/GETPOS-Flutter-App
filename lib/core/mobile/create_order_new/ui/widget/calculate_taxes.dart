@@ -11,3 +11,14 @@ class Taxation extends HiveObject {
       required this.taxRate,
       required this.taxationAmount});
 }
+
+class OrderTaxes extends HiveObject {
+  String id, itemTaxTemplate, taxType;
+  double taxRate, taxationAmount;
+  OrderTaxes(
+      {required this.id,
+      required this.itemTaxTemplate,
+      required this.taxType,
+      required this.taxRate,
+      required this.taxationAmount});
+}

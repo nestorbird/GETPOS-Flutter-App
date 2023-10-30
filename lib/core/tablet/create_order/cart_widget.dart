@@ -230,8 +230,8 @@ class _CartWidgetState extends State<CartWidget> {
         child: Text(
           "Place Order",
           textAlign: TextAlign.center,
-          style:
-              getTextStyle(color: AppColors.fontWhiteColor, fontSize: LARGE_MINUS_FONT_SIZE),
+          style: getTextStyle(
+              color: AppColors.fontWhiteColor, fontSize: LARGE_MINUS_FONT_SIZE),
         ),
       ),
     );
@@ -369,7 +369,8 @@ class _CartWidgetState extends State<CartWidget> {
                                       )),
                                   greySizedBox,
                                   Container(
-                                      color: AppColors.getPrimary().withOpacity(0.1),
+                                      color: AppColors.getPrimary()
+                                          .withOpacity(0.1),
                                       child: Text(
                                         item.orderedQuantity.toInt().toString(),
                                         style: getTextStyle(
@@ -423,7 +424,8 @@ class _CartWidgetState extends State<CartWidget> {
       width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.getPrimary().withOpacity(0.1),
-          border: Border.all(width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
+          border: Border.all(
+              width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -471,14 +473,18 @@ class _CartWidgetState extends State<CartWidget> {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
+                  color: isDiscount
+                      ? AppColors.getSecondary()
+                      : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ? AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
+                  color: isDiscount
+                      ? AppColors.getSecondary()
+                      : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],
@@ -530,8 +536,11 @@ class _CartWidgetState extends State<CartWidget> {
       child: Container(
         decoration: BoxDecoration(
             border: Border.all(
-                color: isSelected ? Colors.black : AppColors.getPrimary(), width: 0.5),
-            color: isSelected ? Colors.white : AppColors.getPrimary().withOpacity(0.1),
+                color: isSelected ? Colors.black : AppColors.getPrimary(),
+                width: 0.5),
+            color: isSelected
+                ? Colors.white
+                : AppColors.getPrimary().withOpacity(0.1),
             borderRadius: BorderRadius.circular(8)),
         padding: paddingXY(x: 16, y: 6),
         child: Row(
@@ -610,6 +619,7 @@ class _CartWidgetState extends State<CartWidget> {
         orderAmount: totalAmount,
         date: date,
         time: time,
+        taxes: [],
         customer: currentCart!.customer,
         manager: Helper.hubManager!,
         items: currentCart!.items,
@@ -666,7 +676,7 @@ class _CartWidgetState extends State<CartWidget> {
     }
   }
 
-  //TODO:: Siddhant - Need to correct the tax calculation logic here.
+  //calculate tax item wise
   _configureTaxAndTotal(List<OrderItem> items) {
     totalAmount = 0.0;
     subTotalAmount = 0.0;

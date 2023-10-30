@@ -72,10 +72,19 @@ class DbTaxes {
     box.close();
     return list;
   }
-
-  Future<List> saveOrderTax(orderId, List<Taxation> list) async {
+//to save tax list in db for itemwise taxation
+  Future<List> saveItemWiseTax(orderId, List<Taxation> list) async {
     //box = await Hive.openBox<Taxation>(TAX_BOX);
     for (Taxation item in list) {
+      await box.put(item.id, item);
+    }
+
+    return list;
+  }
+//to save tax list in db for orderwise taxation
+  Future<List> saveOrderWiseTax(orderId, List<OrderTaxes> list) async {
+    //box = await Hive.openBox<Taxation>(TAX_BOX);
+    for (OrderTaxes item in list) {
       await box.put(item.id, item);
     }
 

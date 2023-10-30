@@ -44,13 +44,7 @@ class ProductsService {
           cat_resp.CategoryProductsResponse.fromJson(apiResponse);
       if (resp.message!.isNotEmpty) {
         List<Category> categories = [];
-        //TODO :: Debug on this line
-
-// resp.message!.forEach((catObj){})
-        // await Future.forEach(resp.message!, (catObj) async {
-
-//resp.message!.forEach((catObj)async{
-
+       //
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
           //   log("catObj:$catObj");

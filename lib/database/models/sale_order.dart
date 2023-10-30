@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 
 import '../db_utils/db_constants.dart';
 import 'customer.dart';
@@ -50,7 +51,8 @@ class SaleOrder extends HiveObject {
 
   String? parkOrderId;
 
-  
+  @HiveField(12)
+  List<OrderTax> taxes;
 
   SaleOrder({
     required this.id,
@@ -66,21 +68,24 @@ class SaleOrder extends HiveObject {
     required this.paymentMethod,
     required this.paymentStatus,
     this.parkOrderId = '',
+    required this.taxes,
   });
 
-  SaleOrder copyWith(
-      {String? id,
-      String? date,
-      String? time,
-      Customer? customer,
-      HubManager? manager,
-      List<OrderItem>? items,
-      double? orderAmount,
-      String? transactionId,
-      String? paymentMethod,
-      String? paymentStatus,
-      bool? transactionSynced,
-      DateTime? tracsactionDateTime}) {
+  SaleOrder copyWith({
+    String? id,
+    String? date,
+    String? time,
+    Customer? customer,
+    HubManager? manager,
+    List<OrderItem>? items,
+    double? orderAmount,
+    String? transactionId,
+    String? paymentMethod,
+    String? paymentStatus,
+    bool? transactionSynced,
+    DateTime? tracsactionDateTime,
+    List<OrderTax>? taxes,
+  }) {
     return SaleOrder(
         id: id ?? this.id,
         date: date ?? this.date,
@@ -93,7 +98,8 @@ class SaleOrder extends HiveObject {
         paymentMethod: paymentMethod ?? this.paymentMethod,
         paymentStatus: paymentStatus ?? this.paymentStatus,
         transactionSynced: transactionSynced ?? this.transactionSynced,
-        tracsactionDateTime: tracsactionDateTime ?? this.tracsactionDateTime);
+        tracsactionDateTime: tracsactionDateTime ?? this.tracsactionDateTime,
+        taxes: taxes ?? this.taxes);
   }
 
   Map<String, dynamic> toMap() {
@@ -110,6 +116,7 @@ class SaleOrder extends HiveObject {
       'paymentStatus': paymentStatus,
       'transactionSynced': transactionSynced,
       'tracsactionDateTime': tracsactionDateTime.toIso8601String(),
+      'taxes' : taxes,
     };
   }
 
@@ -118,6 +125,7 @@ class SaleOrder extends HiveObject {
         id: map['id'],
         date: map['date'],
         time: map['time'],
+        taxes: map['taxes'],
         customer: Customer.fromMap(map['customer']),
         manager: HubManager.fromMap(map['manager']),
         items: List<OrderItem>.from(
@@ -127,7 +135,8 @@ class SaleOrder extends HiveObject {
         paymentMethod: map['paymentMethod'],
         paymentStatus: map['paymentStatus'],
         transactionSynced: map['transactionSynced'],
-        tracsactionDateTime: map['tracsactionDateTime']);
+        tracsactionDateTime: map['tracsactionDateTime'],
+        );
   }
 
   String toJson() => json.encode(toMap());
@@ -137,7 +146,7 @@ class SaleOrder extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder(id: $id, date: $date, time: $time, customer: $customer, manager: $manager, items: $items, orderAmount: $orderAmount, transactionId: $transactionId, transactionSynced: $transactionSynced. tracsactionDateTime: $tracsactionDateTime)';
+    return 'SaleOrder(id: $id, date: $date, time: $time, customer: $customer, manager: $manager, items: $items, orderAmount: $orderAmount, transactionId: $transactionId, transactionSynced: $transactionSynced. tracsactionDateTime: $tracsactionDateTime, taxes: $taxes)';
   }
 
   @override
@@ -156,7 +165,8 @@ class SaleOrder extends HiveObject {
         other.paymentMethod == paymentMethod &&
         other.paymentStatus == paymentStatus &&
         other.transactionSynced == transactionSynced &&
-        other.tracsactionDateTime.isAtSameMomentAs(tracsactionDateTime);
+        other.tracsactionDateTime.isAtSameMomentAs(tracsactionDateTime) &&
+        other.taxes == taxes;
   }
 
   @override
@@ -172,6 +182,7 @@ class SaleOrder extends HiveObject {
         paymentMethod.hashCode ^
         paymentStatus.hashCode ^
         transactionSynced.hashCode ^
-        tracsactionDateTime.hashCode;
+        tracsactionDateTime.hashCode ^
+        taxes.hashCode;
   }
 }

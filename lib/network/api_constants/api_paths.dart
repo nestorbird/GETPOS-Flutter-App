@@ -71,5 +71,8 @@ const CHANGE_PASSWORD_PATH = 'method/nbpos.nbpos.api.change_password';
 const CATEGORY_PRODUCTS_PATH =
     'method/nbpos.custom_api.item_variant_api.get_items';
 
+//Orderwise taxes api
+const ORDERWISE_TAXES_PATH = 'method/nbpos.nbpos.api.get_sales_taxes';
+
 //PROMO CODES API PATH
 const GET_ALL_PROMO_CODES_PATH = '';
