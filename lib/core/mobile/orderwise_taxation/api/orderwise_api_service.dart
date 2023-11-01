@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:js_interop';
 
-import 'package:intl/intl.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/core/mobile/orderwise_taxation/orderwise_tax_response.dart'
     as cat_resp;
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
-import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';

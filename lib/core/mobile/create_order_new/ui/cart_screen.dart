@@ -9,6 +9,7 @@ import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.d
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
+import 'package:nb_posx/core/service/create_order/model/create_sales_order_response.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
 import 'package:nb_posx/core/service/product/model/category_products_response.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
@@ -62,12 +63,15 @@ class _CartScreenState extends State<CartScreen> {
   double? stateGovTaxAmount = 0.0;
   double? centralGovTaxAmount = 0.0;
   double taxAmount = 0.0;
+  double? taxes;
 // Taxes? stateGovTax;
 //         Taxes? centralGovTax;
   // String? transactionID;
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
   bool isPromoCodeAvailableForUse = false;
+  bool ifTaxAvailable = false;
+  SaleOrder? saleOrder;
 
   @override
   void initState() {
@@ -512,7 +516,7 @@ class _CartScreenState extends State<CartScreen> {
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
 
-      SaleOrder saleOrder = SaleOrder(
+      saleOrder = SaleOrder(
           id: orderId,
           orderAmount: totalAmount,
           date: date,
@@ -532,7 +536,8 @@ class _CartScreenState extends State<CartScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
+              builder: (context) =>
+                  SaleSuccessScreen(placedOrder: saleOrder!)));
     }
   }
 
@@ -550,22 +555,13 @@ class _CartScreenState extends State<CartScreen> {
     subTotalAmount = 0.0;
     totalTaxAmount = 0.0;
     totalItems = 0;
-    //   taxPercentage = 0.0;
-    //   totalTaxPercentage = 0;
-    //   stateGovTax = 0.0;
-    //  centralGovTax = 0.0;
-    //   stateGovTaxAmount = 0.0;
-    //   centralGovTaxAmount = 0.0;
 
     for (OrderItem item in items) {
+      // logic to check tax avial or not
+
+//if(item.tax.isTaxAvailable){}
 //fetch the taxrate from list of taxes
       if (item.tax.isNotEmpty) {
-        // forEach (Taxes tax item.tax) {
-        //   stateGovTax = tax.taxRate;
-        //   log("stateGovTax:$stateGovTax");
-        //   centralGovTax = tax.taxRate;
-        //   log("centralGovTax:$centralGovTax");
-        // }
         //calculating subtotal amount to calculate taxes for items added in cart
         quantity = item.orderedQuantity;
         log("Quantity Ordered : $quantity");
@@ -604,13 +600,6 @@ class _CartScreenState extends State<CartScreen> {
         log("Total Tax Amount : $totalTaxAmount");
         DbTaxes().saveItemWiseTax(orderId, taxation);
       } else {
-        // (List<OrderItem> items) {
-        //   totalAmount = 0.0;
-        //   subTotalAmount = 0.0;
-        //   totalTaxAmount = 0.0;
-        //   totalItems = 0;
-        //   for (OrderItem item in items) {
-        //     if (item.tax.isEmpty)
         quantity = item.orderedQuantity;
         log("Quantity Ordered : $quantity");
         subTotalAmount = item.orderedQuantity * item.orderedPrice;
@@ -631,14 +620,16 @@ class _CartScreenState extends State<CartScreen> {
           }
         }
 //calculating tax amount
-        List<OrderTaxes> taxes = [];
-        item.tax.forEach((tax) async {
+        List<OrderTaxes> taxesData = [];
+        //to do
+
+        saleOrder!.taxes.forEach((tax) async {
           taxAmount = subTotalAmount * tax.taxRate / 100;
 
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           totalAmount = subTotalAmount + totalTaxAmount;
-          taxes.add(OrderTaxes(
+          taxesData.add(OrderTaxes(
               id: orderId,
               itemTaxTemplate: tax.itemTaxTemplate,
               taxType: tax.taxType,
@@ -647,32 +638,11 @@ class _CartScreenState extends State<CartScreen> {
         });
 
         log("Total Tax Amount : $totalTaxAmount");
-        DbTaxes().saveOrderWiseTax(orderId, taxes);
+        DbTaxes().saveOrderWiseTax(orderId, taxesData);
       }
-      //to Optimize here by adding this code in for each above
-
-      //to Optimize here by adding this code in for each above
-      // List<Taxation> taxation = [];
-      // item.tax.forEach((tax) async {
-      //   taxation.add(Taxation(
-      //       id: orderId,
-      //       itemTaxTemplate: tax.itemTaxTemplate,
-      //       taxType: tax.taxType,
-      //       taxRate: tax.taxRate,
-      //       taxationAmount: taxAmount));
-      // });
-      // DbTaxes().saveItemWiseTax(orderId, taxation);
-
-      //calculation of stategovtax amount and centralgovtax amount
-      // stateGovTaxAmount = subTotalAmount * stateGovTax! / 100;
-      // log("State Government Tax Amount imposed on ${item.name} :: $stateGovTaxAmount");
-      // centralGovTaxAmount = subTotalAmount * centralGovTax! / 100;
-      // log("Central Government Tax Amount imposed on ${item.name} :: $centralGovTaxAmount");
+      ;
     }
 
-    //total amount with SGST amount and CGST amount
-
-    // totalAmount = subTotalAmount + stateGovTaxAmount! + centralGovTaxAmount!;
     log("Total Amount: $totalAmount");
 
     log('Total :: $totalAmount');
