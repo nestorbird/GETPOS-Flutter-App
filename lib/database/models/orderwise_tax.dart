@@ -7,19 +7,20 @@ part 'orderwise_tax.g.dart';
 
 @HiveType(typeId: OrderwiseTaxBoxTypeId)
 class OrderTax extends HiveObject {
-  
-
   @HiveField(0)
-  String itemTaxTemplate;
+  String taxId;
 
   @HiveField(1)
-  String taxType;
+  String itemTaxTemplate;
 
   @HiveField(2)
+  String taxType;
+
+  @HiveField(3)
   double taxRate;
 
   OrderTax({
-   
+    required this.taxId,
     required this.itemTaxTemplate,
     required this.taxType,
     required this.taxRate,
@@ -33,7 +34,7 @@ class OrderTax extends HiveObject {
     double? taxAmount,
   }) {
     return OrderTax(
-      
+      taxId: taxId ?? this.taxId,
       itemTaxTemplate: itemTaxTemplate ?? this.itemTaxTemplate,
       taxType: taxType ?? this.taxType,
       taxRate: taxRate ?? this.taxRate,
@@ -42,7 +43,7 @@ class OrderTax extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      
+      'taxId': taxId,
       'itemTaxTemplate': itemTaxTemplate,
       'taxType': taxType,
       'taxRate': taxRate,
@@ -51,7 +52,7 @@ class OrderTax extends HiveObject {
 
   factory OrderTax.fromMap(Map<String, dynamic> map) {
     return OrderTax(
-     
+      taxId: map['taxId'] ?? '',
       itemTaxTemplate: map['itemTaxTemplate'] ?? '',
       taxType: map['taxType'] ?? '',
       taxRate: map['taxRate'] ?? '',
@@ -64,14 +65,14 @@ class OrderTax extends HiveObject {
 //
   @override
   String toString() =>
-      'Taxes(itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate )';
+      'Taxes(itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate, taxId: $taxId )';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is OrderTax &&
-        
+    other.taxId == taxId &&
         other.itemTaxTemplate == itemTaxTemplate &&
         other.taxType == taxType &&
         other.taxRate == taxRate;
@@ -79,8 +80,5 @@ class OrderTax extends HiveObject {
 
   @override
   int get hashCode =>
-     
-      itemTaxTemplate.hashCode ^
-      taxType.hashCode ^
-      taxRate.hashCode;
+     taxId.hashCode^ itemTaxTemplate.hashCode ^ taxType.hashCode ^ taxRate.hashCode;
 }

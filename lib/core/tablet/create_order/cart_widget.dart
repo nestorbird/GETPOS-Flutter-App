@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
 import 'package:nb_posx/database/models/order_item.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 
@@ -31,7 +33,7 @@ import '../widget/select_customer_popup.dart';
 class CartWidget extends StatefulWidget {
   Customer? customer;
   List<OrderItem> orderList;
-  //List<OrderItem> orderList;
+  List<OrderTax> taxes;
   Function onNewOrder, onHome, onPrintReceipt;
   CartWidget({
     Key? key,
@@ -40,6 +42,7 @@ class CartWidget extends StatefulWidget {
     required this.onNewOrder,
     required this.onHome,
     required this.onPrintReceipt,
+    required this.taxes
   }) : super(key: key);
 
   @override
@@ -619,7 +622,6 @@ class _CartWidgetState extends State<CartWidget> {
         orderAmount: totalAmount,
         date: date,
         time: time,
-       
         customer: currentCart!.customer,
         manager: Helper.hubManager!,
         items: currentCart!.items,
@@ -669,6 +671,8 @@ class _CartWidgetState extends State<CartWidget> {
         items: widget.orderList,
         orderAmount: 0,
         transactionDateTime: DateTime.now(),
+        taxes: widget.taxes,
+       
       );
       _calculateOrderAmount();
       DbParkedOrder().saveOrder(currentCart!);

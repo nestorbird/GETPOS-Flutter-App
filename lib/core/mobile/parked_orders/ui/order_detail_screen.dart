@@ -431,8 +431,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
     for (OrderItem item in items) {
       //taxPercentage = taxPercentage + (item.tax * item.orderedQuantity);
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
-      subTotalAmount =
-          subTotalAmount + (item.orderedPrice * item.orderedQuantity);
+      // subTotalAmount =
+      //     subTotalAmount + (item.orderedPrice * item.orderedQuantity);
+          subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {

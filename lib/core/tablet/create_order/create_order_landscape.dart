@@ -139,6 +139,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
           child: CartWidget(
             customer: customer,
             orderList: items,
+            taxes: [],
             onHome: () {
               widget.selectedView.value = "Home";
               items.clear();

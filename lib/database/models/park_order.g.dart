@@ -25,13 +25,14 @@ class ParkOrderAdapter extends TypeAdapter<ParkOrder> {
       items: (fields[5] as List).cast<OrderItem>(),
       orderAmount: fields[6] as double,
       transactionDateTime: fields[7] as DateTime,
+      taxes: (fields[8] as List).cast<OrderTax>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ParkOrder obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class ParkOrderAdapter extends TypeAdapter<ParkOrder> {
       ..writeByte(6)
       ..write(obj.orderAmount)
       ..writeByte(7)
-      ..write(obj.transactionDateTime);
+      ..write(obj.transactionDateTime)
+      ..writeByte(8)
+      ..write(obj.taxes);
   }
 
   @override

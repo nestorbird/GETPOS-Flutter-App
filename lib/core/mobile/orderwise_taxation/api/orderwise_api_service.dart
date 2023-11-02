@@ -6,6 +6,7 @@ import 'package:nb_posx/core/mobile/orderwise_taxation/orderwise_tax_response.da
     as cat_resp;
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
@@ -22,30 +23,32 @@ class OrderwiseTaxes {
           await APIUtils.getRequestWithHeaders(orderwisetaxespath);
       log(jsonEncode(apiResponse));
 
-      cat_resp.OrderwiseTaxationResponse resp =
-          cat_resp.OrderwiseTaxationResponse.fromJson(apiResponse);
+      cat_resp.OrderWiseTaxation resp =
+          cat_resp.OrderWiseTaxation.fromJson(apiResponse);
       // OrderwiseTaxationResponse orderwiseTaxationResponse =
       //     OrderwiseTaxationResponse.fromJson(apiResponse);
-      cat_resp.OrderwiseTaxationResponse.fromJson(apiResponse);
+      cat_resp.OrderWiseTaxation.fromJson(apiResponse);
       if (resp.message.isNotEmpty) {
         // List<OrderTax> taxes= [];
         //
         await Future.forEach(resp.message, (catObj) async {
           var catData = catObj as cat_resp.Message;
           //var data =(catData.disabled.)
-          List<OrderTax> taxes = [];
+          List<OrderTax> taxesOrder = [];
 
           await Future.forEach(catData.tax, (taxObj) async {
             var taxData = taxObj as cat_resp.Tax;
            
               OrderTax ordertax = OrderTax(
-           
+           taxId: taxData.taxId,
                 itemTaxTemplate: taxData.itemTaxTemplate,
                 taxType: taxData.taxType,
                 taxRate: taxData.taxRate,
               );
-             taxes.add(ordertax);
+             taxesOrder.add(ordertax);
           });
+           
+            await DbTaxes().addOrderTaxes(taxesOrder);
          
         });
 
