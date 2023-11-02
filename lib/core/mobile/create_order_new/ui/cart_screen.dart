@@ -521,7 +521,7 @@ class _CartScreenState extends State<CartScreen> {
           orderAmount: totalAmount,
           date: date,
           time: time,
-          taxes: [],
+          
           customer: widget.order.customer,
           manager: hubManager!,
           items: widget.order.items,
@@ -622,20 +622,21 @@ class _CartScreenState extends State<CartScreen> {
 //calculating tax amount
         List<OrderTaxes> taxesData = [];
         //to do
+//salesorder
+      //  taxes.forEach((tax) async {
+      //     taxAmount = subTotalAmount * tax.taxRate / 100;
 
-        saleOrder!.taxes.forEach((tax) async {
-          taxAmount = subTotalAmount * tax.taxRate / 100;
-
-          log('Tax Amount : $taxAmount');
-          totalTaxAmount += taxAmount;
-          totalAmount = subTotalAmount + totalTaxAmount;
-          taxesData.add(OrderTaxes(
-              id: orderId,
-              itemTaxTemplate: tax.itemTaxTemplate,
-              taxType: tax.taxType,
-              taxRate: tax.taxRate,
-              taxationAmount: taxAmount));
-        });
+      //     log('Tax Amount : $taxAmount');
+      //     totalTaxAmount += taxAmount;
+      //     totalAmount = subTotalAmount + totalTaxAmount;
+      //     taxesData.add(OrderTaxes(
+      //         id: orderId,
+      //         itemTaxTemplate: tax.itemTaxTemplate,
+      //         taxType: tax.taxType,
+      //         taxRate: tax.taxRate,
+      //         taxationAmount: taxAmount));
+      //   }
+      // );
 
         log("Total Tax Amount : $totalTaxAmount");
         DbTaxes().saveOrderWiseTax(orderId, taxesData);

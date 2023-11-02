@@ -109,7 +109,7 @@ class GetPreviousOrder {
             id: order.name!,
             date: date,
             time: time,
-            taxes: [],
+           
             customer: Customer(
               id: order.customer!,
               name: order.customerName!,

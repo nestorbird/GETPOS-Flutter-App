@@ -619,7 +619,7 @@ class _CartWidgetState extends State<CartWidget> {
         orderAmount: totalAmount,
         date: date,
         time: time,
-        taxes: [],
+       
         customer: currentCart!.customer,
         manager: Helper.hubManager!,
         items: currentCart!.items,

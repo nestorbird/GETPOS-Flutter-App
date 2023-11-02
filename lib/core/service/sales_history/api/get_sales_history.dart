@@ -85,11 +85,9 @@ class GetSalesHistory {
                   productImage: Uint8List.fromList([]),
                   productImageUrl: orderedProduct.image,
                   productUpdatedTime: DateTime.now(),
-                  tax:[]
-                  );
+                  tax: []);
 
               orderedProducts.add(product);
-            
             }
 
             String transactionDateTime =
@@ -111,15 +109,14 @@ class GetSalesHistory {
               id: order.name!,
               date: date,
               time: time,
-              taxes: [],
+              
               customer: Customer(
-                id: order.customer!,
-                name: order.customerName!,
-                phone: order.contactPhone!,
-                email: order.contactEmail!,
-                isSynced: true,
-                modifiedDateTime: DateTime.now()
-              ),
+                  id: order.customer!,
+                  name: order.customerName!,
+                  phone: order.contactPhone!,
+                  email: order.contactEmail!,
+                  isSynced: true,
+                  modifiedDateTime: DateTime.now()),
               items: orderedProducts,
               manager: hubManager!,
               orderAmount: order.grandTotal!,
