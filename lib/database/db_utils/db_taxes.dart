@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-
 import 'package:hive/hive.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/database/models/order_item.dart';
@@ -13,7 +12,6 @@ class DbTaxes {
 
   Future<void> addTaxes(List<Taxes> list) async {
     box = await Hive.openBox<Taxes>(TAX_BOX);
-   
 
     for (Taxes item in list) {
       await box.put(item.taxId, item);
@@ -51,8 +49,6 @@ class DbTaxes {
     return box.get(key);
   }
 
- 
-
   Future<int> deleteTaxes() async {
     box = await Hive.openBox<Taxes>(TAX_BOX);
     return box.clear();
@@ -72,19 +68,11 @@ class DbTaxes {
     box.close();
     return list;
   }
+
 //to save tax list in db for itemwise taxation
   Future<List> saveItemWiseTax(orderId, List<Taxation> list) async {
     //box = await Hive.openBox<Taxation>(TAX_BOX);
     for (Taxation item in list) {
-      await box.put(item.id, item);
-    }
-
-    return list;
-  }
-//to save tax list in db for orderwise taxation
-  Future<List> saveOrderWiseTax(orderId, List<OrderTaxes> list) async {
-    //box = await Hive.openBox<Taxation>(TAX_BOX);
-    for (OrderTaxes item in list) {
       await box.put(item.id, item);
     }
 
