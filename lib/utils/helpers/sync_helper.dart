@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nb_posx/core/mobile/orderwise_taxation/api/orderwise_api_service.dart';
+import 'package:nb_posx/core/service/orderwise_taxation/api/orderwise_api_service.dart';
 import 'package:nb_posx/core/service/select_customer/api/create_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -43,14 +43,14 @@ class SyncHelper {
   ///if tax is null then orderwise taxation is applied otherwise
   /// itemwise taxation has the first priority
   ///
-  Future<bool> getTaxes() async {
-    if (await Helper.isNetworkAvailable()) {
-     // await ProductsService().getCategoryProduct();
-      var _ = await OrderwiseTaxes().getOrderwiseTaxes();
-      // _ = await ProductsService().getProducts();
-    }
-    return true;
-  }
+  // Future<bool> getTaxes() async {
+  //   if (await Helper.isNetworkAvailable()) {
+  //     // await ProductsService().getCategoryProduct();
+  //     var _ = await OrderwiseTaxes().getOrderwiseTaxes();
+  //     // _ = await ProductsService().getProducts();
+  //   }
+  //   return true;
+  // }
 
   ///
   /// when user logout from the app we follow this sync process
@@ -115,6 +115,7 @@ class SyncHelper {
       await HubManagerDetails().getAccountDetails();
       var _ = await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
+      await OrderwiseTaxes().getOrderwiseTaxes();
       // _ = await ProductsService().getProducts();
     }
     return true;

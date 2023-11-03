@@ -1,41 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'orderwise_tax.dart';
+part of 'order_tax_template.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class OrderTaxAdapter extends TypeAdapter<OrderTax> {
+class OrderTaxTemplateAdapter extends TypeAdapter<OrderTaxTemplate> {
   @override
-  final int typeId = 21;
+  final int typeId = 22;
 
   @override
-  OrderTax read(BinaryReader reader) {
+  OrderTaxTemplate read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return OrderTax(
+    return OrderTaxTemplate(
       taxId: fields[0] as String,
-      itemTaxTemplate: fields[1] as String,
-      taxType: fields[2] as String,
-      taxRate: fields[3] as double,
+      name: fields[1] as String,
+      isDefault: fields[2] as int,
+      disabled: fields[3] as int,
+      taxCategory: fields[4] as String,
+      tax: (fields[5] as List).cast<OrderTax>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, OrderTax obj) {
+  void write(BinaryWriter writer, OrderTaxTemplate obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.taxId)
       ..writeByte(1)
-      ..write(obj.itemTaxTemplate)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.taxType)
+      ..write(obj.isDefault)
       ..writeByte(3)
-      ..write(obj.taxRate);
+      ..write(obj.disabled)
+      ..writeByte(4)
+      ..write(obj.taxCategory)
+      ..writeByte(5)
+      ..write(obj.tax);
   }
 
   @override
@@ -44,7 +50,7 @@ class OrderTaxAdapter extends TypeAdapter<OrderTax> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is OrderTaxAdapter &&
+      other is OrderTaxTemplateAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

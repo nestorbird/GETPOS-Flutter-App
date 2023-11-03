@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/core/service/product/model/category_products_response.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 
 class Taxation extends HiveObject {
@@ -31,7 +32,7 @@ class Messages extends HiveObject {
    
    
     
-    List<Tax>? tax;
+    List<OrderTax>? tax;
  
   Messages(
       {required this.name,
@@ -41,3 +42,13 @@ class Messages extends HiveObject {
       required this.tax
      });
 }
+// class OrderTaxationObject extends HiveObject {
+//   String id, itemTaxTemplate, taxType;
+//   double taxRate, taxationAmount;
+//   OrderTaxationObject(
+//       {required this.id,
+//       required this.itemTaxTemplate,
+//       required this.taxType,
+//       required this.taxRate,
+//       required this.taxationAmount});
+// }

@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/models/order_tax_template.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
@@ -95,6 +97,10 @@ void registerHiveTypeAdapters() {
   Hive.registerAdapter(OrderItemAdapter());
 
   Hive.registerAdapter(TaxesAdapter());
+
+  Hive.registerAdapter(OrderTaxAdapter());
+
+   Hive.registerAdapter(OrderTaxTemplateAdapter());
 }
 
 class MobileApp extends StatelessWidget {

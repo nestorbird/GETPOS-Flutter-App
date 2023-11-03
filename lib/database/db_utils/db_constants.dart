@@ -16,6 +16,7 @@ const OPTION_BOX = 'options';
 const ORDER_ITEM_BOX = 'order_items';
 const TAX_BOX = 'taxes';
 const ORDERTAX_BOX = 'ordertaxes';
+const ORDERTAXTEMPLATE_BOX = 'ordertaxtemplate';
 const URL_BOX = 'url';
 
 //Temporary Variables
@@ -36,6 +37,7 @@ const CustomerBoxTypeId = 18;
 const OrderItemBoxTypeId = 19;
 const TaxBoxTypeId = 20;
 const OrderwiseTaxBoxTypeId = 21;
+const OrderTaxTemplateId = 22;
 
 //PreferenceBox Constants
 const SelectedWard = 'SELECTED_WARDS';

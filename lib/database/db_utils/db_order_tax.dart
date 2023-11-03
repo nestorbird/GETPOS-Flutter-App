@@ -12,11 +12,9 @@ import 'db_constants.dart';
 class DbOrderTax {
   late Box box;
 
-  Future<void> addTaxes(List<OrderTax> list) async {
+  Future<void> addOrderTaxes(List<OrderTax> lists) async {
     box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
-   
-
-    for (OrderTax item in list) {
+    for (OrderTax item in lists) {
       await box.put(item.taxId, item);
     }
   }
@@ -44,7 +42,7 @@ class DbOrderTax {
  
 
   Future<int> deleteTaxes() async {
-    box = await Hive.openBox<OrderTax>(TAX_BOX);
+    box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
     return box.clear();
   }
 
@@ -52,7 +50,7 @@ class DbOrderTax {
 
 //to save tax list in db for orderwise taxation
   Future<List> saveOrderWiseTax(orderId, List<OrderTaxes> list) async {
-    box = await Hive.openBox<OrderTaxes>(TAX_BOX);
+    box = await Hive.openBox<OrderTaxes>(ORDERTAX_BOX);
     for (OrderTaxes item in list) {
       await box.put(item.id, item);
     }
