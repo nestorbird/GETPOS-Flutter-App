@@ -8,7 +8,7 @@ part 'orderwise_tax.g.dart';
 @HiveType(typeId: OrderwiseTaxBoxTypeId)
 class OrderTax extends HiveObject {
   @HiveField(0)
-  String? taxId;
+  String taxId;
 
   @HiveField(1)
   String itemTaxTemplate;
@@ -20,7 +20,7 @@ class OrderTax extends HiveObject {
   double taxRate;
 
   OrderTax({
-     this.taxId,
+    required this.taxId,
     required this.itemTaxTemplate,
     required this.taxType,
     required this.taxRate,
@@ -65,14 +65,13 @@ class OrderTax extends HiveObject {
 //
   @override
   String toString() =>
-      'Taxes(itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate , taxId: $taxId)';
+      'Taxes(itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate )';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is OrderTax &&
-        other.taxId == taxId &&
         other.itemTaxTemplate == itemTaxTemplate &&
         other.taxType == taxType &&
         other.taxRate == taxRate;
@@ -80,8 +79,5 @@ class OrderTax extends HiveObject {
 
   @override
   int get hashCode =>
-      taxId.hashCode ^
-      itemTaxTemplate.hashCode ^
-      taxType.hashCode ^
-      taxRate.hashCode;
+      itemTaxTemplate.hashCode ^ taxType.hashCode ^ taxRate.hashCode;
 }

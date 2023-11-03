@@ -17,7 +17,7 @@ class OrderTaxAdapter extends TypeAdapter<OrderTax> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return OrderTax(
-      taxId: fields[0] as String,
+      taxId: fields[0] as String?,
       itemTaxTemplate: fields[1] as String,
       taxType: fields[2] as String,
       taxRate: fields[3] as double,

@@ -325,7 +325,8 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
             items: [],
             orderAmount: 0,
             manager: manager,
-            transactionDateTime: DateTime.now());
+            transactionDateTime: DateTime.now(),
+            taxes:[]);
       }
 
       setState(() {
