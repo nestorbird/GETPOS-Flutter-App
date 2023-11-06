@@ -48,7 +48,7 @@ class ProductsService {
         //
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
-          //   log("catObj:$catObj");
+          log("catObj:$catObj");
           //var image = Uint8List.fromList([]);
           var image = (catData.itemGroupImage == null ||
                   catData.itemGroupImage!.isEmpty)

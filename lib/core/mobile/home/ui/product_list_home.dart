@@ -827,7 +827,7 @@ class _ProductListHomeState extends State<ProductListHome> {
             orderAmount: 0,
             manager: manager,
             transactionDateTime: DateTime.now(),
-            taxes: []);
+          );
       }
 
       setState(() {

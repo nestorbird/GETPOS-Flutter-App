@@ -35,15 +35,15 @@ class CartWidget extends StatefulWidget {
   List<OrderItem> orderList;
   List<OrderTax> taxes;
   Function onNewOrder, onHome, onPrintReceipt;
-  CartWidget({
-    Key? key,
-    this.customer,
-    required this.orderList,
-    required this.onNewOrder,
-    required this.onHome,
-    required this.onPrintReceipt,
-    required this.taxes
-  }) : super(key: key);
+  CartWidget(
+      {Key? key,
+      this.customer,
+      required this.orderList,
+      required this.onNewOrder,
+      required this.onHome,
+      required this.onPrintReceipt,
+      required this.taxes})
+      : super(key: key);
 
   @override
   State<CartWidget> createState() => _CartWidgetState();
@@ -671,8 +671,6 @@ class _CartWidgetState extends State<CartWidget> {
         items: widget.orderList,
         orderAmount: 0,
         transactionDateTime: DateTime.now(),
-        taxes: widget.taxes,
-       
       );
       _calculateOrderAmount();
       DbParkedOrder().saveOrder(currentCart!);

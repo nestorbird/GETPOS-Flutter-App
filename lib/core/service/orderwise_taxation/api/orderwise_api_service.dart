@@ -39,14 +39,14 @@ class OrderwiseTaxes {
         await Future.forEach(resp.message, (catObj) async {
           var catData = catObj as cat_resp.Message;
 
-          // OrderTaxTemplate ordertaxtemplate = OrderTaxTemplate(
-          //     name: catData.name,
-          //     isDefault: catData.isDefault,
-          //     disabled: catData.disabled,
-          //     taxCategory: catData.taxCategory,
-          //     tax: []);
-          // orderwisetaxes.add(ordertaxtemplate);
-          // await DbOrderTaxTemplate().addOrderTaxes(orderwisetaxes);
+          OrderTaxTemplate ordertaxtemplate = OrderTaxTemplate(
+              name: catData.name,
+              isDefault: catData.isDefault,
+              disabled: catData.disabled,
+              taxCategory: catData.taxCategory,
+              tax: []);
+          orderwisetaxes.add(ordertaxtemplate);
+          await DbOrderTaxTemplate().addOrderTaxes(orderwisetaxes);
 
           List<OrderTax> taxesOrder = [];
 
