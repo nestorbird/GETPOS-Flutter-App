@@ -55,19 +55,19 @@ class Message {
 }
 class Tax {
   String name;
-  String taxId;
+  
   String itemTaxTemplate;
   String chargeType;
   String taxType;
   String description;
   String costDenter;
   double taxRate;
-  dynamic accountCurrency;
+  dynamic accountCurrency = "";
   double taxAmount;
   double total;
   Tax({
     required this.name,
-    required this.taxId,
+   
     required this.itemTaxTemplate,
     required this.chargeType,
     required this.taxType,
@@ -80,7 +80,7 @@ class Tax {
   });
   factory Tax.fromJson(Map<String, dynamic> json) => Tax(
         name: json["name"],
-        taxId: json["taxId"],
+       
         itemTaxTemplate: json["item_tax_template"],
         chargeType: json["charge_type"],
         taxType: json["tax_type"],

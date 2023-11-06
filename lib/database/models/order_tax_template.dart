@@ -4,35 +4,32 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 part 'order_tax_template.g.dart';
+
 @HiveType(typeId: OrderTaxTemplateId)
 class OrderTaxTemplate extends HiveObject {
   @HiveField(0)
-  String taxId;
-  @HiveField(1)
   String name;
 
-  @HiveField(2)
+  @HiveField(1)
   int isDefault;
 
-  @HiveField(3)
+  @HiveField(2)
   int disabled;
 
-  @HiveField(4)
+  @HiveField(3)
   String taxCategory;
 
-  @HiveField(5)
+  @HiveField(4)
   List<OrderTax> tax;
 
   OrderTaxTemplate(
-      {required this.taxId,
-        required this.name,
+      {required this.name,
       required this.isDefault,
       required this.disabled,
       required this.taxCategory,
       required this.tax});
 
   OrderTaxTemplate copyWith({
-    String? taxId,
     String? name,
     int? isDefault,
     int? disabled,
@@ -40,7 +37,6 @@ class OrderTaxTemplate extends HiveObject {
     List<OrderTax>? tax,
   }) {
     return OrderTaxTemplate(
-       taxId: taxId ?? this.taxId,
       name: name ?? this.name,
       isDefault: isDefault ?? this.isDefault,
       disabled: disabled ?? this.disabled,
@@ -51,7 +47,6 @@ class OrderTaxTemplate extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      'taxId':taxId,
       'name': name,
       'isDefault': isDefault,
       'disabled': disabled,
@@ -62,7 +57,6 @@ class OrderTaxTemplate extends HiveObject {
 
   factory OrderTaxTemplate.fromMap(Map<String, dynamic> map) {
     return OrderTaxTemplate(
-      taxId: map['taxId'] ?? '',
       name: map['name'] ?? '',
       isDefault: map['isDefault'] ?? '',
       disabled: map['disabled'] ?? '',
@@ -77,14 +71,13 @@ class OrderTaxTemplate extends HiveObject {
 
   @override
   String toString() =>
-      'Taxes(taxId:$taxId,name: $name, isDefault: $isDefault, taxCategory: $taxCategory, tax: $tax )';
+      'Taxes(name: $name, isDefault: $isDefault, taxCategory: $taxCategory, tax: $tax )';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
     return other is OrderTaxTemplate &&
-    other.taxId == taxId &&
         other.name == name &&
         other.isDefault == isDefault &&
         other.taxCategory == taxCategory &&
@@ -95,7 +88,6 @@ class OrderTaxTemplate extends HiveObject {
 
   @override
   int get hashCode =>
-  taxId.hashCode ^
       name.hashCode ^
       isDefault.hashCode ^
       taxCategory.hashCode ^

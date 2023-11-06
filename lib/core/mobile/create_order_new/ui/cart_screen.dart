@@ -60,7 +60,8 @@ class _CartScreenState extends State<CartScreen> {
   double? taxPercentage;
   double totalTaxPercentage = 0.0;
   late HubManager? hubManager;
-  late List<OrderTaxTemplate>? getTaxesOrderwise;
+  late List<OrderTax>? getTaxesOrderwise;
+  late List<OrderTaxTemplate>? getOrderTemplate;
   double quantity = 0.0;
   double? stateGovTax = 0.0;
   double? centralGovTax = 0.0;
@@ -82,6 +83,7 @@ class _CartScreenState extends State<CartScreen> {
     super.initState();
     //_getAllPromoCodes();
     _getHubManager();
+    _getOrderTaxTemplate();
     //_getTaxes();
     //totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
@@ -603,11 +605,6 @@ class _CartScreenState extends State<CartScreen> {
         DbTaxes().saveItemWiseTax(orderId, taxation);
         //isTaxAvailable = false;
       } else {
-        quantity = item.orderedQuantity;
-        log("Quantity Ordered : $quantity");
-        subTotalAmount = item.orderedQuantity * item.orderedPrice;
-        log('SubTotal after adding ${item.name} :: $subTotalAmount');
-
 // //calculating subtotal amount to calculate taxes for attributes in items
 //         if (item.attributes.isNotEmpty) {
 //           for (var attribute in item.attributes) {
@@ -623,6 +620,8 @@ class _CartScreenState extends State<CartScreen> {
 //           }
 //         }
 //calculating tax amount
+        //_getTaxes();
+        //DbOrderTaxTemplate().getOrderTaxesTemplate();
         List<OrderTaxTemplate> data = [];
         for (OrderTaxTemplate message in data) {
           List<OrderTaxes> taxesData = [];
@@ -630,7 +629,7 @@ class _CartScreenState extends State<CartScreen> {
 
           message.tax.forEach((tax) async {
             taxAmount = subTotalAmount * tax.taxRate / 100;
-
+           
             log('Tax Amount : $taxAmount');
             totalTaxAmount += taxAmount;
             totalAmount = subTotalAmount + totalTaxAmount;
@@ -654,8 +653,12 @@ class _CartScreenState extends State<CartScreen> {
     // DbTaxes().saveTaxes();
   }
 
-void _getTaxes() async {
-    getTaxesOrderwise = await DbOrderTaxTemplate().getOrderTaxes();
+  void _getOrderTaxTemplate() async {
+    getOrderTemplate = await DbOrderTaxTemplate().getOrderTaxesTemplate();
+  }
+
+  void _getTaxes() async {
+    getTaxesOrderwise = await DbOrderTax().getOrderTaxes();
   }
 
   void _getHubManager() async {

@@ -15,7 +15,7 @@ class DbOrderTax {
   Future<void> addOrderTaxes(List<OrderTax> lists) async {
     box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
     for (OrderTax item in lists) {
-      await box.put(item.taxId, item);
+      await box.put(item.taxType, item);
     }
   }
 

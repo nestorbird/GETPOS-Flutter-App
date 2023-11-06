@@ -24,7 +24,7 @@ class OrderTaxes extends HiveObject {
       required this.taxRate,
       required this.taxationAmount});
 }
-//this is to be checked
+
 class Messages extends HiveObject {
   String? name,taxCategory;
    

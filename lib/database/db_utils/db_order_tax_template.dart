@@ -10,38 +10,28 @@ class DbOrderTaxTemplate {
   Future<void> addOrderTaxes(List<OrderTaxTemplate> lists) async {
     box = await Hive.openBox<OrderTaxTemplate>(ORDERTAXTEMPLATE_BOX);
     for (OrderTaxTemplate item in lists) {
-      await box.put(item.taxId, item);
+      await box.put(item.taxCategory, item);
     }
   }
 
- 
-
-  Future<List<OrderTaxTemplate>> getOrderTaxes() async {
+  Future<List<OrderTaxTemplate>> getOrderTaxesTemplate() async {
     box = await Hive.openBox<OrderTaxTemplate>(ORDERTAXTEMPLATE_BOX);
     List<OrderTaxTemplate> list = [];
 
     for (var item in box.values) {
       var tax = item as OrderTaxTemplate;
-     
-      var product = item as OrderItem;
 
       // if (product.stock > 0 && product.price > 0 && tax.tax > 0) {
-      //   list.add(tax);
+      list.add(tax);
       // }
     }
     return list;
   }
 
- 
-
- 
-
   Future<int> deleteTaxes() async {
     box = await Hive.openBox<OrderTaxTemplate>(ORDERTAXTEMPLATE_BOX);
     return box.clear();
   }
-
-   
 
 // //to save tax list in db for orderwise taxation
 //   Future<List> saveOrderWiseTax(orderId, List<OrderTaxTemplate> list) async {

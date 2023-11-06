@@ -17,30 +17,27 @@ class OrderTaxTemplateAdapter extends TypeAdapter<OrderTaxTemplate> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return OrderTaxTemplate(
-      taxId: fields[0] as String,
-      name: fields[1] as String,
-      isDefault: fields[2] as int,
-      disabled: fields[3] as int,
-      taxCategory: fields[4] as String,
-      tax: (fields[5] as List).cast<OrderTax>(),
+      name: fields[0] as String,
+      isDefault: fields[1] as int,
+      disabled: fields[2] as int,
+      taxCategory: fields[3] as String,
+      tax: (fields[4] as List).cast<OrderTax>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, OrderTaxTemplate obj) {
     writer
-      ..writeByte(6)
-      ..writeByte(0)
-      ..write(obj.taxId)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.isDefault)
-      ..writeByte(3)
-      ..write(obj.disabled)
-      ..writeByte(4)
-      ..write(obj.taxCategory)
       ..writeByte(5)
+      ..writeByte(0)
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.isDefault)
+      ..writeByte(2)
+      ..write(obj.disabled)
+      ..writeByte(3)
+      ..write(obj.taxCategory)
+      ..writeByte(4)
       ..write(obj.tax);
   }
 

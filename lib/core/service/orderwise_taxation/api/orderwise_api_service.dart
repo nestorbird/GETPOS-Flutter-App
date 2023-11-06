@@ -5,8 +5,11 @@ import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart'
     as cat_resp;
-import 'package:nb_posx/core/service/create_order/model/create_sales_order_response.dart';
+import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart';
+
 import 'package:nb_posx/database/db_utils/db_constants.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
@@ -30,34 +33,35 @@ class OrderwiseTaxes {
           cat_resp.OrderWiseTaxation.fromJson(apiResponse);
       // OrderwiseTaxationResponse orderwiseTaxationResponse =
       //     OrderwiseTaxationResponse.fromJson(apiResponse);
-      cat_resp.OrderWiseTaxation.fromJson(apiResponse);
+      // cat_resp.OrderWiseTaxation.fromJson(apiResponse);
+      List<OrderTaxTemplate> orderwisetaxes = [];
       if (resp.message.isNotEmpty) {
         await Future.forEach(resp.message, (catObj) async {
           var catData = catObj as cat_resp.Message;
-         List<OrderTaxTemplate> orderwisetaxes = [];
-          OrderTaxTemplate ordertaxtemplate = OrderTaxTemplate(
-            taxId: catData.taxId,
-              name: catData.name,
-              isDefault: catData.isDefault,
-              disabled: catData.disabled,
-              taxCategory: catData.taxCategory,
-              tax: []);
-          ordertaxtemplate.add(OrderTaxTemplate);
-          
+
+          // OrderTaxTemplate ordertaxtemplate = OrderTaxTemplate(
+          //     name: catData.name,
+          //     isDefault: catData.isDefault,
+          //     disabled: catData.disabled,
+          //     taxCategory: catData.taxCategory,
+          //     tax: []);
+          // orderwisetaxes.add(ordertaxtemplate);
+          // await DbOrderTaxTemplate().addOrderTaxes(orderwisetaxes);
+
           List<OrderTax> taxesOrder = [];
 
           await Future.forEach(catData.tax, (taxObj) async {
             var taxData = taxObj as cat_resp.Tax;
-           
-              OrderTax ordertax = OrderTax(
-           taxId: taxData.taxId,
-                itemTaxTemplate: taxData.itemTaxTemplate,
-                taxType: taxData.taxType,
-                taxRate: taxData.taxRate,
-              );
-             taxesOrder.add(ordertax);
+
+            OrderTax ordertax = OrderTax(
+              itemTaxTemplate: taxData.itemTaxTemplate,
+              taxType: taxData.taxType,
+              taxRate: taxData.taxRate,
+            );
+            taxesOrder.add(ordertax);
           });
-         
+
+          await DbOrderTax().addOrderTaxes(taxesOrder);
         });
 
         // await DbTaxes().addTaxes(taxes);

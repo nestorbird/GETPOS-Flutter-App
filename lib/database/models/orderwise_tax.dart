@@ -7,8 +7,7 @@ part 'orderwise_tax.g.dart';
 
 @HiveType(typeId: OrderwiseTaxBoxTypeId)
 class OrderTax extends HiveObject {
-  @HiveField(0)
-  String taxId;
+ 
 
   @HiveField(1)
   String itemTaxTemplate;
@@ -20,21 +19,21 @@ class OrderTax extends HiveObject {
   double taxRate;
 
   OrderTax({
-    required this.taxId,
+   
     required this.itemTaxTemplate,
     required this.taxType,
     required this.taxRate,
   });
 
   OrderTax copyWith({
-    String? taxId,
+    
     String? itemTaxTemplate,
     String? taxType,
     double? taxRate,
     double? taxAmount,
   }) {
     return OrderTax(
-      taxId: taxId ?? this.taxId,
+    
       itemTaxTemplate: itemTaxTemplate ?? this.itemTaxTemplate,
       taxType: taxType ?? this.taxType,
       taxRate: taxRate ?? this.taxRate,
@@ -43,7 +42,7 @@ class OrderTax extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      'taxId': taxId,
+      
       'itemTaxTemplate': itemTaxTemplate,
       'taxType': taxType,
       'taxRate': taxRate,
@@ -52,7 +51,7 @@ class OrderTax extends HiveObject {
 
   factory OrderTax.fromMap(Map<String, dynamic> map) {
     return OrderTax(
-      taxId: map['taxId'] ?? '',
+     
       itemTaxTemplate: map['itemTaxTemplate'] ?? '',
       taxType: map['taxType'] ?? '',
       taxRate: map['taxRate'] ?? '',

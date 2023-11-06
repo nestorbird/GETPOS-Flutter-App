@@ -113,7 +113,7 @@ class ProductsService {
             //     taxes.add(tax);
             //   }
             // });
-            await DbTaxes().addTaxes(taxes);
+            //await DbTaxes().addTaxes(taxes);
             await DBPreferences().savePreference(
                 PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
 
