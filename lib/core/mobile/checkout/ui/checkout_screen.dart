@@ -154,7 +154,8 @@ if(paymentMethod=="Card"){ return Helper.showPopup(context,
         transactionSynced: false,
         parkOrderId:
             "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-        tracsactionDateTime: currentDateTime);
+        tracsactionDateTime: currentDateTime,
+        totalTaxAmount: 0.0);
     if (!mounted) return;
     Navigator.push(
         context,

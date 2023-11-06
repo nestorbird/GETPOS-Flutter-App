@@ -620,6 +620,7 @@ class _CartWidgetState extends State<CartWidget> {
     SaleOrder saleOrder = SaleOrder(
         id: orderId,
         orderAmount: totalAmount,
+        totalTaxAmount: 0.0,
         date: date,
         time: time,
         customer: currentCart!.customer,

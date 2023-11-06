@@ -162,4 +162,14 @@ class DbSaleOrder {
     // await box.close();
     return itemsToDelete == deleteCounter;
   }
+
+  //to save tax list in db for orderwise taxation
+  // Future<double> saveOrderWiseTax(orderId, totalTaxAmount,totalAmount) async {
+  //   box = await Hive.openBox<SaleOrder>(ORDERTAX_BOX);
+ 
+  //  // var taxwiseOrder=  await box.putAll();
+    
+
+  //   return taxwiseOrder ;
+  // }
 }

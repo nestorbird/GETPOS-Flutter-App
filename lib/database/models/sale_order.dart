@@ -50,7 +50,8 @@ class SaleOrder extends HiveObject {
 
   String? parkOrderId;
 
- 
+  @HiveField(12)
+  double totalTaxAmount;
 
   SaleOrder({
     required this.id,
@@ -66,7 +67,7 @@ class SaleOrder extends HiveObject {
     required this.paymentMethod,
     required this.paymentStatus,
     this.parkOrderId = '',
-   
+    required this.totalTaxAmount,
   });
 
   SaleOrder copyWith({
@@ -82,22 +83,23 @@ class SaleOrder extends HiveObject {
     String? paymentStatus,
     bool? transactionSynced,
     DateTime? tracsactionDateTime,
-   
+    double? totalTaxAmount,
   }) {
     return SaleOrder(
-        id: id ?? this.id,
-        date: date ?? this.date,
-        time: time ?? this.time,
-        customer: customer ?? this.customer,
-        manager: manager ?? this.manager,
-        items: items ?? this.items,
-        orderAmount: orderAmount ?? this.orderAmount,
-        transactionId: transactionId ?? this.transactionId,
-        paymentMethod: paymentMethod ?? this.paymentMethod,
-        paymentStatus: paymentStatus ?? this.paymentStatus,
-        transactionSynced: transactionSynced ?? this.transactionSynced,
-        tracsactionDateTime: tracsactionDateTime ?? this.tracsactionDateTime,
-        );
+      id: id ?? this.id,
+      date: date ?? this.date,
+      time: time ?? this.time,
+      customer: customer ?? this.customer,
+      manager: manager ?? this.manager,
+      items: items ?? this.items,
+      orderAmount: orderAmount ?? this.orderAmount,
+      transactionId: transactionId ?? this.transactionId,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
+      paymentStatus: paymentStatus ?? this.paymentStatus,
+      transactionSynced: transactionSynced ?? this.transactionSynced,
+      tracsactionDateTime: tracsactionDateTime ?? this.tracsactionDateTime,
+      totalTaxAmount: totalTaxAmount ?? this.totalTaxAmount,
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -114,27 +116,27 @@ class SaleOrder extends HiveObject {
       'paymentStatus': paymentStatus,
       'transactionSynced': transactionSynced,
       'tracsactionDateTime': tracsactionDateTime.toIso8601String(),
-     
+      'totalTaxAmount': totalTaxAmount,
     };
   }
 
   factory SaleOrder.fromMap(Map<String, dynamic> map) {
     return SaleOrder(
-        id: map['id'],
-        date: map['date'],
-        time: map['time'],
-       
-        customer: Customer.fromMap(map['customer']),
-        manager: HubManager.fromMap(map['manager']),
-        items: List<OrderItem>.from(
-            map['items']?.map((x) => OrderItem.fromMap(x))),
-        orderAmount: map['orderAmount'],
-        transactionId: map['transactionId'],
-        paymentMethod: map['paymentMethod'],
-        paymentStatus: map['paymentStatus'],
-        transactionSynced: map['transactionSynced'],
-        tracsactionDateTime: map['tracsactionDateTime'],
-        );
+      id: map['id'],
+      date: map['date'],
+      time: map['time'],
+      customer: Customer.fromMap(map['customer']),
+      manager: HubManager.fromMap(map['manager']),
+      items:
+          List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromMap(x))),
+      orderAmount: map['orderAmount'],
+      transactionId: map['transactionId'],
+      paymentMethod: map['paymentMethod'],
+      paymentStatus: map['paymentStatus'],
+      transactionSynced: map['transactionSynced'],
+      tracsactionDateTime: map['tracsactionDateTime'],
+      totalTaxAmount: map['totalTaxAmount'],
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -144,7 +146,7 @@ class SaleOrder extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder(id: $id, date: $date, time: $time, customer: $customer, manager: $manager, items: $items, orderAmount: $orderAmount, transactionId: $transactionId, transactionSynced: $transactionSynced. tracsactionDateTime: $tracsactionDateTime)';
+    return 'SaleOrder(id: $id, date: $date, time: $time, customer: $customer, manager: $manager, items: $items, orderAmount: $orderAmount, transactionId: $transactionId, transactionSynced: $transactionSynced. tracsactionDateTime: $tracsactionDateTime, totalTaxAmount: $totalTaxAmount)';
   }
 
   @override
@@ -163,7 +165,8 @@ class SaleOrder extends HiveObject {
         other.paymentMethod == paymentMethod &&
         other.paymentStatus == paymentStatus &&
         other.transactionSynced == transactionSynced &&
-        other.tracsactionDateTime.isAtSameMomentAs(tracsactionDateTime) ;
+        other.tracsactionDateTime.isAtSameMomentAs(tracsactionDateTime) &&
+        other.totalTaxAmount == totalTaxAmount;
   }
 
   @override
@@ -179,6 +182,7 @@ class SaleOrder extends HiveObject {
         paymentMethod.hashCode ^
         paymentStatus.hashCode ^
         transactionSynced.hashCode ^
-        tracsactionDateTime.hashCode ;
+        tracsactionDateTime.hashCode ^
+        totalTaxAmount.hashCode;
   }
 }

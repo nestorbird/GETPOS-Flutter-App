@@ -126,6 +126,7 @@ class GetSalesHistory {
               paymentMethod: order.modeOfPayment!,
               paymentStatus: "",
               transactionSynced: true,
+              totalTaxAmount: 0.0
             );
 
             sales.add(saleOrder);
