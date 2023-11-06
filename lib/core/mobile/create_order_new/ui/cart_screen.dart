@@ -557,7 +557,7 @@ class _CartScreenState extends State<CartScreen> {
 
   //Tax calculation with SGST and CGST
   //if(items.tax.ifTaxAvailable){}
-  _configureTaxAndTotal(List<OrderItem> items) {
+  _configureTaxAndTotal(List<OrderItem> items) async {
     totalAmount = 0.0;
     subTotalAmount = 0.0;
     totalTaxAmount = 0.0;
@@ -622,14 +622,14 @@ class _CartScreenState extends State<CartScreen> {
 //calculating tax amount
         //_getTaxes();
         //DbOrderTaxTemplate().getOrderTaxesTemplate();
-        List<OrderTaxTemplate> data = [];
+        List<OrderTaxTemplate> data = await DbOrderTaxTemplate().getOrderTaxesTemplate();
         for (OrderTaxTemplate message in data) {
           List<OrderTaxes> taxesData = [];
           //to do
 
           message.tax.forEach((tax) async {
             taxAmount = subTotalAmount * tax.taxRate / 100;
-           
+
             log('Tax Amount : $taxAmount');
             totalTaxAmount += taxAmount;
             totalAmount = subTotalAmount + totalTaxAmount;

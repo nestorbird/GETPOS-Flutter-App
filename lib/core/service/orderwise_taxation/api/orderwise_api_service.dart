@@ -2,16 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:nb_posx/constants/app_constants.dart';
-import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart'
     as cat_resp;
-import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart';
-
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
-import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -23,7 +19,7 @@ import 'package:nb_posx/utils/helper.dart';
 class OrderwiseTaxes {
   Future<CommanResponse> getOrderwiseTaxes() async {
     if (await Helper.isNetworkAvailable()) {
-      var orderwisetaxespath = "$ORDERWISE_TAXES_PATH";
+      var orderwisetaxespath = ORDERWISE_TAXES_PATH;
       //Call to orderwise taxes api
       var apiResponse =
           await APIUtils.getRequestWithHeaders(orderwisetaxespath);
@@ -38,15 +34,28 @@ class OrderwiseTaxes {
       if (resp.message.isNotEmpty) {
         await Future.forEach(resp.message, (catObj) async {
           var catData = catObj as cat_resp.Message;
+          List<OrderTax> taxes = [];
+          if (catData.tax.isNotEmpty) {
+            for (var tax in catData.tax) {
+              var orderTax = OrderTax(
+                  itemTaxTemplate: tax.itemTaxTemplate,
+                  taxType: tax.taxType,
+                  taxRate: tax.taxRate);
+              taxes.add(orderTax);
+            }
+          }
 
           OrderTaxTemplate ordertaxtemplate = OrderTaxTemplate(
               name: catData.name,
               isDefault: catData.isDefault,
               disabled: catData.disabled,
               taxCategory: catData.taxCategory,
-              tax: []);
+              tax: taxes);
           orderwisetaxes.add(ordertaxtemplate);
           await DbOrderTaxTemplate().addOrderTaxes(orderwisetaxes);
+          var templatesTax = await DbOrderTaxTemplate().getOrderTaxesTemplate();
+
+          log("$templatesTax");
 
           List<OrderTax> taxesOrder = [];
 
