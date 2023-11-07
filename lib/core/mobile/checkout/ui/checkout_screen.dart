@@ -48,7 +48,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     _getHubManager();
     totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
-   
   }
 
   @override
@@ -84,12 +83,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         isAmountAndItemsVisible: true,
         totalAmount: '$totalAmount',
         totalItems: '$totalItems',
-        onTap: () => createSale(_isCODSelected?"Card":"Cash"),
+        onTap: () => createSale(_isCODSelected ? "Card" : "Cash"),
       ),
     );
   }
 
-  getPaymentOption(String icon, String title, bool selected,) {
+  getPaymentOption(
+    String icon,
+    String title,
+    bool selected,
+  ) {
     return Expanded(
       child: InkWell(
         onTap: () {
@@ -104,7 +107,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           decoration: BoxDecoration(
               color: selected ? AppColors.active : AppColors.fontWhiteColor,
               border: Border.all(
-                  color: selected ?  AppColors.getPrimary() :  AppColors.getAsset(), width: 0.4),
+                  color:
+                      selected ? AppColors.getPrimary() : AppColors.getAsset(),
+                  width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_20)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -125,43 +130,42 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   createSale(String paymentMethod) async {
-    paymentMethod =paymentMethod;
-if(paymentMethod=="Card"){ return Helper.showPopup(context,
-              "Comming soon" );
+    paymentMethod = paymentMethod;
+    if (paymentMethod == "Card") {
+      return Helper.showPopup(context, "Comming soon");
+    } else {
+      DateTime currentDateTime = DateTime.now();
+      String date =
+          DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
+      log('Date : $date');
+      String time = DateFormat().add_jm().format(currentDateTime).toString();
+      log('Time : $time');
+      String orderId = await Helper.getOrderId();
+      log('Order No : $orderId');
 
-}else{
-    DateTime currentDateTime = DateTime.now();
-    String date =
-        DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
-    log('Date : $date');
-    String time = DateFormat().add_jm().format(currentDateTime).toString();
-    log('Time : $time');
-    String orderId = await Helper.getOrderId();
-    log('Order No : $orderId');
-
-    SaleOrder saleOrder = SaleOrder(
-        id: orderId,
-        orderAmount: totalAmount,
-        date: date,
-        time: time,
-       
-        customer: widget.order.customer,
-        manager: hubManager!,
-        items: widget.order.items,
-        transactionId: '',
-        paymentMethod: paymentMethod,
-        paymentStatus: "Paid",
-        transactionSynced: false,
-        parkOrderId:
-            "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-        tracsactionDateTime: currentDateTime,
-        totalTaxAmount: 0.0);
-    if (!mounted) return;
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
-  }}
+      SaleOrder saleOrder = SaleOrder(
+          id: orderId,
+          orderAmount: totalAmount,
+          date: date,
+          time: time,
+          customer: widget.order.customer,
+          manager: hubManager!,
+          items: widget.order.items,
+          transactionId: '',
+          paymentMethod: paymentMethod,
+          paymentStatus: "Paid",
+          transactionSynced: false,
+          parkOrderId:
+              "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
+          tracsactionDateTime: currentDateTime,
+          totalTaxAmount: 0.0);
+      if (!mounted) return;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
+    }
+  }
 
   void _getHubManager() async {
     hubManager = await DbHubManager().getManager();

@@ -30,7 +30,8 @@ class CreateOrderService {
                   id: opt.id,
                   name: opt.name,
                   price: opt.price,
-                  qty: item.orderedQuantity));
+                  qty: item.orderedQuantity,
+                  tax: item.tax));
             }
           }
         }
@@ -58,6 +59,7 @@ class CreateOrderService {
         items: items,
         modeOfPayment: order.paymentMethod,
         mpesaNo: order.transactionId,
+      
       );
 
       var body = {'order_list': orderRequest.toJson()};

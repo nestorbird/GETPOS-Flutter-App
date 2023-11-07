@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 class SalesOrderRequest {
   late String hubManager;
@@ -67,6 +68,7 @@ class Items {
   List<SelectedOptions> selectedOption;
   double orderedQuantity;
   double orderedPrice;
+  List<Taxes>? tax;
   Items({
     required this.itemCode,
     required this.name,
@@ -74,6 +76,7 @@ class Items {
     required this.selectedOption,
     required this.orderedQuantity,
     required this.orderedPrice,
+    this.tax,
   });
 
   Items copyWith({
@@ -83,6 +86,7 @@ class Items {
     List<SelectedOptions>? selectedOption,
     double? orderedQuantity,
     double? orderedPrice,
+    List<Taxes>? tax,
   }) {
     return Items(
       itemCode: itemCode ?? this.itemCode,
@@ -91,6 +95,7 @@ class Items {
       selectedOption: selectedOption ?? this.selectedOption,
       orderedQuantity: orderedQuantity ?? this.orderedQuantity,
       orderedPrice: orderedPrice ?? this.orderedPrice,
+      tax: tax ?? this.tax,
     );
   }
 
@@ -102,6 +107,7 @@ class Items {
       'sub_items': selectedOption.map((x) => x.toMap()).toList(),
       'qty': orderedQuantity,
       'ordered_price': orderedPrice,
+      'tax': tax,
     };
   }
 
@@ -114,6 +120,7 @@ class Items {
           map['selectedOption']?.map((x) => SelectedOptions.fromMap(x))),
       orderedQuantity: map['orderedQuantity'] ?? '',
       orderedPrice: map['orderedPrice'] ?? '',
+      tax: map['tax'] ?? '',
     );
   }
 
@@ -123,7 +130,7 @@ class Items {
 
   @override
   String toString() {
-    return 'Items(itemCode: $itemCode, name: $name, price: $price, selectedOption: $selectedOption, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice)';
+    return 'Items(itemCode: $itemCode, name: $name, price: $price, selectedOption: $selectedOption, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, tax: $tax)';
   }
 
   @override
@@ -136,7 +143,8 @@ class Items {
         other.price == price &&
         listEquals(other.selectedOption, selectedOption) &&
         other.orderedQuantity == orderedQuantity &&
-        other.orderedPrice == orderedPrice;
+        other.orderedPrice == orderedPrice &&
+        other.tax == tax;
   }
 
   @override
@@ -146,7 +154,8 @@ class Items {
         price.hashCode ^
         selectedOption.hashCode ^
         orderedQuantity.hashCode ^
-        orderedPrice.hashCode;
+        orderedPrice.hashCode ^
+        tax.hashCode;
   }
 }
 
@@ -155,11 +164,13 @@ class SelectedOptions {
   String name;
   double price;
   double qty;
+  List<Taxes>? tax;
   SelectedOptions({
     required this.id,
     required this.name,
     required this.price,
     required this.qty,
+    this.tax,
   });
 
   SelectedOptions copyWith({
@@ -167,12 +178,14 @@ class SelectedOptions {
     String? name,
     double? price,
     double? qty,
+    List<Taxes>? tax,
   }) {
     return SelectedOptions(
       id: id ?? this.id,
       name: name ?? this.name,
       price: price ?? this.price,
       qty: qty ?? this.qty,
+      tax: tax ?? this.tax,
     );
   }
 
@@ -182,6 +195,7 @@ class SelectedOptions {
       'item_name': name,
       'qty': qty,
       'rate': price,
+      'tax': tax,
     };
   }
 
@@ -191,6 +205,7 @@ class SelectedOptions {
       name: map['name'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
       qty: map['qty'] ?? 0.0,
+      tax: map['tax'] ?? [],
     );
   }
 
@@ -201,7 +216,7 @@ class SelectedOptions {
 
   @override
   String toString() =>
-      'SelectedOptions(id: $id, name: $name, price: $price, qty: $qty)';
+      'SelectedOptions(id: $id, name: $name, price: $price, qty: $qty, tax: $tax)';
 
   @override
   bool operator ==(Object other) {
@@ -211,9 +226,11 @@ class SelectedOptions {
         other.id == id &&
         other.name == name &&
         other.price == price &&
-        other.qty == qty;
+        other.qty == qty &&
+        other.tax == tax;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ price.hashCode ^ qty.hashCode;
+  int get hashCode =>
+      id.hashCode ^ name.hashCode ^ price.hashCode ^ qty.hashCode;
 }
