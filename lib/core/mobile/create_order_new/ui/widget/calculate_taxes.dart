@@ -15,32 +15,29 @@ class Taxation extends HiveObject {
 }
 
 class OrderTaxes extends HiveObject {
-  String id, itemTaxTemplate, taxType;
+  String? id, itemTaxTemplate, taxType;
   double taxRate, taxationAmount;
   OrderTaxes(
-      {required this.id,
-      required this.itemTaxTemplate,
-      required this.taxType,
+      {this.id,
+      this.itemTaxTemplate,
+      this.taxType,
       required this.taxRate,
       required this.taxationAmount});
 }
 
 class Messages extends HiveObject {
-  String? name,taxCategory;
-   
-    int? isDefault,disabled;
-   
-   
-    
-    List<OrderTax>? tax;
- 
+  String? name, taxCategory;
+
+  bool? isDefault, disabled;
+
+  List<OrderTax>? tax;
+
   Messages(
       {required this.name,
       required this.taxCategory,
       required this.isDefault,
       required this.disabled,
-      required this.tax
-     });
+      required this.tax});
 }
 // class OrderTaxationObject extends HiveObject {
 //   String id, itemTaxTemplate, taxType;

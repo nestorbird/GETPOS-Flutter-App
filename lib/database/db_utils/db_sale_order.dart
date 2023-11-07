@@ -1,4 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 
 import '../../constants/app_constants.dart';
 import '../models/order_item.dart';
@@ -164,12 +165,13 @@ class DbSaleOrder {
   }
 
   //to save tax list in db for orderwise taxation
-  // Future<double> saveOrderWiseTax(orderId, totalTaxAmount,totalAmount) async {
-  //   box = await Hive.openBox<SaleOrder>(ORDERTAX_BOX);
- 
-  //  // var taxwiseOrder=  await box.putAll();
-    
+  Future<List> saveOrderWiseTax(orderId, List<OrderTaxes> list) async {
+    box = await Hive.openBox<SaleOrder>(ORDERTAX_BOX);
+    for (OrderTaxes item in list) {
+      await box.put(item.id, item);
+    }
+    // var taxwiseOrder=  await box.putAll();
 
-  //   return taxwiseOrder ;
-  // }
+    return list;
+  }
 }

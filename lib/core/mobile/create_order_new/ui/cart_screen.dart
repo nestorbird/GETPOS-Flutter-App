@@ -76,7 +76,7 @@ class _CartScreenState extends State<CartScreen> {
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
   bool isPromoCodeAvailableForUse = false;
-  bool isTaxAvailable = true;
+
   SaleOrder? saleOrder;
 
   @override
@@ -160,12 +160,24 @@ class _CartScreenState extends State<CartScreen> {
               Padding(
                   padding: paddingXY(x: 16, y: 0),
                   child: _subtotalSection('Subtotal',
-                      '$appCurrency ${subTotalAmount.toStringAsFixed(2)}')),
+                      '$appCurrency ${totalAmount.toStringAsFixed(2)}')),
               hightSpacer10,
               Padding(
                   padding: paddingXY(x: 16, y: 0),
                   child: _subtotalSection('Discount', '$appCurrency 0.00',
                       isDiscount: true)),
+              hightSpacer10,
+
+              Padding(
+                  padding: paddingXY(x: 16, y: 0),
+                  child: _subtotalSection('Total Tax Applied',
+                      '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}')),
+              hightSpacer10,
+
+              Padding(
+                  padding: paddingXY(x: 16, y: 0),
+                  child: _subtotalSection('Grand Total',
+                      '$appCurrency ${(totalAmount + totalTaxAmount).toStringAsFixed(2)}')),
               hightSpacer10,
             ],
           ))
@@ -227,7 +239,7 @@ class _CartScreenState extends State<CartScreen> {
                                     fontWeight: FontWeight.normal),
                               ),
                               Text(
-                                  "$appCurrency ${totalAmount.toStringAsFixed(2)}",
+                                  "$appCurrency ${(totalAmount + totalTaxAmount).toStringAsFixed(2)}",
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
                                       fontWeight: FontWeight.w600,
@@ -558,106 +570,94 @@ class _CartScreenState extends State<CartScreen> {
   // }
 
   //Tax calculation with SGST and CGST
-  // if(items.tax.ifTaxAvailable){}
+
   _configureTaxAndTotal(List<OrderItem> items) async {
-    totalAmount = 0.0;
-    subTotalAmount = 0.0;
-    totalTaxAmount = 0.0;
-    totalItems = 0;
-    // isTaxAvailable = true;
+    // totalAmount = 0.0;
+    // subTotalAmount = 0.0;
+    // totalTaxAmount = 0.0;
+    // totalItems = 0;
+    bool isTaxAvailable = false;
     for (OrderItem item in items) {
       quantity = item.orderedQuantity;
       log("Quantity Ordered : $quantity");
       subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
-      // logic to check tax avial or not
-//&& isTaxAvailable == true
-//fetch the taxrate from list of taxes
-      if (isTaxAvailable == true) {
-        if (item.tax.isNotEmpty && isTaxAvailable) {
+      totalAmount += subTotalAmount;
+      log('total after adding an item:$totalAmount');
+      // if (!isTaxAvailable) {
+      if (item.tax.isNotEmpty) {
+        isTaxAvailable = true;
 //calculating subtotal amount to calculate taxes for attributes in items
-          if (item.attributes.isNotEmpty) {
-            for (var attribute in item.attributes) {
-              if (attribute.options.isNotEmpty) {
-                for (var option in attribute.options) {
-                  if (option.selected) {
-                    subTotalAmount =
-                        subTotalAmount + (option.price * item.orderedQuantity);
-                    log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
-                  }
+        if (item.attributes.isNotEmpty) {
+          for (var attribute in item.attributes) {
+            if (attribute.options.isNotEmpty) {
+              for (var option in attribute.options) {
+                if (option.selected) {
+                  subTotalAmount =
+                      subTotalAmount + (option.price * item.orderedQuantity);
+                  log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
                 }
               }
             }
           }
-//calculating tax amount
-          List<Taxation> taxation = [];
-          item.tax.forEach((tax) async {
-            taxAmount = subTotalAmount * tax.taxRate / 100;
-
-            log('Tax Amount : $taxAmount');
-            totalTaxAmount += taxAmount;
-            totalAmount = subTotalAmount + totalTaxAmount;
-            taxation.add(Taxation(
-                id: orderId,
-                itemTaxTemplate: tax.itemTaxTemplate,
-                taxType: tax.taxType,
-                taxRate: tax.taxRate,
-                taxationAmount: taxAmount));
-          });
-          log("Total Tax Amount : $totalTaxAmount");
-          DbTaxes().saveItemWiseTax(orderId, taxation);
         }
-      } else {
-        
-// //calculating subtotal amount to calculate taxes for attributes in items
-//         if (item.attributes.isNotEmpty) {
-//           for (var attribute in item.attributes) {
-//             if (attribute.options.isNotEmpty) {
-//               for (var option in attribute.options) {
-//                 if (option.selected) {
-//                   subTotalAmount =
-//                       subTotalAmount + (option.price * item.orderedQuantity);
-//                   log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
-//                 }
-//               }
-//             }
-//           }
-//         }
 //calculating tax amount
-        //_getTaxes();
-        //DbOrderTaxTemplate().getOrderTaxesTemplate();
-        List<OrderTaxTemplate> data =
-            await DbOrderTaxTemplate().getOrderTaxesTemplate();
-        for (OrderTaxTemplate message in data) {
-          List<OrderTaxes> taxesData = [];
-          //to do
-
-          message.tax.forEach((tax) async {
-            taxAmount = subTotalAmount * tax.taxRate / 100;
-
-            log('Tax Amount : $taxAmount');
-            totalTaxAmount += taxAmount;
-            totalAmount = subTotalAmount + totalTaxAmount;
-            log('Total Amount: $totalAmount');
-            taxesData.add(OrderTaxes(
-                id: orderId,
-                itemTaxTemplate: tax.itemTaxTemplate,
-                taxType: tax.taxType,
-                taxRate: tax.taxRate,
-                taxationAmount: taxAmount));
-          });
-          log("Total Tax Amount : $totalTaxAmount");
-          DbOrderTax().saveOrderWiseTax(orderId, taxesData);
-          // DbSaleOrder().saveOrderWiseTax(orderId, totalTaxAmount, totalAmount);
-        }
+        List<Taxation> taxation = [];
+        item.tax.forEach((tax) async {
+          taxAmount = subTotalAmount * tax.taxRate / 100;
+          log('Tax Amount itemwise : $taxAmount');
+          totalTaxAmount += taxAmount;
+          // totalAmount = subTotalAmount + totalTaxAmount;
+          // totalAmount += taxAmount;
+          log('totalAmount itemwise : $totalAmount');
+          taxation.add(Taxation(
+              id: orderId,
+              itemTaxTemplate: tax.itemTaxTemplate,
+              taxType: tax.taxType,
+              taxRate: tax.taxRate,
+              taxationAmount: taxAmount));
+        });
+        log("Total Tax Amount itemwise: $totalTaxAmount");
+        DbTaxes().saveItemWiseTax(orderId, taxation);
       }
+
+//calculating tax amount
+
+      log("Total Amount:: $totalAmount");
+      setState(() {});
+      //   }
     }
 
-    log("Total Amount: $totalAmount");
-
+    // Order wise tax applicable
+    if (!isTaxAvailable) {
+      List<OrderTaxTemplate> data =
+          await DbOrderTaxTemplate().getOrderTaxesTemplate();
+      log('data: $data');
+      for (OrderTaxTemplate message in data) {
+        List<OrderTaxes> taxesData = [];
+        // message.isDefault==1.forEach(())
+        message.tax.forEach((tax) async {
+          taxAmount = totalAmount * tax.taxRate / 100;
+          log('Tax Amount : $taxAmount');
+          totalTaxAmount += taxAmount;
+          //  totalAmount = totalAmount + totalTaxAmount;
+          //  totalAmount = subTotalAmount + totalTaxAmount;
+          log("Total Tax Amount orderwise : $totalTaxAmount");
+          log('Total Amount Orderwise:: $totalAmount');
+          taxesData.add(OrderTaxes(
+              id: orderId,
+              itemTaxTemplate: tax.itemTaxTemplate,
+              taxType: tax.taxType,
+              taxRate: tax.taxRate,
+              taxationAmount: taxAmount));
+        });
+        //  log("Total Tax Amount orderwise : $totalTaxAmount");
+        //  DbOrderTax().saveOrderWiseTax(orderId, taxesData);
+        DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+      }
+    }
+    log("Total Amount:: $totalAmount");
     setState(() {});
-
-    // DbTaxes().saveTaxes();
   }
 
   void _getOrderTaxTemplate() async {
@@ -678,14 +678,6 @@ class _CartScreenState extends State<CartScreen> {
       orderAmount += item.orderedPrice * item.orderedQuantity;
     }
     widget.order.orderAmount = orderAmount;
-
-    //TO Confirm :
-    // for (OrderItem item in widget.order.items) {
-    //   orderAmount += item.orderedPrice * item.orderedQuantity;
-    //    if(item.tax.isEmpty){
-    //   _configureTaxAndTotal(widget.order.items);
-    //    }
-    // }
 
     _configureTaxAndTotal(widget.order.items);
     //widget.order.save();

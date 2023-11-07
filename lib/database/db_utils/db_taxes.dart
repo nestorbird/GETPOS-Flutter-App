@@ -66,7 +66,7 @@ class DbTaxes {
 
 //to save tax list in db for itemwise taxation
   Future<List> saveItemWiseTax(orderId, List<Taxation> list) async {
-    //box = await Hive.openBox<Taxation>(TAX_BOX);
+    box = await Hive.openBox<Taxation>(TAX_BOX);
     for (Taxation item in list) {
       await box.put(item.id, item);
     }

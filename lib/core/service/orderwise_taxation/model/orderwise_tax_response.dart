@@ -1,8 +1,10 @@
 import 'dart:convert';
+
 OrderWiseTaxation orderWiseTaxationFromJson(String str) =>
     OrderWiseTaxation.fromJson(json.decode(str));
 String orderWiseTaxationToJson(OrderWiseTaxation data) =>
     json.encode(data.toJson());
+
 class OrderWiseTaxation {
   List<Message> message;
   OrderWiseTaxation({
@@ -17,6 +19,7 @@ class OrderWiseTaxation {
         "message": List<dynamic>.from(message.map((x) => x.toJson())),
       };
 }
+
 class Message {
   String name;
   String title;
@@ -53,9 +56,10 @@ class Message {
         "tax": List<dynamic>.from(tax.map((x) => x.toJson())),
       };
 }
+
 class Tax {
   String name;
-  
+
   String itemTaxTemplate;
   String chargeType;
   String taxType;
@@ -67,7 +71,6 @@ class Tax {
   double total;
   Tax({
     required this.name,
-   
     required this.itemTaxTemplate,
     required this.chargeType,
     required this.taxType,
@@ -80,7 +83,6 @@ class Tax {
   });
   factory Tax.fromJson(Map<String, dynamic> json) => Tax(
         name: json["name"],
-       
         itemTaxTemplate: json["item_tax_template"],
         chargeType: json["charge_type"],
         taxType: json["tax_type"],
@@ -104,17 +106,3 @@ class Tax {
         "total": total,
       };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

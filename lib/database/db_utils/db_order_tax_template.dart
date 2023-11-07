@@ -18,13 +18,18 @@ class DbOrderTaxTemplate {
     box = await Hive.openBox<OrderTaxTemplate>(ORDERTAXTEMPLATE_BOX);
     List<OrderTaxTemplate> list = [];
 
-    for (var item in box.values) {
-      var tax = item as OrderTaxTemplate;
+    //Box<OrderTaxTemplate> itemBox = Hive.box<OrderTaxTemplate>(ORDERTAXTEMPLATE_BOX);
+    box.values
+        .where((item) => item.isDefault == 1 && item.disabled == 0)
+        .forEach((item) => list.add(item));
 
-      // if (product.stock > 0 && product.price > 0 && tax.tax > 0) {
-      list.add(tax);
-      // }
-    }
+    // Future<List> filteredList;
+
+    // for (var item in box.values) {
+    //   var tax = item as OrderTaxTemplate;
+
+    //   list.add(tax);
+    // }
     return list;
   }
 
