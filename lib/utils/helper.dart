@@ -107,6 +107,7 @@ class Helper {
         .showSnackBar(snackBar)
         .closed
         .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
+       
   }
 
   //Function to show the popup with one button with on pressed functionality to close popup.

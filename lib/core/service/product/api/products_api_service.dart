@@ -94,26 +94,11 @@ class ProductsService {
                   taxRate: taxData.taxRate!,
                 );
                 taxes.add(tax);
+                
               }
             });
             await DbTaxes().addTaxes(taxes);
 
-            // List<OrderTax> taxOrder = [];
-            // await Future.forEach(item.tax!, (taxObj) async {
-            //   var taxData = taxObj as cat_resp.Tax;
-            //   if (item.stockQty! > 0 &&
-            //       item.productPrice! > 0 &&
-            //       taxData.taxRate! > 0) {
-            //     Taxes tax = Taxes(
-            //       taxId: taxData.taxId!,
-            //       itemTaxTemplate: taxData.itemTaxTemplate!,
-            //       taxType: taxData.taxType!,
-            //       taxRate: taxData.taxRate!,
-            //     );
-            //     taxes.add(tax);
-            //   }
-            // });
-            //await DbTaxes().addTaxes(taxes);
             await DBPreferences().savePreference(
                 PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
 

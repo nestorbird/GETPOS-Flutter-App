@@ -1,7 +1,5 @@
 // ignore_for_file: unnecessary_const, constant_identifier_names
 
-import 'package:flutter/material.dart';
-import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 
 ///s
 /// COLOR CONSTANTS

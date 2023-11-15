@@ -55,7 +55,7 @@ class Items {
   String? name;
   List<Attributes>? attributes;
   String? image;
-  List<Tax>? tax=[];
+  List<Tax>? tax;
   double? productPrice;
   String? warehouse;
   double? stockQty;
@@ -163,7 +163,7 @@ class Options {
     id = json['id'];
     name = json['name'];
     if (json['tax'] != null && json['tax'] != '') {
-     tax = <Tax>[];
+      tax = <Tax>[];
       json['tax'].forEach((v) {
         tax!.add(Tax.fromJson(v));
       });
@@ -200,7 +200,7 @@ class Tax {
   Tax.fromJson(Map<String, dynamic> json) {
     taxId = json['taxId'] ?? "";
     itemTaxTemplate = json['item_tax_template'] ?? "";
-    taxType = json['taxType'] ?? "";
+    taxType = json['tax_type'] ?? "";
     taxRate = json['tax_rate'] ?? 0.0;
   }
 
@@ -208,7 +208,7 @@ class Tax {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['tax'] = taxId;
     data['item_tax_template'] = itemTaxTemplate;
-    data['taxType'] = taxType;
+    data['tax_type'] = taxType;
     data['tax_rate'] = taxRate;
     return data;
   }

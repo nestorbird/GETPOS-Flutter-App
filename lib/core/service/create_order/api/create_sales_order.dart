@@ -2,10 +2,15 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/core/service/create_order/model/sales_order_request.dart';
+import 'package:nb_posx/core/service/create_order/model/sales_order_request.dart';
+//import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import '../../../../../constants/app_constants.dart';
+import '../../../../database/models/sales_order_req_items.dart'
+    as request_sales;
 import '../model/create_sales_order_response.dart';
-import '../model/sales_order_request.dart' as request_items;
-import '../model/sales_order_request.dart';
+//import '../model/sales_order_request.dart' as request_sales;
+import '../model/sales_order_request.dart' as request_sales;
 import '../../../../../database/db_utils/db_parked_order.dart';
 
 import '../../../../../database/models/order_item.dart';
@@ -20,29 +25,32 @@ import '../../../../../utils/helpers/sync_helper.dart';
 class CreateOrderService {
   Future<CommanResponse> createOrder(SaleOrder order) async {
     if (await Helper.isNetworkAvailable()) {
-      List<request_items.Items> items = [];
+      List<request_sales.SaleOrderRequestItems> items = [];
       for (OrderItem item in order.items) {
-        List<request_items.SelectedOptions> selectedOption = [];
+        List<request_sales.SelectedOptions> selectedOption = [];
         for (var atrib in item.attributes) {
           for (var opt in atrib.options) {
             if (opt.selected) {
-              selectedOption.add(request_items.SelectedOptions(
-                  id: opt.id,
-                  name: opt.name,
-                  price: opt.price,
-                  qty: item.orderedQuantity,
-                  tax: item.tax));
+              selectedOption.add(request_sales.SelectedOptions(
+                id: opt.id,
+                name: opt.name,
+                price: opt.price,
+                qty: item.orderedQuantity,
+//                  tax: item.tax
+              ));
             }
           }
         }
 
-        request_items.Items i = request_items.Items(
-            itemCode: item.id,
-            name: item.name,
-            price: item.price,
-            selectedOption: selectedOption,
-            orderedPrice: item.orderedPrice,
-            orderedQuantity: item.orderedQuantity);
+        request_sales.SaleOrderRequestItems i =
+            request_sales.SaleOrderRequestItems(
+                itemCode: item.id,
+                name: item.name,
+                price: item.price,
+                selectedOption: selectedOption,
+                orderedPrice: item.orderedPrice,
+                orderedQuantity: item.orderedQuantity,
+                tax: item.tax);
         items.add(i);
       }
 
@@ -59,7 +67,6 @@ class CreateOrderService {
         items: items,
         modeOfPayment: order.paymentMethod,
         mpesaNo: order.transactionId,
-      
       );
 
       var body = {'order_list': orderRequest.toJson()};

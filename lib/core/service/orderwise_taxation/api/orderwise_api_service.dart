@@ -60,7 +60,7 @@ class OrderwiseTaxes {
           List<OrderTax> taxesOrder = [];
 
           await Future.forEach(catData.tax, (taxObj) async {
-            var taxData = taxObj as cat_resp.Tax;
+            var taxData = taxObj as cat_resp.Taxes;
 
             OrderTax ordertax = OrderTax(
               itemTaxTemplate: taxData.itemTaxTemplate,

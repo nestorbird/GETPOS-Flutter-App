@@ -11,6 +11,7 @@ import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
+import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
@@ -80,7 +81,7 @@ void registerHiveTypeAdapters() {
   Hive.registerAdapter(HubManagerAdapter());
 
   //Registering sale order adapter
- // Hive.registerAdapter(SaleOrderAdapter());
+  // Hive.registerAdapter(SaleOrderAdapter());
 
   //Registering ward adapter
   Hive.registerAdapter(CategoryAdapter());
@@ -100,7 +101,9 @@ void registerHiveTypeAdapters() {
 
   Hive.registerAdapter(OrderTaxAdapter());
 
-   Hive.registerAdapter(OrderTaxTemplateAdapter());
+  Hive.registerAdapter(OrderTaxTemplateAdapter());
+
+  Hive.registerAdapter(SaleOrderRequestItemsAdapter());
 }
 
 class MobileApp extends StatelessWidget {

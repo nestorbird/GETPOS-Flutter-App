@@ -21,6 +21,8 @@ class SalesDetailsItems extends StatefulWidget {
 
   @override
   State<SalesDetailsItems> createState() => _SalesDetailsItemsState();
+
+  static fromMap(x) {}
 }
 
 class _SalesDetailsItemsState extends State<SalesDetailsItems> {

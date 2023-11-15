@@ -1,14 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-import 'package:nb_posx/database/models/taxes.dart';
+import 'package:nb_posx/database/models/sales_order_req_items.dart';
+
+import '../../../../database/models/taxes.dart';
 
 class SalesOrderRequest {
   late String hubManager;
   late String customer;
   late String transactionDate;
   late String deliveryDate;
-  late List<Items> items;
+  late List<SaleOrderRequestItems> items;
   late String modeOfPayment;
   late String mpesaNo;
 
@@ -29,7 +31,7 @@ class SalesOrderRequest {
     if (json['items'] != null) {
       items = [];
       json['items'].forEach((v) {
-        items.add(Items.fromJson(v));
+        items.add(SaleOrderRequestItems.fromJson(v));
       });
     }
     modeOfPayment = json['mode_of_payment'];
@@ -49,7 +51,7 @@ class SalesOrderRequest {
     // }
     // data['mode_of_payment'] = modeOfPayment;
     // data['mpesa_no'] = mpesaNo;
-    List<Map> itemList = items.map((v) => v.toJson()).toList();
+    List<Map> itemList = items.map((v) => v.toJson()).cast<Map>().toList();
     return {
       'hub_manager': hubManager,
       'customer': customer,
@@ -63,7 +65,7 @@ class SalesOrderRequest {
 
 class Items {
   String itemCode;
-  String name;
+  String? name;
   double price;
   List<SelectedOptions> selectedOption;
   double orderedQuantity;
@@ -164,13 +166,11 @@ class SelectedOptions {
   String name;
   double price;
   double qty;
-  List<Taxes>? tax;
   SelectedOptions({
     required this.id,
     required this.name,
     required this.price,
     required this.qty,
-    this.tax,
   });
 
   SelectedOptions copyWith({
@@ -178,14 +178,12 @@ class SelectedOptions {
     String? name,
     double? price,
     double? qty,
-    List<Taxes>? tax,
   }) {
     return SelectedOptions(
       id: id ?? this.id,
       name: name ?? this.name,
       price: price ?? this.price,
       qty: qty ?? this.qty,
-      tax: tax ?? this.tax,
     );
   }
 
@@ -195,7 +193,6 @@ class SelectedOptions {
       'item_name': name,
       'qty': qty,
       'rate': price,
-      'tax': tax,
     };
   }
 
@@ -205,7 +202,6 @@ class SelectedOptions {
       name: map['name'] ?? '',
       price: map['price']?.toDouble() ?? 0.0,
       qty: map['qty'] ?? 0.0,
-      tax: map['tax'] ?? [],
     );
   }
 
@@ -216,7 +212,7 @@ class SelectedOptions {
 
   @override
   String toString() =>
-      'SelectedOptions(id: $id, name: $name, price: $price, qty: $qty, tax: $tax)';
+      'SelectedOptions(id: $id, name: $name, price: $price, qty: $qty)';
 
   @override
   bool operator ==(Object other) {
@@ -226,8 +222,7 @@ class SelectedOptions {
         other.id == id &&
         other.name == name &&
         other.price == price &&
-        other.qty == qty &&
-        other.tax == tax;
+        other.qty == qty;
   }
 
   @override

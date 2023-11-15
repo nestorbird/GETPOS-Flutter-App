@@ -27,7 +27,7 @@ class Message {
   int disabled;
   String company;
   String taxCategory;
-  List<Tax> tax;
+  List<Taxes> tax;
   Message({
     required this.name,
     required this.title,
@@ -44,7 +44,7 @@ class Message {
         disabled: json["disabled"],
         company: json["company"],
         taxCategory: json["tax_category"],
-        tax: List<Tax>.from(json["tax"].map((x) => Tax.fromJson(x))),
+        tax: List<Taxes>.from(json["tax"].map((x) => Taxes.fromJson(x))),
       );
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -57,7 +57,7 @@ class Message {
       };
 }
 
-class Tax {
+class Taxes {
   String name;
 
   String itemTaxTemplate;
@@ -69,7 +69,7 @@ class Tax {
   dynamic accountCurrency = "";
   double taxAmount;
   double total;
-  Tax({
+  Taxes({
     required this.name,
     required this.itemTaxTemplate,
     required this.chargeType,
@@ -81,7 +81,7 @@ class Tax {
     required this.taxAmount,
     required this.total,
   });
-  factory Tax.fromJson(Map<String, dynamic> json) => Tax(
+  factory Taxes.fromJson(Map<String, dynamic> json) => Taxes(
         name: json["name"],
         itemTaxTemplate: json["item_tax_template"],
         chargeType: json["charge_type"],

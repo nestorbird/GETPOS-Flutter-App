@@ -4,6 +4,8 @@
 
 // ignore_for_file: constant_identifier_names
 
+import 'package:nb_posx/core/service/create_order/model/sales_order_request.dart';
+
 const CUSTOMER_BOX = 'customers';
 const HUB_MANAGER_BOX = 'hub_manager';
 const PRODUCT_BOX = 'products';
@@ -18,6 +20,7 @@ const TAX_BOX = 'taxes';
 const ORDERTAX_BOX = 'ordertaxes';
 const ORDERTAXTEMPLATE_BOX = 'ordertaxtemplate';
 const URL_BOX = 'url';
+const SALES_ORDER_REQUEST_BOX = 'salesordererequest';
 
 //Temporary Variables
 const WardOne = 'SHM0134';
@@ -38,6 +41,8 @@ const OrderItemBoxTypeId = 19;
 const TaxBoxTypeId = 20;
 const OrderwiseTaxBoxTypeId = 21;
 const OrderTaxTemplateId = 22;
+const SalesOrderRequestId = 23;
+const SalesOrderRequestItemsId = 24;
 
 //PreferenceBox Constants
 const SelectedWard = 'SELECTED_WARDS';
