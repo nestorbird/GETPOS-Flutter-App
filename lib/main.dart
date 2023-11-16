@@ -1,7 +1,6 @@
 //import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
@@ -11,6 +10,7 @@ import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
+import 'package:nb_posx/database/models/sales_order_req.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -104,6 +104,8 @@ void registerHiveTypeAdapters() {
   Hive.registerAdapter(OrderTaxTemplateAdapter());
 
   Hive.registerAdapter(SaleOrderRequestItemsAdapter());
+
+  Hive.registerAdapter(SalesOrderRequestAdapter());
 }
 
 class MobileApp extends StatelessWidget {

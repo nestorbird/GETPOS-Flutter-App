@@ -28,7 +28,7 @@ import 'package:nb_posx/widgets/long_button_widget.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_parked_order.dart';
-import '../../../../../database/models/order_item.dart';
+
 import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
@@ -37,6 +37,7 @@ import '../../../../../widgets/product_shimmer_widget.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
 import '../../../../database/models/hub_manager.dart';
+import '../../../../database/models/order_item.dart';
 import '../../../../database/models/sale_order.dart';
 import '../../../../utils/helper.dart';
 import '../../add_products/ui/added_product_item.dart';
@@ -45,8 +46,13 @@ import '../../sale_success/ui/sale_success_screen.dart';
 // ignore: must_be_immutable
 class CartScreen extends StatefulWidget {
   ParkOrder order;
-
-  CartScreen({required this.order, Key? key}) : super(key: key);
+  bool? isUsedinVariantsPopup;
+  late OrderItem product;
+  CartScreen(
+      {required this.order, OrderItem? product, this.isUsedinVariantsPopup = false, Key? key})
+      : super(key: key){
+   // Initialize in the constructor
+  }
 
   @override
   State<CartScreen> createState() => _CartScreenState();
@@ -76,10 +82,11 @@ class _CartScreenState extends State<CartScreen> {
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
   bool isPromoCodeAvailableForUse = false;
-
+ 
   SaleOrder? saleOrder;
   bool _customTileExpanded = false;
   List<Map<String, dynamic>> taxDetailsList = [];
+
   @override
   void initState() {
     super.initState();
@@ -97,150 +104,115 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      body: Stack(
+      body: SingleChildScrollView(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppbar(
-                title: "Cart",
-                hideSidemenu: true,
+          const CustomAppbar(
+            title: "Cart",
+            hideSidemenu: true,
+          ),
+
+          Padding(
+              padding: paddingXY(x: 16, y: 16),
+              child: Text(
+                widget.order.customer.name,
+                style: getTextStyle(
+                    fontSize: MEDIUM_PLUS_FONT_SIZE,
+                    color: AppColors.getPrimary(),
+                    fontWeight: FontWeight.bold),
+              )),
+
+          Padding(
+            padding: paddingXY(x: 16, y: 16),
+            child: Text(
+              "Items",
+              style: getTextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE,
+                  color: AppColors.getTextandCancelIcon()),
+            ),
+          ),
+
+          productList(widget.order.items),
+          // selectedCustomerSection,
+          // searchBarSection,
+          // productCategoryList()
+          hightSpacer15,
+
+          Padding(
+              padding: paddingXY(x: 16, y: 0),
+              child: _subtotalSection('Item Total',
+                  '$appCurrency ${totalAmount.toStringAsFixed(2)}')),
+          hightSpacer10,
+          Padding(
+              padding: paddingXY(x: 16, y: 0),
+              child: _subtotalSection('Discount', '$appCurrency 0.00',
+                  isDiscount: true)),
+          hightSpacer10,
+          Padding(
+              padding: paddingXY(x: 16, y: 0),
+              child: _subtotalSection('SubTotal',
+                  '$appCurrency ${totalAmount.toStringAsFixed(2)}')),
+          hightSpacer10,
+
+          Padding(
+            padding: paddingXY(x: 4, y: 0),
+            child: ExpansionTile(
+              title: _totalTaxSection(
+                'Total Tax Applied',
+                '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
               ),
+              children: taxDetailsList.isEmpty
+                  ? [] // Returns an empty list if taxDetailsList is empty
+                  : taxDetailsList.map((taxDetails) {
+                      return ListTile(
+                        title: Text(' ${taxDetails['tax_type']}'),
+                        //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
+                        trailing: Text(' ${taxDetails['tax_amount']}'),
+                      );
+                    }).toList(),
+              onExpansionChanged: (bool expanded) {
+                setState(() {
+                  _customTileExpanded = expanded;
+                });
+              },
+            ),
+          ),
 
-              Padding(
-                  padding: paddingXY(x: 16, y: 16),
-                  child: Text(
-                    widget.order.customer.name,
-                    style: getTextStyle(
-                        fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: AppColors.getPrimary(),
-                        fontWeight: FontWeight.bold),
-                  )),
+          Padding(
+              padding: paddingXY(x: 16, y: 0),
+              child: _subtotalSection('Grand Total',
+                  '$appCurrency ${(totalAmount + totalTaxAmount).toStringAsFixed(2)}')),
+          hightSpacer10,
 
-              Padding(
-                padding: paddingXY(x: 16, y: 16),
-                child: Text(
-                  "Items",
-                  style: getTextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: MEDIUM_PLUS_FONT_SIZE,
-                      color: AppColors.getTextandCancelIcon()),
-                ),
-              ),
-              productList(widget.order.items),
-              // selectedCustomerSection,
-              // searchBarSection,
-              // productCategoryList()
-              hightSpacer15,
-
-              Padding(
-                  padding: paddingXY(x: 16, y: 0),
-                  child: _subtotalSection('Sub Total',
-                      '$appCurrency ${totalAmount.toStringAsFixed(2)}')),
-              hightSpacer10,
-              Padding(
-                  padding: paddingXY(x: 16, y: 0),
-                  child: _subtotalSection('Discount', '$appCurrency 0.00',
-                      isDiscount: true)),
-              hightSpacer10,
-
-              // Padding(
-              //     padding: paddingXY(x: 16, y: 0),
-              //     child: _subtotalSection('Total Tax Applied',
-              //         '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}')),
-              // hightSpacer10,
-
-              // Padding(
-              //   padding: paddingXY(x: 4, y: 0),
-              //   child: ExpansionTile(
-              //     title: _totalTaxSection('Total Tax Applied',
-              //         '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}'),
-              //     // subtitle: const Text('Custom expansion arrow icon'),
-              //     //  controlAffinity: ListTileControlAffinity.platform,
-              //     // trailing: Icon(
-              //     //   _customTileExpanded
-              //     //       ? Icons.arrow_drop_down_circle
-              //     //       : Icons.arrow_drop_down,
-              //     // ),
-              //     children: <Widget>[
-              //       ListTile(
-              //         title: _subtotalSection(taxTypeApplied,
-              //             '$appCurrency ${taxTypeAmountStored.toStringAsFixed(2)}'),
-              //       ),
-              //       hightSpacer10,
-              //       ListTile(
-              //         title: _subtotalSection(taxTypeApplied,
-              //             '$appCurrency ${taxTypeAmountStored.toStringAsFixed(2)}'),
-              //       ),
-              //     ],
-              //     onExpansionChanged: (bool expanded) {
-              //       setState(() {
-              //         _customTileExpanded = expanded;
-              //       });
-              //     },
-              //   ),
-              // ),
-
-              Padding(
-                padding: paddingXY(x: 4, y: 0),
-                child: ExpansionTile(
-                  title: _totalTaxSection(
-                    'Total Tax Applied',
-                    '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
-                  ),
-                  children: taxDetailsList.isEmpty
-                      ? [] // Returns an empty list if taxDetailsList is empty
-                      : taxDetailsList.map((taxDetails) {
-                          return ListTile(
-                            title: Text(' ${taxDetails['tax_type']}'),
-                            //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
-                            trailing: Text(' ${taxDetails['tax_amount']}'),
-                          );
-                        }).toList(),
-                  onExpansionChanged: (bool expanded) {
-                    setState(() {
-                      _customTileExpanded = expanded;
-                    });
-                  },
-                ),
-              ),
-
-              Padding(
-                  padding: paddingXY(x: 16, y: 0),
-                  child: _subtotalSection('Grand Total',
-                      '$appCurrency ${(totalAmount + totalTaxAmount).toStringAsFixed(2)}')),
-              hightSpacer10,
-
-              Padding(
-                  padding: paddingXY(x: 16, y: 16),
-                  child: Text(
-                    'Payment Methods',
-                    style: getTextStyle(
-                        fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: AppColors.getTextandCancelIcon(),
-                        fontWeight: FontWeight.bold),
-                  )),
-              Padding(
-                padding: paddingXY(x: 16),
-                child: Row(
-                  children: [
-                    getPaymentOption(
-                        PAYMENT_CARD_ICON, CARD_PAYMENT_TXT, !_isCODSelected),
-                    widthSpacer(15),
-                    getPaymentOption(
-                        PAYMENT_CASH_ICON, CASH_PAYMENT_TXT, _isCODSelected),
-                  ],
-                ),
-              ),
-              hightSpacer20,
-              Padding(
-                  padding: paddingXY(x: 16, y: 0), child: _promoCodeSection()),
-              hightSpacer15,
-            ],
-          ))
+          Padding(
+              padding: paddingXY(x: 16, y: 16),
+              child: Text(
+                'Payment Methods',
+                style: getTextStyle(
+                    fontSize: MEDIUM_PLUS_FONT_SIZE,
+                    color: AppColors.getTextandCancelIcon(),
+                    fontWeight: FontWeight.bold),
+              )),
+          Padding(
+            padding: paddingXY(x: 16),
+            child: Row(
+              children: [
+                getPaymentOption(
+                    PAYMENT_CARD_ICON, CARD_PAYMENT_TXT, !_isCODSelected),
+                widthSpacer(15),
+                getPaymentOption(
+                    PAYMENT_CASH_ICON, CASH_PAYMENT_TXT, _isCODSelected),
+              ],
+            ),
+          ),
+          hightSpacer20,
+          // Padding(
+          //     padding: paddingXY(x: 16, y: 0), child: _promoCodeSection()),
+          // hightSpacer15,
         ],
-      ),
+      )),
       bottomNavigationBar: bottomBarWidget(),
     ));
   }
@@ -440,70 +412,135 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget productList(List<OrderItem> prodList) {
-    return Padding(
-      padding: horizontalSpace(),
-      child: ListView.separated(
-          separatorBuilder: (context, index) {
-            return const Divider();
-          },
-          shrinkWrap: true,
-          itemCount: prodList.isEmpty ? 10 : prodList.length,
-          primary: false,
-          itemBuilder: (context, position) {
-            if (prodList.isEmpty) {
-              return const ProductShimmer();
-            } else {
-              return InkWell(
-                onTap: () {
-                  // _openItemDetailDialog(context, prodList[position]);
-                },
-                child: AddedProductItem(
-                  product: prodList[position],
-                  onDelete: () {
-                    prodList.remove(prodList[position]);
-                    //_updateOrderPriceAndSave();
-                    if (prodList.isEmpty) {
-                      //DbParkedOrder().deleteOrder(widget.order);
-                      Navigator.pop(context, "reload");
-                    } else {
-                      _updateOrderPriceAndSave();
-                    }
-                  },
-                  onItemAdd: () {
-                    setState(() {
-                      if (prodList[position].orderedQuantity <
-                          prodList[position].stock) {
-                        prodList[position].orderedQuantity =
-                            prodList[position].orderedQuantity + 1;
-                        _updateOrderPriceAndSave();
-                      }
-                    });
-                  },
-                  onItemRemove: () {
-                    setState(() {
-                      if (prodList[position].orderedQuantity > 0) {
-                        prodList[position].orderedQuantity =
-                            prodList[position].orderedQuantity - 1;
-                        if (prodList[position].orderedQuantity == 0) {
-                          widget.order.items.remove(prodList[position]);
-                          if (prodList.isEmpty) {
-                            //DbParkedOrder().deleteOrder(widget.order);
-                            Navigator.pop(context, "reload");
-                          } else {
-                            _updateOrderPriceAndSave();
-                          }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: horizontalSpace(),
+          child: ListView.separated(
+              separatorBuilder: (context, index) {
+                return const Divider();
+              },
+              shrinkWrap: true,
+              itemCount: prodList.isEmpty ? 10 : prodList.length,
+              primary: false,
+              itemBuilder: (context, position) {
+                if (prodList.isEmpty) {
+                  return const ProductShimmer();
+                } else {
+                  return InkWell(
+                    onTap: () {
+                      // _openItemDetailDialog(context, prodList[position]);
+                    },
+                    child: AddedProductItem(
+                      product: prodList[position],
+                      onDelete: () {
+                        prodList.remove(prodList[position]);
+                        //_updateOrderPriceAndSave();
+                        if (prodList.isEmpty) {
+                          //DbParkedOrder().deleteOrder(widget.order);
+                          Navigator.pop(context, "reload");
                         } else {
                           _updateOrderPriceAndSave();
                         }
-                      }
-                    });
-                  },
-                ),
-              );
-              // return ListTile(title: Text(prodList[position].name));
-            }
-          }),
+                      },
+                      onItemAdd: () {
+                        setState(() {
+                          if (prodList[position].orderedQuantity <
+                              prodList[position].stock) {
+                            prodList[position].orderedQuantity =
+                                prodList[position].orderedQuantity + 1;
+                            _updateOrderPriceAndSave();
+                          }
+                        });
+                      },
+                      onItemRemove: () {
+                        setState(() {
+                          if (prodList[position].orderedQuantity > 0) {
+                            prodList[position].orderedQuantity =
+                                prodList[position].orderedQuantity - 1;
+                            if (prodList[position].orderedQuantity == 0) {
+                              widget.order.items.remove(prodList[position]);
+                              if (prodList.isEmpty) {
+                                //DbParkedOrder().deleteOrder(widget.order);
+                                Navigator.pop(context, "reload");
+                              } else {
+                                _updateOrderPriceAndSave();
+                              }
+                            } else {
+                              _updateOrderPriceAndSave();
+                            }
+                          }
+                        });
+                      },
+                    ),
+                  );
+                  // return ListTile(title: Text(prodList[position].name));
+                }
+              }),
+        ),
+        hightSpacer15,
+        Padding(
+          padding: paddingXY(x: 16, y: 16),
+          child: Text(
+            "Bill",
+            // textDirection: Alignment.centerLeft,
+            style: getTextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: MEDIUM_PLUS_FONT_SIZE,
+                color: AppColors.getTextandCancelIcon()),
+          ),
+        ),
+        Padding(
+            padding: horizontalSpace(),
+            child: ListView.builder(
+                shrinkWrap: true,
+                primary: false,
+                itemCount: prodList.isEmpty ? 10 : prodList.length,
+                itemBuilder: (context, position) {
+                  if (prodList.isEmpty) {
+                    return const ProductShimmer();
+                  } else {
+                    return InkWell(
+                      onTap: () {
+                        // _openItemDetailDialog(context, prodList[position]);
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            widget.product.name,
+                            style: getTextStyle(fontSize: SMALL_PLUS_FONT_SIZE),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          hightSpacer15,
+                          Stack(
+                            children: [
+                              const Icon(
+                                Icons.add_box_outlined,
+                              ),
+                              Text("${widget.product.orderedQuantity.toInt()}")
+                            ],
+                          ),
+                          Text(
+                            '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
+                            style: getTextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: SMALL_PLUS_FONT_SIZE,
+                                color: AppColors.getPrimary()),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    // return ListTile(title: Text(prodList[position].name));
+                  }
+                }))
+      ],
     );
+
+    // list view (bill) text , list view, item name.
   }
 
   Widget _promoCodeSection() {
@@ -854,9 +891,8 @@ class _CartScreenState extends State<CartScreen> {
     }
 
     log("Total Amount:: $totalAmount");
-    setState(() {});
 
-    // Now, taxAmountMap contains the accumulated tax amounts for each tax type
+    //taxAmountMap contains the accumulated tax amounts for each tax type
     taxDetailsList = taxAmountMap.entries
         .map((entry) => {
               'tax_type': entry.key,
@@ -864,6 +900,7 @@ class _CartScreenState extends State<CartScreen> {
               'tax_amount': entry.value,
             })
         .toList();
+    setState(() {});
   }
 
   // Future<List<Map<String, dynamic>>> calculateItemWiseTax(

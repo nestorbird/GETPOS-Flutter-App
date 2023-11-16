@@ -180,6 +180,11 @@ class _AddedProductItemState extends State<AddedProductItem> {
       ],
     );
 
+
+
+
+
+
     // return ListTile(
     //   isThreeLine: true,
     //   contentPadding: horizontalSpace(x: 10),
