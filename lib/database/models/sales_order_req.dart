@@ -11,31 +11,27 @@ part 'sales_order_req.g.dart';
 @HiveType(typeId: SalesOrderRequestId)
 class SalesOrderRequest extends HiveObject {
   @HiveField(0)
-  String? id;
-
-  @HiveField(1)
   String? hubManager;
 
-  @HiveField(2)
+  @HiveField(1)
   String? customer;
 
-  @HiveField(3)
+  @HiveField(2)
   String? transactionDate;
 
-  @HiveField(4)
+  @HiveField(3)
   String? deliveryDate;
 
-  @HiveField(5)
+  @HiveField(4)
   List<SaleOrderRequestItems>? items;
 
-  @HiveField(6)
+  @HiveField(5)
   String? modeOfPayment;
 
-  @HiveField(7)
+  @HiveField(6)
   String? mpesaNo;
 
   SalesOrderRequest({
-    required this.id,
     required this.hubManager,
     required this.customer,
     required this.transactionDate,
@@ -43,11 +39,9 @@ class SalesOrderRequest extends HiveObject {
     required this.items,
     required this.modeOfPayment,
     required this.mpesaNo,
-   
   });
 
   SalesOrderRequest copyWith({
-    String? id,
     String? hubManager,
     String? customer,
     String? transactionDate,
@@ -57,7 +51,6 @@ class SalesOrderRequest extends HiveObject {
     String? mpesaNo,
   }) {
     return SalesOrderRequest(
-      id: id ?? this.id,
       hubManager: hubManager ?? this.hubManager,
       customer: customer ?? this.customer,
       transactionDate: transactionDate ?? this.transactionDate,
@@ -70,7 +63,6 @@ class SalesOrderRequest extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'hubManager': hubManager,
       'customer': customer,
       'transactionDate': transactionDate,
@@ -83,7 +75,6 @@ class SalesOrderRequest extends HiveObject {
 
   factory SalesOrderRequest.fromMap(Map<String, dynamic> map) {
     return SalesOrderRequest(
-      id: map['id'],
       hubManager: map['hubManager'],
       customer: map['customer'],
       transactionDate: map['transactionDate'],
@@ -102,7 +93,7 @@ class SalesOrderRequest extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder(id: $id, hubManager: $hubManager, customer: $customer,  items: $items, modeOfPayment: $modeOfPayment, mpesaNo: $mpesaNo )';
+    return 'SaleOrder( hubManager: $hubManager, customer: $customer,  items: $items, modeOfPayment: $modeOfPayment, mpesaNo: $mpesaNo )';
   }
 
   @override
@@ -110,7 +101,6 @@ class SalesOrderRequest extends HiveObject {
     if (identical(this, other)) return true;
 
     return other is SalesOrderRequest &&
-        other.id == id &&
         other.hubManager == hubManager &&
         other.customer == customer &&
         other.items == items &&
@@ -121,8 +111,7 @@ class SalesOrderRequest extends HiveObject {
 
   @override
   int get hashCode {
-    return id.hashCode ^
-        hubManager.hashCode ^
+    return hubManager.hashCode ^
         customer.hashCode ^
         items.hashCode ^
         modeOfPayment.hashCode ^

@@ -5,63 +5,63 @@ import 'package:nb_posx/database/models/sales_order_req_items.dart';
 
 import '../../../../database/models/taxes.dart';
 
-class SalesOrderRequest {
-  late String hubManager;
-  late String customer;
-  late String transactionDate;
-  late String deliveryDate;
-  late List<SaleOrderRequestItems> items;
-  late String modeOfPayment;
-  late String mpesaNo;
+// class SalesOrderRequest {
+//   late String hubManager;
+//   late String customer;
+//   late String transactionDate;
+//   late String deliveryDate;
+//   late List<SaleOrderRequestItems> items;
+//   late String modeOfPayment;
+//   late String mpesaNo;
 
-  SalesOrderRequest(
-      {required this.hubManager,
-      required this.customer,
-      required this.transactionDate,
-      required this.deliveryDate,
-      required this.items,
-      required this.modeOfPayment,
-      this.mpesaNo = ""});
+//   SalesOrderRequest(
+//       {required this.hubManager,
+//       required this.customer,
+//       required this.transactionDate,
+//       required this.deliveryDate,
+//       required this.items,
+//       required this.modeOfPayment,
+//       this.mpesaNo = ""});
 
-  SalesOrderRequest.fromJson(Map<String, dynamic> json) {
-    hubManager = json['hub_manager'];
-    customer = json['customer'];
-    transactionDate = json['transaction_date'];
-    deliveryDate = json['delivery_date'];
-    if (json['items'] != null) {
-      items = [];
-      json['items'].forEach((v) {
-        items.add(SaleOrderRequestItems.fromJson(v));
-      });
-    }
-    modeOfPayment = json['mode_of_payment'];
-    mpesaNo = json['mpesa_no'];
-  }
+//   SalesOrderRequest.fromJson(Map<String, dynamic> json) {
+//     hubManager = json['hub_manager'];
+//     customer = json['customer'];
+//     transactionDate = json['transaction_date'];
+//     deliveryDate = json['delivery_date'];
+//     if (json['items'] != null) {
+//       items = [];
+//       json['items'].forEach((v) {
+//         items.add(SaleOrderRequestItems.fromJson(v));
+//       });
+//     }
+//     modeOfPayment = json['mode_of_payment'];
+//     mpesaNo = json['mpesa_no'];
+//   }
 
-  Map toJson() {
-    // final Map<String, dynamic> data = <String, dynamic>{};
-    // data['hub_manager'] = hubManager;
-    // // data['ward'] = ward;
-    // data['customer'] = customer;
-    // data['transaction_date'] = transactionDate;
-    // data['delivery_date'] = deliveryDate;
-    // // ignore: unnecessary_null_comparison
-    // if (items != null) {
-    //   data['items'] = items.map((v) => v.toJson()).toList();
-    // }
-    // data['mode_of_payment'] = modeOfPayment;
-    // data['mpesa_no'] = mpesaNo;
-    List<Map> itemList = items.map((v) => v.toJson()).cast<Map>().toList();
-    return {
-      'hub_manager': hubManager,
-      'customer': customer,
-      'transaction_date': transactionDate,
-      'delivery_date': deliveryDate,
-      'mode_of_payment': modeOfPayment,
-      'items': itemList
-    };
-  }
-}
+//   Map toJson() {
+//     // final Map<String, dynamic> data = <String, dynamic>{};
+//     // data['hub_manager'] = hubManager;
+//     // // data['ward'] = ward;
+//     // data['customer'] = customer;
+//     // data['transaction_date'] = transactionDate;
+//     // data['delivery_date'] = deliveryDate;
+//     // // ignore: unnecessary_null_comparison
+//     // if (items != null) {
+//     //   data['items'] = items.map((v) => v.toJson()).toList();
+//     // }
+//     // data['mode_of_payment'] = modeOfPayment;
+//     // data['mpesa_no'] = mpesaNo;
+//     List<Map> itemList = items.map((v) => v.toJson()).cast<Map>().toList();
+//     return {
+//       'hub_manager': hubManager,
+//       'customer': customer,
+//       'transaction_date': transactionDate,
+//       'delivery_date': deliveryDate,
+//       'mode_of_payment': modeOfPayment,
+//       'items': itemList
+//     };
+//   }
+// }
 
 class Items {
   String itemCode;

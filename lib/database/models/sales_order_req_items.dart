@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:nb_posx/core/service/create_order/model/sales_order_request.dart';
+import 'package:nb_posx/core/service/create_order/model/selected_options.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 

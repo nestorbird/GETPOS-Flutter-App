@@ -2,15 +2,17 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:intl/intl.dart';
-import 'package:nb_posx/core/service/create_order/model/sales_order_request.dart';
-import 'package:nb_posx/core/service/create_order/model/sales_order_request.dart';
+import 'package:nb_posx/core/service/create_order/model/selected_options.dart'
+    as request_sales;
+
+import 'package:nb_posx/database/models/sales_order_req.dart';
 //import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../database/models/sales_order_req_items.dart'
     as request_sales;
 import '../model/create_sales_order_response.dart';
 //import '../model/sales_order_request.dart' as request_sales;
-import '../model/sales_order_request.dart' as request_sales;
+//import '../model/sales_order_request.dart' as request_sales;
 import '../../../../../database/db_utils/db_parked_order.dart';
 
 import '../../../../../database/models/order_item.dart';

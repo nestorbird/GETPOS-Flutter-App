@@ -47,11 +47,11 @@ import '../../sale_success/ui/sale_success_screen.dart';
 class CartScreen extends StatefulWidget {
   ParkOrder order;
   bool? isUsedinVariantsPopup;
-  late OrderItem product;
+
   CartScreen(
-      {required this.order, OrderItem? product, this.isUsedinVariantsPopup = false, Key? key})
-      : super(key: key){
-   // Initialize in the constructor
+      {required this.order, this.isUsedinVariantsPopup = false, Key? key})
+      : super(key: key) {
+    // Initialize in the constructor
   }
 
   @override
@@ -61,7 +61,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   String orderId = "";
   bool _isCODSelected = false;
-  double totalAmount = 0.0;
+  double? totalAmount;
   double subTotalAmount = 0.0;
   double totalTaxAmount = 0.0;
   int totalItems = 0;
@@ -82,7 +82,8 @@ class _CartScreenState extends State<CartScreen> {
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
   bool isPromoCodeAvailableForUse = false;
- 
+  double orderAmount = 0;
+
   SaleOrder? saleOrder;
   bool _customTileExpanded = false;
   List<Map<String, dynamic>> taxDetailsList = [];
@@ -138,12 +139,11 @@ class _CartScreenState extends State<CartScreen> {
           // selectedCustomerSection,
           // searchBarSection,
           // productCategoryList()
-          hightSpacer15,
 
           Padding(
               padding: paddingXY(x: 16, y: 0),
               child: _subtotalSection('Item Total',
-                  '$appCurrency ${totalAmount.toStringAsFixed(2)}')),
+                  '$appCurrency ${totalAmount!.toStringAsFixed(2)}')),
           hightSpacer10,
           Padding(
               padding: paddingXY(x: 16, y: 0),
@@ -153,7 +153,7 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
               padding: paddingXY(x: 16, y: 0),
               child: _subtotalSection('SubTotal',
-                  '$appCurrency ${totalAmount.toStringAsFixed(2)}')),
+                  '$appCurrency ${totalAmount!.toStringAsFixed(2)}')),
           hightSpacer10,
 
           Padding(
@@ -183,7 +183,7 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
               padding: paddingXY(x: 16, y: 0),
               child: _subtotalSection('Grand Total',
-                  '$appCurrency ${(totalAmount + totalTaxAmount).toStringAsFixed(2)}')),
+                  '$appCurrency ${(totalAmount! + totalTaxAmount).toStringAsFixed(2)}')),
           hightSpacer10,
 
           Padding(
@@ -269,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                                     fontWeight: FontWeight.normal),
                               ),
                               Text(
-                                  "$appCurrency ${(totalAmount + totalTaxAmount).toStringAsFixed(2)}",
+                                  "$appCurrency ${(totalAmount! + totalTaxAmount).toStringAsFixed(2)}",
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
                                       fontWeight: FontWeight.w600,
@@ -479,9 +479,9 @@ class _CartScreenState extends State<CartScreen> {
                 }
               }),
         ),
-        hightSpacer15,
+        hightSpacer10,
         Padding(
-          padding: paddingXY(x: 16, y: 16),
+          padding: paddingXY(x: 16, y: 0),
           child: Text(
             "Bill",
             // textDirection: Alignment.centerLeft,
@@ -491,6 +491,7 @@ class _CartScreenState extends State<CartScreen> {
                 color: AppColors.getTextandCancelIcon()),
           ),
         ),
+        hightSpacer15,
         Padding(
             padding: horizontalSpace(),
             child: ListView.builder(
@@ -507,28 +508,35 @@ class _CartScreenState extends State<CartScreen> {
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.product.name,
-                            style: getTextStyle(fontSize: SMALL_PLUS_FONT_SIZE),
+                            "${prodList[position].name}   x",
+                            style: getTextStyle(
+                                fontSize: MEDIUM_FONT_SIZE,
+                                fontWeight: FontWeight.normal),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
-                          hightSpacer15,
-                          Stack(
-                            children: [
-                              const Icon(
-                                Icons.add_box_outlined,
-                              ),
-                              Text("${widget.product.orderedQuantity.toInt()}")
-                            ],
+                          Container(
+                            decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 174, 204, 228),
+                                border:
+                                    Border.all(color: Colors.green, width: 2.0),
+                                borderRadius: BorderRadius.circular(2.0)),
+                            width: Checkbox.width,
+                            height: Checkbox.width,
+                            child: Text(
+                              "${prodList[position].orderedQuantity.toInt()}",
+                              selectionColor: Colors.green,
+                            ),
                           ),
                           Text(
-                            '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
+                            '$appCurrency ${prodList[position].price.toStringAsFixed(2)}',
                             style: getTextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: SMALL_PLUS_FONT_SIZE,
-                                color: AppColors.getPrimary()),
+                                fontWeight: FontWeight.normal,
+                                fontSize: MEDIUM_FONT_SIZE,
+                                color: Colors.black),
                           ),
                         ],
                       ),
@@ -591,7 +599,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
-        padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
+        padding: const EdgeInsets.only(top: 6, left: 0, right: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -670,7 +678,7 @@ class _CartScreenState extends State<CartScreen> {
 
       saleOrder = SaleOrder(
           id: orderId,
-          orderAmount: totalAmount,
+          orderAmount: totalAmount!,
           totalTaxAmount: totalTaxAmount,
           date: date,
           time: time,
@@ -788,7 +796,10 @@ class _CartScreenState extends State<CartScreen> {
 
   Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
     bool isTaxAvailable = false;
-
+    totalAmount = 0.0;
+    subTotalAmount = 0.0;
+    taxAmount = 0.0;
+    totalTaxAmount = 0.0;
     // Map to store tax amounts for each tax type
     Map<String, double> taxAmountMap = {};
 
@@ -797,7 +808,7 @@ class _CartScreenState extends State<CartScreen> {
       log("Quantity Ordered : $quantity");
       subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
-      totalAmount += subTotalAmount;
+      totalAmount = totalAmount! + subTotalAmount;
       log('total after adding an item:$totalAmount');
 
       // Itemwise taxation is applicable
@@ -863,7 +874,7 @@ class _CartScreenState extends State<CartScreen> {
         List<OrderTaxes> taxesData = [];
 
         message.tax.forEach((tax) async {
-          double taxAmount = totalAmount * tax.taxRate / 100;
+          double taxAmount = totalAmount! * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           taxTypeApplied = tax.taxType;
@@ -888,9 +899,9 @@ class _CartScreenState extends State<CartScreen> {
 
         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
       });
+      setState(() {});
+      log("Total Amount:: $totalAmount");
     }
-
-    log("Total Amount:: $totalAmount");
 
     //taxAmountMap contains the accumulated tax amounts for each tax type
     taxDetailsList = taxAmountMap.entries
@@ -952,7 +963,6 @@ class _CartScreenState extends State<CartScreen> {
   // }
 
   void _updateOrderPriceAndSave() {
-    double orderAmount = 0;
     for (OrderItem item in widget.order.items) {
       orderAmount += item.orderedPrice * item.orderedQuantity;
     }
