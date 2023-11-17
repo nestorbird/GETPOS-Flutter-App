@@ -125,7 +125,7 @@ class _CartScreenState extends State<CartScreen> {
               )),
 
           Padding(
-            padding: paddingXY(x: 16, y: 16),
+            padding: paddingXY(x: 16, y: 8),
             child: Text(
               "Items",
               style: getTextStyle(
@@ -139,37 +139,70 @@ class _CartScreenState extends State<CartScreen> {
           // selectedCustomerSection,
           // searchBarSection,
           // productCategoryList()
-
+          hightSpacer10,
           Padding(
-              padding: paddingXY(x: 16, y: 0),
+              padding: paddingXY(x: 16, y: 4),
               child: _subtotalSection('Item Total',
                   '$appCurrency ${totalAmount!.toStringAsFixed(2)}')),
-          hightSpacer10,
+
+          // Padding(
+          //     padding: paddingXY(x: 16, y: 4),
+          //     child: _subtotalSection('Discount', '$appCurrency 0.00',
+          //         isDiscount: true)),
           Padding(
-              padding: paddingXY(x: 16, y: 0),
-              child: _subtotalSection('Discount', '$appCurrency 0.00',
-                  isDiscount: true)),
-          hightSpacer10,
+            padding: paddingXY(x: 16, y: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Discount',
+                  style: getTextStyle(
+                      fontSize: MEDIUM_PLUS_FONT_SIZE,
+                      color: CUSTOM_TEXT_COLOR,
+                      fontWeight: FontWeight.normal),
+                ),
+                Text(
+                  '$appCurrency 0.00',
+                  style: getTextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: MEDIUM_PLUS_FONT_SIZE,
+                      color: CUSTOM_TEXT_COLOR),
+                ),
+              ],
+            ),
+          ),
           Padding(
-              padding: paddingXY(x: 16, y: 0),
-              child: _subtotalSection('SubTotal',
+              padding: paddingXY(x: 16, y: 4),
+              child: _subtotalSection('Sub Total',
                   '$appCurrency ${totalAmount!.toStringAsFixed(2)}')),
           hightSpacer10,
-
           Padding(
-            padding: paddingXY(x: 4, y: 0),
+            padding: paddingXY(x: 0, y: 0),
             child: ExpansionTile(
               title: _totalTaxSection(
                 'Total Tax Applied',
                 '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
               ),
+              childrenPadding: const EdgeInsets.only(left: 4),
               children: taxDetailsList.isEmpty
                   ? [] // Returns an empty list if taxDetailsList is empty
                   : taxDetailsList.map((taxDetails) {
                       return ListTile(
-                        title: Text(' ${taxDetails['tax_type']}'),
+                        title: Text(
+                          ' ${taxDetails['tax_type']}',
+                          style: getTextStyle(
+                              fontSize: MEDIUM_MINUS_FONT_SIZE,
+                              color: CUSTOM_TEXT_COLOR,
+                              fontWeight: FontWeight.w400),
+                        ),
                         //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
-                        trailing: Text(' ${taxDetails['tax_amount']}'),
+                        trailing: Text(
+                          ' ${taxDetails['tax_amount']}',
+                          style: getTextStyle(
+                              fontSize: MEDIUM_MINUS_FONT_SIZE,
+                              color: CUSTOM_TEXT_COLOR,
+                              fontWeight: FontWeight.w400),
+                        ),
                       );
                     }).toList(),
               onExpansionChanged: (bool expanded) {
@@ -180,12 +213,33 @@ class _CartScreenState extends State<CartScreen> {
             ),
           ),
 
+          // Padding(
+          //     padding: paddingXY(x: 16, y: 16),
+          //     child: _subtotalSection('Grand Total',
+          //         '$appCurrency ${(totalAmount! + totalTaxAmount).toStringAsFixed(2)}')),
+          // hightSpacer10,
           Padding(
-              padding: paddingXY(x: 16, y: 0),
-              child: _subtotalSection('Grand Total',
-                  '$appCurrency ${(totalAmount! + totalTaxAmount).toStringAsFixed(2)}')),
-          hightSpacer10,
-
+            padding: paddingXY(x: 16, y: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Grand Total',
+                  style: getTextStyle(
+                      fontSize: LARGE_MINUS_FONT_SIZE,
+                      color: CUSTOM_TEXT_COLOR,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  '$appCurrency ${(totalAmount! + totalTaxAmount).toStringAsFixed(2)}',
+                  style: getTextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: LARGE_MINUS_FONT_SIZE,
+                      color: CUSTOM_TEXT_COLOR),
+                ),
+              ],
+            ),
+          ),
           Padding(
               padding: paddingXY(x: 16, y: 16),
               child: Text(
@@ -251,7 +305,8 @@ class _CartScreenState extends State<CartScreen> {
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       decoration: BoxDecoration(
                           color: AppColors.getPrimary(),
-                          borderRadius: BorderRadius.all(Radius.circular(7))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(7))),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -416,7 +471,7 @@ class _CartScreenState extends State<CartScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: horizontalSpace(),
+          padding: paddingXY(x: 16, y: 0),
           child: ListView.separated(
               separatorBuilder: (context, index) {
                 return const Divider();
@@ -481,7 +536,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         hightSpacer10,
         Padding(
-          padding: paddingXY(x: 16, y: 0),
+          padding: paddingXY(x: 16, y: 16),
           child: Text(
             "Bill",
             // textDirection: Alignment.centerLeft,
@@ -493,7 +548,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         hightSpacer15,
         Padding(
-            padding: horizontalSpace(),
+            padding: paddingXY(x: 16, y: 0),
             child: ListView.builder(
                 shrinkWrap: true,
                 primary: false,
@@ -511,32 +566,37 @@ class _CartScreenState extends State<CartScreen> {
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${prodList[position].name}   x",
+                            "${prodList[position].name}  x",
                             style: getTextStyle(
                                 fontSize: MEDIUM_FONT_SIZE,
-                                fontWeight: FontWeight.normal),
+                                color: CUSTOM_TEXT_COLOR,
+                                fontWeight: FontWeight.w400),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
                           Container(
                             decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 174, 204, 228),
+                                color: const Color.fromARGB(255, 212, 228, 241),
                                 border:
                                     Border.all(color: Colors.green, width: 2.0),
                                 borderRadius: BorderRadius.circular(2.0)),
                             width: Checkbox.width,
                             height: Checkbox.width,
                             child: Text(
-                              "${prodList[position].orderedQuantity.toInt()}",
-                              selectionColor: Colors.green,
-                            ),
+                                "${prodList[position].orderedQuantity.toInt()}",
+                               
+                                style: const TextStyle(
+                                  color: Colors.green,
+                                ),
+                                textAlign: TextAlign.center),
                           ),
                           Text(
                             '$appCurrency ${prodList[position].price.toStringAsFixed(2)}',
                             style: getTextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: MEDIUM_FONT_SIZE,
-                                color: Colors.black),
+                              fontWeight: FontWeight.normal,
+                              fontSize: MEDIUM_FONT_SIZE,
+                              color: CUSTOM_TEXT_COLOR,
+                            ),
                           ),
                         ],
                       ),
@@ -599,7 +659,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
-        padding: const EdgeInsets.only(top: 6, left: 0, right: 8),
+        padding: const EdgeInsets.only(top: 6, left: 0, right: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -625,22 +685,21 @@ class _CartScreenState extends State<CartScreen> {
         ),
       );
 
-  Widget _totalTaxSection(title, amount, {bool isDiscount = false}) => Padding(
+  Widget _totalTaxSection(
+    title,
+    amount,
+  ) =>
+      Padding(
         padding: const EdgeInsets.only(top: 6, left: 0, right: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 4, left: 0, right: 0),
-              child: Text(
-                title,
-                style: getTextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: isDiscount
-                        ? AppColors.getSecondary()
-                        : AppColors.getTextandCancelIcon(),
-                    fontSize: MEDIUM_PLUS_FONT_SIZE),
-              ),
+            Text(
+              title,
+              style: getTextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: CUSTOM_TEXT_COLOR,
+                  fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             // Icon(
             //   // Icons.arrow_drop_down,
@@ -648,14 +707,12 @@ class _CartScreenState extends State<CartScreen> {
             //       ? Icons.arrow_drop_down_circle
             //       : Icons.arrow_drop_down,
             // ),
-            Padding(padding: EdgeInsets.only(right: 48)),
+
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount
-                      ? AppColors.getSecondary()
-                      : AppColors.getTextandCancelIcon(),
+                  color: CUSTOM_TEXT_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],

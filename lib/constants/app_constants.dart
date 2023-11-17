@@ -4,6 +4,8 @@
 
 // ignore_for_file: constant_identifier_names
 
+import 'dart:ui';
+
 import '../network/api_helper/api_server.dart';
 
 const APP_NAME = 'NB POS';
@@ -16,7 +18,7 @@ const APP_VERSION = "App version";
 const APP_VERSION_FALLBACK = "1.0";
 //THEME CHANGE
 const invalidErrorText = "Invalid Url";
-const notAnActiveUrl="Not an active Url";
+const notAnActiveUrl = "Not an active Url";
 //LOGIN SCREEN
 const invalidPasswordMsg =
     "Enter at least 6 digits, should be one special characters,one uppercase,one lowercase,one digit.";
@@ -250,3 +252,6 @@ const double MEDIUM_MINUS_FONT_SIZE = 13;
 const double MEDIUM_FONT_SIZE = 14;
 const double MEDIUM_PLUS_FONT_SIZE = 16;
 const double LARGE_MINUS_FONT_SIZE = 18;
+
+//Custom Text Color
+const CUSTOM_TEXT_COLOR = Color.fromARGB(255, 87, 86, 86);
