@@ -34,6 +34,7 @@ class DBPreferences {
     return value;
   }
 
+
   ///Open the PreferenceBox
   _openPreferenceBox() async {
     prefBox = await Hive.openBox(PREFERENCE_BOX);

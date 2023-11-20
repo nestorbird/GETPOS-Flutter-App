@@ -63,103 +63,103 @@ import '../../../../database/models/taxes.dart';
 //   }
 // }
 
-class Items {
-  String itemCode;
-  String? name;
-  double price;
-  List<SelectedOptions> selectedOption;
-  double orderedQuantity;
-  double orderedPrice;
-  List<Taxes>? tax;
-  Items({
-    required this.itemCode,
-    required this.name,
-    required this.price,
-    required this.selectedOption,
-    required this.orderedQuantity,
-    required this.orderedPrice,
-    this.tax,
-  });
+// class Items {
+//   String itemCode;
+//   String? name;
+//   double price;
+//   List<SelectedOptions> selectedOption;
+//   double orderedQuantity;
+//   double orderedPrice;
+//   List<Taxes>? tax;
+//   Items({
+//     required this.itemCode,
+//     required this.name,
+//     required this.price,
+//     required this.selectedOption,
+//     required this.orderedQuantity,
+//     required this.orderedPrice,
+//     this.tax,
+//   });
 
-  Items copyWith({
-    String? itemCode,
-    String? name,
-    double? price,
-    List<SelectedOptions>? selectedOption,
-    double? orderedQuantity,
-    double? orderedPrice,
-    List<Taxes>? tax,
-  }) {
-    return Items(
-      itemCode: itemCode ?? this.itemCode,
-      name: name ?? this.name,
-      price: price ?? this.price,
-      selectedOption: selectedOption ?? this.selectedOption,
-      orderedQuantity: orderedQuantity ?? this.orderedQuantity,
-      orderedPrice: orderedPrice ?? this.orderedPrice,
-      tax: tax ?? this.tax,
-    );
-  }
+//   Items copyWith({
+//     String? itemCode,
+//     String? name,
+//     double? price,
+//     List<SelectedOptions>? selectedOption,
+//     double? orderedQuantity,
+//     double? orderedPrice,
+//     List<Taxes>? tax,
+//   }) {
+//     return Items(
+//       itemCode: itemCode ?? this.itemCode,
+//       name: name ?? this.name,
+//       price: price ?? this.price,
+//       selectedOption: selectedOption ?? this.selectedOption,
+//       orderedQuantity: orderedQuantity ?? this.orderedQuantity,
+//       orderedPrice: orderedPrice ?? this.orderedPrice,
+//       tax: tax ?? this.tax,
+//     );
+//   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'item_code': itemCode,
-      'item_name': name,
-      'rate': price,
-      'sub_items': selectedOption.map((x) => x.toMap()).toList(),
-      'qty': orderedQuantity,
-      'ordered_price': orderedPrice,
-      'tax': tax,
-    };
-  }
+//   Map<String, dynamic> toMap() {
+//     return {
+//       'item_code': itemCode,
+//       'item_name': name,
+//       'rate': price,
+//       'sub_items': selectedOption.map((x) => x.toMap()).toList(),
+//       'qty': orderedQuantity,
+//       'ordered_price': orderedPrice,
+//       'tax': tax,
+//     };
+//   }
 
-  factory Items.fromMap(Map<String, dynamic> map) {
-    return Items(
-      itemCode: map['itemCode'] ?? '',
-      name: map['name'] ?? '',
-      price: map['price'] ?? '',
-      selectedOption: List<SelectedOptions>.from(
-          map['selectedOption']?.map((x) => SelectedOptions.fromMap(x))),
-      orderedQuantity: map['orderedQuantity'] ?? '',
-      orderedPrice: map['orderedPrice'] ?? '',
-      tax: map['tax'] ?? '',
-    );
-  }
+//   factory Items.fromMap(Map<String, dynamic> map) {
+//     return Items(
+//       itemCode: map['itemCode'] ?? '',
+//       name: map['name'] ?? '',
+//       price: map['price'] ?? '',
+//       selectedOption: List<SelectedOptions>.from(
+//           map['selectedOption']?.map((x) => SelectedOptions.fromMap(x))),
+//       orderedQuantity: map['orderedQuantity'] ?? '',
+//       orderedPrice: map['orderedPrice'] ?? '',
+//       tax: map['tax'] ?? '',
+//     );
+//   }
 
-  Map toJson() => toMap();
+//   Map toJson() => toMap();
 
-  factory Items.fromJson(String source) => Items.fromMap(json.decode(source));
+//   factory Items.fromJson(String source) => Items.fromMap(json.decode(source));
 
-  @override
-  String toString() {
-    return 'Items(itemCode: $itemCode, name: $name, price: $price, selectedOption: $selectedOption, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, tax: $tax)';
-  }
+//   @override
+//   String toString() {
+//     return 'Items(itemCode: $itemCode, name: $name, price: $price, selectedOption: $selectedOption, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, tax: $tax)';
+//   }
 
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
+//   @override
+//   bool operator ==(Object other) {
+//     if (identical(this, other)) return true;
 
-    return other is Items &&
-        other.itemCode == itemCode &&
-        other.name == name &&
-        other.price == price &&
-        listEquals(other.selectedOption, selectedOption) &&
-        other.orderedQuantity == orderedQuantity &&
-        other.orderedPrice == orderedPrice &&
-        other.tax == tax;
-  }
+//     return other is Items &&
+//         other.itemCode == itemCode &&
+//         other.name == name &&
+//         other.price == price &&
+//         listEquals(other.selectedOption, selectedOption) &&
+//         other.orderedQuantity == orderedQuantity &&
+//         other.orderedPrice == orderedPrice &&
+//         other.tax == tax;
+//   }
 
-  @override
-  int get hashCode {
-    return itemCode.hashCode ^
-        name.hashCode ^
-        price.hashCode ^
-        selectedOption.hashCode ^
-        orderedQuantity.hashCode ^
-        orderedPrice.hashCode ^
-        tax.hashCode;
-  }
-}
+//   @override
+//   int get hashCode {
+//     return itemCode.hashCode ^
+//         name.hashCode ^
+//         price.hashCode ^
+//         selectedOption.hashCode ^
+//         orderedQuantity.hashCode ^
+//         orderedPrice.hashCode ^
+//         tax.hashCode;
+//   }
+// }
 
 class SelectedOptions {
   String id;

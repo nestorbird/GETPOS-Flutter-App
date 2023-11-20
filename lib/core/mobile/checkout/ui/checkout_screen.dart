@@ -144,21 +144,21 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       log('Order No : $orderId');
 
       SaleOrder saleOrder = SaleOrder(
-          id: orderId,
-          orderAmount: totalAmount,
-          date: date,
-          time: time,
-          customer: widget.order.customer,
-          manager: hubManager!,
-          items: widget.order.items,
-          transactionId: '',
-          paymentMethod: paymentMethod,
-          paymentStatus: "Paid",
-          transactionSynced: false,
-          parkOrderId:
-              "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-          tracsactionDateTime: currentDateTime,
-          totalTaxAmount: 0.0);
+        id: orderId,
+        orderAmount: totalAmount,
+        date: date,
+        time: time,
+        customer: widget.order.customer,
+        manager: hubManager!,
+        items: widget.order.items,
+        transactionId: '',
+        paymentMethod: paymentMethod,
+        paymentStatus: "Paid",
+        transactionSynced: false,
+        parkOrderId:
+            "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
+        tracsactionDateTime: currentDateTime,
+      );
       if (!mounted) return;
       Navigator.push(
           context,

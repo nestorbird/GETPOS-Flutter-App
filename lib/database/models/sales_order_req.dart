@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:nb_posx/core/mobile/sales_history/ui/sales_details_item.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
 
 part 'sales_order_req.g.dart';
@@ -31,6 +32,9 @@ class SalesOrderRequest extends HiveObject {
   @HiveField(6)
   String? mpesaNo;
 
+  @HiveField(7)
+  List<OrderTax>? taxes;
+
   SalesOrderRequest({
     required this.hubManager,
     required this.customer,
@@ -39,6 +43,7 @@ class SalesOrderRequest extends HiveObject {
     required this.items,
     required this.modeOfPayment,
     required this.mpesaNo,
+    this.taxes,
   });
 
   SalesOrderRequest copyWith({
@@ -49,6 +54,7 @@ class SalesOrderRequest extends HiveObject {
     List<SaleOrderRequestItems>? items,
     String? modeOfPayment,
     String? mpesaNo,
+    List<OrderTax>? taxes,
   }) {
     return SalesOrderRequest(
       hubManager: hubManager ?? this.hubManager,
@@ -58,6 +64,7 @@ class SalesOrderRequest extends HiveObject {
       items: items ?? this.items,
       modeOfPayment: modeOfPayment ?? this.modeOfPayment,
       mpesaNo: mpesaNo ?? this.mpesaNo,
+      taxes: taxes ?? this.taxes,
     );
   }
 
@@ -70,6 +77,7 @@ class SalesOrderRequest extends HiveObject {
       'items': items!.map((x) => x.toMap()).toList(),
       'modeOfPayment': modeOfPayment,
       'mpesaNo': mpesaNo,
+      'taxes': taxes,
     };
   }
 
@@ -83,6 +91,7 @@ class SalesOrderRequest extends HiveObject {
           map['selectedOption']?.map((x) => SaleOrderRequestItems.fromMap(x))),
       modeOfPayment: map['modeOfPayment'],
       mpesaNo: map['mpesaNo'],
+      taxes: map['taxes'],
     );
   }
 
@@ -93,7 +102,7 @@ class SalesOrderRequest extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder( hubManager: $hubManager, customer: $customer,  items: $items, modeOfPayment: $modeOfPayment, mpesaNo: $mpesaNo )';
+    return 'SaleOrder( hubManager: $hubManager, customer: $customer,  items: $items, modeOfPayment: $modeOfPayment, mpesaNo: $mpesaNo ,taxes: $taxes)';
   }
 
   @override
@@ -106,7 +115,8 @@ class SalesOrderRequest extends HiveObject {
         other.items == items &&
         listEquals(other.items, items) &&
         other.modeOfPayment == modeOfPayment &&
-        other.mpesaNo == mpesaNo;
+        other.mpesaNo == mpesaNo &&
+        other.taxes == taxes;
   }
 
   @override
@@ -115,6 +125,7 @@ class SalesOrderRequest extends HiveObject {
         customer.hashCode ^
         items.hashCode ^
         modeOfPayment.hashCode ^
-        mpesaNo.hashCode;
+        mpesaNo.hashCode ^
+        taxes.hashCode;
   }
 }

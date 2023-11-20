@@ -20,6 +20,7 @@ const TAX_BOX = 'taxes';
 const ORDERTAX_BOX = 'ordertaxes';
 const ORDERTAXTEMPLATE_BOX = 'ordertaxtemplate';
 const URL_BOX = 'url';
+const SALES_ORDER_REQUEST_ITEMS_BOX = 'salesordererequestitems';
 const SALES_ORDER_REQUEST_BOX = 'salesordererequest';
 
 //Temporary Variables

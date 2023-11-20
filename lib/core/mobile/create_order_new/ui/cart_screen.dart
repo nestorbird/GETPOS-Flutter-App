@@ -59,7 +59,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  String orderId = "";
+  String? orderId;
   bool _isCODSelected = false;
   double? totalAmount;
   double subTotalAmount = 0.0;
@@ -82,7 +82,8 @@ class _CartScreenState extends State<CartScreen> {
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
   bool isPromoCodeAvailableForUse = false;
-  double orderAmount = 0;
+  double? orderAmount;
+  double grandTotal = 0.0;
 
   SaleOrder? saleOrder;
   bool _customTileExpanded = false;
@@ -92,10 +93,11 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     //_getAllPromoCodes();
-    // _getHubManager();
+    //_getHubManager();
     // _getOrderTaxTemplate();
     //_getTaxes();
     //totalAmount = Helper().getTotal(widget.order.items);
+
     totalItems = widget.order.items.length;
     // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
@@ -231,7 +233,7 @@ class _CartScreenState extends State<CartScreen> {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '$appCurrency ${(totalAmount! + totalTaxAmount).toStringAsFixed(2)}',
+                  '$appCurrency ${(grandTotal).toStringAsFixed(2)}',
                   style: getTextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: LARGE_MINUS_FONT_SIZE,
@@ -539,7 +541,6 @@ class _CartScreenState extends State<CartScreen> {
           padding: paddingXY(x: 16, y: 16),
           child: Text(
             "Bill",
-            // textDirection: Alignment.centerLeft,
             style: getTextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -561,44 +562,55 @@ class _CartScreenState extends State<CartScreen> {
                       onTap: () {
                         // _openItemDetailDialog(context, prodList[position]);
                       },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${prodList[position].name}  x",
-                            style: getTextStyle(
-                                fontSize: MEDIUM_FONT_SIZE,
-                                color: CUSTOM_TEXT_COLOR,
-                                fontWeight: FontWeight.w400),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 212, 228, 241),
-                                border:
-                                    Border.all(color: Colors.green, width: 2.0),
-                                borderRadius: BorderRadius.circular(2.0)),
-                            width: Checkbox.width,
-                            height: Checkbox.width,
-                            child: Text(
-                                "${prodList[position].orderedQuantity.toInt()}",
-                               
-                                style: const TextStyle(
-                                  color: Colors.green,
+                      child: Padding(
+                        padding: paddingXY(x: 0, y: 4),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "${prodList[position].name}",
+                                  style: getTextStyle(
+                                    fontSize: MEDIUM_FONT_SIZE,
+                                    color: CUSTOM_TEXT_COLOR,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                 ),
-                                textAlign: TextAlign.center),
-                          ),
-                          Text(
-                            '$appCurrency ${prodList[position].price.toStringAsFixed(2)}',
-                            style: getTextStyle(
-                              fontWeight: FontWeight.normal,
-                              fontSize: MEDIUM_FONT_SIZE,
-                              color: CUSTOM_TEXT_COLOR,
+                                const Text("x"),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 212, 228, 241),
+                                      border: Border.all(
+                                          color: Colors.green, width: 2.0),
+                                      borderRadius: BorderRadius.circular(2.0)),
+                                  width: Checkbox.width,
+                                  height: 21.0,
+                                  child: Text(
+                                      "${prodList[position].orderedQuantity.toInt()}",
+                                      style: const TextStyle(
+                                        color: Colors.green,
+                                      ),
+                                      textAlign: TextAlign.center),
+                                ),
+                                Text(
+                                  '$appCurrency ${prodList[position].price.toStringAsFixed(2)}',
+                                  style: getTextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: MEDIUM_FONT_SIZE,
+                                    color: CUSTOM_TEXT_COLOR,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
 
@@ -722,7 +734,7 @@ class _CartScreenState extends State<CartScreen> {
   createSale(String paymentMethod) async {
     paymentMethod = paymentMethod;
     if (paymentMethod == "Card") {
-      return Helper.showPopup(context, "Comming Soon");
+      return Helper.showPopup(context, "Coming Soon");
     } else {
       DateTime currentDateTime = DateTime.now();
       String date =
@@ -732,11 +744,19 @@ class _CartScreenState extends State<CartScreen> {
       log('Time : $time');
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
+      DbHubManager dbHubManager = DbHubManager();
+      //  HubManager hubManager = HubManager(
+      //     id: hubManagerData.email,
+      //     name: hubManagerData.fullName,
+      //     phone: hubManagerData.mobileNo,
+      //     emailId: hubManagerData.email,
+      //     profileImage: image,
+      //     cashBalance: hubManagerData.balance.toDouble(),
+      //   );
 
       saleOrder = SaleOrder(
-          id: orderId,
-          orderAmount: totalAmount!,
-          totalTaxAmount: totalTaxAmount,
+          id: orderId!,
+          orderAmount: grandTotal,
           date: date,
           time: time,
           customer: widget.order.customer,
@@ -748,8 +768,10 @@ class _CartScreenState extends State<CartScreen> {
           transactionSynced: false,
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-          tracsactionDateTime: currentDateTime);
+          tracsactionDateTime: currentDateTime,
+          taxes: widget.order.taxes);
       if (!mounted) return;
+      log("after sales order");
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -857,6 +879,8 @@ class _CartScreenState extends State<CartScreen> {
     subTotalAmount = 0.0;
     taxAmount = 0.0;
     totalTaxAmount = 0.0;
+    orderAmount = 0.0;
+    grandTotal = 0.0;
     // Map to store tax amounts for each tax type
     Map<String, double> taxAmountMap = {};
 
@@ -896,7 +920,7 @@ class _CartScreenState extends State<CartScreen> {
 
           log('totalAmount itemwise : $totalAmount');
           taxation.add(Taxation(
-            id: orderId,
+            id: orderId!,
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,
@@ -915,13 +939,14 @@ class _CartScreenState extends State<CartScreen> {
         DbTaxes().saveItemWiseTax(orderId, taxation);
         DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
-
-      log("Total Amount:: $totalAmount");
       setState(() {});
+      log("Total Amount:: $totalAmount");
     }
 
     // Order wise tax applicable
     if (!isTaxAvailable) {
+      taxAmount = 0.0;
+      totalTaxAmount = 0.0;
       List<OrderTaxTemplate> data =
           await DbOrderTaxTemplate().getOrderTaxesTemplate();
       log('data: $data');
@@ -969,61 +994,15 @@ class _CartScreenState extends State<CartScreen> {
             })
         .toList();
     setState(() {});
+    grandTotal = totalAmount! + totalTaxAmount;
+    log('Grand Total:: $grandTotal');
   }
-
-  // Future<List<Map<String, dynamic>>> calculateItemWiseTax(
-  //     List<Tax> taxes, double subTotalAmount) async {
-  //   List<Taxation> taxation = [];
-  //   double totalTaxAmount = 0;
-  //   List<Map<String, dynamic>> taxDetailsList = [];
-
-  //   for (Tax tax in taxes) {
-  //     taxAmount = subTotalAmount * tax.taxRate! / 100;
-  //     log('Tax Amount itemwise : $taxAmount');
-  //     totalTaxAmount += taxAmount;
-
-  //     taxation.add(Taxation(
-  //       id: orderId,
-  //       itemTaxTemplate: tax.itemTaxTemplate!,
-  //       taxType: tax.taxType!,
-  //       taxRate: tax.taxRate!,
-  //       taxationAmount: taxAmount,
-  //     ));
-
-  //     taxDetailsList.add({
-  //       'account_head': tax.taxType, // Update with the appropriate property
-  //       'rate': tax.taxRate,
-  //       'tax_amount': taxAmount,
-  //     });
-  //   }
-
-  //   log("Total Tax Amount itemwise: $totalTaxAmount");
-  //   DbTaxes().saveItemWiseTax(orderId, taxation);
-  //   DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
-
-  //   log("Total Amount:: $subTotalAmount");
-  //   setState(() {});
-
-  //   return taxDetailsList;
-  // }
-
-  // void _getOrderTaxTemplate() async {
-  //   getOrderTemplate = await DbOrderTaxTemplate().getOrderTaxesTemplate();
-  // }
-
-  // void _getTaxes() async {
-  //   getTaxesOrderwise = await DbOrderTax().getOrderTaxes();
-  // }
-
-  // void _getHubManager() async {
-  //   hubManager = await DbHubManager().getManager();
-  // }
 
   void _updateOrderPriceAndSave() {
     for (OrderItem item in widget.order.items) {
-      orderAmount += item.orderedPrice * item.orderedQuantity;
+      orderAmount = orderAmount! + item.orderedPrice * item.orderedQuantity;
     }
-    widget.order.orderAmount = orderAmount;
+    widget.order.orderAmount = orderAmount!;
     log('orderAmount after deleting:: $orderAmount');
 
     _configureTaxAndTotal(widget.order.items);

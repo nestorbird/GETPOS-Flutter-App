@@ -107,7 +107,6 @@ class Helper {
         .showSnackBar(snackBar)
         .closed
         .then((value) => ScaffoldMessenger.of(context).clearSnackBars());
-       
   }
 
   //Function to show the popup with one button with on pressed functionality to close popup.
@@ -155,7 +154,7 @@ class Helper {
           return SizedBox(
             height: 100,
             child: Padding(
-              padding: const EdgeInsets.only(left: 400 , right: 400),
+              padding: const EdgeInsets.only(left: 400, right: 400),
               child: SimplePopup(
                 message: message,
                 buttonText: OPTION_OK.toUpperCase(),
@@ -253,7 +252,11 @@ class Helper {
     NumberFormat numberFormat = NumberFormat("0000");
     DateTime currentDateTime = DateTime.now();
     String orderNo = await DBPreferences().getPreference(CURRENT_ORDER_NUMBER);
-    if (orderNo.isEmpty) orderNo = "1";
+    log('Order No::$orderNo');
+    if (orderNo.isEmpty) {
+      orderNo = "1";
+     await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
+    }
     String orderSeries = await DBPreferences().getPreference(SalesSeries);
     String orderId = orderSeries
         .replaceAll(".YYYY.", "${currentDateTime.year}")
@@ -288,7 +291,7 @@ class Helper {
     } else if (paymentStatus == "Paid") {
       return const Color(0xFF62B146);
     } else {
-      return  const Color(0xFFDC1E44);
+      return const Color(0xFFDC1E44);
     }
   }
 

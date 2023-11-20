@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:nb_posx/core/service/create_order/model/selected_options.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 
 part 'sales_order_req_items.g.dart';
@@ -31,7 +32,7 @@ class SaleOrderRequestItems extends HiveObject {
   @HiveField(6)
   List<Taxes>? tax;
 
-  SaleOrderRequestItems( {
+  SaleOrderRequestItems({
     required this.itemCode,
     required this.name,
     required this.price,

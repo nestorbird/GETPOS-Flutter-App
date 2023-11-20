@@ -36,7 +36,8 @@ class ParkOrder extends HiveObject {
   @HiveField(7)
   DateTime transactionDateTime;
 
-  
+  @HiveField(8)
+  List<OrderTax>? taxes;
 
   ParkOrder({
     required this.id,
@@ -47,7 +48,7 @@ class ParkOrder extends HiveObject {
     required this.items,
     required this.orderAmount,
     required this.transactionDateTime,
-    
+    this.taxes,
   });
 
   ParkOrder copyWith({
@@ -59,7 +60,7 @@ class ParkOrder extends HiveObject {
     List<OrderItem>? items,
     double? orderAmount,
     DateTime? transactionDateTime,
-    
+    List<OrderTax>? taxes,
   }) {
     return ParkOrder(
       id: id ?? this.id,
@@ -70,7 +71,7 @@ class ParkOrder extends HiveObject {
       items: items ?? this.items,
       orderAmount: orderAmount ?? this.orderAmount,
       transactionDateTime: transactionDateTime ?? this.transactionDateTime,
-    
+      taxes: taxes ?? this.taxes,
     );
   }
 
@@ -84,7 +85,7 @@ class ParkOrder extends HiveObject {
       'items': items.map((x) => x.toMap()).toList(),
       'orderAmount': orderAmount,
       'transactionDateTime': transactionDateTime,
-      
+      'taxes': taxes,
     };
   }
 
@@ -99,7 +100,7 @@ class ParkOrder extends HiveObject {
           List<OrderItem>.from(map['items']?.map((x) => OrderItem.fromMap(x))),
       orderAmount: map['orderAmount'],
       transactionDateTime: map['transactionDateTime'],
-    
+      taxes: List<OrderTax>.from(map['items']?.map((x) => OrderTax.fromMap(x))),
     );
   }
 
@@ -110,7 +111,7 @@ class ParkOrder extends HiveObject {
 
   @override
   String toString() {
-    return 'ParkOrder(id: $id, date: $date, time: $time, customer: $customer, manager: $manager, items: $items, orderAmount: $orderAmount)';
+    return 'ParkOrder(id: $id, date: $date, time: $time, customer: $customer, manager: $manager, items: $items, orderAmount: $orderAmount, taxes: $taxes)';
   }
 
   @override
@@ -125,7 +126,8 @@ class ParkOrder extends HiveObject {
         other.manager == manager &&
         other.items == items &&
         other.transactionDateTime == transactionDateTime &&
-        other.orderAmount == orderAmount;
+        other.orderAmount == orderAmount &&
+        other.taxes == taxes;
   }
 
   @override
@@ -137,6 +139,7 @@ class ParkOrder extends HiveObject {
         manager.hashCode ^
         items.hashCode ^
         transactionDateTime.hashCode ^
-        orderAmount.hashCode;
+        orderAmount.hashCode ^
+        taxes.hashCode;
   }
 }

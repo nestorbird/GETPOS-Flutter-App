@@ -29,7 +29,7 @@ class SaleOrderAdapter extends TypeAdapter<SaleOrder> {
       tracsactionDateTime: fields[9] as DateTime,
       paymentMethod: fields[10] == null ? '' : fields[10] as String,
       paymentStatus: fields[11] == null ? 'Unpaid' : fields[11] as String,
-      totalTaxAmount: fields[12] as double,
+      taxes: (fields[12] as List?)?.cast<OrderTax>(),
     );
   }
 
@@ -62,7 +62,7 @@ class SaleOrderAdapter extends TypeAdapter<SaleOrder> {
       ..writeByte(11)
       ..write(obj.paymentStatus)
       ..writeByte(12)
-      ..write(obj.totalTaxAmount);
+      ..write(obj.taxes);
   }
 
   @override

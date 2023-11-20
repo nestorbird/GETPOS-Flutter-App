@@ -8,7 +8,7 @@ class DbSaleOrderRequestItems {
   late Box box;
 
   Future<List> saveItemWiseTaxRequest(orderId, List<Taxation> list) async {
-    box = await Hive.openBox<Taxation>(SALES_ORDER_REQUEST_BOX);
+    box = await Hive.openBox<Taxation>(SALES_ORDER_REQUEST_ITEMS_BOX);
     for (Taxation item in list) {
       await box.put(item.taxType, item);
     }

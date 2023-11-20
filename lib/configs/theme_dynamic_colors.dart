@@ -24,8 +24,7 @@ class AppColors {
   static Color getfontWhiteColor() => fontWhiteColor ?? const Color(0xFFFFFFFF);
   static Color getparkOrderButton() =>
       parkOrderButton ?? const Color(0xFF4A4A4A);
-      static Color getactive() =>
-      active ?? const Color(0xFFFEF9FA);
+  static Color getactive() => active ?? const Color(0xFFFEF9FA);
 
 // to set the colors
   setPrimary(int setter) {
@@ -59,28 +58,53 @@ class AppColors {
   setparkOrderButton(int setter) {
     parkOrderButton = Color(setter);
   }
-setactive(int setter) {
+
+  setactive(int setter) {
     active = Color(setter);
   }
   // Method to update colors from ThemeResponse
+  // void updateColorsFromThemeResponse(ThemeResponse themeResponse) {
+  //   primary = Color(
+  //       int.parse(themeResponse.message.data.primary.replaceAll('#', '0xFF')));
+  //   secondary = Color(int.parse(
+  //       themeResponse.message.data.secondary.replaceAll('#', '0xFF')));
+  //   asset = Color(
+  //       int.parse(themeResponse.message.data.asset.replaceAll('#', '0xFF')));
+  //   textandCancelIcon = Color(int.parse(
+  //       themeResponse.message.data.textandCancelIcon.replaceAll('#', '0xFF')));
+  //   shadowBorder = Color(int.parse(
+  //       themeResponse.message.data.shadowBorder.replaceAll('#', '0xFF')));
+  //   hintText = Color(
+  //       int.parse(themeResponse.message.data.hintText.replaceAll('#', '0xFF')));
+  //   fontWhiteColor = Color(int.parse(
+  //       themeResponse.message.data.fontWhiteColor.replaceAll('#', '0xFF')));
+  //   parkOrderButton = Color(int.parse(
+  //       themeResponse.message.data.parkOrderButton.replaceAll('#', '0xFF')));
+  //       active = Color(int.parse(
+  //       themeResponse.message.data.active.replaceAll('#', '0xFF')));
+  // }
+
   void updateColorsFromThemeResponse(ThemeResponse themeResponse) {
-    primary = Color(
-        int.parse(themeResponse.message.data.primary.replaceAll('#', '0xFF')));
-    secondary = Color(int.parse(
-        themeResponse.message.data.secondary.replaceAll('#', '0xFF')));
-    asset = Color(
-        int.parse(themeResponse.message.data.asset.replaceAll('#', '0xFF')));
-    textandCancelIcon = Color(int.parse(
-        themeResponse.message.data.textandCancelIcon.replaceAll('#', '0xFF')));
-    shadowBorder = Color(int.parse(
-        themeResponse.message.data.shadowBorder.replaceAll('#', '0xFF')));
-    hintText = Color(
-        int.parse(themeResponse.message.data.hintText.replaceAll('#', '0xFF')));
-    fontWhiteColor = Color(int.parse(
-        themeResponse.message.data.fontWhiteColor.replaceAll('#', '0xFF')));
-    parkOrderButton = Color(int.parse(
-        themeResponse.message.data.parkOrderButton.replaceAll('#', '0xFF')));
-        active = Color(int.parse(
-        themeResponse.message.data.active.replaceAll('#', '0xFF')));
+    primary = Color(int.parse(themeResponse.message.data.primary)) ??
+        const Color(0xFFDC1E44);
+    secondary = Color(int.parse(themeResponse.message.data.secondary)) ??
+        const Color(0xFF62B146);
+    asset = Color(int.parse(themeResponse.message.data.asset)) ??
+        const Color(0xFF707070);
+    textandCancelIcon =
+        Color(int.parse(themeResponse.message.data.textandCancelIcon)) ??
+            const Color(0xFF000000);
+    shadowBorder = Color(int.parse(themeResponse.message.data.shadowBorder)) ??
+        const Color(0xFFC7C5C5);
+    hintText = Color(int.parse(themeResponse.message.data.hintText)) ??
+        const Color(0xFFF3F2F5);
+    fontWhiteColor =
+        Color(int.parse(themeResponse.message.data.fontWhiteColor)) ??
+            const Color(0xFFFFFFFF);
+    parkOrderButton =
+        Color(int.parse(themeResponse.message.data.parkOrderButton)) ??
+            const Color(0xFF4A4A4A);
+    active = Color(int.parse(themeResponse.message.data.active)) ??
+        const Color(0xFFFEF9FA);
   }
 }

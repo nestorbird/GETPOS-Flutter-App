@@ -24,13 +24,14 @@ class SalesOrderRequestAdapter extends TypeAdapter<SalesOrderRequest> {
       items: (fields[4] as List?)?.cast<SaleOrderRequestItems>(),
       modeOfPayment: fields[5] as String?,
       mpesaNo: fields[6] as String?,
+      taxes: (fields[7] as List?)?.cast<OrderTax>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, SalesOrderRequest obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.hubManager)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class SalesOrderRequestAdapter extends TypeAdapter<SalesOrderRequest> {
       ..writeByte(5)
       ..write(obj.modeOfPayment)
       ..writeByte(6)
-      ..write(obj.mpesaNo);
+      ..write(obj.mpesaNo)
+      ..writeByte(7)
+      ..write(obj.taxes);
   }
 
   @override
