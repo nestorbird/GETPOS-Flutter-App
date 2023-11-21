@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:nb_posx/core/mobile/sales_history/ui/sales_details_item.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
@@ -102,7 +101,7 @@ class SalesOrderRequest extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder( hub_manager: $hubManager, customer: $customer,  items: $items, mode_of_payment: $modeOfPayment, mpesa_no: $mpesaNo ,tax: $tax)';
+    return 'SaleOrder( hub_manager: $hubManager, customer: $customer, transaction_date: $transactionDate items: $items, mode_of_payment: $modeOfPayment, mpesa_no: $mpesaNo ,tax: $tax)';
   }
 
   @override
