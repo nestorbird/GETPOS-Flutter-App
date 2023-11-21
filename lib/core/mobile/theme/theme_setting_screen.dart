@@ -138,7 +138,7 @@ class _ThemeChangeState extends State<ThemeChange> {
                   }
                 },
                 title: CONTINUE_TXT,
-                primaryColor: const Color.fromARGB(255, 138, 95, 80),
+                primaryColor: const Color(0xFFDC1E44),
                 //primaryColor: AppColors.getPrimary(),
                 width: MediaQuery.of(context).size.width,
               ),
@@ -196,7 +196,7 @@ class _ThemeChangeState extends State<ThemeChange> {
         //await DbInstanceUrl().saveUrl(url);
         String url = "https://${_urlCtrl.text}/api/";
         await DbInstanceUrl().saveUrl(url);
-      
+
         log('url:$url');
         // ignore: use_build_context_synchronously
         await Navigator.push(

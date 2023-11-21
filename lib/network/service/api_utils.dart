@@ -62,6 +62,7 @@ class APIUtils {
           body: jsonEncode(requestBody),
           headers: enableHeader ? await _headers() : {});
       print(apiResponse);
+      log('Request Body :$requestBody');
 
       //Checking for the response code and handling the result.
       return _returnResponse(apiResponse);

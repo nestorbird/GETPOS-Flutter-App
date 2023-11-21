@@ -38,7 +38,7 @@ class CreateOrderService {
                 name: opt.name,
                 price: opt.price,
                 qty: item.orderedQuantity,
-//                  tax: item.tax
+
               ));
             }
           }
@@ -72,9 +72,9 @@ class CreateOrderService {
         tax: order.taxes,
       );
 
-      var body = {'order_list': orderRequest.toJson()};
+      var body = {'order_list': orderRequest};
 
-      log("${orderRequest.toJson()}");
+      log("$orderRequest");
       log(json.encode(body));
 
       var apiResponse =
@@ -112,7 +112,11 @@ class CreateOrderService {
     var month = date.month < 10 ? "0${date.month}" : date.month;
     var day = date.day < 10 ? "0${date.day}" : date.day;
     var dateValue = '${date.year}-$month-$day';
+    
     log('Parsed date :: $dateValue');
     return dateValue;
   }
+
+ // String _parseDateAndTime
+
 }

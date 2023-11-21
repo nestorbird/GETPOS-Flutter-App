@@ -62,7 +62,7 @@ class SyncHelper {
     await DbSaleOrder().delete();
     await DBPreferences().delete();
     await DbInstanceUrl().deleteUrl();
-    instanceUrl = 'pos14.frappe.cloud';
+    instanceUrl = 'getpos.in';
     return true;
   }
 

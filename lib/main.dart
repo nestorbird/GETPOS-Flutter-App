@@ -81,7 +81,7 @@ void registerHiveTypeAdapters() {
   Hive.registerAdapter(HubManagerAdapter());
 
   //Registering sale order adapter
-  // Hive.registerAdapter(SaleOrderAdapter());
+  Hive.registerAdapter(SaleOrderAdapter());
 
   //Registering ward adapter
   Hive.registerAdapter(CategoryAdapter());

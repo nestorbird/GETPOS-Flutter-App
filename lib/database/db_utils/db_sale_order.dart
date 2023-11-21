@@ -108,6 +108,7 @@ class DbSaleOrder {
 
       await box.put(orderKey, order);
     });
+     box.close();
     return true;
   }
 

@@ -70,6 +70,7 @@ class DbTaxes {
     for (Taxation item in list) {
       await box.put(item.id, item);
     }
+    box.close();
     return list;
   }
 }
