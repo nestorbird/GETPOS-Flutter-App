@@ -33,7 +33,7 @@ class SalesOrderRequest extends HiveObject {
   String? mpesaNo;
 
   @HiveField(7)
-  List<OrderTax>? taxes;
+  List<OrderTax>? tax;
 
   SalesOrderRequest({
     required this.hubManager,
@@ -42,8 +42,8 @@ class SalesOrderRequest extends HiveObject {
     required this.deliveryDate,
     required this.items,
     required this.modeOfPayment,
-    required this.mpesaNo,
-    this.taxes,
+    this.mpesaNo,
+    this.tax,
   });
 
   SalesOrderRequest copyWith({
@@ -54,7 +54,7 @@ class SalesOrderRequest extends HiveObject {
     List<SaleOrderRequestItems>? items,
     String? modeOfPayment,
     String? mpesaNo,
-    List<OrderTax>? taxes,
+    List<OrderTax>? tax,
   }) {
     return SalesOrderRequest(
       hubManager: hubManager ?? this.hubManager,
@@ -64,34 +64,34 @@ class SalesOrderRequest extends HiveObject {
       items: items ?? this.items,
       modeOfPayment: modeOfPayment ?? this.modeOfPayment,
       mpesaNo: mpesaNo ?? this.mpesaNo,
-      taxes: taxes ?? this.taxes,
+      tax: tax ?? this.tax,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'hubManager': hubManager,
+      'hub_manager': hubManager,
       'customer': customer,
-      'transactionDate': transactionDate,
-      'deliveryDate': deliveryDate,
+      'transaction_date': transactionDate,
+      'delivery_date': deliveryDate,
       'items': items!.map((x) => x.toMap()).toList(),
-      'modeOfPayment': modeOfPayment,
-      'mpesaNo': mpesaNo,
-      'taxes': taxes,
+      'mode_of_payment': modeOfPayment,
+      'mpesa_No': mpesaNo,
+      'tax': tax,
     };
   }
 
   factory SalesOrderRequest.fromMap(Map<String, dynamic> map) {
     return SalesOrderRequest(
-      hubManager: map['hubManager'],
+      hubManager: map['hub_manager'],
       customer: map['customer'],
-      transactionDate: map['transactionDate'],
-      deliveryDate: map['deliveryDate'],
+      transactionDate: map['transaction_date'],
+      deliveryDate: map['delivery_date'],
       items: List<SaleOrderRequestItems>.from(
-          map['selectedOption']?.map((x) => SaleOrderRequestItems.fromMap(x))),
-      modeOfPayment: map['modeOfPayment'],
-      mpesaNo: map['mpesaNo'],
-      taxes: map['taxes'],
+          map['selected_option']?.map((x) => SaleOrderRequestItems.fromMap(x))),
+      modeOfPayment: map['mode_of_payment'],
+      mpesaNo: map['mpesa_no'],
+      tax: map['tax'],
     );
   }
 
@@ -102,7 +102,7 @@ class SalesOrderRequest extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder( hubManager: $hubManager, customer: $customer,  items: $items, modeOfPayment: $modeOfPayment, mpesaNo: $mpesaNo ,taxes: $taxes)';
+    return 'SaleOrder( hub_manager: $hubManager, customer: $customer,  items: $items, mode_of_payment: $modeOfPayment, mpesa_no: $mpesaNo ,tax: $tax)';
   }
 
   @override
@@ -116,7 +116,7 @@ class SalesOrderRequest extends HiveObject {
         listEquals(other.items, items) &&
         other.modeOfPayment == modeOfPayment &&
         other.mpesaNo == mpesaNo &&
-        other.taxes == taxes;
+        other.tax == tax;
   }
 
   @override
@@ -126,6 +126,6 @@ class SalesOrderRequest extends HiveObject {
         items.hashCode ^
         modeOfPayment.hashCode ^
         mpesaNo.hashCode ^
-        taxes.hashCode;
+        tax.hashCode;
   }
 }

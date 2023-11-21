@@ -255,7 +255,7 @@ class Helper {
     log('Order No::$orderNo');
     if (orderNo.isEmpty) {
       orderNo = "1";
-     await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
+      await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
     }
     String orderSeries = await DBPreferences().getPreference(SalesSeries);
     String orderId = orderSeries

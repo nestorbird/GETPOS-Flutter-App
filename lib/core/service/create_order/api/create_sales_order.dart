@@ -69,12 +69,12 @@ class CreateOrderService {
         items: items,
         modeOfPayment: order.paymentMethod,
         mpesaNo: order.transactionId,
-        taxes: order.taxes,
+        tax: order.taxes,
       );
 
       var body = {'order_list': orderRequest.toJson()};
 
-      //   log("${orderRequest.toJson()}");
+      log("${orderRequest.toJson()}");
       log(json.encode(body));
 
       var apiResponse =

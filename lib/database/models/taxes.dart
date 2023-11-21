@@ -43,19 +43,19 @@ class Taxes extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      'taxId': taxId,
-      'itemTaxTemplate': itemTaxTemplate,
-      'taxType': taxType,
-      'taxRate': taxRate,
+      'tax_id': taxId,
+      'item_tax_template': itemTaxTemplate,
+      'tax_type': taxType,
+      'tax_rate': taxRate,
     };
   }
 
   factory Taxes.fromMap(Map<String, dynamic> map) {
     return Taxes(
-      taxId: map["taxId"] ?? "",
-      itemTaxTemplate: map['itemTaxTemplate'] ?? '',
-      taxType: map['taxType'] ?? '',
-      taxRate: map['taxRate'] ?? '',
+      taxId: map["tax_id"] ?? "",
+      itemTaxTemplate: map['item_tax_template'] ?? '',
+      taxType: map['tax_type'] ?? '',
+      taxRate: map['tax_rate'] ?? '',
     );
   }
   String toJson() => json.encode(toMap());
@@ -64,7 +64,7 @@ class Taxes extends HiveObject {
 //
   @override
   String toString() =>
-      'Taxes(taxId: $taxId,itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate )';
+      'Taxes(tax_id: $taxId,item_tax_template: $itemTaxTemplate, tax_type: $taxType, tax_rate: $taxRate )';
 
   @override
   bool operator ==(Object other) {

@@ -64,25 +64,25 @@ class SaleOrderRequestItems extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      'itemCode': itemCode,
-      'name': name,
-      'price': price,
-      'selectedOption': selectedOption!.map((x) => x.toMap()).toList(),
-      'orderedQuantity': orderedQuantity,
-      'orderedPrice': orderedPrice,
+      'item_code': itemCode,
+      'item_name': name,
+      'rate': price,
+      'sub_items': selectedOption!.map((x) => x.toMap()).toList(),
+      'qty': orderedQuantity,
+      'ordered_price': orderedPrice,
       'tax': tax!.map((x) => x.toMap()).toList(),
     };
   }
 
   factory SaleOrderRequestItems.fromMap(Map<String, dynamic> map) {
     return SaleOrderRequestItems(
-      itemCode: map['itemCode'],
-      name: map['name'],
-      price: map['price'],
+      itemCode: map['item_code'],
+      name: map['item_name'],
+      price: map['rate'],
       selectedOption: List<SelectedOptions>.from(
-          map['selectedOption']?.map((x) => SelectedOptions.fromMap(x))),
-      orderedQuantity: map['orderedQuantity'],
-      orderedPrice: map['orderedPrice'],
+          map['sub_items']?.map((x) => SelectedOptions.fromMap(x))),
+      orderedQuantity: map['qty'],
+      orderedPrice: map['ordered_price'],
       tax: map['tax'],
     );
   }
@@ -94,7 +94,7 @@ class SaleOrderRequestItems extends HiveObject {
 
   @override
   String toString() {
-    return 'SaleOrder(itemCode: $itemCode, name: $name, price: $price,  selectedOption: $selectedOption, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, tax: $tax )';
+    return 'SaleOrder(item_code: $itemCode, item_name: $name, rate: $price,  sub_items: $selectedOption, qty: $orderedQuantity, ordered_price: $orderedPrice, tax: $tax )';
   }
 
   @override

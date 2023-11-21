@@ -93,7 +93,7 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     //_getAllPromoCodes();
-    //_getHubManager();
+
     // _getOrderTaxTemplate();
     //_getTaxes();
     //totalAmount = Helper().getTotal(widget.order.items);
@@ -745,14 +745,16 @@ class _CartScreenState extends State<CartScreen> {
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
       DbHubManager dbHubManager = DbHubManager();
-      //  HubManager hubManager = HubManager(
-      //     id: hubManagerData.email,
-      //     name: hubManagerData.fullName,
-      //     phone: hubManagerData.mobileNo,
-      //     emailId: hubManagerData.email,
-      //     profileImage: image,
-      //     cashBalance: hubManagerData.balance.toDouble(),
-      //   );
+
+      var hubManagerData = await dbHubManager.getManager();
+      HubManager hubManager = HubManager(
+        id: hubManagerData!.emailId,
+        name: hubManagerData.name,
+        phone: hubManagerData.phone,
+        emailId: hubManagerData.emailId,
+        profileImage: hubManagerData.profileImage,
+        cashBalance: hubManagerData.cashBalance.toDouble(),
+      );
 
       saleOrder = SaleOrder(
           id: orderId!,
@@ -760,7 +762,7 @@ class _CartScreenState extends State<CartScreen> {
           date: date,
           time: time,
           customer: widget.order.customer,
-          manager: hubManager!,
+          manager: hubManager,
           items: widget.order.items,
           transactionId: '',
           paymentMethod: paymentMethod,
@@ -920,7 +922,7 @@ class _CartScreenState extends State<CartScreen> {
 
           log('totalAmount itemwise : $totalAmount');
           taxation.add(Taxation(
-            id: orderId!,
+            id: '',
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,
@@ -964,7 +966,7 @@ class _CartScreenState extends State<CartScreen> {
           log("Total Tax Amount orderwise : $totalTaxAmount");
           log('Total Amount Orderwise:: $totalAmount');
           taxesData.add(OrderTaxes(
-            id: orderId,
+            id: '',
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,

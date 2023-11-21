@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'db_constants.dart';
@@ -33,7 +35,6 @@ class DBPreferences {
     //Return the value
     return value;
   }
-
 
   ///Open the PreferenceBox
   _openPreferenceBox() async {

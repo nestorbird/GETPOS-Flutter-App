@@ -7,8 +7,6 @@ part 'orderwise_tax.g.dart';
 
 @HiveType(typeId: OrderwiseTaxBoxTypeId)
 class OrderTax extends HiveObject {
- 
-
   @HiveField(1)
   String itemTaxTemplate;
 
@@ -19,21 +17,18 @@ class OrderTax extends HiveObject {
   double taxRate;
 
   OrderTax({
-   
     required this.itemTaxTemplate,
     required this.taxType,
     required this.taxRate,
   });
 
   OrderTax copyWith({
-    
     String? itemTaxTemplate,
     String? taxType,
     double? taxRate,
     double? taxAmount,
   }) {
     return OrderTax(
-    
       itemTaxTemplate: itemTaxTemplate ?? this.itemTaxTemplate,
       taxType: taxType ?? this.taxType,
       taxRate: taxRate ?? this.taxRate,
@@ -42,19 +37,17 @@ class OrderTax extends HiveObject {
 
   Map<String, dynamic> toMap() {
     return {
-      
-      'itemTaxTemplate': itemTaxTemplate,
-      'taxType': taxType,
-      'taxRate': taxRate,
+      'item_tax_template': itemTaxTemplate,
+      'tax_type': taxType,
+      'tax_rate': taxRate,
     };
   }
 
   factory OrderTax.fromMap(Map<String, dynamic> map) {
     return OrderTax(
-     
-      itemTaxTemplate: map['itemTaxTemplate'] ?? '',
-      taxType: map['taxType'] ?? '',
-      taxRate: map['taxRate'] ?? '',
+      itemTaxTemplate: map['item_tax_template'] ?? '',
+      taxType: map['tax_type'] ?? '',
+      taxRate: map['tax_rate'] ?? '',
     );
   }
   String toJson() => json.encode(toMap());
@@ -64,7 +57,7 @@ class OrderTax extends HiveObject {
 //
   @override
   String toString() =>
-      'Taxes(itemTaxTemplate: $itemTaxTemplate, taxType: $taxType, tax: $taxRate )';
+      'Taxes(item_tax_template: $itemTaxTemplate, tax_type: $taxType, tax_rate: $taxRate )';
 
   @override
   bool operator ==(Object other) {
