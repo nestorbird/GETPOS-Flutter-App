@@ -141,7 +141,7 @@ class _CartScreenState extends State<CartScreen> {
           // selectedCustomerSection,
           // searchBarSection,
           // productCategoryList()
-          hightSpacer10,
+          hightSpacer5,
           Padding(
               padding: paddingXY(x: 16, y: 4),
               child: _subtotalSection('Item Total',
@@ -152,7 +152,7 @@ class _CartScreenState extends State<CartScreen> {
           //     child: _subtotalSection('Discount', '$appCurrency 0.00',
           //         isDiscount: true)),
           Padding(
-            padding: paddingXY(x: 16, y: 16),
+            padding: paddingXY(x: 16, y: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -168,13 +168,13 @@ class _CartScreenState extends State<CartScreen> {
                   style: getTextStyle(
                       fontWeight: FontWeight.normal,
                       fontSize: MEDIUM_PLUS_FONT_SIZE,
-                      color: CUSTOM_TEXT_COLOR),
+                      color: const Color(0xFFDC1E44)),
                 ),
               ],
             ),
           ),
           Padding(
-              padding: paddingXY(x: 16, y: 4),
+              padding: paddingXY(x: 16, y: 0),
               child: _subtotalSection('Sub Total',
                   '$appCurrency ${totalAmount!.toStringAsFixed(2)}')),
           hightSpacer10,
@@ -549,78 +549,85 @@ class _CartScreenState extends State<CartScreen> {
         ),
         hightSpacer15,
         Padding(
-            padding: paddingXY(x: 16, y: 0),
-            child: ListView.builder(
-                shrinkWrap: true,
-                primary: false,
-                itemCount: prodList.isEmpty ? 10 : prodList.length,
-                itemBuilder: (context, position) {
-                  if (prodList.isEmpty) {
-                    return const ProductShimmer();
-                  } else {
-                    return InkWell(
-                      onTap: () {
-                        // _openItemDetailDialog(context, prodList[position]);
-                      },
-                      child: Padding(
-                        padding: paddingXY(x: 0, y: 4),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
+          padding: paddingXY(x: 16, y: 0),
+          child: ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: prodList.isEmpty ? 10 : prodList.length,
+              itemBuilder: (context, position) {
+                if (prodList.isEmpty) {
+                  return const ProductShimmer();
+                } else {
+                  return InkWell(
+                    onTap: () {
+                      // _openItemDetailDialog(context, prodList[position]);
+                    },
+                    child: Padding(
+                      padding: paddingXY(x: 0, y: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 20,
+                                width: 150,
+                                child: Text(
                                   "${prodList[position].name}",
                                   style: getTextStyle(
                                     fontSize: MEDIUM_FONT_SIZE,
                                     color: CUSTOM_TEXT_COLOR,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
-                                const Text("x"),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 212, 228, 241),
-                                      border: Border.all(
-                                          color: Colors.green, width: 2.0),
-                                      borderRadius: BorderRadius.circular(2.0)),
-                                  width: Checkbox.width,
-                                  height: 21.0,
-                                  child: Text(
-                                      "${prodList[position].orderedQuantity.toInt()}",
-                                      style: const TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                      textAlign: TextAlign.center),
-                                ),
-                                Text(
-                                  '$appCurrency ${prodList[position].price.toStringAsFixed(2)}',
-                                  style: getTextStyle(
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: MEDIUM_FONT_SIZE,
-                                    color: CUSTOM_TEXT_COLOR,
-                                  ),
-                                ),
-                              ],
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              const Text("x"),
+                              const SizedBox(width: 20),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 212, 228, 241),
+                                    border: Border.all(
+                                        color: Colors.green, width: 2.0),
+                                    borderRadius: BorderRadius.circular(2.0)),
+                                width: Checkbox.width,
+                                height: 21.0,
+                                child: Text(
+                                    "${prodList[position].orderedQuantity.toInt()}",
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                    ),
+                                    textAlign: TextAlign.center),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            '$appCurrency ${prodList[position].price.toStringAsFixed(2)}',
+                            style: getTextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: MEDIUM_FONT_SIZE,
+                              color: CUSTOM_TEXT_COLOR,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    );
+                    ),
+                  );
 
-                    // return ListTile(title: Text(prodList[position].name));
-                  }
-                }))
+                  // return ListTile(title: Text(prodList[position].name));
+                }
+              }),
+        ),
       ],
     );
-
-    // list view (bill) text , list view, item name.
   }
 
   Widget _promoCodeSection() {
@@ -773,7 +780,7 @@ class _CartScreenState extends State<CartScreen> {
           tracsactionDateTime: currentDateTime,
           taxes: widget.order.taxes);
       if (!mounted) return;
-      log("after sales order");
+
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(

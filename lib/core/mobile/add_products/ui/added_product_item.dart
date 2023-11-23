@@ -35,8 +35,11 @@ class AddedProductItem extends StatefulWidget {
 }
 
 class _AddedProductItemState extends State<AddedProductItem> {
-  final Widget _greySizedBox =
-      SizedBox(width: 1.0, child: Container(color: AppColors.getPrimary(),));
+  final Widget _greySizedBox = SizedBox(
+      width: 1.0,
+      child: Container(
+        color: AppColors.getPrimary(),
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
           width: 90,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            color:AppColors.getPrimary().withOpacity(0.1),
+            color: AppColors.getPrimary().withOpacity(0.1),
             borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child: widget.product.productImage.isEmpty
@@ -87,7 +90,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                               padding: miniPaddingAll(),
                               child: SvgPicture.asset(DELETE_IMAGE,
                                   height: 16,
-                                  color:AppColors.getAsset(),
+                                  color: AppColors.getAsset(),
                                   fit: BoxFit.contain)))),
                   Visibility(
                       visible: widget.isUsedinVariantsPopup,
@@ -102,15 +105,15 @@ class _AddedProductItemState extends State<AddedProductItem> {
                 ]),
               ],
             ),
-            Text(
-              widget.isUsedinVariantsPopup
-                  ? 'Item Code - ${widget.product.id}'
-                  : "${_getItemVariants(widget.product.attributes)} x ${widget.product.orderedQuantity.toInt()}",
-              style: getTextStyle(
-                  fontSize: SMALL_FONT_SIZE, fontWeight: FontWeight.normal),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            ),
+            // Text(
+            //   widget.isUsedinVariantsPopup
+            //       ? 'Item Code - ${widget.product.id}'
+            //       : "${_getItemVariants(widget.product.attributes)} x ${widget.product.orderedQuantity.toInt()}",
+            //   style: getTextStyle(
+            //       fontSize: SMALL_FONT_SIZE, fontWeight: FontWeight.normal),
+            //   overflow: TextOverflow.ellipsis,
+            //   maxLines: 2,
+            // ),
             hightSpacer15,
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Column(
@@ -122,7 +125,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                     style: getTextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: SMALL_PLUS_FONT_SIZE,
-                        color:AppColors.getPrimary()),
+                        color: AppColors.getPrimary()),
                   ),
                   Visibility(
                       visible: widget.isUsedinVariantsPopup,
@@ -137,11 +140,11 @@ class _AddedProductItemState extends State<AddedProductItem> {
                 ],
               ),
               Container(
-                  width: 100,
-                  height: 25,
+                  width: 150,
+                  height: 30,
                   decoration: BoxDecoration(
                       border: Border.all(
-                        color:AppColors.getPrimary(),
+                        color: AppColors.getPrimary(),
                       ),
                       borderRadius:
                           BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
@@ -154,7 +157,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                             Icons.remove,
                             size: 18,
                           )),
-                      _greySizedBox,
+                      //   _greySizedBox,
                       Container(
                           color: AppColors.getPrimary().withOpacity(0.1),
                           child: Text(
@@ -165,7 +168,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                               color: AppColors.getPrimary(),
                             ),
                           )),
-                      _greySizedBox,
+                      //  _greySizedBox,
                       InkWell(
                           onTap: () => widget.onItemAdd!(),
                           child: const Icon(
@@ -179,11 +182,6 @@ class _AddedProductItemState extends State<AddedProductItem> {
         )),
       ],
     );
-
-
-
-
-
 
     // return ListTile(
     //   isThreeLine: true,
