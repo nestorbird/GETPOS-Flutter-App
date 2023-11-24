@@ -245,7 +245,7 @@ class _CartScreenState extends State<CartScreen> {
           Padding(
               padding: paddingXY(x: 16, y: 16),
               child: Text(
-                'Payment Methods',
+                'Payment Method',
                 style: getTextStyle(
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                     color: AppColors.getTextandCancelIcon(),
