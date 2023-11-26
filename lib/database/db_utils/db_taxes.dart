@@ -13,6 +13,7 @@ class DbTaxes {
     for (Taxes item in list) {
       await box.put(item.taxId, item);
     }
+    box.close();
   }
 
   Future<List<OrderItem>> getProducts() async {

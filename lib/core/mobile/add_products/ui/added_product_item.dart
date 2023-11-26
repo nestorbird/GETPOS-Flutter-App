@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/models/attribute.dart';
@@ -35,11 +34,11 @@ class AddedProductItem extends StatefulWidget {
 }
 
 class _AddedProductItemState extends State<AddedProductItem> {
-  final Widget _greySizedBox = SizedBox(
-      width: 1.0,
-      child: Container(
-        color: AppColors.getPrimary(),
-      ));
+  // final Widget _greySizedBox = SizedBox(
+  //     width: 1.0,
+  //     child: Container(
+  //       color: AppColors.getPrimary(),
+  //     ));
 
   @override
   Widget build(BuildContext context) {

@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/configs/network_manager.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
@@ -34,6 +35,7 @@ bool isUserLoggedIn = false;
 bool isTabletMode = false;
 
 void main() async {
+  NetworkManager.init();
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
@@ -114,7 +116,7 @@ class MobileApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: APP_NAME,
       theme: ThemeData(
