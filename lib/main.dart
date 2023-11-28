@@ -91,22 +91,31 @@ void registerHiveTypeAdapters() {
   //Registering product adapter
   Hive.registerAdapter(ProductAdapter());
 
+//Registering attribute adapter
   Hive.registerAdapter(AttributeAdapter());
 
+//Registering Option adapter
   Hive.registerAdapter(OptionAdapter());
 
+//Registering parkorder adapter
   Hive.registerAdapter(ParkOrderAdapter());
 
+//Registering orderitem adapter
   Hive.registerAdapter(OrderItemAdapter());
 
+//Registering taxes adapter
   Hive.registerAdapter(TaxesAdapter());
 
+//Registering ordertax adapter
   Hive.registerAdapter(OrderTaxAdapter());
 
+//Registering ordertaxtemplate adapter
   Hive.registerAdapter(OrderTaxTemplateAdapter());
 
+//Registering salesorderrequestitems adapter
   Hive.registerAdapter(SaleOrderRequestItemsAdapter());
 
+//Registering salesorderrequest adapter
   Hive.registerAdapter(SalesOrderRequestAdapter());
 }
 
@@ -142,3 +151,5 @@ class TabletApp extends StatelessWidget {
     );
   }
 }
+
+

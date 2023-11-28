@@ -39,18 +39,7 @@ class SyncHelper {
     return true;
   }
 
-  ///
-  ///if tax is null then orderwise taxation is applied otherwise
-  /// itemwise taxation has the first priority
-  ///
-  // Future<bool> getTaxes() async {
-  //   if (await Helper.isNetworkAvailable()) {
-  //     // await ProductsService().getCategoryProduct();
-  //     var _ = await OrderwiseTaxes().getOrderwiseTaxes();
-  //     // _ = await ProductsService().getProducts();
-  //   }
-  //   return true;
-  // }
+  
 
   ///
   /// when user logout from the app we follow this sync process
