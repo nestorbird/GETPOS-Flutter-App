@@ -7,6 +7,7 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/main.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -95,6 +96,8 @@ class _LoginState extends State<Login> {
                   hightSpacer10,
                   forgotPasswordSection(context),
                   hightSpacer30,
+                  changeInstanceUrlSection(context),
+                  hightSpacer15,
                   termAndPolicySection(context),
                   hightSpacer32,
                   loginBtnWidget(context),
@@ -135,6 +138,10 @@ class _LoginState extends State<Login> {
             log("$response");
             // Helper.hideLoader(context);
             // ignore: use_build_context_synchronously
+
+            //use isolates for parallel processing for running heavy task
+            useIsolate();
+            // ignore: use_build_context_synchronously
             await Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -169,8 +176,10 @@ class _LoginState extends State<Login> {
         child: ButtonWidget(
           onPressed: () async {
             await DbInstanceUrl().deleteUrl();
-            String url = "https://${_urlCtrl.text}/api/";
+            //  String url = "https://${_urlCtrl.text}/api/";
+            String url = _urlCtrl.text;
             await login(_emailCtrl.text, _passCtrl.text, url);
+            log('${_urlCtrl.text}');
           },
           title: LOGIN_TXT,
           primaryColor: AppColors.getPrimary(),
@@ -245,6 +254,32 @@ class _LoginState extends State<Login> {
               padding: rightSpace(),
               child: Text(
                 FORGET_PASSWORD_SMALL_TXT,
+                style: getTextStyle(
+                    color: AppColors.getPrimary(),
+                    fontSize: MEDIUM_MINUS_FONT_SIZE,
+                    fontWeight: FontWeight.normal),
+              ),
+            ),
+          ),
+        ],
+      );
+
+  /// CHANGE INSTANCE URL SECTION
+  Widget changeInstanceUrlSection(context) => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          InkWell(
+            onTap: () {
+              _emailCtrl.clear();
+              _passCtrl.clear();
+
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ThemeChange()));
+            },
+            child: Padding(
+              padding: rightSpace(),
+              child: Text(
+                CHANGE_INSTANCE_URL_TXT,
                 style: getTextStyle(
                     color: AppColors.getPrimary(),
                     fontSize: MEDIUM_MINUS_FONT_SIZE,

@@ -139,7 +139,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                 ],
               ),
               Container(
-                  width: 150,
+                  width: 120,
                   height: 30,
                   decoration: BoxDecoration(
                       border: Border.all(

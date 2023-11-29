@@ -1,20 +1,24 @@
 //import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'dart:developer';
+import 'dart:isolate';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/configs/local_notification_service.dart';
 import 'package:nb_posx/configs/network_manager.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/sales_order_req.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'constants/app_constants.dart';
 import 'core/mobile/splash/view/splash_screen.dart';
@@ -152,4 +156,69 @@ class TabletApp extends StatelessWidget {
   }
 }
 
+Future<void> init() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalNotificationService().initNotification();
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+
+  // //Initializing hive database
+  await DBPreferences().openPreferenceBox();
+
+  registerHiveTypeAdapters();
+
+  isUserLoggedIn = await DBPreferences().getPreference(SuccessKey) == 1;
+
+  if (isUserLoggedIn) {
+    useIsolate(isUserLoggedIn: isUserLoggedIn);
+  }
+}
+
+useIsolate({bool isUserLoggedIn = false}) async {
+  var rootToken = RootIsolateToken.instance!;
+  WidgetsFlutterBinding.ensureInitialized();
+ 
+  if(!isUserLoggedIn){
+     LocalNotificationService().showNotification( id:0 , title: 'Background Sync', body: 'Please wait Background sync work in progess');
+  }
+  final ReceivePort receivePort = ReceivePort();
+  try {
+    await Isolate.spawn(
+        runHeavyTaskIWithIsolate, [receivePort.sendPort, rootToken , isUserLoggedIn]);
+  } on Object {
+    debugPrint('Isolate Failed');
+    receivePort.close();
+  }
+  final response = await receivePort.first;
+  
+  if (!isUserLoggedIn){
+  LocalNotificationService().showNotification( id:1, title: 'Background Sync', body: 'Background Sync completed.');
+  }
+  print('Result: $response');
+}
+
+Future<dynamic> runHeavyTaskIWithIsolate(List<dynamic> args) async{
+ // 
+    BackgroundIsolateBinaryMessenger.ensureInitialized(args[1]);
+    final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  
+    Hive.init(appDocumentDirectory.path);
+    registerHiveTypeAdapters();
+
+  try{
+    SendPort resultPort = args[0];
+  if(args[2]){
+     await SyncHelper().launchFlow(args[2]);
+  }
+  else{
+    await SyncHelper().loginFlow();
+  }
+
+    Isolate.exit(resultPort, "Success login data ");
+  }
+  catch(e){
+    log(e.toString());
+  }
+
+}
 

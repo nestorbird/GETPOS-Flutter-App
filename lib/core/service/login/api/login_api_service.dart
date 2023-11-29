@@ -59,7 +59,7 @@ class LoginService {
         await dbPreferences.savePreference(
             HubManagerId, loginResponse.message!.email);
 
-        await SyncHelper().loginFlow();
+      //  await SyncHelper().loginFlow();
 
         //Return the Success Login Response
         return CommanResponse(

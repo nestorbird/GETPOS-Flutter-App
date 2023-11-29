@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'db_constants.dart';
 
@@ -15,7 +16,7 @@ class DBPreferences {
   ///[value] -> Data for the defined [key].
   Future<void> savePreference(String key, dynamic value) async {
     //Open the PreferenceBox
-    await _openPreferenceBox();
+    await openPreferenceBox();
     //Saving preference data into PreferenceBox database
     await prefBox!.put(key, value);
     //Close the PreferenceBox
@@ -27,7 +28,7 @@ class DBPreferences {
   ///If key not exist then it will return blank string.
   Future<dynamic> getPreference(String key) async {
     //Open the PreferenceBox
-    await _openPreferenceBox();
+    await openPreferenceBox();
     //Getting value by key.
     dynamic value = prefBox!.get(key, defaultValue: '');
     //Close the PreferenceBox
@@ -37,8 +38,11 @@ class DBPreferences {
   }
 
   ///Open the PreferenceBox
-  _openPreferenceBox() async {
-    prefBox = await Hive.openBox(PREFERENCE_BOX);
+  openPreferenceBox() async {
+    final directory = await getApplicationDocumentsDirectory();
+  final path = directory.path;
+    prefBox = await Hive.openBox(PREFERENCE_BOX , path:path);
+   // prefBox = await Hive.openBox(PREFERENCE_BOX);
   }
 
   ///Close the PreferenceBox

@@ -34,6 +34,7 @@ const URL_HINT = 'Enter ERP URL';
 const EMAIL_HINT = 'Enter your email';
 const PASSWORD_HINT = 'Enter your password';
 const FORGET_PASSWORD_SMALL_TXT = 'Forgot Password?';
+const CHANGE_INSTANCE_URL_TXT = 'Change Instance Url?';
 const BY_SIGNING_IN = 'By signing, you agree to our ';
 const TERMS_CONDITIONS = 'Terms & Conditions ';
 const AND_TXT = 'and ';
@@ -255,3 +256,6 @@ const double LARGE_MINUS_FONT_SIZE = 18;
 
 //Custom Text Color
 const CUSTOM_TEXT_COLOR = Color.fromARGB(255, 87, 86, 86);
+
+//main.dart Constant
+const SuccessKey = 'SUCCESS_KEY';
