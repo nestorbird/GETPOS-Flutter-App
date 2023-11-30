@@ -58,16 +58,19 @@ class DbCustomer {
       }
     }
     return list;
+    
   }
 
   Future<Customer?> getCustomerDetails(String key) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     return box.get(key);
+    
   }
 
   Future<int> deleteCustomers() async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     return box.clear();
+    
   }
 
   Future<bool> deleteCustomer(String key) async {
@@ -75,11 +78,13 @@ class DbCustomer {
     Customer? customer = box.get(key);
     if (customer != null) customer.delete();
     return true;
+    
   }
 
   Future<void> updateCustomer(Customer customer) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     box.put(customer.id, customer);
+    box.close();
   }
 
   // Future<int> deleteWardCustomer(String wardId) async {

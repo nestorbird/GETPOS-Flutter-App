@@ -8,6 +8,7 @@ import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
+import 'package:nb_posx/main.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -53,6 +54,9 @@ class _ProductListHomeState extends State<ProductListHome> {
   ParkOrder? parkOrder;
   Customer? _selectedCust;
   final _scrollController = ScrollController();
+  Future<void> _initIsolate() async {
+    await init();
+  }
 
   double _scrollToOffset(int index) {
     // Calculate the scroll offset for the given index
@@ -90,7 +94,7 @@ class _ProductListHomeState extends State<ProductListHome> {
 
     _getManagerName();
     getProducts();
-    //throw Exception();
+    _initIsolate();
   }
 
   @override
@@ -137,7 +141,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         Text(WELCOME_BACK,
                                             style: getTextStyle(
                                               fontSize: SMALL_FONT_SIZE,
-                                              color:AppColors.primary,
+                                              color: AppColors.primary,
                                               fontWeight: FontWeight.w500,
                                             )),
                                         hightSpacer5,
@@ -145,7 +149,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           managerName,
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
-                                              color:AppColors.secondary),
+                                              color: AppColors.secondary),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -200,7 +204,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       : '',
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color:AppColors.primary),
+                                      color: AppColors.primary),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Stack(
@@ -238,7 +242,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                   left: 20),
                                               decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color:AppColors.shadowBorder),
+                                                  color:
+                                                      AppColors.shadowBorder),
                                               child: Text(
                                                 parkOrder != null
                                                     ? parkOrder!.items.length
@@ -247,7 +252,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                     : "0",
                                                 style: getTextStyle(
                                                     fontSize: SMALL_FONT_SIZE,
-                                                    color: AppColors.fontWhiteColor),
+                                                    color: AppColors
+                                                        .fontWhiteColor),
                                               )))
                                     ])
                               ],
@@ -345,13 +351,35 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         ],
                                       ));
                                 })),
-                        categories.isEmpty
-                            ? const Center(
-                                child: Text(
-                                "No items found",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))
-                            : _getCategoryItems(),
+                        FutureBuilder(
+                          future: init(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return categories.isEmpty
+                                  ? const Center(
+                                      child: Text(
+                                        "No items found",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  : _getCategoryItems(); // Replace with your actual widget
+                            } else {
+                              return const Center(
+                                child:
+                                    CircularProgressIndicator(), // Or any loading indicator
+                              );
+                            }
+                          },
+                        ),
+                        // categories.isEmpty
+                        //     ? const Center(
+                        //         child: Text(
+                        //         "No items found",
+                        //         style: TextStyle(fontWeight: FontWeight.bold),
+                        //       ))
+                        //     : _getCategoryItems(),
                         hightSpacer45
                       ],
                     ))))),
@@ -697,7 +725,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     width: 145,
                                     height: 90,
                                     decoration: BoxDecoration(
-                                        color:AppColors.shadowBorder,
+                                        color: AppColors.shadowBorder,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -727,7 +755,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           "$appCurrency ${categories[catPosition].items[itemPosition].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.center,
                                           style: getTextStyle(
-                                              color:AppColors.textandCancelIcon,
+                                              color:
+                                                  AppColors.textandCancelIcon,
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],
@@ -736,7 +765,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                 ),
                                 Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.fontWhiteColor!),
+                                        border: Border.all(
+                                            color: AppColors.fontWhiteColor!),
                                         shape: BoxShape.circle),
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -799,10 +829,16 @@ class _ProductListHomeState extends State<ProductListHome> {
   }
 
   _getManagerName() async {
-    HubManager manager = await DbHubManager().getManager() as HubManager;
-    managerName = manager.name;
-    //profilePic = manager.profileImage;
-    setState(() {});
+    HubManager? manager = await DbHubManager().getManager() as HubManager?;
+    if (manager != null) {
+      managerName = manager.name;
+      //profilePic = manager.profileImage;
+      setState(() {});
+    } else {
+      // Handle the case where the manager is null
+      // For example, show an error message or set default values.
+      print('Manager is null');
+    }
   }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {
@@ -819,15 +855,15 @@ class _ProductListHomeState extends State<ProductListHome> {
       if (parkOrder == null) {
         HubManager manager = await DbHubManager().getManager() as HubManager;
         parkOrder = ParkOrder(
-            id: _selectedCust!.id,
-            date: Helper.getCurrentDate(),
-            time: Helper.getCurrentTime(),
-            customer: _selectedCust!,
-            items: [],
-            orderAmount: 0,
-            manager: manager,
-            transactionDateTime: DateTime.now(),
-          );
+          id: _selectedCust!.id,
+          date: Helper.getCurrentDate(),
+          time: Helper.getCurrentTime(),
+          customer: _selectedCust!,
+          items: [],
+          orderAmount: 0,
+          manager: manager,
+          transactionDateTime: DateTime.now(),
+        );
       }
 
       setState(() {

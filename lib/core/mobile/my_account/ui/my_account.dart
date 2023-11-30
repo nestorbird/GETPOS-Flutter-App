@@ -6,9 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
+import 'package:nb_posx/core/service/create_order/model/create_sales_order_response.dart';
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/database/models/customer.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../../configs/theme_config.dart';
@@ -170,7 +173,7 @@ class _MyAccountState extends State<MyAccount> {
         // ignore: use_build_context_synchronously
         //if (!mounted) return;
 
-        await fetchDataAndNavigate();
+        await fetchMasterAndDeleteTransaction();
       }
     } else {
       if (!mounted) return;
@@ -218,5 +221,35 @@ class _MyAccountState extends State<MyAccount> {
             backgroundColor: AppColors.getPrimary(),
             foregroundImage: MemoryImage(profilePic),
           );
+  }
+
+  Future<void> fetchMasterAndDeleteTransaction() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the transactional data
+      // await DBPreferences().deleteTranscationData();
+      await DbCustomer().deleteCustomer(DeleteCustomers);
+      await DbSaleOrder().delete();
+      log("Cleared the transactional data");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Login(),
+        ),
+      );
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
+    }
   }
 }

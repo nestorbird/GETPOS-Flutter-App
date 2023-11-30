@@ -259,3 +259,6 @@ const CUSTOM_TEXT_COLOR = Color.fromARGB(255, 87, 86, 86);
 
 //main.dart Constant
 const SuccessKey = 'SUCCESS_KEY';
+
+//unique key to delete customers
+const DeleteCustomers = 'DELETE_CUSTOMERS';

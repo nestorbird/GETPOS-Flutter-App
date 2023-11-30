@@ -17,6 +17,7 @@ class DbHubManager {
       return box.getAt(0);
     }
     return null;
+    
   }
 
   updateCashBalance(double orderAmount) async {

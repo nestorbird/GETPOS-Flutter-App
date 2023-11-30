@@ -40,9 +40,9 @@ class DBPreferences {
   ///Open the PreferenceBox
   openPreferenceBox() async {
     final directory = await getApplicationDocumentsDirectory();
-  final path = directory.path;
-    prefBox = await Hive.openBox(PREFERENCE_BOX , path:path);
-   // prefBox = await Hive.openBox(PREFERENCE_BOX);
+    final path = directory.path;
+    prefBox = await Hive.openBox(PREFERENCE_BOX, path: path);
+    // prefBox = await Hive.openBox(PREFERENCE_BOX);
   }
 
   ///Close the PreferenceBox
@@ -52,6 +52,15 @@ class DBPreferences {
 
   Future<void> delete() async {
     prefBox = await Hive.openBox(PREFERENCE_BOX);
+    await prefBox!.clear();
+    await prefBox!.close();
+  }
+
+  Future<void> deleteTranscationData() async {
+    prefBox = await Hive.openBox(CUSTOMER_BOX);
+    await prefBox!.clear();
+    await prefBox!.close();
+    prefBox = await Hive.openBox(SALE_ORDER_BOX);
     await prefBox!.clear();
     await prefBox!.close();
   }

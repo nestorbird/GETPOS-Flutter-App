@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -7,6 +8,7 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -132,20 +134,21 @@ class _LoginState extends State<Login> {
           log("$response");
 
           if (response.status!) {
-            //Adding static data into the database
-            // await addDataIntoDB();
-            // if (!mounted) return;
             log("$response");
-            // Helper.hideLoader(context);
-            // ignore: use_build_context_synchronously
 
             //use isolates for parallel processing for running heavy task
             useIsolate();
+            Timer(
+                const Duration(seconds: 15),
+                (() => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductListHome()))));
             // ignore: use_build_context_synchronously
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ProductListHome()));
+            // await Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => const ProductListHome()));
           } else {
             if (!mounted) return;
             Helper.hideLoader(context);
@@ -272,9 +275,10 @@ class _LoginState extends State<Login> {
             onTap: () {
               _emailCtrl.clear();
               _passCtrl.clear();
+              fetchDataAndNavigate();
 
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const ThemeChange()));
+              //Navigator.push(context,
+              // MaterialPageRoute(builder: (context) => const ThemeChange()));
             },
             child: Padding(
               padding: rightSpace(),
@@ -380,5 +384,31 @@ class _LoginState extends State<Login> {
   bool isValidInstanceUrl() {
     String url = "https://${_urlCtrl.text}/api/";
     return Helper.isValidUrl(url);
+  }
+
+  Future<void> fetchDataAndNavigate() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the database
+      await DBPreferences().delete();
+      log("Cleared the DB");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+      await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const ThemeChange()),
+          (route) => route.isFirst);
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
+    }
   }
 }
