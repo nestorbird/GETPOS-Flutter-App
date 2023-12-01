@@ -127,9 +127,11 @@ class _ThemeChangeState extends State<ThemeChange> {
                   //to save the Url in DB
                   await DbInstanceUrl().saveUrl(_urlCtrl.text);
 
-                  String url = "https://${_urlCtrl.text}/api/";
+                  String url = await DbInstanceUrl().getUrl();
+                  //   String url = '${_urlCtrl.text}';
+                  // String url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true) {
-                    pingPong(_urlCtrl.text);
+                    pingPong(url);
                     // theme(url, context);
                   } else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
@@ -149,12 +151,23 @@ class _ThemeChangeState extends State<ThemeChange> {
 
   bool isValidInstanceUrl(String url) {
     //String url = "https://${_urlCtrl.text}/api/";
-    return Helper.isValidUrl(url);
+    if (url == "https://${_urlCtrl.text}/api/") {
+      //   log('Inside if:$url');
+      //   log("Saved Url in DB:$url");
+      return Helper.isValidUrl(url);
+    } else {
+      url = "https://$url/api/";
+
+      //   log('Inside else:$url');
+      //   log("Saved Url in DB:$url");
+      return Helper.isValidUrl(url);
+    }
+    //  return Helper.isValidUrl(url);
   }
 
   Future<void> pingPong(String url) async {
-    String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';
-
+    //  String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';
+    String apiUrl = '${url}method/ping';
     {
       try {
         final response = await http.get(Uri.parse(apiUrl));
@@ -185,7 +198,7 @@ class _ThemeChangeState extends State<ThemeChange> {
       Helper.showLoaderDialog(context);
       //api theme path get and append
 
-      String apiUrl = "https://$url/api/$THEME_PATH";
+      String apiUrl = "$THEME_PATH";
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
       log('$response');
 
@@ -194,8 +207,8 @@ class _ThemeChangeState extends State<ThemeChange> {
 
 //to save url in DB
         //await DbInstanceUrl().saveUrl(url);
-        String url = "https://${_urlCtrl.text}/api/";
-        await DbInstanceUrl().saveUrl(url);
+        //String url = "https://${_urlCtrl.text}/api/";
+        // await DbInstanceUrl().saveUrl(url);
 
         log('url:$url');
         // ignore: use_build_context_synchronously

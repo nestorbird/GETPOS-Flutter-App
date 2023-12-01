@@ -93,9 +93,19 @@ class APIUtils {
 
   static Uri _apiPath(String url) {
     //Parsing the apiURl to Uri
-    Uri uri = Uri.parse(instanceUrl + url);
-    log('API URL :: $uri');
-    return uri;
+    if (instanceUrl == "https://$instanceUrl/api/") {
+      Uri uri = Uri.parse(instanceUrl + url);
+      log('API URL :: $uri');
+      return uri;
+    } else {
+      instanceUrl = "https://$instanceUrl/api/";
+      Uri uri = Uri.parse(instanceUrl + url);
+      log('API URL :: $uri');
+      return uri;
+    }
+    // Uri uri = Uri.parse(instanceUrl + url);
+    // log('API URL :: $uri');
+    // return uri;
   }
 
   static Future<Map<String, String>> _headers() async {

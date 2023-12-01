@@ -14,7 +14,8 @@ import '../model/login_response.dart';
 
 class LoginService {
   static Future<CommanResponse> login(
-      String email, String password, String url) async {
+      String email, String password, String 
+      url) async {
     if (!_isValidUrl(url)) {
       return CommanResponse(status: false, message: INVALID_URL);
     }
@@ -35,7 +36,7 @@ class LoginService {
     //await DbInstanceUrl().saveUrl(url);
     String savedUrl = await DbInstanceUrl().getUrl();
     log('Saved URL :: $savedUrl');
-    //instanceUrl = url;
+    instanceUrl = url;
 
     if (isInternetAvailable) {
       //Login api url from api_constants

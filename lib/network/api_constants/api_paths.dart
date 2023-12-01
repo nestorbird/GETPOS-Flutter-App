@@ -18,7 +18,7 @@ const PROD_ERP_URL = 'getpos.in';
 
 ///Default URL for POS instance
 String instanceUrl = ENVIRONMENT == ApiServer.DEV
-    ? DEV_URL
+    ? DEV_ERP_URL
     : ENVIRONMENT == ApiServer.TEST
         ? TEST_ERP_URL
         : PROD_ERP_URL;

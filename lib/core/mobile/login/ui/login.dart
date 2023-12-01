@@ -139,7 +139,7 @@ class _LoginState extends State<Login> {
             //use isolates for parallel processing for running heavy task
             useIsolate();
             Timer(
-                const Duration(seconds: 15),
+                const Duration(seconds: 0),
                 (() => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -180,9 +180,22 @@ class _LoginState extends State<Login> {
           onPressed: () async {
             await DbInstanceUrl().deleteUrl();
             //  String url = "https://${_urlCtrl.text}/api/";
-            String url = _urlCtrl.text;
-            await login(_emailCtrl.text, _passCtrl.text, url);
-            log('${_urlCtrl.text}');
+
+            try {
+              String url = _urlCtrl.text;
+              if (url == "https://${_urlCtrl.text}/api/") {
+                await login(_emailCtrl.text, _passCtrl.text, url);
+                log('Inside if:${_urlCtrl.text}');
+              } else {
+                String url = "https://${_urlCtrl.text}/api/";
+                await login(_emailCtrl.text, _passCtrl.text, url);
+                log('Inside else:$url');
+              }
+            } catch (e) {
+              // Handle any exceptions during the request
+
+              log('Error in Loop: $e');
+            }
           },
           title: LOGIN_TXT,
           primaryColor: AppColors.getPrimary(),

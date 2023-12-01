@@ -27,10 +27,10 @@ class ThemeService {
     //await DbInstanceUrl().saveUrl(url);
     String savedUrl = await DbInstanceUrl().getUrl();
     log('Saved URL :: $savedUrl');
-    instanceUrl = "https://$savedUrl/api/";
+    // instanceUrl = "$savedUrl";
 
     if (isInternetAvailable) {
-      String apiUrl = THEME_PATH;
+      String apiUrl = url;
       // Call  theme settings API
       var apiResponse = await APIUtils.getRequest(apiUrl);
 
@@ -62,8 +62,8 @@ class ThemeService {
             themeResponse.message.data.fontWhiteColor.replaceAll('#', '0xFF'));
         dbPreferences.savePreference(PARK_ORDER_BUTTON,
             themeResponse.message.data.parkOrderButton.replaceAll('#', '0xFF'));
-            dbPreferences.savePreference(ACTIVE,
-            themeResponse.message.data.active.replaceAll('#', '0xFF'));
+        dbPreferences.savePreference(
+            ACTIVE, themeResponse.message.data.active.replaceAll('#', '0xFF'));
         int primaryColor =
             int.parse(await dbPreferences.getPreference(PRIMARY_COLOR));
 
@@ -81,8 +81,7 @@ class ThemeService {
             int.parse(await dbPreferences.getPreference(FONT_WHITE_COLOR));
         int parkOrderButton =
             int.parse(await dbPreferences.getPreference(PARK_ORDER_BUTTON));
-        int active =
-            int.parse(await dbPreferences.getPreference(ACTIVE));
+        int active = int.parse(await dbPreferences.getPreference(ACTIVE));
 
         AppColors.primary = Color(primaryColor);
         AppColors.secondary = Color(secondaryColor);
