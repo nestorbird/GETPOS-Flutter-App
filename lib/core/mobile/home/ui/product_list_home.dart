@@ -54,9 +54,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   ParkOrder? parkOrder;
   Customer? _selectedCust;
   final _scrollController = ScrollController();
-  Future<void> _initIsolate() async {
-    await init();
-  }
+  
 
   double _scrollToOffset(int index) {
     // Calculate the scroll offset for the given index
@@ -94,7 +92,7 @@ class _ProductListHomeState extends State<ProductListHome> {
 
     _getManagerName();
     getProducts();
-    _initIsolate();
+   
   }
 
   @override

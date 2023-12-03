@@ -95,12 +95,12 @@ class APIUtils {
     //Parsing the apiURl to Uri
     if (instanceUrl == "https://$instanceUrl/api/") {
       Uri uri = Uri.parse(instanceUrl + url);
-      log('API URL :: $uri');
+      log('API URL inside _apipath if :: $uri');
       return uri;
     } else {
       instanceUrl = "https://$instanceUrl/api/";
       Uri uri = Uri.parse(instanceUrl + url);
-      log('API URL :: $uri');
+      log('API URL  inside _apipath else :: $uri');
       return uri;
     }
     // Uri uri = Uri.parse(instanceUrl + url);

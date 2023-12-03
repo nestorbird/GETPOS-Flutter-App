@@ -13,7 +13,6 @@ import 'package:nb_posx/main.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../network/api_helper/comman_response.dart';
 import '../../../../../utils/helper.dart';
@@ -37,7 +36,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
+  late TextEditingController _emailCtrl, _passCtrl;
+  late String url = instanceUrl;
   String? version;
 
   @override
@@ -45,10 +45,10 @@ class _LoginState extends State<Login> {
     super.initState();
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
-    _urlCtrl = TextEditingController();
+
     _emailCtrl.text = "";
     _passCtrl.text = "";
-    _urlCtrl.text = instanceUrl;
+    // url = instanceUrl;
 
     _getAppVersion();
   }
@@ -180,22 +180,22 @@ class _LoginState extends State<Login> {
           onPressed: () async {
             await DbInstanceUrl().deleteUrl();
             //  String url = "https://${_urlCtrl.text}/api/";
+            await login(_emailCtrl.text, _passCtrl.text, url);
+            log('Inside login.dart :$url');
+            // try {
+            //   if (url == "https://$url/api/") {
+            //     await login(_emailCtrl.text, _passCtrl.text, url);
+            //     log('Inside if:$url');
+            //   } else {
+            //     url = "https://$url/api/";
+            //     await login(_emailCtrl.text, _passCtrl.text, url);
+            //     log('Inside else:$url');
+            //   }
+            // } catch (e) {
+            //   // Handle any exceptions during the request
 
-            try {
-              String url = _urlCtrl.text;
-              if (url == "https://${_urlCtrl.text}/api/") {
-                await login(_emailCtrl.text, _passCtrl.text, url);
-                log('Inside if:${_urlCtrl.text}');
-              } else {
-                String url = "https://${_urlCtrl.text}/api/";
-                await login(_emailCtrl.text, _passCtrl.text, url);
-                log('Inside else:$url');
-              }
-            } catch (e) {
-              // Handle any exceptions during the request
-
-              log('Error in Loop: $e');
-            }
+            //   log('Error in Loop: $e');
+            // }
           },
           title: LOGIN_TXT,
           primaryColor: AppColors.getPrimary(),
@@ -329,7 +329,7 @@ class _LoginState extends State<Login> {
                                   builder: (context) => WebViewScreen(
                                         topicTypes:
                                             TopicTypes.TERMS_AND_CONDITIONS,
-                                        apiUrl: "https://${_urlCtrl.text}/api/",
+                                        apiUrl: "https://$url/api/",
                                       )));
                         } else {
                           Helper.showPopup(context, INVALID_URL);
@@ -355,7 +355,7 @@ class _LoginState extends State<Login> {
                               MaterialPageRoute(
                                   builder: (context) => WebViewScreen(
                                         topicTypes: TopicTypes.PRIVACY_POLICY,
-                                        apiUrl: "https://${_urlCtrl.text}/api/",
+                                        apiUrl: "https://$url/api/",
                                       )));
                         } else {
                           Helper.showPopup(context, INVALID_URL);
@@ -395,7 +395,7 @@ class _LoginState extends State<Login> {
 
   ///Method to check whether the API URL is correct.
   bool isValidInstanceUrl() {
-    String url = "https://${_urlCtrl.text}/api/";
+    url = "https://$url/api/";
     return Helper.isValidUrl(url);
   }
 

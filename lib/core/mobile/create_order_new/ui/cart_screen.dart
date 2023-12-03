@@ -1,31 +1,27 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
-import 'package:nb_posx/core/service/create_order/model/create_sales_order_response.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
-import 'package:nb_posx/core/service/product/model/category_products_response.dart';
-import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
-import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 import 'package:nb_posx/widgets/long_button_widget.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_parked_order.dart';
 

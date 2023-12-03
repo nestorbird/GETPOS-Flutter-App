@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';

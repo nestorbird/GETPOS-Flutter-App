@@ -39,8 +39,7 @@ bool isUserLoggedIn = false;
 bool isTabletMode = false;
 
 void main() async {
-  NetworkManager.init();
-  WidgetsFlutterBinding.ensureInitialized();
+  await init();
   // await Firebase.initializeApp(
   //   options: DefaultFirebaseOptions.currentPlatform,
   // );
@@ -54,26 +53,28 @@ void main() async {
   // };
 
   //Initializing hive database
-  await Hive.initFlutter();
+  // await Hive.initFlutter();
 
   //Registering hive database type adapters
-  registerHiveTypeAdapters();
+
   isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
-
   await SyncHelper().launchFlow(isUserLoggedIn);
+
   // check for device
   isTabletMode = Device.get().isTablet;
   if (isTabletMode) {
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.landscapeLeft],
     );
+
     runApp(const TabletApp());
   } else {
     await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp],
     );
+
     runApp(const MobileApp());
   }
 }
@@ -157,6 +158,7 @@ class TabletApp extends StatelessWidget {
 }
 
 Future<void> init() async {
+  NetworkManager.init();
   WidgetsFlutterBinding.ensureInitialized();
   LocalNotificationService().initNotification();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
@@ -177,48 +179,48 @@ Future<void> init() async {
 useIsolate({bool isUserLoggedIn = false}) async {
   var rootToken = RootIsolateToken.instance!;
   WidgetsFlutterBinding.ensureInitialized();
- 
-  if(!isUserLoggedIn){
-     LocalNotificationService().showNotification( id:0 , title: 'Background Sync', body: 'Please wait Background sync work in progess');
+
+  if (!isUserLoggedIn) {
+    LocalNotificationService().showNotification(
+        id: 0,
+        title: 'Background Sync',
+        body: 'Please wait Background sync work in progess');
   }
   final ReceivePort receivePort = ReceivePort();
   try {
-    await Isolate.spawn(
-        runHeavyTaskIWithIsolate, [receivePort.sendPort, rootToken , isUserLoggedIn]);
+    await Isolate.spawn(runHeavyTaskIWithIsolate,
+        [receivePort.sendPort, rootToken, isUserLoggedIn]);
   } on Object {
     debugPrint('Isolate Failed');
     receivePort.close();
   }
   final response = await receivePort.first;
-  
-  if (!isUserLoggedIn){
-  LocalNotificationService().showNotification( id:1, title: 'Background Sync', body: 'Background Sync completed.');
+
+  if (!isUserLoggedIn) {
+    LocalNotificationService().showNotification(
+        id: 1, title: 'Background Sync', body: 'Background Sync completed.');
   }
-  print('Result: $response');
+  log('Result: $response');
 }
 
-Future<dynamic> runHeavyTaskIWithIsolate(List<dynamic> args) async{
- // 
-    BackgroundIsolateBinaryMessenger.ensureInitialized(args[1]);
-    final appDocumentDirectory = await getApplicationDocumentsDirectory();
-  
-    Hive.init(appDocumentDirectory.path);
-    registerHiveTypeAdapters();
+Future<dynamic> runHeavyTaskIWithIsolate(List<dynamic> args) async {
+  //
+  BackgroundIsolateBinaryMessenger.ensureInitialized(args[1]);
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
-  try{
+  Hive.init(appDocumentDirectory.path);
+  registerHiveTypeAdapters();
+
+  try {
     SendPort resultPort = args[0];
-  if(args[2]){
-     await SyncHelper().launchFlow(args[2]);
-  }
-  else{
-    await SyncHelper().loginFlow();
-  }
+    if (args[2]) {
+      await SyncHelper().launchFlow(args[2]);
+    } else {
+      await SyncHelper().loginFlow();
+    }
 
     Isolate.exit(resultPort, "Success login data ");
-  }
-  catch(e){
+  } catch (e) {
     log(e.toString());
   }
-
 }
-

@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:http/http.dart' as http;
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_constants.dart';
 import '../../../../../database/db_utils/db_preferences.dart';
@@ -14,8 +14,7 @@ import '../model/login_response.dart';
 
 class LoginService {
   static Future<CommanResponse> login(
-      String email, String password, String 
-      url) async {
+      String email, String password, String url) async {
     if (!_isValidUrl(url)) {
       return CommanResponse(status: false, message: INVALID_URL);
     }
@@ -37,13 +36,17 @@ class LoginService {
     String savedUrl = await DbInstanceUrl().getUrl();
     log('Saved URL :: $savedUrl');
     instanceUrl = url;
-
+    log('instance url inside login api service: $instanceUrl');
     if (isInternetAvailable) {
-      //Login api url from api_constants
+      //  Login api url from api_constants
       String apiUrl = LOGIN_PATH;
       apiUrl += '?usr=$email&pwd=$password';
+
+      // String apiUrl =
+      //     'https://getpos.in/api/method/nbpos.nbpos.api.login?usr=akshay@yopmail.com&pwd=Qwerty@123';
       //Call to login api
       var apiResponse = await APIUtils.getRequest(apiUrl);
+      //  final apiResponse = await http.get(Uri.parse(apiUrl));
 
       //Parsing the login response
       LoginResponse loginResponse = LoginResponse.fromJson(apiResponse);
@@ -60,7 +63,7 @@ class LoginService {
         await dbPreferences.savePreference(
             HubManagerId, loginResponse.message!.email);
 
-      //  await SyncHelper().loginFlow();
+        //  await SyncHelper().loginFlow();
 
         //Return the Success Login Response
         return CommanResponse(
