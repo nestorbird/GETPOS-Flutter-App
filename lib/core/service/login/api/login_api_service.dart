@@ -15,9 +15,9 @@ import '../model/login_response.dart';
 class LoginService {
   static Future<CommanResponse> login(
       String email, String password, String url) async {
-    if (!_isValidUrl(url)) {
-      return CommanResponse(status: false, message: INVALID_URL);
-    }
+    // if (!_isValidUrl(url)) {
+    //   return CommanResponse(status: false, message: INVALID_URL);
+    // }
 
     if (!isValidEmail(email)) {
       //Return the email validation failed Response
@@ -32,11 +32,11 @@ class LoginService {
     //Check for the internet connection
     var isInternetAvailable = await Helper.isNetworkAvailable();
 
-    //await DbInstanceUrl().saveUrl(url);
-    String savedUrl = await DbInstanceUrl().getUrl();
-    log('Saved URL :: $savedUrl');
-    instanceUrl = url;
-    log('instance url inside login api service: $instanceUrl');
+    // //await DbInstanceUrl().saveUrl(url);
+    // String savedUrl = await DbInstanceUrl().getUrl();
+    // log('Saved URL :: $savedUrl');
+    // instanceUrl = url;
+    // log('instance url inside login api service: $instanceUrl');
     if (isInternetAvailable) {
       //  Login api url from api_constants
       String apiUrl = LOGIN_PATH;
@@ -106,11 +106,11 @@ class LoginService {
   }
 
   ///Function to check whether the input URL is valid or not
-  static bool _isValidUrl(String url) {
-    // Regex to check valid URL
-    String regex =
-        "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
+  // static bool _isValidUrl(String url) {
+  //   // Regex to check valid URL
+  //   String regex =
+  //       "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
 
-    return RegExp(regex).hasMatch(url);
-  }
+  //   return RegExp(regex).hasMatch(url);
+  // }
 }

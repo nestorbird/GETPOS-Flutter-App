@@ -167,11 +167,8 @@ class _MyAccountState extends State<MyAccount> {
           context, LOGOUT_QUESTION, OPTION_YES,
           hasCancelAction: true);
       if (res != OPTION_CANCEL.toLowerCase()) {
+        //check this later
         await SyncHelper().logoutFlow();
-        //if (!mounted) return;
-        // Navigator.pop(context);
-        // ignore: use_build_context_synchronously
-        //if (!mounted) return;
 
         await fetchMasterAndDeleteTransaction();
       }

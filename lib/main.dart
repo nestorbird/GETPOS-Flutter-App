@@ -188,7 +188,7 @@ useIsolate({bool isUserLoggedIn = false}) async {
   }
   final ReceivePort receivePort = ReceivePort();
   try {
-    await Isolate.spawn(runHeavyTaskIWithIsolate,
+    await Isolate.spawn(runHeavyTaskWithIsolate,
         [receivePort.sendPort, rootToken, isUserLoggedIn]);
   } on Object {
     debugPrint('Isolate Failed');
@@ -203,7 +203,7 @@ useIsolate({bool isUserLoggedIn = false}) async {
   log('Result: $response');
 }
 
-Future<dynamic> runHeavyTaskIWithIsolate(List<dynamic> args) async {
+Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args) async {
   //
   BackgroundIsolateBinaryMessenger.ensureInitialized(args[1]);
   final appDocumentDirectory = await getApplicationDocumentsDirectory();

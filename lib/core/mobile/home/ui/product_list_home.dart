@@ -54,7 +54,6 @@ class _ProductListHomeState extends State<ProductListHome> {
   ParkOrder? parkOrder;
   Customer? _selectedCust;
   final _scrollController = ScrollController();
-  
 
   double _scrollToOffset(int index) {
     // Calculate the scroll offset for the given index
@@ -92,7 +91,6 @@ class _ProductListHomeState extends State<ProductListHome> {
 
     _getManagerName();
     getProducts();
-   
   }
 
   @override
@@ -349,35 +347,36 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         ],
                                       ));
                                 })),
-                        FutureBuilder(
-                          future: init(),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return categories.isEmpty
-                                  ? const Center(
-                                      child: Text(
-                                        "No items found",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    )
-                                  : _getCategoryItems(); // Replace with your actual widget
-                            } else {
-                              return const Center(
-                                child:
-                                    CircularProgressIndicator(), // Or any loading indicator
-                              );
-                            }
-                          },
-                        ),
-                        // categories.isEmpty
-                        //     ? const Center(
-                        //         child: Text(
-                        //         "No items found",
-                        //         style: TextStyle(fontWeight: FontWeight.bold),
-                        //       ))
-                        //     : _getCategoryItems(),
+
+                        // FutureBuilder(
+                        //   future: init(),
+                        //   builder: (context, snapshot) {
+                        //     if (snapshot.connectionState ==
+                        //         ConnectionState.done) {
+                        //       return categories.isEmpty
+                        //           ? const Center(
+                        //               child: Text(
+                        //                 "No items found",
+                        //                 style: TextStyle(
+                        //                     fontWeight: FontWeight.bold),
+                        //               ),
+                        //             )
+                        //           : _getCategoryItems(); // Replace with your actual widget
+                        //     } else {
+                        //       return const Center(
+                        //         child:
+                        //             CircularProgressIndicator(), // Or any loading indicator
+                        //       );
+                        //     }
+                        //   },
+                        // ),a
+                        categories.isEmpty
+                            ? const Center(
+                                child: Text(
+                                "No items found",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ))
+                            : _getCategoryItems(),
                         hightSpacer45
                       ],
                     ))))),

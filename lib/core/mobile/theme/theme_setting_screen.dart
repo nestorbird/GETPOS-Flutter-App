@@ -129,7 +129,7 @@ class _ThemeChangeState extends State<ThemeChange> {
 
                   String url = await DbInstanceUrl().getUrl();
                   //   String url = '${_urlCtrl.text}';
-                  // String url = "https://${_urlCtrl.text}/api/";
+                   url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true) {
                     pingPong(url);
                     // theme(url, context);

@@ -39,8 +39,6 @@ class SyncHelper {
     return true;
   }
 
-  
-
   ///
   /// when user logout from the app we follow this sync process
   ///

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
@@ -37,17 +39,16 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   late TextEditingController _emailCtrl, _passCtrl;
-  late String url = instanceUrl;
+  late String url;
   String? version;
 
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController();
-    _passCtrl = TextEditingController();
+    _emailCtrl = TextEditingController(text: "");
+    _passCtrl = TextEditingController(text: "");
+    _getUrlKey();
 
-    _emailCtrl.text = "";
-    _passCtrl.text = "";
     // url = instanceUrl;
 
     _getAppVersion();
@@ -120,48 +121,40 @@ class _LoginState extends State<Login> {
 
   /// HANDLE LOGIN BTN ACTION
   Future<void> login(String email, String password, String url) async {
-    {
-      if (email.isEmpty) {
-        Helper.showPopup(context, "Please Enter Email");
-      } else if (password.isEmpty) {
-        Helper.showPopup(context, "Please Enter Password");
-      } else {
-        try {
-          Helper.showLoaderDialog(context);
+    if (email.isEmpty) {
+      Helper.showPopup(context, "Please Enter Email");
+    } else if (password.isEmpty) {
+      Helper.showPopup(context, "Please Enter Password");
+    } else {
+      try {
+        Helper.showLoaderDialog(context);
 
-          CommanResponse response =
-              await LoginService.login(email, password, url);
+        CommanResponse response =
+            await LoginService.login(email, password, url);
+        log("$response");
+
+        if (response.status!) {
           log("$response");
 
-          if (response.status!) {
-            log("$response");
+          // Start isolate with background processing and pass the receivePort
 
-            //use isolates for parallel processing for running heavy task
-            useIsolate();
-            Timer(
-                const Duration(seconds: 0),
-                (() => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProductListHome()))));
-            // ignore: use_build_context_synchronously
-            // await Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => const ProductListHome()));
-          } else {
-            if (!mounted) return;
-            Helper.hideLoader(context);
-            Helper.showPopup(context, response.message!);
-          }
-        } catch (e) {
-          // ignore: use_build_context_synchronously
+          useIsolate();
+
+          // Once the signal is received, navigate to ProductListHome
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProductListHome()),
+          );
+        } else {
+          if (!mounted) return;
           Helper.hideLoader(context);
-          log('Exception Caught :: $e');
-          debugPrintStack();
-          // ignore: use_build_context_synchronously
-          Helper.showSnackBar(context, SOMETHING_WRONG);
+          Helper.showPopup(context, response.message!);
         }
+      } catch (e) {
+        Helper.hideLoader(context);
+        log('Exception Caught :: $e');
+        debugPrintStack();
+        Helper.showSnackBar(context, SOMETHING_WRONG);
       }
     }
   }
@@ -178,7 +171,7 @@ class _LoginState extends State<Login> {
   Widget loginBtnWidget(context) => Center(
         child: ButtonWidget(
           onPressed: () async {
-            await DbInstanceUrl().deleteUrl();
+            // await DbInstanceUrl().deleteUrl();
             //  String url = "https://${_urlCtrl.text}/api/";
             await login(_emailCtrl.text, _passCtrl.text, url);
             log('Inside login.dart :$url');
@@ -423,5 +416,10 @@ class _LoginState extends State<Login> {
       // Handle any errors that may occur during this process
       log('Error: $e');
     }
+  }
+
+  _getUrlKey() async {
+    url = await DbInstanceUrl().getUrl();
+    setState(() {});
   }
 }
