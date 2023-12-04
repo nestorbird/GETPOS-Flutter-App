@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -137,14 +139,11 @@ class _LoginState extends State<Login> {
           log("$response");
 
           // Start isolate with background processing and pass the receivePort
-
-          useIsolate();
+          await useIsolate();
 
           // Once the signal is received, navigate to ProductListHome
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => ProductListHome()),
-          );
+          await Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const ProductListHome()));
         } else {
           if (!mounted) return;
           Helper.hideLoader(context);
@@ -175,20 +174,6 @@ class _LoginState extends State<Login> {
             //  String url = "https://${_urlCtrl.text}/api/";
             await login(_emailCtrl.text, _passCtrl.text, url);
             log('Inside login.dart :$url');
-            // try {
-            //   if (url == "https://$url/api/") {
-            //     await login(_emailCtrl.text, _passCtrl.text, url);
-            //     log('Inside if:$url');
-            //   } else {
-            //     url = "https://$url/api/";
-            //     await login(_emailCtrl.text, _passCtrl.text, url);
-            //     log('Inside else:$url');
-            //   }
-            // } catch (e) {
-            //   // Handle any exceptions during the request
-
-            //   log('Error in Loop: $e');
-            // }
           },
           title: LOGIN_TXT,
           primaryColor: AppColors.getPrimary(),

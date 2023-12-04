@@ -99,10 +99,10 @@ class APIUtils {
     //   log('API URL inside _apipath if :: $uri');
     //   return uri;
     // } else {
-    String newInstanceUrl = await _getUrlKey();
-    instanceUrl = "https://$newInstanceUrl/api/";
+    String appendInstanceUrl = await _getUrlKey();
+    instanceUrl = "https://$appendInstanceUrl/api/";
     Uri uri = Uri.parse(instanceUrl + url);
-    log('API URL  inside _apipath else :: $uri');
+    log('API URL :: $uri');
     return uri;
     // }
     // Uri uri = Uri.parse(instanceUrl + url);
