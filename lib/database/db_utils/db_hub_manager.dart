@@ -8,8 +8,9 @@ class DbHubManager {
 
   Future<void> addManager(HubManager manager) async {
     box = await Hive.openBox<HubManager>(HUB_MANAGER_BOX);
-    await box.put("HUB_MANAGER", manager);
+    box.put("HUB_MANAGER", manager);
     //box.add(manager);
+    box.close();
   }
 
   Future<HubManager?> getManager() async {

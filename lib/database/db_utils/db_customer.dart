@@ -11,6 +11,7 @@ class DbCustomer {
     for (Customer c in list) {
       await box.put(c.id, c);
     }
+    box.close();
   }
 
   Future<List<Customer>> getCustomers() async {
@@ -20,6 +21,7 @@ class DbCustomer {
       var customer = item as Customer;
       list.add(customer);
     }
+
     return list;
   }
 
@@ -45,6 +47,7 @@ class DbCustomer {
         list.add(customer);
       }
     }
+
     return list;
   }
 
@@ -57,28 +60,26 @@ class DbCustomer {
         list.add(customer);
       }
     }
+
     return list;
-    
   }
 
   Future<Customer?> getCustomerDetails(String key) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     return box.get(key);
-    
   }
 
   Future<int> deleteCustomers() async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     return box.clear();
-    
   }
 
   Future<bool> deleteCustomer(String key) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     Customer? customer = box.get(key);
     if (customer != null) customer.delete();
+
     return true;
-    
   }
 
   Future<void> updateCustomer(Customer customer) async {

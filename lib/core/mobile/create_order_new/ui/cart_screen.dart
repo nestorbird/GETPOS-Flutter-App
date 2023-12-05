@@ -203,11 +203,11 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                       );
                     }).toList(),
-              onExpansionChanged: (bool expanded) {
-                setState(() {
-                  _customTileExpanded = expanded;
-                });
-              },
+              //   onExpansionChanged: (bool expanded) {
+              //     setState(() {
+              //  //     _customTileExpanded = expanded;
+              //     });
+              //   },
             ),
           ),
 
@@ -716,13 +716,20 @@ class _CartScreenState extends State<CartScreen> {
                   color: CUSTOM_TEXT_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
-            // Icon(
-            //   // Icons.arrow_drop_down,
-            //   _customTileExpanded
-            //       ? Icons.arrow_drop_down_circle
-            //       : Icons.arrow_drop_down,
-            // ),
-
+            Container(
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 212, 228, 241),
+                  border: Border.all(color: Colors.green, width: 2.0),
+                  borderRadius: BorderRadius.circular(2.0)),
+              width: Checkbox.width,
+              height: 21.0,
+              child: Icon(
+                // Icons.arrow_drop_down,
+                _customTileExpanded
+                    ? Icons.arrow_drop_down_circle
+                    : Icons.arrow_drop_down,
+              ),
+            ),
             Text(
               amount,
               style: getTextStyle(
