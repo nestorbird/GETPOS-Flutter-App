@@ -8,11 +8,9 @@ import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
-import 'package:nb_posx/main.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../database/db_utils/db_categories.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
@@ -763,7 +761,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                 Container(
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                            color: AppColors.fontWhiteColor!),
+                                            color: AppColors.fontWhiteColor ??
+                                                Colors.white),
                                         shape: BoxShape.circle),
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -786,7 +785,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     margin: const EdgeInsets.only(left: 45),
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: const Color(0xFF62B146)),
+                                        color: Color(0xFF62B146)),
                                     child: Text(
                                       categories[catPosition]
                                           .items[itemPosition]
@@ -826,7 +825,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   }
 
   _getManagerName() async {
-    HubManager? manager = await DbHubManager().getManager() as HubManager?;
+    HubManager? manager = await DbHubManager().getManager();
     if (manager != null) {
       managerName = manager.name;
       //profilePic = manager.profileImage;

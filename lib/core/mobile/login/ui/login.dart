@@ -3,18 +3,15 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
-import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -139,11 +136,16 @@ class _LoginState extends State<Login> {
           log("$response");
 
           // Start isolate with background processing and pass the receivePort
-          await useIsolate();
-
-          // Once the signal is received, navigate to ProductListHome
-          await Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ProductListHome()));
+          bool isSuccess = await useIsolate();
+          if (isSuccess) {
+            // Once the signal is received, navigate to ProductListHome
+            await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProductListHome()));
+          } else {
+            Helper.showSnackBar(context, "Synchronization failed");
+          }
         } else {
           if (!mounted) return;
           Helper.hideLoader(context);

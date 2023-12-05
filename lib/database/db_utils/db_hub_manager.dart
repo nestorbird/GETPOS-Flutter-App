@@ -1,23 +1,24 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
 import '../models/hub_manager.dart';
 import 'db_constants.dart';
-
-import 'package:hive_flutter/hive_flutter.dart';
 
 class DbHubManager {
   late Box box;
 
   Future<void> addManager(HubManager manager) async {
     box = await Hive.openBox<HubManager>(HUB_MANAGER_BOX);
-    box.add(manager);
+    await box.put("HUB_MANAGER", manager);
+    //box.add(manager);
   }
 
   Future<HubManager?> getManager() async {
     box = await Hive.openBox<HubManager>(HUB_MANAGER_BOX);
-    if (box.length > 0) {
-      return box.getAt(0);
-    }
-    return null;
-    
+    return box.get("HUB_MANAGER");
+    // if (box.length > 0) {
+    //   return box.getAt(0);
+    // }
+    // return null;
   }
 
   updateCashBalance(double orderAmount) async {

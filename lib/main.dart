@@ -2,6 +2,7 @@
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'dart:developer';
 import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
@@ -158,10 +159,10 @@ class TabletApp extends StatelessWidget {
 }
 
 Future<void> init() async {
-  NetworkManager.init();
   WidgetsFlutterBinding.ensureInitialized();
-  LocalNotificationService().initNotification();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  NetworkManager.init();
+  LocalNotificationService().initNotification();
   Hive.init(appDocumentDirectory.path);
 
   // //Initializing hive database
@@ -176,9 +177,9 @@ Future<void> init() async {
   }
 }
 
-useIsolate({bool isUserLoggedIn = false}) async {
+Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
   var rootToken = RootIsolateToken.instance!;
-  WidgetsFlutterBinding.ensureInitialized();
+  //WidgetsFlutterBinding.ensureInitialized();
 
   if (!isUserLoggedIn) {
     LocalNotificationService().showNotification(
@@ -188,19 +189,25 @@ useIsolate({bool isUserLoggedIn = false}) async {
   }
   final ReceivePort receivePort = ReceivePort();
   try {
-    await Isolate.spawn(runHeavyTaskWithIsolate,
+    var isolate = await Isolate.spawn(runHeavyTaskWithIsolate,
         [receivePort.sendPort, rootToken, isUserLoggedIn]);
   } on Object {
     debugPrint('Isolate Failed');
     receivePort.close();
   }
   final response = await receivePort.first;
-
-  if (!isUserLoggedIn) {
+  log('Isolate Result: $response');
+  if (response == true) {
+    if (!isUserLoggedIn) {
+      LocalNotificationService().showNotification(
+          id: 1, title: 'Background Sync', body: 'Background Sync completed.');
+    }
+    return true;
+  } else {
     LocalNotificationService().showNotification(
-        id: 1, title: 'Background Sync', body: 'Background Sync completed.');
+        id: 1, title: 'Background Sync', body: 'Background Sync failed.');
+    return false;
   }
-  log('Result: $response');
 }
 
 Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args) async {
@@ -213,13 +220,17 @@ Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args) async {
 
   try {
     SendPort resultPort = args[0];
+    log("Args :: ${args[0]}");
+    log("Args :: ${args[2]}");
+    log("Isolate started");
     if (args[2]) {
       await SyncHelper().launchFlow(args[2]);
     } else {
       await SyncHelper().loginFlow();
     }
 
-    Isolate.exit(resultPort, "Success login data ");
+    log("Isolates Finished");
+    Isolate.exit(resultPort, true);
   } catch (e) {
     log(e.toString());
   }

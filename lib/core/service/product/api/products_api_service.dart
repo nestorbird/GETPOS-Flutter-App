@@ -50,10 +50,11 @@ class ProductsService {
           var catData = catObj as cat_resp.Message;
           log("catObj:$catObj");
           //var image = Uint8List.fromList([]);
-          var image = (catData.itemGroupImage == null ||
-                  catData.itemGroupImage!.isEmpty)
-              ? Uint8List.fromList([])
-              : await Helper.getImageBytesFromUrl(catData.itemGroupImage!);
+          // var image = (catData.itemGroupImage == null ||
+          //         catData.itemGroupImage!.isEmpty)
+          //     ? Uint8List.fromList([])
+          //     : await Helper.getImageBytesFromUrl(catData.itemGroupImage!);
+          var image = Uint8List.fromList([]);
           List<Product> products = [];
 
           await Future.forEach(catData.items!, (itemObj) async {
@@ -94,7 +95,6 @@ class ProductsService {
                   taxRate: taxData.taxRate!,
                 );
                 taxes.add(tax);
-                
               }
             });
             await DbTaxes().addTaxes(taxes);
@@ -102,7 +102,8 @@ class ProductsService {
             await DBPreferences().savePreference(
                 PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
 
-            var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+            //var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+            var imageBytes = Uint8List.fromList([]);
 
             Product product = Product(
                 id: item.id!,
@@ -187,7 +188,8 @@ class ProductsService {
 
           if (product.image != null) {
             //Fetching image bytes (Uint8List) from image url
-            image = await Helper.getImageBytesFromUrl(product.image!);
+            //image = await Helper.getImageBytesFromUrl(product.image!);
+            image = Uint8List.fromList([]);
           }
 
           //Creating object for product
