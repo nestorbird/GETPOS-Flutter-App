@@ -61,7 +61,9 @@ class _CustomerTileState extends State<CustomerTile> {
                   ? AppColors.active
                   : AppColors.fontWhiteColor,
           border: Border.all(
-              color: isSelected ?  AppColors.getPrimary() : AppColors.shadowBorder!,
+              color: isSelected
+                  ? const Color(0xFFDC1E44)
+                  : const Color(0xFFC7C5C5),
               width: isSelected ? 0.3 : 1.0),
           borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
       child: Column(
@@ -77,7 +79,7 @@ class _CustomerTileState extends State<CustomerTile> {
                       widget.customer != null ? widget.customer!.name : "",
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
-                          color:  AppColors.getPrimary(),
+                          color: AppColors.getPrimary(),
                           fontWeight: widget.isHighlighted!
                               ? FontWeight.bold
                               : FontWeight.normal),
@@ -86,7 +88,7 @@ class _CustomerTileState extends State<CustomerTile> {
                 ),
               ),
               Visibility(
-                visible:widget.isNumVisible,
+                visible: widget.isNumVisible,
                 child: Padding(
                   padding: miniPaddingAll(),
                   child: Text(
@@ -105,7 +107,7 @@ class _CustomerTileState extends State<CustomerTile> {
             child: Text(
               widget.customer != null ? widget.customer!.email : "",
               style: getTextStyle(
-                  color:AppColors.getTextandCancelIcon(),
+                  color: AppColors.getTextandCancelIcon(),
                   fontSize: SMALL_PLUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
             ),

@@ -8,6 +8,8 @@ import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
+import 'package:nb_posx/database/db_utils/db_constants.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -46,13 +48,13 @@ class _ProductListHomeState extends State<ProductListHome> {
   late TextEditingController _searchTxtController;
   List<Product> products = [];
   List<Category> categories = [];
-
+  HubManager? manager;
   late String managerName = '';
   //bool _isFABOpened = false;
   ParkOrder? parkOrder;
   Customer? _selectedCust;
   final _scrollController = ScrollController();
-
+  //HubManager? hubManagerData;
   double _scrollToOffset(int index) {
     // Calculate the scroll offset for the given index
     // You'll need to adjust this based on your actual item heights
@@ -77,6 +79,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   @override
   void initState() {
     super.initState();
+
     // _height = MediaQuery.of(context).size.height;
     _searchTxtController = TextEditingController();
     if (widget.parkedOrder != null) {
@@ -88,6 +91,8 @@ class _ProductListHomeState extends State<ProductListHome> {
     }
 
     _getManagerName();
+
+    //_getManagerName();
     getProducts();
   }
 
@@ -140,7 +145,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                             )),
                                         hightSpacer5,
                                         Text(
-                                          managerName,
+                                          manager!.name,
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
                                               color: AppColors.secondary),
@@ -836,6 +841,30 @@ class _ProductListHomeState extends State<ProductListHome> {
       print('Manager is null');
     }
   }
+  //  _getManagerName() async {
+  //   HubManager manager = await DbHubManager().getManager() as HubManager;
+  //   managerName = manager.name;
+  //   //profilePic = manager.profileImage;
+  //   setState(() {});
+  // }
+
+  // _getManagerName() async {
+  //   DbHubManager dbHubManager = DbHubManager();
+
+  // var  hubManagerData = dbHubManager.getManager();
+  //   manager = HubManager(
+  //       id: hubManagerData.id,
+  //       name: hubManagerData.name,
+  //       emailId: hubManagerData.emailId,
+  //       phone: hubManagerData.phone,
+  //       profileImage: hubManagerData.profileImage);
+  //   await dbHubManager.addManager(manager!);
+  //   await dbHubManager.getManager();
+  //   //   //profilePic = manager.profileImage;
+  //   setState(() {});
+
+  //   await DBPreferences().savePreference(Manager, manager!.name);
+  // }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {
     product.orderedPrice = product.price;

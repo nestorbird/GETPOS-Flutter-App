@@ -46,7 +46,7 @@ class HubManagerDetails {
         DbHubManager dbHubManager = DbHubManager();
 
         //Deleting the hub manager details
-        await dbHubManager.delete();
+        //  await dbHubManager.delete();
         var image = Uint8List.fromList([]);
 
         if (hubManagerData.image != null) {
@@ -67,6 +67,7 @@ class HubManagerDetails {
 
         //Saving the HubManager data into the database
         await dbHubManager.addManager(hubManager);
+        await dbHubManager.getManager();
 
         //Saving the Sales Series
         await DBPreferences()

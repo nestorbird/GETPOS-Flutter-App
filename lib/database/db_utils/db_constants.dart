@@ -54,6 +54,7 @@ const ApiKey = 'API_KEY';
 const ApiSecret = 'API_SECRET';
 const HubManagerId = 'HUB_MANAGAER_ID';
 const SalesSeries = 'SALES_SERIES';
+const Manager = 'MANAGER';
 // const SelectedCustomerPref = 'SELECTED_CUSTOMER';
 // const SelectedProductsPref = 'SELECTED_PRODUCTS';
 const CUSTOMER_LAST_SYNC_DATETIME = 'CUSTOMER_LAST_SYNC_DATETIME';

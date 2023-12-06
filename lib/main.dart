@@ -56,8 +56,6 @@ void main() async {
   //Initializing hive database
   // await Hive.initFlutter();
 
-  //Registering hive database type adapters
-
   isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
@@ -202,6 +200,8 @@ Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
       LocalNotificationService().showNotification(
           id: 1, title: 'Background Sync', body: 'Background Sync completed.');
     }
+    
+    
     return true;
   } else {
     LocalNotificationService().showNotification(

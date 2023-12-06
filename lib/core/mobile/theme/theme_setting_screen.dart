@@ -70,7 +70,6 @@ class _ThemeChangeState extends State<ThemeChange> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Center(
       child: WillPopScope(
         onWillPop: _onBackPressed,
@@ -129,10 +128,9 @@ class _ThemeChangeState extends State<ThemeChange> {
 
                   String url = await DbInstanceUrl().getUrl();
                   //   String url = '${_urlCtrl.text}';
-                   url = "https://${_urlCtrl.text}/api/";
+                  url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true) {
                     pingPong(url);
-                    // theme(url, context);
                   } else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
                   } else {
@@ -152,17 +150,12 @@ class _ThemeChangeState extends State<ThemeChange> {
   bool isValidInstanceUrl(String url) {
     //String url = "https://${_urlCtrl.text}/api/";
     if (url == "https://${_urlCtrl.text}/api/") {
-      //   log('Inside if:$url');
-      //   log("Saved Url in DB:$url");
       return Helper.isValidUrl(url);
     } else {
       url = "https://$url/api/";
 
-      //   log('Inside else:$url');
-      //   log("Saved Url in DB:$url");
       return Helper.isValidUrl(url);
     }
-    //  return Helper.isValidUrl(url);
   }
 
   Future<void> pingPong(String url) async {
@@ -198,17 +191,13 @@ class _ThemeChangeState extends State<ThemeChange> {
       Helper.showLoaderDialog(context);
       //api theme path get and append
 
-      String apiUrl = "$THEME_PATH";
+      String apiUrl = THEME_PATH;
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
       log('$response');
 
       if (response.status != null && response.status!) {
+        // ignore: use_build_context_synchronously
         Helper.hideLoader(context);
-
-//to save url in DB
-        //await DbInstanceUrl().saveUrl(url);
-        //String url = "https://${_urlCtrl.text}/api/";
-        // await DbInstanceUrl().saveUrl(url);
 
         log('url:$url');
         // ignore: use_build_context_synchronously
