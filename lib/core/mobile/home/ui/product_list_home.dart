@@ -829,42 +829,43 @@ class _ProductListHomeState extends State<ProductListHome> {
     setState(() {});
   }
 
-  _getManagerName() async {
-    HubManager? manager = await DbHubManager().getManager();
-    if (manager != null) {
-      managerName = manager.name;
-      //profilePic = manager.profileImage;
-      setState(() {});
-    } else {
-      // Handle the case where the manager is null
-      // For example, show an error message or set default values.
-      print('Manager is null');
-    }
-  }
-  //  _getManagerName() async {
+  // _getManagerName() async {
+  //   HubManager? manager = await DbHubManager().getManager();
+  //   if (manager != null) {
+  //     managerName = manager.name;
+  //     //profilePic = manager.profileImage;
+  //     setState(() {});
+  //   } else {
+  //     // Handle the case where the manager is null
+  //     // For example, show an error message or set default values.
+  //     print('Manager is null');
+  //   }
+  // }
+  // _getManagerName() async {
   //   HubManager manager = await DbHubManager().getManager() as HubManager;
   //   managerName = manager.name;
   //   //profilePic = manager.profileImage;
   //   setState(() {});
   // }
 
-  // _getManagerName() async {
-  //   DbHubManager dbHubManager = DbHubManager();
+  _getManagerName() async {
+    DbHubManager dbHubManager = DbHubManager();
 
-  // var  hubManagerData = dbHubManager.getManager();
-  //   manager = HubManager(
-  //       id: hubManagerData.id,
-  //       name: hubManagerData.name,
-  //       emailId: hubManagerData.emailId,
-  //       phone: hubManagerData.phone,
-  //       profileImage: hubManagerData.profileImage);
-  //   await dbHubManager.addManager(manager!);
-  //   await dbHubManager.getManager();
-  //   //   //profilePic = manager.profileImage;
-  //   setState(() {});
+    var hubManagerData = await dbHubManager.getManager();
+    manager = HubManager(
+        id: hubManagerData!.id,
+        name: hubManagerData.name,
+        emailId: hubManagerData.emailId,
+        phone: hubManagerData.phone,
+        profileImage: hubManagerData.profileImage);
+    await dbHubManager.addManager(manager!);
+    await dbHubManager.getManager();
+    //   //profilePic = manager.profileImage;
+    setState(() {});
 
-  //   await DBPreferences().savePreference(Manager, manager!.name);
-  // }
+    await DBPreferences().savePreference(Manager, manager!.name);
+    //  await DBPreferences().getPreference(Manager);
+  }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {
     product.orderedPrice = product.price;
