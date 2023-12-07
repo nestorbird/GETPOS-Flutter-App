@@ -10,6 +10,7 @@ import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/main.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -43,7 +44,7 @@ class ProductListHome extends StatefulWidget {
 
 class _ProductListHomeState extends State<ProductListHome> {
   final _key = GlobalKey<ExpandableFabState>();
-
+  // dynamic hubManagerData;
   final GlobalKey _focusKey = GlobalKey();
   late TextEditingController _searchTxtController;
   List<Product> products = [];
@@ -78,8 +79,10 @@ class _ProductListHomeState extends State<ProductListHome> {
 
   @override
   void initState() {
-    super.initState();
+     _getManagerName();
 
+    //_getManagerName();
+    getProducts();
     // _height = MediaQuery.of(context).size.height;
     _searchTxtController = TextEditingController();
     if (widget.parkedOrder != null) {
@@ -89,11 +92,7 @@ class _ProductListHomeState extends State<ProductListHome> {
     if (widget.isForNewOrder && _selectedCust == null) {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
-
-    _getManagerName();
-
-    //_getManagerName();
-    getProducts();
+    super.initState();
   }
 
   @override
@@ -830,15 +829,16 @@ class _ProductListHomeState extends State<ProductListHome> {
   }
 
   // _getManagerName() async {
+  //   // await DBPreferences().getPreference(Manager);
   //   HubManager? manager = await DbHubManager().getManager();
   //   if (manager != null) {
-  //     managerName = manager.name;
+  //     managerName = manager!.name;
   //     //profilePic = manager.profileImage;
   //     setState(() {});
   //   } else {
   //     // Handle the case where the manager is null
   //     // For example, show an error message or set default values.
-  //     print('Manager is null');
+  //     log('Manager is null');
   //   }
   // }
   // _getManagerName() async {
@@ -852,19 +852,19 @@ class _ProductListHomeState extends State<ProductListHome> {
     DbHubManager dbHubManager = DbHubManager();
 
     var hubManagerData = await dbHubManager.getManager();
-    manager = HubManager(
+        manager = HubManager(
         id: hubManagerData!.id,
         name: hubManagerData.name,
         emailId: hubManagerData.emailId,
         phone: hubManagerData.phone,
         profileImage: hubManagerData.profileImage);
-    await dbHubManager.addManager(manager!);
-    await dbHubManager.getManager();
+    // await dbHubManager.addManager(manager!);
+    // await dbHubManager.getManager();
     //   //profilePic = manager.profileImage;
     setState(() {});
 
-    await DBPreferences().savePreference(Manager, manager!.name);
-    //  await DBPreferences().getPreference(Manager);
+    // await DBPreferences().savePreference(Manager, manager!.name);
+    // await DBPreferences().getPreference(Manager);
   }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {

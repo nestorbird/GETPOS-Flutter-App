@@ -226,9 +226,9 @@ class _MyAccountState extends State<MyAccount> {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
       // Clear the transactional data
-      //await DBPreferences().deleteTranscationData();
-      await DbCustomer().deleteCustomer(DeleteCustomers);
-      await DbSaleOrder().delete();
+      await DBPreferences().deleteTranscationData();
+      // await DbCustomer().deleteCustomer(DeleteCustomers);
+      // await DbSaleOrder().delete();
       log("Cleared the transactional data");
       //to save the url
       await DbInstanceUrl().saveUrl(url);

@@ -25,6 +25,7 @@ import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../service/login/api/login_api_service.dart';
+import '../../../service/my_account/api/get_hub_manager_details.dart';
 import '../../forgot_password/ui/forgot_password.dart';
 import '../../webview_screens/enums/topic_types.dart';
 import '../../webview_screens/ui/webview_screen.dart';
@@ -134,7 +135,7 @@ class _LoginState extends State<Login> {
 
         if (response.status!) {
           log("$response");
-
+          //  await HubManagerDetails().getAccountDetails();
           // Start isolate with background processing and pass the receivePort
           bool isSuccess = await useIsolate();
           if (isSuccess) {

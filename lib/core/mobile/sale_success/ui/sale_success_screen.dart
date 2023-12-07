@@ -43,7 +43,6 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         DbSaleOrder().createOrder(order).then((value) {
           debugPrint('order sync and saved to db');
           //Helper.showPopup(context, "Order synced and saved locally");
-          
         });
       } else {
         DbSaleOrder().createOrder(widget.placedOrder).then((value) {
@@ -58,63 +57,62 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        // Navigate to the HomeScreen when the back button is pressed
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => ProductListHome()
+        onWillPop: () async {
+          // Navigate to the HomeScreen when the back button is pressed
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const ProductListHome()),
+            (route) => false, // Remove all other routes from the stack
+          );
+          return false; // Prevent default back button behavior
+        },
+        child: Scaffold(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: SvgPicture.asset(
+                  SUCCESS_IMAGE,
+                  height: SALE_SUCCESS_IMAGE_HEIGHT,
+                  width: SALE_SUCCESS_IMAGE_WIDTH,
+                  fit: BoxFit.contain,
+                ),
+              ),
+              hightSpacer30,
+              Text(
+                SALES_SUCCESS_TXT,
+                style: getTextStyle(
+                    fontSize: LARGE_FONT_SIZE,
+                    color: AppColors.getTextandCancelIcon(),
+                    fontWeight: FontWeight.w600),
+              ),
+              hightSpacer30,
+              LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: "Print Receipt",
+                onTap: () {
+                  _printInvoice();
+                },
+              ),
+              LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: RETURN_TO_HOME_TXT,
+                onTap: () => {
+                  Navigator.popUntil(context, (route) => route.isFirst),
+                },
+              ),
+              LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: "New Order",
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => NewCreateOrder()),
+                      (route) => route.isFirst);
+                },
+              ),
+            ],
           ),
-          (route) => false, // Remove all other routes from the stack
-        );
-        return false; // Prevent default back button behavior
-      }, child:Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: SvgPicture.asset(
-              SUCCESS_IMAGE,
-              height: SALE_SUCCESS_IMAGE_HEIGHT,
-              width: SALE_SUCCESS_IMAGE_WIDTH,
-              fit: BoxFit.contain,
-            ),
-          ),
-          hightSpacer30,
-          Text(
-            SALES_SUCCESS_TXT,
-            style: getTextStyle(
-                fontSize: LARGE_FONT_SIZE,
-                color: AppColors.getTextandCancelIcon(),
-                fontWeight: FontWeight.w600),
-          ),
-          hightSpacer30,
-          LongButton(
-            isAmountAndItemsVisible: false,
-            buttonTitle: "Print Receipt",
-            onTap: () {
-              _printInvoice();
-            },
-          ),
-          LongButton(
-            isAmountAndItemsVisible: false,
-            buttonTitle: RETURN_TO_HOME_TXT,
-            onTap: () {
-              Navigator.popUntil(context, (route) => route.isFirst);
-            },
-          ),
-          LongButton(
-            isAmountAndItemsVisible: false,
-            buttonTitle: "New Order",
-            onTap: () {
-              Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => NewCreateOrder()),
-                  (route) => route.isFirst);
-            },
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 
   //TODO:: Need to handle the print receipt here
