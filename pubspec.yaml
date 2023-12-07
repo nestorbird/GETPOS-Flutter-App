@@ -67,6 +67,7 @@ dependencies:
  # ping_discover_network: ^0.2.0+1
   qr_flutter: ^4.1.0
   package_info_plus_web: ^2.0.0
+  flutter_local_notifications: ^16.2.0
  # wifi: ^0.1.5
 
 dev_dependencies:
