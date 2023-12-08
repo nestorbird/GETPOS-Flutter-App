@@ -82,7 +82,6 @@ class _CartScreenState extends State<CartScreen> {
   double grandTotal = 0.0;
 
   SaleOrder? saleOrder;
-  bool _customTileExpanded = false;
   List<Map<String, dynamic>> taxDetailsList = [];
 
   @override
@@ -204,9 +203,7 @@ class _CartScreenState extends State<CartScreen> {
                       );
                     }).toList(),
               onExpansionChanged: (bool expanded) {
-                setState(() {
-                  _customTileExpanded = expanded;
-                });
+                setState(() {});
               },
             ),
           ),

@@ -96,9 +96,13 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
               LongButton(
                 isAmountAndItemsVisible: false,
                 buttonTitle: RETURN_TO_HOME_TXT,
-                onTap: () => {
-                  Navigator.popUntil(context, (route) => route.isFirst),
-                },
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductListHome())),
+                // {
+                //   Navigator.popUntil(context, (route) => route.isFirst),
+                // },
               ),
               LongButton(
                 isAmountAndItemsVisible: false,

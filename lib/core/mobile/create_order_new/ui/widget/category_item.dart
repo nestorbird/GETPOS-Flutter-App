@@ -75,7 +75,7 @@ class _CategoryItemState extends State<CategoryItem> {
                       '$ITEM_CODE_TXT - ${widget.product!.id}',
                       style: getTextStyle(
                           fontWeight: FontWeight.normal,
-                          color:AppColors.getAsset()),
+                          color: AppColors.getAsset()),
                     ),
                     const Spacer(),
                     Text(
@@ -106,11 +106,9 @@ class _CategoryItemState extends State<CategoryItem> {
     } else {
       log('Local image');
       return widget.product!.productImage.isEmpty
-          ? SvgPicture.asset(
-              PRODUCT_IMAGE_,
-              height: 30,
-              width: 30,
-              fit: BoxFit.contain,
+          ? Image.asset(
+              NO_IMAGE,
+              fit: BoxFit.fill,
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(8), // Image border

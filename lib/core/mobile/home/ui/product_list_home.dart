@@ -79,7 +79,7 @@ class _ProductListHomeState extends State<ProductListHome> {
 
   @override
   void initState() {
-     _getManagerName();
+    _getManagerName();
 
     //_getManagerName();
     getProducts();
@@ -328,7 +328,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                     .productImage
                                                     .isEmpty
                                                 ? Image.asset(
-                                                    PIZZA_IMAGE,
+                                                    NO_IMAGE,
                                                     fit: BoxFit.fill,
                                                   )
                                                 : Image.memory(
@@ -779,7 +779,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                               .items[itemPosition]
                                               .productImage
                                               .isEmpty
-                                          ? Image.asset(BURGAR_IMAGE)
+                                          ? Image.asset(NO_IMAGE)
                                           : Image.memory(categories[catPosition]
                                               .items[itemPosition]
                                               .productImage),
@@ -852,7 +852,7 @@ class _ProductListHomeState extends State<ProductListHome> {
     DbHubManager dbHubManager = DbHubManager();
 
     var hubManagerData = await dbHubManager.getManager();
-        manager = HubManager(
+    manager = HubManager(
         id: hubManagerData!.id,
         name: hubManagerData.name,
         emailId: hubManagerData.emailId,

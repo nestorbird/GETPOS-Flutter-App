@@ -53,14 +53,20 @@ class _AddedProductItemState extends State<AddedProductItem> {
           width: 90,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
+            // AppColors.getPrimary().withOpacity(0.1) ??
+            //Color(0xFF707070),
             color: AppColors.getPrimary().withOpacity(0.1),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: widget.product.productImage.isEmpty
-              ? SvgPicture.asset(
-                  PRODUCT_IMAGE_SMALL,
-                  fit: BoxFit.contain,
+              ? Image.asset(
+                  NO_IMAGE,
+                  fit: BoxFit.fill,
                 )
+              // SvgPicture.asset(
+              //     NO_IMAGE,
+              //     fit: BoxFit.fill,
+              //   )
               : Image.memory(
                   widget.product.productImage,
                   fit: BoxFit.fill,

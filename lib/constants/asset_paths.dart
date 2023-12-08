@@ -31,7 +31,7 @@ const HOME_USER_IMAGE = "assets/icons/my_account.svg";
 const LOGIN_IMAGE = "assets/tablet_icons/side_image.svg";
 const PIZZA_IMAGE = "assets/images/pizza_img.png";
 const BURGAR_IMAGE = "assets/images/burgar_img.png";
-
+const NO_IMAGE = "assets/images/no_image.png";
 const HOME_TAB_ICON = "assets/tablet_icons/home_selected.svg";
 const ORDER_TAB_ICON = "assets/tablet_icons/order_icon.svg";
 const PRODUCE_TAB_ICON = "assets/tablet_icons/product_icon.svg";

@@ -66,6 +66,9 @@ class SaleSuccessfulPopup extends StatelessWidget {
                 buttonTitle: RETURN_TO_HOME_TXT,
                 onTap: () {
                   Navigator.pop(context, "home");
+                  //  Navigator.of(context).pop();
+                  //  Navigator.pushReplacementNamed(context, '/home');
+                  //  Navigator.popUntil(context, (route) => false);
                 },
               )),
           Padding(

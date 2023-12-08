@@ -105,12 +105,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 searchBoxWidth: size.width / 4,
               ),
               hightSpacer20,
-           categories.isEmpty
-                          ? const Center(
-                              child: Text(
-                              "No items found",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )):   getCategoryListWidg(),
+              categories.isEmpty
+                  ? const Center(
+                      child: Text(
+                      "No items found",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ))
+                  : getCategoryListWidg(),
               hightSpacer20,
               ListView.builder(
                 primary: false,
@@ -322,7 +323,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                 ),
                                 Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.fontWhiteColor!),
+                                        border: Border.all(
+                                            color: AppColors.fontWhiteColor!),
                                         shape: BoxShape.circle),
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -333,7 +335,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                           shape: BoxShape.circle),
                                       child: cat
                                               .items[index].productImage.isEmpty
-                                          ? Image.asset(BURGAR_IMAGE)
+                                          ? Image.asset(NO_IMAGE)
                                           : Image.memory(
                                               cat.items[index].productImage),
                                     )),

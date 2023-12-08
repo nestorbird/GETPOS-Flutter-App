@@ -105,7 +105,8 @@ class _CartWidgetState extends State<CartWidget> {
                   "${_orderedQty()} Items",
                   // "$qty Items",
                   style: getTextStyle(
-                    color: AppColors.getPrimary(),
+                    //AppColors.getPrimary() ??
+                    color: const Color(0xFF62B146),
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                   ),
                 )
@@ -620,7 +621,6 @@ class _CartWidgetState extends State<CartWidget> {
     SaleOrder saleOrder = SaleOrder(
         id: orderId,
         orderAmount: totalAmount,
-        
         date: date,
         time: time,
         customer: currentCart!.customer,

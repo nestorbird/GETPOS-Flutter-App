@@ -80,14 +80,14 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
                       '$ITEM_CODE_TXT - ${widget.product!.id}',
                       style: getTextStyle(
                           fontWeight: FontWeight.normal,
-                          color:  AppColors.getAsset()),
+                          color: AppColors.getAsset()),
                     ),
                     const Spacer(),
                     Text(
                       '$appCurrency ${widget.product!.price}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color:  AppColors.getPrimary(),
+                          color: AppColors.getPrimary(),
                           fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -113,11 +113,9 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
     } else {
       log('Local image');
       return widget.product!.productImage.isEmpty
-          ? SvgPicture.asset(
-              PRODUCT_IMAGE_,
-              height: 30,
-              width: 30,
-              fit: BoxFit.contain,
+          ? Image.asset(
+              NO_IMAGE,
+              fit: BoxFit.fill,
             )
           : ClipRRect(
               borderRadius: BorderRadius.circular(8), // Image border

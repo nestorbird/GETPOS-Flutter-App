@@ -162,18 +162,18 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                             ),
                           ),
                           Container(
-                            height: 60,
-                            width: 60,
-                            decoration:
-                                const BoxDecoration(shape: BoxShape.circle),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: cat.items[index].productImage.isNotEmpty
-                                ? Image.memory(cat.items[index].productImage,
-                                    fit: BoxFit.fill)
-                                : SvgPicture.asset(
-                                    PRODUCT_IMAGE,
-                                  ),
-                          ),
+                              height: 60,
+                              width: 60,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              child: cat.items[index].productImage.isNotEmpty
+                                  ? Image.memory(cat.items[index].productImage,
+                                      fit: BoxFit.fill)
+                                  : Image.asset(
+                                      NO_IMAGE,
+                                      fit: BoxFit.fill,
+                                    )),
                         ],
                       ),
                     ));
@@ -209,7 +209,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                             width: 45,
                           )
                         : Image.asset(
-                            BURGAR_IMAGE,
+                            NO_IMAGE,
                             height: 45,
                             width: 45,
                           ),
