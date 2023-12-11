@@ -129,12 +129,10 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
     } else {
       log('Local image');
       return widget.product.productImage.isEmpty
-          ? SvgPicture.asset(
-              PRODUCT_IMAGE_,
-              height: 30,
-              width: 30,
-              fit: BoxFit.contain,
-            )
+          ? Image.asset(
+                                                    NO_IMAGE,
+                                                    fit: BoxFit.fill,
+                                                  )
           : ClipRRect(
               borderRadius: BorderRadius.circular(8), // Image border
               child: SizedBox(

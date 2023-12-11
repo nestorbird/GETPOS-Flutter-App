@@ -107,12 +107,16 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
               LongButton(
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => NewCreateOrder()),
-                      (route) => route.isFirst);
-                },
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>  NewCreateOrder())),
+                //() {
+                  // Navigator.pushAndRemoveUntil(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => NewCreateOrder()),
+                  //     (route) => route.isFirst);
+               // },
               ),
             ],
           ),

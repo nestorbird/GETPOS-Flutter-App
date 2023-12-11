@@ -79,9 +79,11 @@ class _ProductListHomeState extends State<ProductListHome> {
 
   @override
   void initState() {
+     super.initState();
+     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     _getManagerName();
 
-    //_getManagerName();
+    
     getProducts();
     // _height = MediaQuery.of(context).size.height;
     _searchTxtController = TextEditingController();
@@ -90,11 +92,26 @@ class _ProductListHomeState extends State<ProductListHome> {
       _selectedCust = widget.parkedOrder!.customer;
     }
     if (widget.isForNewOrder && _selectedCust == null) {
-      Future.delayed(Duration.zero, () => goToSelectCustomer());
+      Future.delayed(Duration.zero, () => goToSelectCustomer()); 
+      
     }
-    super.initState();
-  }
+      });
+    // _getManagerName();
 
+    
+    // getProducts();
+    // // _height = MediaQuery.of(context).size.height;
+    // _searchTxtController = TextEditingController();
+    // if (widget.parkedOrder != null) {
+    //   parkOrder = widget.parkedOrder;
+    //   _selectedCust = widget.parkedOrder!.customer;
+    // }
+    // if (widget.isForNewOrder && _selectedCust == null) {
+    //   Future.delayed(Duration.zero, () => goToSelectCustomer());
+    // }
+   
+  }
+  
   @override
   Widget build(BuildContext context) {
     return SafeArea(

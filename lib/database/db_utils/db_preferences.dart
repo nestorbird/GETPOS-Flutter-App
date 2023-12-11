@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/database/models/customer.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'db_constants.dart';
@@ -56,14 +58,27 @@ class DBPreferences {
     await prefBox!.close();
   }
 
-  Future<void> deleteTranscationData() async {
-    prefBox = await Hive.openBox(CUSTOMER_BOX);
-    await prefBox!.clear();
-    await prefBox!.close();
-    prefBox = await Hive.openBox(SALE_ORDER_BOX);
-    await prefBox!.clear();
-    await prefBox!.close();
-  }
+  // Future<void> deleteTranscationData() async {
+  //   prefBox = await Hive.openBox(CUSTOMER_BOX);
+  //   await prefBox!.clear();
+  //   await prefBox!.close();
+  //   prefBox = await Hive.openBox(SALE_ORDER_BOX);
+  //   await prefBox!.clear();
+  //   await prefBox!.close();
+  // }
+
+  Future<void> deleteTransactionData() async {
+  // Open and clear the "customers" box
+  var customerBox = await Hive.openBox<Customer>(CUSTOMER_BOX);
+  await customerBox.clear();
+  await customerBox.close();
+
+  // Open and clear the "sale_orders" box
+  var saleOrderBox = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+  await saleOrderBox.clear();
+  await saleOrderBox.close();
+}
+
 
   Future<int> incrementOrderNo(String orderId) async {
     prefBox = await Hive.openBox(PREFERENCE_BOX);

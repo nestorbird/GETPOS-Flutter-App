@@ -45,8 +45,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController(text: "");
-    _passCtrl = TextEditingController(text: "");
+    _emailCtrl = TextEditingController(text: "akshay@yopmail.com");
+    _passCtrl = TextEditingController(text: "Qwerty@123");
     _getUrlKey();
 
     // url = instanceUrl;
@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                   passwordTxtBoxSection(context),
                   hightSpacer10,
                   forgotPasswordSection(context),
-                  hightSpacer30,
+                  hightSpacer10,
                   changeInstanceUrlSection(context),
                   hightSpacer15,
                   termAndPolicySection(context),
@@ -135,7 +135,7 @@ class _LoginState extends State<Login> {
 
         if (response.status!) {
           log("$response");
-          //  await HubManagerDetails().getAccountDetails();
+            await HubManagerDetails().getAccountDetails();
           // Start isolate with background processing and pass the receivePort
           bool isSuccess = await useIsolate();
           if (isSuccess) {
