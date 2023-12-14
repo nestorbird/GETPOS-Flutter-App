@@ -5,6 +5,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
+import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/main.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -35,6 +39,7 @@ class LoginLandscape extends StatefulWidget {
 class _LoginLandscapeState extends State<LoginLandscape> {
   late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
   late BuildContext ctx;
+  late String url;
 
   @override
   void initState() {
@@ -42,9 +47,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "";
-    _passCtrl.text = "";
-    _urlCtrl.text = instanceUrl;
+    _emailCtrl.text = "akshay@yopmail.com";
+    _passCtrl.text = "Qwerty@123";
+   // _urlCtrl.text = instanceUrl;
+     _getUrlKey();
 
     // _getAppVersion();
   }
@@ -87,6 +93,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                         hightSpacer20,
                         forgotPasswordSection(),
                         hightSpacer20,
+                         changeInstanceUrlSection(),
+                         hightSpacer20,
                         termAndPolicySection,
                         hightSpacer32,
                         loginBtnWidget(),
@@ -106,17 +114,39 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       Helper.showLoaderDialog(context);
       CommanResponse response = await LoginService.login(email, password, url);
 
-      if (response.status!) {
-        //Adding static data into the database
-        // await addDataIntoDB();
-        if (!mounted) return;
-        Helper.hideLoader(ctx);
-        Get.offAll(() => HomeTablet());
-      } else {
-        if (!mounted) return;
-        Helper.hideLoader(ctx);
-        Helper.showPopup(ctx, response.message!);
-      }
+ if (response.status!) {
+          log("$response");
+            await HubManagerDetails().getAccountDetails();
+          // Start isolate with background processing and pass the receivePort
+
+          // to add the parameter appdocumentary.path
+          bool isSuccess = await useIsolate();
+          if (isSuccess) {
+            // Once the signal is received, navigate to ProductListHome
+           Get.offAll(() => HomeTablet());
+          } else {
+            // ignore: use_build_context_synchronously
+            Helper.showSnackBar(context, "Synchronization failed");
+          }
+        } else {
+          if (!mounted) return;
+          Helper.hideLoader(context);
+          Helper.showPopup(context, response.message!);
+        }
+
+
+      // if (response.status!) {
+      //   //Adding static data into the database
+      //   // await addDataIntoDB();
+      //   useIsolate()
+      //   if (!mounted) return;
+      //   Helper.hideLoader(ctx);
+      //   Get.offAll(() => HomeTablet());
+      // } else {
+      //   if (!mounted) return;
+      //   Helper.hideLoader(ctx);
+      //   Helper.showPopup(ctx, response.message!);
+      // }
     } catch (e) {
       Helper.hideLoader(ctx);
       log('Exception Caught :: $e');
@@ -237,6 +267,61 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         ],
       );
 
+      //CHANGE INSTANCE URL TEXTBOX SECTION
+       Widget changeInstanceUrlSection() => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          InkWell(
+            onTap: () {
+              _emailCtrl.clear();
+              _passCtrl.clear();
+              fetchDataAndNavigate();
+
+              //Navigator.push(context,
+              // MaterialPageRoute(builder: (context) => const ThemeChange()));
+            },
+            child: Padding(
+              padding: rightSpace(),
+              child: Text(
+                CHANGE_INSTANCE_URL_TXT,
+                style: getTextStyle(
+                    color: AppColors.getPrimary(),
+                    fontSize: MEDIUM_MINUS_FONT_SIZE,
+                    fontWeight: FontWeight.normal),
+              ),
+            ),
+          ),
+        ],
+      );
+
+//FETCH MASTER'S AND TRANSACTION
+       Future<void> fetchDataAndNavigate() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the database
+      await DBPreferences().delete();
+      log("Cleared the DB");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+      await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const ThemeChangeTablet()),
+          (route) => route.isFirst);
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
+    }
+  }
+
+
   /// TERM AND CONDITION SECTION
   Widget get termAndPolicySection => Padding(
         padding: horizontalSpace(x: 80),
@@ -305,9 +390,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         width: double.infinity,
         child: ButtonWidget(
           onPressed: () async {
-            await DbInstanceUrl().deleteUrl();
-            String url = "https://${_urlCtrl.text}/api/";
             await login(_emailCtrl.text, _passCtrl.text, url);
+            log('Inside login.dart :$url');
           },
           title: "Log In",
           primaryColor: AppColors.getPrimary(),
@@ -321,5 +405,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   bool isValidInstanceUrl() {
     String url = "https://${_urlCtrl.text}/api/";
     return Helper.isValidUrl(url);
+  }
+
+  _getUrlKey() async {
+    url = await DbInstanceUrl().getUrl();
+    setState(() {});
   }
 }

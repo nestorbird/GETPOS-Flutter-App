@@ -22,7 +22,7 @@ class NetworkConnection extends GetxController {
             ),
           ),
           isDismissible: false,
-          duration: const Duration(days: 1),
+          duration: const Duration(seconds: 5),
           backgroundColor: Colors.red,
           icon: const Icon(
             Icons.wifi_off,

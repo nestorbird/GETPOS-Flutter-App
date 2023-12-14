@@ -61,7 +61,7 @@ class DbTaxes {
         list.add(tax);
       }
     }
-    box.close();
+   
     return list;
   }
 
@@ -71,7 +71,7 @@ class DbTaxes {
     for (Taxation item in list) {
       await box.put(item.id, item);
     }
-    box.close();
+    
     return list;
   }
 }

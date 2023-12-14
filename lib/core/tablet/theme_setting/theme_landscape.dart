@@ -14,6 +14,7 @@ import 'package:nb_posx/core/mobile/login/ui/login.dart';
 import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
 import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
+import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -149,19 +150,20 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
   Widget continueButtonWidget(context) => Center(
         child: ButtonWidget(
           onPressed: () async {
+            
             //to save the Url in DB
-            await DbInstanceUrl().saveUrl(_urlCtrl.text);
-          
-//to save the url in a string
-            String url = "https://${_urlCtrl.text}/api/";
-            if (isValidInstanceUrl(url) == true) {
-              pingPong(_urlCtrl.text);
-              // theme(url, context);
-            } else if (url.isEmpty) {
-              Helper.showPopup(context, "Please Enter Url");
-            } else {
-              Helper.showPopup(context, invalidErrorText);
-            }
+                  await DbInstanceUrl().saveUrl(_urlCtrl.text);
+
+                  String url = await DbInstanceUrl().getUrl();
+                  //   String url = '${_urlCtrl.text}';
+                  url = "https://${_urlCtrl.text}/api/";
+                  if (isValidInstanceUrl(url) == true) {
+                    pingPong(url);
+                  } else if (url.isEmpty) {
+                    Helper.showPopup(context, "Please Enter Url");
+                  } else {
+                    Helper.showPopup(context, invalidErrorText);
+                  }
           },
           title: CONTINUE_TXT,
           primaryColor: AppColors.getPrimary(),
@@ -171,14 +173,20 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         ),
       );
 
-  bool isValidInstanceUrl(String url) {
+ bool isValidInstanceUrl(String url) {
     //String url = "https://${_urlCtrl.text}/api/";
-    return Helper.isValidUrl(url);
+    if (url == "https://${_urlCtrl.text}/api/") {
+      return Helper.isValidUrl(url);
+    } else {
+      url = "https://$url/api/";
+
+      return Helper.isValidUrl(url);
+    }
   }
 
-  Future<void> pingPong(String url) async {
-    String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';
-
+ Future<void> pingPong(String url) async {
+    //  String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';
+    String apiUrl = '${url}method/ping';
     {
       try {
         final response = await http.get(Uri.parse(apiUrl));
@@ -186,14 +194,12 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         if (response.statusCode == 200) {
           log('API Response:');
           log(response.body);
-          
+          //not going inside the api
+          await theme(url);
 
           if (!mounted) return;
           Helper.hideLoader(context);
-          
         } else {
-          
-
           log('API Request failed with status code ${response.statusCode}');
           log('Response body: ${response.body}');
           log('Dbinstance Url:');
@@ -202,18 +208,17 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         // Handle any exceptions during the request
 
         log('Error: $e');
-        Helper.showPopup(context, "Not an active Url");
-        // Helper.hideLoader(context);
       }
     }
   }
 
-  Future<void> theme(String url, BuildContext context) async {
+  Future<void> theme(String url) async {
     try {
       Helper.showLoaderDialog(context);
       //api theme path get and append
       //  String apiUrl = "$BASE_URL$THEME_PATH";
-      String apiUrl = "https://$url/api/$THEME_PATH";
+     
+      String apiUrl = THEME_PATH;
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
       log('$response');
 
@@ -223,11 +228,11 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         log('$response');
         //if (!mounted) return;
         Helper.hideLoader(context);
-        log('$context');
-        (() => Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const Login())));
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => const Login()));
+       
+         // ignore: use_build_context_synchronously
+         await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const LoginLandscape()));
+        
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
@@ -236,9 +241,11 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         //     MaterialPageRoute(builder: (context) => const Login()));
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       Helper.hideLoader(context);
       log('Exception Caught :: $e');
       debugPrintStack();
+      // ignore: use_build_context_synchronously
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
   }

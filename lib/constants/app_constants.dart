@@ -122,6 +122,7 @@ const CHANGE_PASSWORD = 'Change Password';
 const LOGOUT_TITLE = 'Logout';
 const LOGOUT_QUESTION = 'Do you really want to logout?';
 const OFFLINE_ORDER_MSG = 'Please sync your offline order first?';
+const GET_ONLINE_MSG = 'Get your internet connectivity back.';
 
 //SALES HISTORY SCREEN
 const PARKED_ORDER_ID = 'Parked ID';

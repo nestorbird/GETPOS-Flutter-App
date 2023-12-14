@@ -40,6 +40,8 @@ class _ThemeChangeState extends State<ThemeChange> {
   late TextEditingController _urlCtrl;
   String? version;
   AppColors appColors = AppColors();
+   bool isInternetAvailable = false;
+  
   @override
   void initState() {
     super.initState();
@@ -125,11 +127,11 @@ class _ThemeChangeState extends State<ThemeChange> {
                 onPressed: () async {
                   //to save the Url in DB
                   await DbInstanceUrl().saveUrl(_urlCtrl.text);
-
+                  bool isInternetAvailable = await Helper.isNetworkAvailable();
                   String url = await DbInstanceUrl().getUrl();
                   //   String url = '${_urlCtrl.text}';
                   url = "https://${_urlCtrl.text}/api/";
-                  if (isValidInstanceUrl(url) == true) {
+                  if (isValidInstanceUrl(url) == true && isInternetAvailable == true) {
                     pingPong(url);
                   } else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
@@ -164,6 +166,7 @@ class _ThemeChangeState extends State<ThemeChange> {
     {
       try {
         final response = await http.get(Uri.parse(apiUrl));
+        log('Api url for ping pong: $apiUrl');
 
         if (response.statusCode == 200) {
           log('API Response:');
@@ -218,4 +221,5 @@ class _ThemeChangeState extends State<ThemeChange> {
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
   }
+  
 }

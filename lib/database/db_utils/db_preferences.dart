@@ -68,7 +68,7 @@ class DBPreferences {
   // }
 
   Future<void> deleteTransactionData() async {
-  // Open and clear the "customers" box
+ // Open and clear the "customers" box
   var customerBox = await Hive.openBox<Customer>(CUSTOMER_BOX);
   await customerBox.clear();
   await customerBox.close();

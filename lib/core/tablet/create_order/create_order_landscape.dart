@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../../configs/theme_config.dart';
@@ -22,9 +23,12 @@ import '../widget/select_customer_popup.dart';
 import '../widget/title_search_bar.dart';
 import 'cart_widget.dart';
 
+// ignore: must_be_immutable
 class CreateOrderLandscape extends StatefulWidget {
+  ParkOrder? order;
+  
   final RxString selectedView;
-  const CreateOrderLandscape({Key? key, required this.selectedView})
+   CreateOrderLandscape({Key? key,required this.order, required this.selectedView})
       : super(key: key);
 
   @override
@@ -32,6 +36,7 @@ class CreateOrderLandscape extends StatefulWidget {
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
+   ParkOrder? parkOrder;
   late TextEditingController searchCtrl;
   late Size size;
   Customer? customer;
@@ -138,6 +143,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         Padding(
           padding: leftSpace(x: 5),
           child: CartWidget(
+         //   order: parkOrder!,
             customer: customer,
             orderList: items,
             taxes: [],
@@ -414,12 +420,16 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                     width: 50,
                                     fit: BoxFit.fill,
                                   )
-                                : Image.asset(
-                                    BURGAR_IMAGE,
-                                    height: 50,
-                                    width: 50,
-                                    fit: BoxFit.fill,
-                                  ),
+                                :  Image.asset(
+                  NO_IMAGE,
+                  fit: BoxFit.fill,
+                )
+                                // Image.asset(
+                                //     BURGAR_IMAGE,
+                                //     height: 50,
+                                //     width: 50,
+                                //     fit: BoxFit.fill,
+                                //   ),
                           ),
                           Text(
                             categories[index].name,

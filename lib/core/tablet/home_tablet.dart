@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/database/models/park_order.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
 import '../../../../database/models/hub_manager.dart';
 import '../../../../utils/helper.dart';
@@ -18,7 +19,7 @@ class HomeTablet extends StatelessWidget {
   HomeTablet({Key? key}) : super(key: key);
 
   final selectedTab = "Order".obs;
-
+ ParkOrder? parkOrder;
   late Size size;
 
   @override
@@ -57,7 +58,7 @@ class HomeTablet extends StatelessWidget {
         //return const HomeLandscape();
         return CreateOrderLandscape(selectedView: selectedTab);*/
       case "Order":
-        return CreateOrderLandscape(selectedView: selectedTab);
+        return CreateOrderLandscape(selectedView: selectedTab, order:parkOrder );
       /*   case "Product":
         return const ProductsLandscape();*/
       case "Customer":

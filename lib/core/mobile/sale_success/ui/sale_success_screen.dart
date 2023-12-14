@@ -41,12 +41,12 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         //order.save();
 
         DbSaleOrder().createOrder(order).then((value) {
-          debugPrint('order sync and saved to db');
+        log('order sync and saved to db');
           //Helper.showPopup(context, "Order synced and saved locally");
         });
       } else {
         DbSaleOrder().createOrder(widget.placedOrder).then((value) {
-          debugPrint('order saved to db');
+          log('order saved to db');
           Helper.showPopup(context,
               "Order saved locally, and will be synced when you restart the app.");
         });

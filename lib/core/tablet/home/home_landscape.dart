@@ -46,35 +46,38 @@ class HomeLandscapeState extends State<HomeLandscape> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TitleAndSearchBar(
-          title: "Choose Category",
-          onSubmit: (text) {},
-          onTextChanged: (changedtext) {},
-          searchCtrl: searchCtrl,
-          searchHint: "Search products / Category",
-        ),
-        hightSpacer20,
-        getCategoryListWidget(),
-        hightSpacer20,
-        categories.isEmpty
-            ? const Center(
-                child: Text(
-                "No items found",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ))
-            : Expanded(
-                child: ListView.builder(
-                    primary: true,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return getCategoryItemsWidget(categories[index]);
-                    }),
-              ),
-      ],
+    return 
+    SingleChildScrollView  (
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TitleAndSearchBar(
+            title: "Choose Category",
+            onSubmit: (text) {},
+            onTextChanged: (changedtext) {},
+            searchCtrl: searchCtrl,
+            searchHint: "Search products / Category",
+          ),
+          hightSpacer20,
+          getCategoryListWidget(),
+          hightSpacer20,
+          categories.isEmpty
+              ? const Center(
+                  child: Text(
+                  "No items found",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
+              : Expanded(
+                  child: ListView.builder(
+                      primary: true,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        return getCategoryItemsWidget(categories[index]);
+                      }),
+                ),
+        ],
+      ),
     );
   }
 

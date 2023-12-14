@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
-import 'package:nb_posx/core/service/create_order/model/create_sales_order_response.dart';
-import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
-import 'package:nb_posx/database/db_utils/db_customer.dart';
+import 'package:nb_posx/core/service/create_order/api/create_sales_order.dart';
+import 'package:nb_posx/database/db_utils/db_categories.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/models/customer.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../../configs/theme_config.dart';
@@ -40,18 +40,18 @@ class MyAccount extends StatefulWidget {
 
 class _MyAccountState extends State<MyAccount> {
   String? name, email, phone, version;
-
+  bool syncNowActive = true;
+bool isInternetAvailable =false;
   late Uint8List profilePic;
-
+SaleOrder? offlineOrderPlaced;
   @override
   void initState() {
     super.initState();
 
     profilePic = Uint8List.fromList([]);
-
     getManagerName();
-  }
 
+  }
   ///Function to fetch the hub manager account details
   getManagerName() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -168,16 +168,90 @@ class _MyAccountState extends State<MyAccount> {
           hasCancelAction: true);
       if (res != OPTION_CANCEL.toLowerCase()) {
         //check this later
-        await SyncHelper().logoutFlow();
+     //  await SyncHelper().logoutFlow();
 
-        await fetchMasterAndDeleteTransaction();
+      await fetchMasterAndDeleteTransaction();
       }
     } else {
       if (!mounted) return;
-      await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+ bool isInternetAvailable = await Helper.isNetworkAvailable();
+      var res= await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+      if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
+       
+var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+ 
+if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
+   await   _checkForSyncNow();
+
+//    if(syncNowActive && isInternetAvailable ){
+// await SyncHelper().logoutFlow();
+
+//     await fetchMasterAndDeleteTransaction();
+//    }
+} 
+      }
+
+      
       // print("You clicked $res");
     }
   }
+
+
+
+_checkForSyncNow() async {
+ List< SaleOrder> offlineOrders =await DbSaleOrder().getOfflineOrders();
+  syncNowActive = offlineOrders.isNotEmpty;
+
+  if (syncNowActive) {
+    for (var order in offlineOrders) {
+      await _syncOrder(order);
+    }
+  }
+
+  var categories = await DbCategory().getCategories();
+  debugPrint("Category: ${categories.length}");
+  setState(() {});
+}
+
+Future<void> _syncOrder(SaleOrder order) async {
+  try {
+    var response = await CreateOrderService().createOrder(order);
+
+    if (response.status!) {
+      // Order synced successfully
+      DbSaleOrder().createOrder(order); 
+      log('Order synced and deleted from local storage');
+    } else {
+      // Handling synchronization failure
+      print('Order synchronization failed: ${response.message}');
+    }
+  } catch (e) {
+    // Handling exceptions during synchronization
+    print('Error during order synchronization: $e');
+  }
+}
+
+
+
+  // _checkForSyncNow() async {
+  //   var offlineOrders = await DbSaleOrder().getOfflineOrders();
+  //   // debugPrint("OFFLINE ORDERS: ${offlineOrders.length}");
+  //   syncNowActive = offlineOrders.isNotEmpty;
+
+  //    CreateOrderService().createOrder().then((value) {
+     
+
+  //       DbSaleOrder().createOrder(order).then((value) {
+  //       log('order sync and saved to db');
+  //   }
+  //   );
+  //   });
+  //   var categories = await DbCategory().getCategories();
+  //   debugPrint("Category: ${categories.length}");
+  //   setState(() {});
+  
+  
+  // }
 
   Future<void> fetchDataAndNavigate() async {
     // log('Entering fetchDataAndNavigate');
@@ -195,7 +269,7 @@ class _MyAccountState extends State<MyAccount> {
       await Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const ThemeChange(),
+          builder: (context) => const Login(),
         ),
       );
 

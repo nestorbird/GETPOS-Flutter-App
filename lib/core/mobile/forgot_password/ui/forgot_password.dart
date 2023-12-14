@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../network/api_helper/comman_response.dart';

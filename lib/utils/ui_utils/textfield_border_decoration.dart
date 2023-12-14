@@ -17,7 +17,7 @@ BoxDecoration txtFieldBoxShadowDecoration = BoxDecoration(
     border: Border.all(color:const Color(0xFF707070), width: BORDER_WIDTH),
     boxShadow:  [
       BoxShadow(
-        color: AppColors.shadowBorder!,
+        color: AppColors.shadowBorder ?? const Color(0xFFF3F2F5),
         spreadRadius: 1,
         blurRadius: 5,
         offset: const Offset(0, 2),

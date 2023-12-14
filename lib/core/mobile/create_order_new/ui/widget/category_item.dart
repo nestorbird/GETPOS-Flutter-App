@@ -11,7 +11,6 @@ import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 // ignore: must_be_immutable
 class CategoryItem extends StatefulWidget {

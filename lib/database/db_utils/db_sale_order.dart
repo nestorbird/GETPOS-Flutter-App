@@ -22,7 +22,7 @@ class DbSaleOrder {
     if (order.transactionId.isEmpty) {
       await DbHubManager().updateCashBalance(order.orderAmount);
     }
-    await box.close();
+    
     return res;
   }
 
@@ -70,7 +70,7 @@ class DbSaleOrder {
       var product = item as SaleOrder;
       if (product.transactionSynced == false) list.add(product);
     }
-    await box.close();
+   
     return list;
   }
 
@@ -108,7 +108,7 @@ class DbSaleOrder {
 
       await box.put(orderKey, order);
     });
-     box.close();
+    
     return true;
   }
 

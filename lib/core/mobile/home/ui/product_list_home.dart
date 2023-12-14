@@ -8,9 +8,6 @@ import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
-import 'package:nb_posx/database/db_utils/db_constants.dart';
-import 'package:nb_posx/database/db_utils/db_preferences.dart';
-import 'package:nb_posx/main.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -34,6 +31,7 @@ import '../../transaction_history/view/transaction_screen.dart';
 
 class ProductListHome extends StatefulWidget {
   final bool isForNewOrder;
+  
   final ParkOrder? parkedOrder;
   const ProductListHome(
       {super.key, this.isForNewOrder = false, this.parkedOrder});
@@ -160,8 +158,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                               fontWeight: FontWeight.w500,
                                             )),
                                         hightSpacer5,
-                                        Text(
-                                          manager!.name,
+                                        Text( manager != null ?
+                                          manager!.name : "",
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
                                               color: AppColors.secondary),

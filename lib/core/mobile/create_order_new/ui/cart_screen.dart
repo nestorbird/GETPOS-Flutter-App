@@ -63,6 +63,8 @@ class _CartScreenState extends State<CartScreen> {
   int totalItems = 0;
   double? taxPercentage;
   double totalTaxPercentage = 0.0;
+  double grandTotal = 0.0;
+  double? orderAmount;
   late HubManager? hubManager;
   late List<OrderTax>? getTaxesOrderwise;
   late List<OrderTaxTemplate>? getOrderTemplate;
@@ -78,8 +80,8 @@ class _CartScreenState extends State<CartScreen> {
   late String paymentMethod;
   List<CouponCode> couponCodes = [];
   bool isPromoCodeAvailableForUse = false;
-  double? orderAmount;
-  double grandTotal = 0.0;
+  
+  
 
   SaleOrder? saleOrder;
   List<Map<String, dynamic>> taxDetailsList = [];
@@ -989,6 +991,7 @@ class _CartScreenState extends State<CartScreen> {
         });
 
         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+        
       });
       setState(() {});
       log("Total Amount:: $totalAmount");

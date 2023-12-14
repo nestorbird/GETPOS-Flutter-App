@@ -12,6 +12,7 @@ import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
+import 'package:nb_posx/utils/helpers/sync_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -137,7 +138,7 @@ class _LoginState extends State<Login> {
           log("$response");
             await HubManagerDetails().getAccountDetails();
           // Start isolate with background processing and pass the receivePort
-          bool isSuccess = await useIsolate();
+          bool isSuccess = await useIsolate(isUserLoggedIn: isUserLoggedIn);
           if (isSuccess) {
             // Once the signal is received, navigate to ProductListHome
             await Navigator.push(
@@ -269,6 +270,7 @@ class _LoginState extends State<Login> {
             onTap: () {
               _emailCtrl.clear();
               _passCtrl.clear();
+           
               fetchDataAndNavigate();
 
               //Navigator.push(context,
@@ -391,7 +393,9 @@ class _LoginState extends State<Login> {
       //to save the url
       await DbInstanceUrl().saveUrl(url);
       log("Saved Url:$url");
-      // Navigate to a different screen
+// while changing instance 
+        SyncHelper().logoutFlow();
+    
       // ignore: use_build_context_synchronously
       await Navigator.pushAndRemoveUntil(
           context,

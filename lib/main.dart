@@ -2,6 +2,7 @@
 // import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'dart:developer';
 import 'dart:isolate';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,10 @@ import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/configs/local_notification_service.dart';
 import 'package:nb_posx/configs/network_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
+import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
@@ -56,8 +60,9 @@ void main() async {
   //Initializing hive database
   // await Hive.initFlutter();
 
-  //isUserLoggedIn = await DbHubManager().getManager() != null;
+  isUserLoggedIn = await DbHubManager().getManager() != null;
   //isUserLoggedIn = await DBPreferences().getPreference('MANAGER');
+  
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
   await SyncHelper().launchFlow(isUserLoggedIn);
@@ -152,31 +157,32 @@ class TabletApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: isUserLoggedIn ? HomeTablet() : const ThemeChange(),
+      home: isUserLoggedIn ? HomeTablet() : const ThemeChangeTablet(),
     );
   }
 }
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
+    DartPluginRegistrant.ensureInitialized();
   final appDocumentDirectory = await getApplicationDocumentsDirectory();
   NetworkManager.init();
   LocalNotificationService().initNotification();
+ 
   Hive.init(appDocumentDirectory.path);
 
   // //Initializing hive database
   await DBPreferences().openPreferenceBox();
 
   registerHiveTypeAdapters();
-
-  isUserLoggedIn = await DBPreferences().getPreference(SuccessKey) == 1;
+  getColors();
 
   if (isUserLoggedIn) {
     useIsolate(isUserLoggedIn: isUserLoggedIn);
   }
 }
 
-Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
+Future<bool> useIsolate({ isUserLoggedIn}) async {
   var rootToken = RootIsolateToken.instance!;
   //WidgetsFlutterBinding.ensureInitialized();
 
@@ -234,4 +240,37 @@ Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args) async {
   } catch (e) {
     log(e.toString());
   }
+}
+
+
+  getColors()async{
+int primaryColor =
+            int.tryParse(await DBPreferences().getPreference(PRIMARY_COLOR)) ?? 0xFFDC1E44;
+
+
+        int secondaryColor =
+            int.tryParse(await DBPreferences().getPreference(SECONDARY_COLOR)) ?? 0xFF62B146;
+
+        int accentColor =
+            int.tryParse(await DBPreferences().getPreference(ACCENT_COLOR)) ?? 0xFF707070;
+        int textandCancelIcon =
+            int.tryParse(await DBPreferences().getPreference(TEXT_AND_CANCELICON)) ?? 0xFF000000;
+        int shadowBorder =
+            int.tryParse(await DBPreferences().getPreference(SHADOW_BORDER)) ?? 0xFFC7C5C5;
+        int hintText = int.tryParse(await DBPreferences().getPreference(HINT_TEXT)) ?? 0xFFF3F2F5;
+        int fontWhiteColor =
+            int.tryParse(await DBPreferences().getPreference(FONT_WHITE_COLOR)) ?? 0xFFFFFFFF;
+        int parkOrderButton =
+            int.tryParse(await DBPreferences().getPreference(PARK_ORDER_BUTTON)) ?? 0xFF4A4A4A;
+        int active = int.tryParse(await DBPreferences().getPreference(ACTIVE)) ?? 0xFFFEF9FA;
+
+        AppColors.primary = Color(primaryColor);
+        AppColors.secondary = Color(secondaryColor);
+        AppColors.asset = Color(accentColor);
+        AppColors.textandCancelIcon = Color(textandCancelIcon);
+        AppColors.shadowBorder = Color(shadowBorder);
+        AppColors.hintText = Color(hintText);
+        AppColors.fontWhiteColor = Color(fontWhiteColor);
+        AppColors.parkOrderButton = Color(parkOrderButton);
+        AppColors.active = Color(active);
 }

@@ -11,7 +11,7 @@ class DbCustomer {
     for (Customer c in list) {
       await box.put(c.id, c);
     }
-    box.close();
+   
   }
 
   Future<List<Customer>> getCustomers() async {
@@ -85,7 +85,7 @@ class DbCustomer {
   Future<void> updateCustomer(Customer customer) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
     box.put(customer.id, customer);
-    box.close();
+   
   }
 
   // Future<int> deleteWardCustomer(String wardId) async {
