@@ -24,7 +24,8 @@ class SyncHelper {
   ///
   Future<bool> loginFlow() async {
     await getDetails();
-    GetPreviousOrder().getOrdersOnLogin();
+    await GetPreviousOrder().getOrdersOnLogin();
+   
     return true;
   }
 
@@ -75,6 +76,8 @@ class SyncHelper {
     }
 
     List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
+   //List<SaleOrder> offlineOrders = await DbSaleOrder().getAllOrders();
+
     if (offlineOrders.isNotEmpty) {
       // ignore: unused_local_variable
       var result = await Future.forEach(offlineOrders, (SaleOrder order) async {

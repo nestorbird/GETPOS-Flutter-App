@@ -132,7 +132,7 @@ class _ThemeChangeState extends State<ThemeChange> {
                   //   String url = '${_urlCtrl.text}';
                   url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true && isInternetAvailable == true) {
-                    pingPong(url);
+                    await pingPong(url);
                   } else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
                   } else {

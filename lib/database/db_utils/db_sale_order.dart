@@ -62,8 +62,8 @@ class DbSaleOrder {
 
   Future<List<SaleOrder>> getOfflineOrders() async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
-
-    List<SaleOrder> list = [];
+ List<SaleOrder> list= [];
+    
     // print("TOTAL ORDERS: ${box.keys.length}");
     for (var key in box.keys) {
       var item = await box.get(key);
@@ -73,6 +73,7 @@ class DbSaleOrder {
    
     return list;
   }
+  
 
   Future<double> getOfflineOrderCashBalance() async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
@@ -91,6 +92,23 @@ class DbSaleOrder {
     await box.close();
     return cashBalance;
   }
+
+// //to fetch both offline and online orders
+// Future<List<SaleOrder>> getAllOrders() async {
+//   List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
+//   List<SaleOrder> onlineOrders = await DbSaleOrder().getOrders();
+
+//   // Concatenate the lists, giving priority to offline orders
+//   List<SaleOrder> list = List<SaleOrder>.empty(growable: true);
+//   list.addAll(offlineOrders);
+//   list.addAll(onlineOrders);
+
+//   return list;
+// }
+
+
+
+
 
   Future<String> saveOrder(SaleOrder order) async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);

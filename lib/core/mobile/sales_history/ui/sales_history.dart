@@ -138,7 +138,9 @@ class _SalesHistoryState extends State<SalesHistory> {
 
   ///Function to fetch all the orders from db.
   Future<void> getSales() async {
+    //commented
     orderFromLocalDB = await DbSaleOrder().getOrders();
+   // orderFromLocalDB = await DbSaleOrder().getAllOrders();
 
     offlineOrders = orderFromLocalDB.reversed.toList();
 

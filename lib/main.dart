@@ -164,12 +164,13 @@ class TabletApp extends StatelessWidget {
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
-    DartPluginRegistrant.ensureInitialized();
-  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+    LocalNotificationService().initNotification();
+ final appDocumentDirectory = await getApplicationDocumentsDirectory();
+ Hive.init(appDocumentDirectory.path);
   NetworkManager.init();
-  LocalNotificationService().initNotification();
  
-  Hive.init(appDocumentDirectory.path);
+ 
+  
 
   // //Initializing hive database
   await DBPreferences().openPreferenceBox();
@@ -182,10 +183,14 @@ Future<void> init() async {
   }
 }
 
-Future<bool> useIsolate({ isUserLoggedIn}) async {
+Future<bool> useIsolate({ bool isUserLoggedIn = false}) async {
   var rootToken = RootIsolateToken.instance!;
   //WidgetsFlutterBinding.ensureInitialized();
+  //final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
+// Hive.init(appDocumentDirectory.path);
+  
+DartPluginRegistrant.ensureInitialized();  
   if (!isUserLoggedIn) {
     LocalNotificationService().showNotification(
         id: 0,
@@ -195,7 +200,7 @@ Future<bool> useIsolate({ isUserLoggedIn}) async {
   final ReceivePort receivePort = ReceivePort();
   try {
     var isolate = await Isolate.spawn(runHeavyTaskWithIsolate,
-        [receivePort.sendPort, rootToken, isUserLoggedIn]);
+        [receivePort.sendPort, rootToken, isUserLoggedIn,]);
   } on Object {
     debugPrint('Isolate Failed');
     receivePort.close();
@@ -216,12 +221,13 @@ Future<bool> useIsolate({ isUserLoggedIn}) async {
   }
 }
 
-Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args) async {
-  //
+Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args,) async {
+  
   BackgroundIsolateBinaryMessenger.ensureInitialized(args[1]);
-  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+ final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
-  Hive.init(appDocumentDirectory.path);
+Hive.init(appDocumentDirectory.path);
+ DartPluginRegistrant.ensureInitialized();
   registerHiveTypeAdapters();
 
   try {

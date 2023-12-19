@@ -12,6 +12,7 @@ import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/models/customer.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
+import 'package:nb_posx/main.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../../../../../configs/theme_config.dart';
@@ -160,7 +161,8 @@ SaleOrder? offlineOrderPlaced;
   }
 
   Future<void> handleLogout() async {
-    var offlineOrders = await DbSaleOrder().getOfflineOrders();
+   var offlineOrders = await DbSaleOrder().getOfflineOrders();
+  // var offlineOrders = await DbSaleOrder().getOrders();
     if (offlineOrders.isEmpty) {
       if (!mounted) return;
       var res = await Helper.showConfirmationPopup(
@@ -168,7 +170,7 @@ SaleOrder? offlineOrderPlaced;
           hasCancelAction: true);
       if (res != OPTION_CANCEL.toLowerCase()) {
         //check this later
-     //  await SyncHelper().logoutFlow();
+      // await SyncHelper().logoutFlow();
 
       await fetchMasterAndDeleteTransaction();
       }
@@ -181,77 +183,56 @@ SaleOrder? offlineOrderPlaced;
 var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
  
 if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
-   await   _checkForSyncNow();
-
-//    if(syncNowActive && isInternetAvailable ){
-// await SyncHelper().logoutFlow();
-
-//     await fetchMasterAndDeleteTransaction();
-//    }
+  // await   _checkForSyncNow();
+ await SyncHelper().syncNowFlow();
+  await DbSaleOrder().modifySevenDaysOrdersFromToday();
 } 
       }
-
-      
-      // print("You clicked $res");
     }
   }
 
 
 
-_checkForSyncNow() async {
- List< SaleOrder> offlineOrders =await DbSaleOrder().getOfflineOrders();
-  syncNowActive = offlineOrders.isNotEmpty;
+// _checkForSyncNow() async {
+//  List< SaleOrder> offlineOrders =await DbSaleOrder().getOfflineOrders();
+//   syncNowActive = offlineOrders.isNotEmpty;
 
-  if (syncNowActive) {
-    for (var order in offlineOrders) {
-      await _syncOrder(order);
-    }
-  }
+//   if (syncNowActive) {
+//     for (var order in offlineOrders) {
+//       await _syncOrder(order);
+//     }
+//     await SyncHelper().syncNowFlow();
+//   }
 
-  var categories = await DbCategory().getCategories();
-  debugPrint("Category: ${categories.length}");
-  setState(() {});
-}
+//   var categories = await DbCategory().getCategories();
+//   debugPrint("Category: ${categories.length}");
+//   setState(() {});
+// }
 
-Future<void> _syncOrder(SaleOrder order) async {
-  try {
-    var response = await CreateOrderService().createOrder(order);
+// Future<void> _syncOrder(SaleOrder order) async {
+//   try {
+//     var response = await CreateOrderService().createOrder(order);
 
-    if (response.status!) {
-      // Order synced successfully
-      DbSaleOrder().createOrder(order); 
-      log('Order synced and deleted from local storage');
-    } else {
-      // Handling synchronization failure
-      print('Order synchronization failed: ${response.message}');
-    }
-  } catch (e) {
-    // Handling exceptions during synchronization
-    print('Error during order synchronization: $e');
-  }
-}
+//     if (response.status!) {
+//       // Order synced successfully
+//       DbSaleOrder().createOrder(order); 
+//       log('Order synced and deleted from local storage');
+//       //If order synced successfully , delete transaction data
+//      await fetchMasterAndDeleteTransaction();
+
+//     } else {
+//       // Handling synchronization failure
+//       print('Order synchronization failed: ${response.message}');
+//     }
+//   } catch (e) {
+//     // Handling exceptions during synchronization
+//     print('Error during order synchronization: $e');
+//   }
+// }
 
 
 
-  // _checkForSyncNow() async {
-  //   var offlineOrders = await DbSaleOrder().getOfflineOrders();
-  //   // debugPrint("OFFLINE ORDERS: ${offlineOrders.length}");
-  //   syncNowActive = offlineOrders.isNotEmpty;
-
-  //    CreateOrderService().createOrder().then((value) {
-     
-
-  //       DbSaleOrder().createOrder(order).then((value) {
-  //       log('order sync and saved to db');
-  //   }
-  //   );
-  //   });
-  //   var categories = await DbCategory().getCategories();
-  //   debugPrint("Category: ${categories.length}");
-  //   setState(() {});
-  
-  
-  // }
+ 
 
   Future<void> fetchDataAndNavigate() async {
     // log('Entering fetchDataAndNavigate');

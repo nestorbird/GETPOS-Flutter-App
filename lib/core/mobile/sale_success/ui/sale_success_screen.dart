@@ -32,7 +32,7 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
   void initState() {
     super.initState();
     log("${widget.placedOrder}");
-    CreateOrderService().createOrder(widget.placedOrder).then((value) {
+  CreateOrderService().createOrder(widget.placedOrder).then((value) {
       if (value.status!) {
         // print("create order response::::YYYYY");
         SaleOrder order = widget.placedOrder;
