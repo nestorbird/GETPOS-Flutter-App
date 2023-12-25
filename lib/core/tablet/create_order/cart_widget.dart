@@ -250,7 +250,7 @@ Widget _totalTaxSection(
                   color: CUSTOM_TEXT_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
-            const SizedBox(width: 85),
+            const SizedBox(width: 75),
           
             Text(
               amount,
@@ -489,7 +489,9 @@ Widget _totalTaxSection(
                                         if (item.orderedQuantity > 1) {
                                           item.orderedQuantity =
                                               item.orderedQuantity - 1;
-                                              _updateOrderPriceAndSave();
+                                            //  _updateOrderPriceAndSave();
+                                              _configureTaxAndTotal(widget.orderList);
+
                                         } else {
                                           widget.orderList.remove(item);
                                         }
@@ -517,7 +519,8 @@ Widget _totalTaxSection(
                                       onTap: () {setState(() {
                                         item.orderedQuantity =
                                             item.orderedQuantity + 1;
-                                             _updateOrderPriceAndSave();
+                                           // _updateOrderPriceAndSave();
+                                          _configureTaxAndTotal(widget.orderList);
                                        // setState(() {});
 
                                       });},
@@ -995,7 +998,7 @@ createSale(String paymentMethod) async {
 
           log('Tax Amount itemwise : $taxAmount');
           totalTaxAmount += taxAmount;
-
+setState(() {});
           log('totalAmount itemwise : $totalAmount');
           taxation.add(Taxation(
             id: '',
@@ -1017,7 +1020,7 @@ createSale(String paymentMethod) async {
         DbTaxes().saveItemWiseTax(orderId, taxation);
         DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
-      setState(() {});
+    //  setState(() {});
       log("Total Amount:: $totalAmount");
     }
 
@@ -1059,7 +1062,7 @@ createSale(String paymentMethod) async {
 
         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
       });
-      setState(() {});
+    //  setState(() {});
       log("Total Amount:: $totalAmount");
     }
 
@@ -1071,8 +1074,9 @@ createSale(String paymentMethod) async {
               'tax_amount': entry.value,
             })
         .toList();
-    setState(() {});
+    //setState(() {});
     grandTotal = totalAmount + totalTaxAmount;
+    setState(() {});
     log('Grand Total:: $grandTotal');
   }
 
