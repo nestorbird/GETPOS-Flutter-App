@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -19,6 +20,7 @@ import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
+import 'package:nb_posx/widgets/product_shimmer_widget.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -80,11 +82,15 @@ class _CartWidgetState extends State<CartWidget> {
  List<Map<String, dynamic>> taxDetailsList = [];
   @override
   void initState() {
+   
+  
     isOrderProcessed = false;
     selectedCashMode = true;
     selectedCustomer = widget.customer;
 
     super.initState();
+  
+     _callCalculations();
   }
 
   @override
@@ -96,19 +102,20 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   Widget build(BuildContext context) {
- //   _configureTaxAndTotal(widget.orderList);
-
-    return Container(
+  
+ return Container(
       padding: paddingXY(x: 10, y: 10),
+      //margin:   paddingXY( x: 0,),
       color: AppColors.fontWhiteColor,
       width: 300,
       height: Get.height,
       child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _selectedCustomerSection(),
           const SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -133,66 +140,77 @@ class _CartWidgetState extends State<CartWidget> {
           const Divider(color: Colors.black38),
           _cartItemListSection(),
         //  widget.orderList.isEmpty ? const SizedBox() : _promoCodeSection(),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : const SizedBox(height: 16),
+
+          // widget.orderList.isEmpty
+          //     ? const SizedBox()
+          //     : const SizedBox(height: 16),
               widget.orderList.isEmpty
               ?  const SizedBox()
               :    Padding(
-          padding: paddingXY(x: 16, y: 16),
+          padding: paddingXY(x: 10, y: 6),
           child: Text(
             "Bill",
             style: getTextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: MEDIUM_PLUS_FONT_SIZE,
-                color: AppColors.getTextandCancelIcon()),
+                color: const Color(0xFF3F3E4A),),
           ),
         ),
+
+       //to fetch list of items added in cart
+_prodListSection(),
+        //Item total
+        widget.orderList.isEmpty
+              ? const SizedBox()
+              : _subtotalSection("Item Total",
+                  "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+// Subtotal is the amount after deducting discount from the item total
           widget.orderList.isEmpty
               ? const SizedBox()
               : _subtotalSection("Subtotal",
                   "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _subtotalSection("Discount", "- $appCurrency 0.00",
-                  isDiscount: true),
+          // widget.orderList.isEmpty
+          //     ? const SizedBox()
+          //     : _subtotalSection("Discount", "- $appCurrency 0.00",
+          //         isDiscount: true),
 
             widget.orderList.isEmpty
             ? const SizedBox()
             :      Padding(
-            padding: paddingXY(x: 0, y: 0),
-            child: ExpansionTile(
-              title: _totalTaxSection(
-                'Total Tax Applied',
-                '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
+              padding: paddingXY(x: 0, y: 0),
+              child: ExpansionTile(
+                tilePadding: const EdgeInsets.only(left: 10, right: 10),
+                title: _totalTaxSection(
+                  'Total Tax',
+                  '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
+                ),
+                childrenPadding: const EdgeInsets.only(left: 4),
+                children: taxDetailsList.isEmpty
+                    ? [] // Returns an empty list if taxDetailsList is empty
+                    : taxDetailsList.map((taxDetails) {
+                        return ListTile(
+                          title: Text(
+                            ' ${taxDetails['tax_type']}',
+                            style: getTextStyle(
+                                fontSize: MEDIUM_MINUS_FONT_SIZE,
+                                color: CUSTOM_TEXT_COLOR,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
+                          trailing: Text(
+                            ' ${taxDetails['tax_amount']}',
+                            style: getTextStyle(
+                                fontSize: MEDIUM_MINUS_FONT_SIZE,
+                                color: CUSTOM_TEXT_COLOR,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        );
+                      }).toList(),
+                onExpansionChanged: (bool expanded) {
+                  setState(() {});
+                },
               ),
-              childrenPadding: const EdgeInsets.only(left: 4),
-              children: taxDetailsList.isEmpty
-                  ? [] // Returns an empty list if taxDetailsList is empty
-                  : taxDetailsList.map((taxDetails) {
-                      return ListTile(
-                        title: Text(
-                          ' ${taxDetails['tax_type']}',
-                          style: getTextStyle(
-                              fontSize: MEDIUM_MINUS_FONT_SIZE,
-                              color: CUSTOM_TEXT_COLOR,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
-                        trailing: Text(
-                          ' ${taxDetails['tax_amount']}',
-                          style: getTextStyle(
-                              fontSize: MEDIUM_MINUS_FONT_SIZE,
-                              color: CUSTOM_TEXT_COLOR,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      );
-                    }).toList(),
-              onExpansionChanged: (bool expanded) {
-                setState(() {});
-              },
             ),
-          ),
           // widget.orderList.isEmpty
           //     ? const SizedBox()
           //     : _subtotalSection("Tax ($taxPercentage%)",
@@ -204,13 +222,15 @@ class _CartWidgetState extends State<CartWidget> {
           widget.orderList.isEmpty
               ? const SizedBox()
               : _totalSection(
-                  "Total", "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
+                  "Grand Total", "$appCurrency ${ grandTotal.toStringAsFixed(2)}"),
           widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
           hightSpacer10,
           _showActionButton()
         ],
       ),
+      
     );
+    
   }
 
 Widget _totalTaxSection(
@@ -218,9 +238,10 @@ Widget _totalTaxSection(
     amount,
   ) =>
       Padding(
-        padding: const EdgeInsets.only(top: 6, left: 0, right: 0),
+        padding: const EdgeInsets.only(top: 6,left: 0, right: 0 ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
+         crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
@@ -229,6 +250,7 @@ Widget _totalTaxSection(
                   color: CUSTOM_TEXT_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
+            const SizedBox(width: 85),
           
             Text(
               amount,
@@ -324,7 +346,7 @@ Widget _totalTaxSection(
       child: Container(
         width: double.infinity,
         padding: paddingXY(y: 10),
-        margin: paddingXY(y: 10, x: 5),
+        margin: paddingXY(y: 10, x: 0),
         decoration: BoxDecoration(
             color: widget.orderList.isNotEmpty
                 ? AppColors.getPrimary()
@@ -366,7 +388,7 @@ Widget _totalTaxSection(
     return Container(
       width: double.infinity,
       // height: 100,
-      margin: const EdgeInsets.only(bottom: 8, top: 15),
+      margin: const EdgeInsets.only(bottom: 8, top: 15, left: 10, right: 10 ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -411,7 +433,7 @@ Widget _totalTaxSection(
                           });
                         },
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                          padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
                           child: SvgPicture.asset(
                             DELETE_IMAGE,
                             width: 16,
@@ -463,14 +485,16 @@ Widget _totalTaxSection(
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
                                   InkWell(
-                                      onTap: () {
+                                      onTap: () {setState(() {
                                         if (item.orderedQuantity > 1) {
                                           item.orderedQuantity =
                                               item.orderedQuantity - 1;
+                                              _updateOrderPriceAndSave();
                                         } else {
                                           widget.orderList.remove(item);
                                         }
-                                        setState(() {});
+                                        });
+                                    //    setState(() {});
                                       },
                                       child: const Icon(
                                         Icons.remove,
@@ -490,11 +514,13 @@ Widget _totalTaxSection(
                                       )),
                                   greySizedBox,
                                   InkWell(
-                                      onTap: () {
+                                      onTap: () {setState(() {
                                         item.orderedQuantity =
                                             item.orderedQuantity + 1;
-                                        setState(() {});
-                                      },
+                                             _updateOrderPriceAndSave();
+                                       // setState(() {});
+
+                                      });},
                                       child: const Icon(
                                         Icons.add,
                                         size: 18,
@@ -525,6 +551,87 @@ Widget _totalTaxSection(
     }
     return variants;
   }
+
+Widget _prodListSection(){
+  return Padding(
+          padding: paddingXY(x: 10, y: 10),
+          child: ListView.builder(
+              shrinkWrap: true,
+              primary: false,
+              itemCount: widget.orderList.isEmpty ? 10 : widget.orderList.length,
+              itemBuilder: (context, position) {
+                if (widget.orderList.isEmpty) {
+                  return Container();
+                } else {
+                  return InkWell(
+                    onTap: () {
+                       //]_openItemDetailDialog(context, prodList[position]);
+                    },
+                    child: Padding(
+                      padding: paddingXY(x: 0, y: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                       
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            
+                            children: [
+                              SizedBox(
+                                height: 20,
+                                width: 120,
+                                child: Text(
+                                  widget.orderList[position].name,
+                                  style: getTextStyle(
+                                    fontSize: SMALL_PLUS_FONT_SIZE,
+                                    color:  const Color(0xFF3F3E4A),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text("x"),
+                              const SizedBox(width: 20),
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 212, 228, 241),
+                                    border: Border.all(
+                                        color: Colors.green, width: 2.0),
+                                    borderRadius: BorderRadius.circular(2.0)),
+                                width: Checkbox.width,
+                                height: 21.0,
+                                child: Text(
+                                    "${widget.orderList[position].orderedQuantity.toInt()}",
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                    ),
+                                    textAlign: TextAlign.center),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            '$appCurrency ${widget.orderList[position].price.toStringAsFixed(2)}',
+                            style: getTextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: MEDIUM_FONT_SIZE,
+                              color: CUSTOM_TEXT_COLOR,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+           );
+
+                  // return ListTile(title: Text(prodList[position].name));
+                }
+              }),
+        );
+}
 
   Widget _promoCodeSection() {
     return Container(
@@ -574,26 +681,28 @@ Widget _totalTaxSection(
   }
 
   Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
-        padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
+        padding: const EdgeInsets.only(top: 3, left: 10, right: 10, bottom: 3 ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               title,
               style: getTextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: isDiscount
-                      ? AppColors.getSecondary()
-                      : AppColors.getTextandCancelIcon(),
+                  fontWeight: FontWeight.w600,
+                  color:  const Color(0xFF3F3E4A),
+                  // isDiscount
+                  //     ? AppColors.getSecondary()
+                  //     : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount
-                      ? AppColors.getSecondary()
-                      : AppColors.getTextandCancelIcon(),
+                  color:  const Color(0xFF3F3E4A),
+                  // isDiscount
+                  //     ? AppColors.getSecondary()
+                  //     : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],
@@ -601,7 +710,7 @@ Widget _totalTaxSection(
       );
 
   Widget _totalSection(title, amount) => Padding(
-        padding: const EdgeInsets.only(top: 6, left: 8, right: 8),
+        padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -609,7 +718,8 @@ Widget _totalTaxSection(
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w700,
-                  color: AppColors.getTextandCancelIcon(),
+                  color: const Color(0xFF3F3E4A),
+                  // AppColors.getTextandCancelIcon(),
                   fontSize: LARGE_MINUS_FONT_SIZE),
             ),
             Text(
@@ -629,6 +739,7 @@ Widget _totalTaxSection(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _paymentOption(PAYMENT_CASH_ICON, "Cash", selectedCashMode),
+          const SizedBox(width: 15),
           _paymentOption(PAYMENT_CARD_ICON, "Card", !selectedCashMode),
         ],
       ),
@@ -658,7 +769,7 @@ Widget _totalTaxSection(
             widthSpacer(10),
             Text(
               title,
-              style: getTextStyle(fontSize: MEDIUM_FONT_SIZE),
+              style: getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE, fontWeight:  FontWeight.w700,),
             )
           ],
         ),
@@ -834,6 +945,7 @@ createSale(String paymentMethod) async {
       _calculateOrderAmount();
       DbParkedOrder().saveOrder(currentCart!);
       Helper.activeParkedOrder = null;
+     
     }
   }
 
@@ -960,7 +1072,7 @@ createSale(String paymentMethod) async {
             })
         .toList();
     setState(() {});
-    grandTotal = totalAmount! + totalTaxAmount;
+    grandTotal = totalAmount + totalTaxAmount;
     log('Grand Total:: $grandTotal');
   }
 
@@ -972,7 +1084,15 @@ createSale(String paymentMethod) async {
     log('orderAmount after deleting:: $orderAmount');
 
     _configureTaxAndTotal(widget.order!.items);
-    // calculateItemWiseTax(taxDetailsList,subTotalAmount);
+    // ca
+    // lculateItemWiseTax(taxDetailsList,subTotalAmount);
+  }
+
+  Future<void>_callCalculations() async{
+     await _configureTaxAndTotal(widget.orderList);
+     setState(() {
+       
+     });
   }
 
 }

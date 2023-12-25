@@ -39,12 +39,16 @@ class _ItemOptionsState extends State<ItemOptions> {
     } else {
       itemTotal = item.price * widget.orderItem.orderedQuantity;
     }
+    setState(() {
+      
+    });
   }
 
   @override
   void initState() {
     super.initState();
     _calculateItemPrice();
+    
   }
 
   @override
@@ -82,6 +86,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                           widget.orderItem.orderedQuantity =
                               widget.orderItem.orderedQuantity + 1;
                           _calculateItemPrice();
+                        
                           // _selectedCustomerSection();
                           
                         }
@@ -288,4 +293,6 @@ class _ItemOptionsState extends State<ItemOptions> {
       setState(() {});
     }
   }
+ 
+
 }

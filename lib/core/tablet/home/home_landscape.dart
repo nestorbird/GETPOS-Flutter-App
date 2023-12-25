@@ -36,6 +36,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
     searchCtrl = TextEditingController();
     super.initState();
     getProducts();
+    
   }
 
   @override

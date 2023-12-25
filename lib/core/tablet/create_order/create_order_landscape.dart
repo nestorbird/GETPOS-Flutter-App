@@ -146,7 +146,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
          //   order: parkOrder!,
             customer: customer,
             orderList: items,
-            taxes: [],
+            taxes: const [],
             onHome: () {
               widget.selectedView.value = "Home";
               items.clear();

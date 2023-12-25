@@ -184,8 +184,18 @@ var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK
  
 if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
   // await   _checkForSyncNow();
- await SyncHelper().syncNowFlow();
+ var response = await SyncHelper().syncNowFlow();
+ if(response == true) {
+  // ignore: use_build_context_synchronously
+  await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Login(),
+        ),
+      );
+ }
   await DbSaleOrder().modifySevenDaysOrdersFromToday();
+
 } 
       }
     }
