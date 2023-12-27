@@ -87,10 +87,17 @@ class _CartWidgetState extends State<CartWidget> {
     isOrderProcessed = false;
     selectedCashMode = true;
     selectedCustomer = widget.customer;
-
+ //totalItems = widget.order!.items.length;
     super.initState();
   
      _callCalculations();
+  }
+
+  @override
+  void didUpdateWidget(covariant CartWidget oldWidget) {
+    // TODO: implement didUpdateWidget
+    _callCalculations();
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -102,6 +109,10 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   Widget build(BuildContext context) {
+    //    if (widget.orderList.isNotEmpty) {
+    //   _configureTaxAndTotal(widget.orderList);
+      
+    // }
   
  return Container(
       padding: paddingXY(x: 10, y: 10),
@@ -966,7 +977,7 @@ createSale(String paymentMethod) async {
     Map<String, double> taxAmountMap = {};
 
     for (OrderItem item in items) {
-      quantity = item.orderedQuantity;
+      quantity = item.orderedQuantity ;
       log("Quantity Ordered : $quantity");
       subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
@@ -998,7 +1009,7 @@ createSale(String paymentMethod) async {
 
           log('Tax Amount itemwise : $taxAmount');
           totalTaxAmount += taxAmount;
-setState(() {});
+
           log('totalAmount itemwise : $totalAmount');
           taxation.add(Taxation(
             id: '',
@@ -1020,7 +1031,7 @@ setState(() {});
         DbTaxes().saveItemWiseTax(orderId, taxation);
         DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
-    //  setState(() {});
+   //  setState(() {});
       log("Total Amount:: $totalAmount");
     }
 
@@ -1037,11 +1048,13 @@ setState(() {});
         List<OrderTaxes> taxesData = [];
 
         message.tax.forEach((tax) async {
-          double taxAmount = totalAmount! * tax.taxRate / 100;
+          double taxAmount = totalAmount * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           taxTypeApplied = tax.taxType;
-
+// setState(() {
+  
+// });
           log("Total Tax Amount orderwise : $totalTaxAmount");
           log('Total Amount Orderwise:: $totalAmount');
           taxesData.add(OrderTaxes(
@@ -1062,7 +1075,7 @@ setState(() {});
 
         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
       });
-    //  setState(() {});
+      setState(() {});
       log("Total Amount:: $totalAmount");
     }
 
@@ -1074,10 +1087,11 @@ setState(() {});
               'tax_amount': entry.value,
             })
         .toList();
-    //setState(() {});
+    
     grandTotal = totalAmount + totalTaxAmount;
     setState(() {});
     log('Grand Total:: $grandTotal');
+    // setState(() {});
   }
 
   void _updateOrderPriceAndSave() {
@@ -1088,15 +1102,12 @@ setState(() {});
     log('orderAmount after deleting:: $orderAmount');
 
     _configureTaxAndTotal(widget.order!.items);
-    // ca
+   
     // lculateItemWiseTax(taxDetailsList,subTotalAmount);
   }
 
   Future<void>_callCalculations() async{
      await _configureTaxAndTotal(widget.orderList);
-     setState(() {
-       
-     });
   }
 
 }

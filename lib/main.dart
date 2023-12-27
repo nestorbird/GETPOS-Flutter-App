@@ -141,8 +141,10 @@ class MobileApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+     
       home: const SplashScreen(),
     );
+    
   }
 }
 
@@ -168,10 +170,6 @@ Future<void> init() async {
  final appDocumentDirectory = await getApplicationDocumentsDirectory();
  Hive.init(appDocumentDirectory.path);
   NetworkManager.init();
- 
- 
-  
-
   // //Initializing hive database
   await DBPreferences().openPreferenceBox();
 
@@ -236,8 +234,10 @@ Hive.init(appDocumentDirectory.path);
     log("Args :: ${args[2]}");
     log("Isolate started");
     if (args[2]) {
+        debugPrint("inside launch flow");
       await SyncHelper().launchFlow(args[2]);
     } else {
+        debugPrint("inside login flow");
       await SyncHelper().loginFlow();
     }
 

@@ -8,6 +8,7 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/create_sales_order.dart';
 import 'package:nb_posx/database/db_utils/db_categories.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/models/customer.dart';
@@ -184,8 +185,12 @@ var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK
  
 if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
   // await   _checkForSyncNow();
+ //for testing only : await fetchDataAndNavigate();
+  // await fetchMasterAndDeleteTransaction();
  var response = await SyncHelper().syncNowFlow();
+ 
  if(response == true) {
+  
   // ignore: use_build_context_synchronously
   await Navigator.pushReplacement(
         context,
@@ -291,9 +296,9 @@ if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
       // Clear the transactional data
-     await DBPreferences().deleteTransactionData;
-      // await DbCustomer().deleteCustomer(DeleteCustomers);
-      // await DbSaleOrder().delete();
+    // await DBPreferences().deleteTransactionData;
+       await DbCustomer().deleteCustomer(DeleteCustomers);
+       await DbSaleOrder().delete();
       log("Cleared the transactional data");
       //to save the url
       await DbInstanceUrl().saveUrl(url);

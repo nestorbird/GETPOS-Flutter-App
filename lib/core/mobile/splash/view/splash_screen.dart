@@ -23,6 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    debugPrint("inside splash screen");
+    debugPrint("is User logged in :$isUserLoggedIn");
     Timer(
         const Duration(seconds: 3),
         (() => Navigator.pushReplacement(

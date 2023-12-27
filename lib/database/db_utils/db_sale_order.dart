@@ -60,20 +60,36 @@ class DbSaleOrder {
     return list;
   }
 
-  Future<List<SaleOrder>> getOfflineOrders() async {
-    box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
- List<SaleOrder> list= [];
+//   Future<List<SaleOrder>> getOfflineOrders() async {
+//     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+//  List<SaleOrder> list= [];
     
-    // print("TOTAL ORDERS: ${box.keys.length}");
-    for (var key in box.keys) {
-      var item = await box.get(key);
-      var product = item as SaleOrder;
-      if (product.transactionSynced == false) list.add(product);
-    }
+//     // print("TOTAL ORDERS: ${box.keys.length}");
+//     for (var key in box.keys) {
+//       var item = await box.get(key);
+//       var product = item as SaleOrder;
+//       if (product.transactionSynced == false) list.add(product);
+//     }
    
-    return list;
-  }
+//     return list;
+//   }
   
+  Future<List<SaleOrder>> getOfflineOrders() async {
+  box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+  List<SaleOrder> list = [];
+    
+  for (var key in box.keys) {
+    var item = await box.get(key);
+    var product = item as SaleOrder;
+    if (product.transactionSynced == false) {
+      // Inserting at index 0 will ensure the latest order is at the beginning of the list
+      list.insert(0, product);
+    }
+  }
+   
+  return list;
+}
+
 
   Future<double> getOfflineOrderCashBalance() async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);

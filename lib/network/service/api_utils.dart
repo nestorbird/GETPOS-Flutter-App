@@ -111,6 +111,7 @@ class APIUtils {
   }
 
   static Future<Map<String, String>> _headers() async {
+    debugPrint("Fetch token");
     //Getting auth token
     String authToken = await getToken();
     debugPrint("TOKEN: $authToken");

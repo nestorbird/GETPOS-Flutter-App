@@ -56,6 +56,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       customer = Helper.activeParkedOrder!.customer;
       items = Helper.activeParkedOrder!.items;
     }
+    
   }
 
   @override
@@ -143,7 +144,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         Padding(
           padding: leftSpace(x: 5),
           child: CartWidget(
-         //   order: parkOrder!,
+           // order: parkOrder!,
             customer: customer,
             orderList: items,
             taxes: const [],

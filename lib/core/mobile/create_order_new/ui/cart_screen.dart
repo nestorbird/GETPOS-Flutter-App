@@ -57,6 +57,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   String? orderId;
   bool _isCODSelected = false;
+  bool isPromoCodeAvailableForUse = false;
   double? totalAmount;
   double subTotalAmount = 0.0;
   double totalTaxAmount = 0.0;
@@ -65,26 +66,20 @@ class _CartScreenState extends State<CartScreen> {
   double totalTaxPercentage = 0.0;
   double grandTotal = 0.0;
   double? orderAmount;
-  late HubManager? hubManager;
-  late List<OrderTax>? getTaxesOrderwise;
-  late List<OrderTaxTemplate>? getOrderTemplate;
   double quantity = 0.0;
   double? stateGovTax = 0.0;
   double? centralGovTax = 0.0;
   double stateGovTaxAmount = 0.0;
   double? centralGovTaxAmount = 0.0;
   double taxAmount = 0.0;
-  double? taxes;
   String? taxTypeApplied;
-  double taxTypeAmountStored = 0.0;
-  late String paymentMethod;
-  List<CouponCode> couponCodes = [];
-  bool isPromoCodeAvailableForUse = false;
-  
-  
-
+ late String paymentMethod;
+ late HubManager? hubManager;
   SaleOrder? saleOrder;
   List<Map<String, dynamic>> taxDetailsList = [];
+  late List<OrderTax>? getTaxesOrderwise;
+  late List<OrderTaxTemplate>? getOrderTemplate;
+   List<CouponCode> couponCodes = [];
 
   @override
   void initState() {
@@ -95,13 +90,16 @@ class _CartScreenState extends State<CartScreen> {
     //_getTaxes();
     //totalAmount = Helper().getTotal(widget.order.items);
 
-    totalItems = widget.order.items.length;
+   // totalItems = widget.order.items.length;
     // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }
 
   @override
   Widget build(BuildContext context) {
+
+ 
+    
     return SafeArea(
         child: Scaffold(
       body: SingleChildScrollView(

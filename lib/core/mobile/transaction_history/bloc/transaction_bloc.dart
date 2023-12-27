@@ -205,7 +205,7 @@ for (var order in offlineOrders) {
 }
 
 GetPreviousOrder getPreviousOrder = GetPreviousOrder();
-    List<Transaction> savedOrders = await getPreviousOrder.getSavedOrders();
+    List<Transaction> previousOrders = await getPreviousOrder.getSavedOrders();
 
    // return savedOrders;
 
@@ -213,7 +213,7 @@ GetPreviousOrder getPreviousOrder = GetPreviousOrder();
 // List<SaleOrder> previousOrders = await DbSaleOrder().getOrders();
 
 // to avoid duplicacy
-for (var order in savedOrders) {
+for (var order in previousOrders) {
   // Check whether an order with the same id already exists
   bool orderExists = allTransactions.any((transaction) => transaction.id == order.id);
 
@@ -233,6 +233,7 @@ for (var order in savedOrders) {
   }
   
 }
+
 
 return allTransactions;
 
