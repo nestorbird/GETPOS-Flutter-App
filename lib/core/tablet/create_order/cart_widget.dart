@@ -40,7 +40,7 @@ import '../widget/select_customer_popup.dart';
 
 // ignore: must_be_immutable
 class CartWidget extends StatefulWidget {
- ParkOrder? order;
+  ParkOrder? order;
   Customer? customer;
   List<OrderItem> orderList;
   List<OrderTax> taxes;
@@ -64,7 +64,7 @@ class _CartWidgetState extends State<CartWidget> {
   final bool _isCODSelected = false;
   Customer? selectedCustomer;
   ParkOrder? currentCart;
-   String? orderId;
+  String? orderId;
   late bool selectedCashMode;
   late bool isOrderProcessed;
   double totalAmount = 0.0;
@@ -75,22 +75,20 @@ class _CartWidgetState extends State<CartWidget> {
   double quantity = 0.0;
   int totalItems = 0;
   double taxPercentage = 0;
-   String? taxTypeApplied;
+  String? taxTypeApplied;
   double? orderAmount;
   int qty = 0;
   SaleOrder? saleOrder;
- List<Map<String, dynamic>> taxDetailsList = [];
+  List<Map<String, dynamic>> taxDetailsList = [];
   @override
   void initState() {
-   
-  
     isOrderProcessed = false;
     selectedCashMode = true;
     selectedCustomer = widget.customer;
- //totalItems = widget.order!.items.length;
+    //totalItems = widget.order!.items.length;
     super.initState();
-  
-     _callCalculations();
+
+    _callCalculations();
   }
 
   @override
@@ -109,19 +107,13 @@ class _CartWidgetState extends State<CartWidget> {
 
   @override
   Widget build(BuildContext context) {
-    //    if (widget.orderList.isNotEmpty) {
-    //   _configureTaxAndTotal(widget.orderList);
-      
-    // }
-  
- return Container(
+    return Container(
       padding: paddingXY(x: 10, y: 10),
-      //margin:   paddingXY( x: 0,),
       color: AppColors.fontWhiteColor,
       width: 300,
       height: Get.height,
       child: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _selectedCustomerSection(),
           const SizedBox(height: 10),
@@ -138,7 +130,6 @@ class _CartWidgetState extends State<CartWidget> {
                 ),
                 Text(
                   "${_orderedQty()} Items",
-                  // "$qty Items",
                   style: getTextStyle(
                     //AppColors.getPrimary() ??
                     color: const Color(0xFF62B146),
@@ -150,109 +141,30 @@ class _CartWidgetState extends State<CartWidget> {
           ),
           const Divider(color: Colors.black38),
           _cartItemListSection(),
-        //  widget.orderList.isEmpty ? const SizedBox() : _promoCodeSection(),
-
-          // widget.orderList.isEmpty
-          //     ? const SizedBox()
-          //     : const SizedBox(height: 16),
-              widget.orderList.isEmpty
-              ?  const SizedBox()
-              :    Padding(
-          padding: paddingXY(x: 10, y: 6),
-          child: Text(
-            "Bill",
-            style: getTextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: MEDIUM_PLUS_FONT_SIZE,
-                color: const Color(0xFF3F3E4A),),
-          ),
-        ),
-
-       //to fetch list of items added in cart
-_prodListSection(),
-        //Item total
-        widget.orderList.isEmpty
-              ? const SizedBox()
-              : _subtotalSection("Item Total",
-                  "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
-// Subtotal is the amount after deducting discount from the item total
+          //  hightSpacer10,
+          //  widget.orderList.isEmpty ? const SizedBox() : _promoCodeSection(),
+         
           widget.orderList.isEmpty
               ? const SizedBox()
-              : _subtotalSection("Subtotal",
-                  "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
-          // widget.orderList.isEmpty
-          //     ? const SizedBox()
-          //     : _subtotalSection("Discount", "- $appCurrency 0.00",
-          //         isDiscount: true),
-
-            widget.orderList.isEmpty
-            ? const SizedBox()
-            :      Padding(
-              padding: paddingXY(x: 0, y: 0),
-              child: ExpansionTile(
-                tilePadding: const EdgeInsets.only(left: 10, right: 10),
-                title: _totalTaxSection(
-                  'Total Tax',
-                  '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
-                ),
-                childrenPadding: const EdgeInsets.only(left: 4),
-                children: taxDetailsList.isEmpty
-                    ? [] // Returns an empty list if taxDetailsList is empty
-                    : taxDetailsList.map((taxDetails) {
-                        return ListTile(
-                          title: Text(
-                            ' ${taxDetails['tax_type']}',
-                            style: getTextStyle(
-                                fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                color: CUSTOM_TEXT_COLOR,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
-                          trailing: Text(
-                            ' ${taxDetails['tax_amount']}',
-                            style: getTextStyle(
-                                fontSize: MEDIUM_MINUS_FONT_SIZE,
-                                color: CUSTOM_TEXT_COLOR,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        );
-                      }).toList(),
-                onExpansionChanged: (bool expanded) {
-                  setState(() {});
-                },
-              ),
-            ),
-          // widget.orderList.isEmpty
-          //     ? const SizedBox()
-          //     : _subtotalSection("Tax ($taxPercentage%)",
-          //         "$appCurrency ${taxAmount.toStringAsFixed(2)}"),
-
-
-
-
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _totalSection(
-                  "Grand Total", "$appCurrency ${ grandTotal.toStringAsFixed(2)}"),
+              : _totalSection("Grand Total",
+                  "$appCurrency ${grandTotal.toStringAsFixed(2)}"),
           widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
           hightSpacer10,
           _showActionButton()
         ],
       ),
-      
     );
-    
   }
 
-Widget _totalTaxSection(
+  Widget _totalTaxSection(
     title,
     amount,
   ) =>
       Padding(
-        padding: const EdgeInsets.only(top: 6,left: 0, right: 0 ),
+        padding: const EdgeInsets.only(top: 6, left: 0, right: 0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
-         crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
@@ -262,7 +174,6 @@ Widget _totalTaxSection(
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             const SizedBox(width: 75),
-          
             Text(
               amount,
               style: getTextStyle(
@@ -344,7 +255,8 @@ Widget _totalTaxSection(
           if (selectedCashMode == true) {
             Helper.showPopupForTablet(context, "Coming Soon..");
           } else {
-            isOrderProcessed =  await  createSale(!_isCODSelected ? "Card" : "Cash");
+            isOrderProcessed =
+                await createSale(!_isCODSelected ? "Card" : "Cash");
             //await _placeOrderHandler();
 
             // to be showed on successfull order placed
@@ -384,14 +296,98 @@ Widget _totalTaxSection(
             flex: 2,
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (OrderItem item in widget.orderList) itemListWidget(item),
+                  
+                    for(OrderItem item in widget.orderList)
+                    itemListWidget(item),
+                  billSection(),
+                  //  const Divider(color: Colors.black38),
+                 
                 ],
               ),
             ),
           );
   }
+ Widget billSection () {
+  return  Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: paddingXY(x: 10, y: 6),
+        child: Text(
+          "Bill",
+          style: getTextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: MEDIUM_PLUS_FONT_SIZE,
+            color: const Color(0xFF3F3E4A),
+          ),
+        ),
+      ),
+      //to fetch list of items added in cart
+      //_prodListSection(),
+      //Item total
+      widget.orderList.isEmpty
+          ? const SizedBox()
+          : _subtotalSection("Item Total",
+              "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+      // Subtotal is the amount after deducting discount from the item total
+      widget.orderList.isEmpty
+          ? const SizedBox()
+          : _subtotalSection("Subtotal",
+              "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+      // widget.orderList.isEmpty
+      //     ? const SizedBox()
+      //     : _subtotalSection("Discount", "- $appCurrency 0.00",
+      //         isDiscount: true),
+    
+      widget.orderList.isEmpty
+          ? const SizedBox()
+          : Padding(
+              padding: paddingXY(x: 0, y: 0),
+              child: ExpansionTile(
+                tilePadding: const EdgeInsets.only(
+                    left: 10, right: 10),
+                title: _totalTaxSection(
+                  'Total Tax',
+                  '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
+                ),
+                childrenPadding:
+                    const EdgeInsets.only(left: 4),
+                children: taxDetailsList.isEmpty
+                    ? [] // Returns an empty list if taxDetailsList is empty
+                    : taxDetailsList.map((taxDetails) {
+                        return ListTile(
+                          title: Text(
+                            ' ${taxDetails['tax_type']}',
+                            style: getTextStyle(
+                                fontSize:
+                                    MEDIUM_MINUS_FONT_SIZE,
+                                color: CUSTOM_TEXT_COLOR,
+                                fontWeight: FontWeight.w400),
+                          ),
+                          //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
+                          trailing: Text(
+                            ' ${taxDetails['tax_amount']}',
+                            style: getTextStyle(
+                                fontSize:
+                                    MEDIUM_MINUS_FONT_SIZE,
+                                color: CUSTOM_TEXT_COLOR,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        );
+                      }).toList(),
+                onExpansionChanged: (bool expanded) {
+                  setState(() {});
+                },
+              ),
+            ),
+    ],
+  );
 
+ }
   Widget itemListWidget(OrderItem item) {
     final Widget greySizedBox =
         SizedBox(width: 1.0, child: Container(color: AppColors.getPrimary()));
@@ -399,153 +395,109 @@ Widget _totalTaxSection(
     return Container(
       width: double.infinity,
       // height: 100,
-      margin: const EdgeInsets.only(bottom: 8, top: 15, left: 10, right: 10 ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: SizedBox(
-              width: 55,
-              height: 55,
-              child: item.productImage.isEmpty
-              ? Image.asset(
-                                                    NO_IMAGE,
-                                                    fit: BoxFit.fill,
-                                                  )
-               : Image.memory(
-                item.productImage,
-                fit: BoxFit.cover,
-              ),
-
-            ),
-          ),
-          // Image.asset(BURGAR_IMAGE),
-          widthSpacer(10),
-          Expanded(
-            child: SizedBox(
-                height: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(children: [
-                      Expanded(
-                          child: Text(
-                        item.name,
-                        style: getTextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.getTextandCancelIcon(),
-                            fontSize: SMALL_PLUS_FONT_SIZE),
-                      )),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            widget.orderList.remove(item);
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 8, 0, 0),
-                          child: SvgPicture.asset(
-                            DELETE_IMAGE,
-                            width: 16,
-                            height: 16,
-                          ),
-                        ),
-                      )
-                    ]),
-                    hightSpacer10,
-                    ///////////////////////////////////////////////
-                    Align(
-                        alignment: Alignment.topLeft,
-                        child: Expanded(
-                          child: Text(
-                            "${_getItemVariants(item.attributes)} x ${item.orderedQuantity}",
-                            style: getTextStyle(
-                                fontSize: SMALL_FONT_SIZE,
-                                fontWeight: FontWeight.normal),
-                            textAlign: TextAlign.start,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                            softWrap: false,
-                          ),
-                        )),
-                    hightSpacer10,
-                    Row(
+      margin: const EdgeInsets.only(bottom: 8, top: 15, left: 10, right:10),
+      child: Padding(
+                      padding: paddingXY(x: 0, y: 2),
+                      child:Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                         children: [
-                          Text(
-                            "$appCurrency ${item.price.toStringAsFixed(2)}",
-                            style: getTextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.getSecondary(),
-                                fontSize: SMALL_PLUS_FONT_SIZE),
-                          ),
-                          // const Spacer(),
-                          // const Icon(Icons.delete)
-                          Container(
-                              width: 100,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.getPrimary(),
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                      BORDER_CIRCULAR_RADIUS_06)),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InkWell(
-                                      onTap: () {setState(() {
-                                        if (item.orderedQuantity > 1) {
-                                          item.orderedQuantity =
-                                              item.orderedQuantity - 1;
-                                            //  _updateOrderPriceAndSave();
-                                              _configureTaxAndTotal(widget.orderList);
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
-                                        } else {
-                                          widget.orderList.remove(item);
-                                        }
-                                        });
-                                    //    setState(() {});
-                                      },
-                                      child: const Icon(
-                                        Icons.remove,
-                                        size: 18,
-                                      )),
-                                  greySizedBox,
-                                  Container(
-                                      color: AppColors.getPrimary()
-                                          .withOpacity(0.1),
-                                      child: Text(
-                                        item.orderedQuantity.toInt().toString(),
-                                        style: getTextStyle(
-                                          fontSize: MEDIUM_FONT_SIZE,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.getPrimary(),
-                                        ),
-                                      )),
-                                  greySizedBox,
-                                  InkWell(
-                                      onTap: () {setState(() {
-                                        item.orderedQuantity =
-                                            item.orderedQuantity + 1;
-                                           // _updateOrderPriceAndSave();
-                                          _configureTaxAndTotal(widget.orderList);
-                                       // setState(() {});
-
-                                      });},
-                                      child: const Icon(
-                                        Icons.add,
-                                        size: 18,
-                                      )),
-                                ],
-                              ))
-                        ]),
-                  ],
-                )),
+                            children: [
+                              SizedBox(
+                                height: 20,
+                                width: 120,
+                                child:
+          Text(
+            item.name,
+            style: getTextStyle(
+              fontSize: SMALL_PLUS_FONT_SIZE,
+              color: const Color(0xFF3F3E4A),
+              fontWeight: FontWeight.w500,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
           ),
-        ],
+        ),
+                              const SizedBox(
+                                width: 2,
+                              ),
+          Container(
+              width: 65,
+              height: 20,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: AppColors.getPrimary(),
+                  ),
+                  borderRadius: BorderRadius.circular(
+                      BORDER_CIRCULAR_RADIUS_06)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        setState(() {
+                          if (item.orderedQuantity > 1) {
+                            item.orderedQuantity =
+                                item.orderedQuantity - 1;
+                            //  _updateOrderPriceAndSave();
+                            _configureTaxAndTotal(widget.orderList);
+                          } else {
+                            widget.orderList.remove(item);
+                          }
+                        });
+                        //    setState(() {});
+                      },
+                      child: const Icon(
+                        Icons.remove,
+                        size: 18,
+                      )),
+                  // greySizedBox,
+                  Container(
+                      color: AppColors.getPrimary().withOpacity(0.1),
+                      child: Text(
+                        item.orderedQuantity.toInt().toString(),
+                        style: getTextStyle(
+                          fontSize: MEDIUM_FONT_SIZE,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.getPrimary(),
+                        ),
+                      )),
+                  //   greySizedBox,
+                  InkWell(
+                      onTap: () {
+                        setState(() {
+                          item.orderedQuantity =
+                              item.orderedQuantity + 1;
+                          // _updateOrderPriceAndSave();
+                          _configureTaxAndTotal(widget.orderList);
+                          // setState(() {});
+                        });
+                      },
+                      child: const Icon(
+                        Icons.add,
+                        size: 18,
+                      )),
+                ],
+              )),
+                     
+                    const SizedBox(
+                                width: 7,
+                              ),
+                    
+                    Text(
+                      '$appCurrency ${item.price.toStringAsFixed(2)}',
+                      style: getTextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: MEDIUM_FONT_SIZE,
+          color: CUSTOM_TEXT_COLOR,
+                      ),
+                    ),
+        ]),
+                        ]
+      ),
       ),
     );
   }
@@ -585,11 +537,11 @@ Widget _prodListSection(){
                       padding: paddingXY(x: 0, y: 4),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                       
+
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            
+
                             children: [
                               SizedBox(
                                 height: 20,
@@ -695,7 +647,7 @@ Widget _prodListSection(){
   }
 
   Widget _subtotalSection(title, amount, {bool isDiscount = false}) => Padding(
-        padding: const EdgeInsets.only(top: 3, left: 10, right: 10, bottom: 3 ),
+        padding: const EdgeInsets.only(top: 3, left: 10, right: 10, bottom: 3),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -703,7 +655,7 @@ Widget _prodListSection(){
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color:  const Color(0xFF3F3E4A),
+                  color: const Color(0xFF3F3E4A),
                   // isDiscount
                   //     ? AppColors.getSecondary()
                   //     : AppColors.getTextandCancelIcon(),
@@ -713,7 +665,7 @@ Widget _prodListSection(){
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color:  const Color(0xFF3F3E4A),
+                  color: const Color(0xFF3F3E4A),
                   // isDiscount
                   //     ? AppColors.getSecondary()
                   //     : AppColors.getTextandCancelIcon(),
@@ -783,7 +735,10 @@ Widget _prodListSection(){
             widthSpacer(10),
             Text(
               title,
-              style: getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE, fontWeight:  FontWeight.w700,),
+              style: getTextStyle(
+                fontSize: LARGE_MINUS_FONT_SIZE,
+                fontWeight: FontWeight.w700,
+              ),
             )
           ],
         ),
@@ -836,7 +791,7 @@ Widget _prodListSection(){
     }
   }
 
-createSale(String paymentMethod) async {
+  createSale(String paymentMethod) async {
     paymentMethod = paymentMethod;
     if (paymentMethod == "Card") {
       return Helper.showPopup(context, "Coming Soon");
@@ -886,7 +841,6 @@ createSale(String paymentMethod) async {
                   SaleSuccessScreen(placedOrder: saleOrder!)));
     }
   }
-
 
 //code before taxation module implemented
   // Future<bool> _placeOrderHandler() async {
@@ -959,12 +913,10 @@ createSale(String paymentMethod) async {
       _calculateOrderAmount();
       DbParkedOrder().saveOrder(currentCart!);
       Helper.activeParkedOrder = null;
-     
     }
   }
 
-
- Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
+  Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
     bool isTaxAvailable = false;
     totalAmount = 0.0;
     subTotalAmount = 0.0;
@@ -972,12 +924,12 @@ createSale(String paymentMethod) async {
     totalTaxAmount = 0.0;
     orderAmount = 0.0;
     grandTotal = 0.0;
-    
+
     // Map to store tax amounts for each tax type
     Map<String, double> taxAmountMap = {};
 
     for (OrderItem item in items) {
-      quantity = item.orderedQuantity ;
+      quantity = item.orderedQuantity;
       log("Quantity Ordered : $quantity");
       subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
@@ -1031,7 +983,7 @@ createSale(String paymentMethod) async {
         DbTaxes().saveItemWiseTax(orderId, taxation);
         DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
-   //  setState(() {});
+      //  setState(() {});
       log("Total Amount:: $totalAmount");
     }
 
@@ -1053,7 +1005,7 @@ createSale(String paymentMethod) async {
           totalTaxAmount += taxAmount;
           taxTypeApplied = tax.taxType;
 // setState(() {
-  
+
 // });
           log("Total Tax Amount orderwise : $totalTaxAmount");
           log('Total Amount Orderwise:: $totalAmount');
@@ -1087,7 +1039,7 @@ createSale(String paymentMethod) async {
               'tax_amount': entry.value,
             })
         .toList();
-    
+
     grandTotal = totalAmount + totalTaxAmount;
     setState(() {});
     log('Grand Total:: $grandTotal');
@@ -1102,14 +1054,13 @@ createSale(String paymentMethod) async {
     log('orderAmount after deleting:: $orderAmount');
 
     _configureTaxAndTotal(widget.order!.items);
-   
+
     // lculateItemWiseTax(taxDetailsList,subTotalAmount);
   }
 
-  Future<void>_callCalculations() async{
-     await _configureTaxAndTotal(widget.orderList);
+  Future<void> _callCalculations() async {
+    await _configureTaxAndTotal(widget.orderList);
   }
-
 }
 
 //   //calculate tax item wise
