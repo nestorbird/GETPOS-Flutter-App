@@ -108,51 +108,68 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: paddingXY(x: 10, y: 10),
-      color: AppColors.fontWhiteColor,
-      width: 300,
-      height: Get.height,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _selectedCustomerSection(),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Cart",
-                  style: getTextStyle(
-                    fontSize: LARGE_FONT_SIZE,
+        padding: paddingXY(x: 10, y: 10),
+        color: AppColors.fontWhiteColor,
+        width: 300,
+        height: Get.height,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _selectedCustomerSection(),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Cart",
+                    style: getTextStyle(
+                      fontSize: LARGE_FONT_SIZE,
+                    ),
                   ),
-                ),
-                Text(
-                  "${_orderedQty()} Items",
-                  style: getTextStyle(
-                    //AppColors.getPrimary() ??
-                    color: const Color(0xFF62B146),
-                    fontSize: MEDIUM_PLUS_FONT_SIZE,
-                  ),
-                )
-              ],
+                  Text(
+                    "${_orderedQty()} Items",
+                    style: getTextStyle(
+                      //AppColors.getPrimary() ??
+                      color: const Color(0xFF62B146),
+                      fontSize: MEDIUM_PLUS_FONT_SIZE,
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),
-          const Divider(color: Colors.black38),
-          _cartItemListSection(),
-          //  hightSpacer10,
-          //  widget.orderList.isEmpty ? const SizedBox() : _promoCodeSection(),
-         
-          widget.orderList.isEmpty
-              ? const SizedBox()
-              : _totalSection("Grand Total",
-                  "$appCurrency ${grandTotal.toStringAsFixed(2)}"),
-          widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
-          hightSpacer10,
-          _showActionButton()
-        ],
-      ),
+            const Divider(color: Colors.black38),
+            _cartItemListSection(),
+            //  hightSpacer10,
+            //  widget.orderList.isEmpty ? const SizedBox() : _promoCodeSection(),
+           _grandTotalSection(),
+            widget.orderList.isEmpty ? const SizedBox() : _paymentModeSection(),
+            hightSpacer10,
+            _showActionButton()
+
+          ],
+        ),
+      );
+     // bottomNavigationBar: _grandTotalSection(),
+  
+
+  }
+
+  Widget _grandTotalSection(){
+    return  Container(
+      padding:paddingXY(x: 2, y: 0),
+        height: 35,
+        child:Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+      children:[
+ widget.orderList.isEmpty
+                ? const SizedBox()
+                : _totalSection("Grand Total",
+                    "$appCurrency ${grandTotal.toStringAsFixed(2)}"),
+           
+    ]),
     );
   }
 
@@ -173,7 +190,7 @@ class _CartWidgetState extends State<CartWidget> {
                   color: CUSTOM_TEXT_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
-            const SizedBox(width: 75),
+            const SizedBox(width: 60),
             Text(
               amount,
               style: getTextStyle(
@@ -292,98 +309,104 @@ class _CartWidgetState extends State<CartWidget> {
               child: Image.asset(EMPTY_CART_TAB_IMAGE),
             ),
           )
-        : Expanded(
-            flex: 2,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  
-                    for(OrderItem item in widget.orderList)
-                    itemListWidget(item),
-                  billSection(),
-                  //  const Divider(color: Colors.black38),
+        : 
+        Expanded(
+        flex: 2,
+      
+ child:  SingleChildScrollView(
+                    child: Column(
+               mainAxisAlignment: MainAxisAlignment.start,
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
                  
-                ],
-              ),
-            ),
-          );
+                   for(OrderItem item in widget.orderList)
+                   itemListWidget(item),
+                 
+                 billSection(),
+                 //  const Divider(color: Colors.black38),
+                
+               ],
+             ),
+ ),
+         );
+        
+        
   }
  Widget billSection () {
-  return  Column(
+  return Column(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Padding(
-        padding: paddingXY(x: 10, y: 6),
-        child: Text(
-          "Bill",
-          style: getTextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: MEDIUM_PLUS_FONT_SIZE,
-            color: const Color(0xFF3F3E4A),
-          ),
-        ),
+    padding: paddingXY(x: 10, y: 6),
+    child: Text(
+      "Bill",
+      style: getTextStyle(
+  fontWeight: FontWeight.bold,
+  fontSize: MEDIUM_PLUS_FONT_SIZE,
+  color: const Color(0xFF3F3E4A),
+      ),
+    ),
       ),
       //to fetch list of items added in cart
       //_prodListSection(),
       //Item total
       widget.orderList.isEmpty
-          ? const SizedBox()
-          : _subtotalSection("Item Total",
-              "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+      ? const SizedBox()
+      : _subtotalSection("Item Total",
+    "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
       // Subtotal is the amount after deducting discount from the item total
       widget.orderList.isEmpty
-          ? const SizedBox()
-          : _subtotalSection("Subtotal",
-              "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+      ? const SizedBox()
+      : _subtotalSection("Subtotal",
+    "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
       // widget.orderList.isEmpty
       //     ? const SizedBox()
       //     : _subtotalSection("Discount", "- $appCurrency 0.00",
       //         isDiscount: true),
     
       widget.orderList.isEmpty
-          ? const SizedBox()
-          : Padding(
-              padding: paddingXY(x: 0, y: 0),
-              child: ExpansionTile(
-                tilePadding: const EdgeInsets.only(
-                    left: 10, right: 10),
-                title: _totalTaxSection(
-                  'Total Tax',
-                  '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
+      ? const SizedBox()
+      : Padding(
+    padding: paddingXY(x: 0, y: 0),
+    child: ExpansionTile(
+      
+      tilePadding: const EdgeInsets.only(
+          left: 10, right: 10, top: 0,bottom: 0),
+      title: _totalTaxSection(
+        'Total Tax',
+        '$appCurrency ${totalTaxAmount.toStringAsFixed(2)}',
+      ),
+      childrenPadding:
+          const EdgeInsets.only(left: 4),
+      children: taxDetailsList.isEmpty
+          ? [] // Returns an empty list if taxDetailsList is empty
+          : taxDetailsList.map((taxDetails) {
+              return ListTile(
+                title: Text(
+                  ' ${taxDetails['tax_type']}',
+                  style: getTextStyle(
+                      fontSize:
+                          MEDIUM_MINUS_FONT_SIZE,
+                      color: CUSTOM_TEXT_COLOR,
+                      fontWeight: FontWeight.w400),
                 ),
-                childrenPadding:
-                    const EdgeInsets.only(left: 4),
-                children: taxDetailsList.isEmpty
-                    ? [] // Returns an empty list if taxDetailsList is empty
-                    : taxDetailsList.map((taxDetails) {
-                        return ListTile(
-                          title: Text(
-                            ' ${taxDetails['tax_type']}',
-                            style: getTextStyle(
-                                fontSize:
-                                    MEDIUM_MINUS_FONT_SIZE,
-                                color: CUSTOM_TEXT_COLOR,
-                                fontWeight: FontWeight.w400),
-                          ),
-                          //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
-                          trailing: Text(
-                            ' ${taxDetails['tax_amount']}',
-                            style: getTextStyle(
-                                fontSize:
-                                    MEDIUM_MINUS_FONT_SIZE,
-                                color: CUSTOM_TEXT_COLOR,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        );
-                      }).toList(),
-                onExpansionChanged: (bool expanded) {
-                  setState(() {});
-                },
-              ),
-            ),
+                //    subtitle: Text('Rate: ${taxDetails['rate']}%'),
+                trailing: Text(
+                  ' ${taxDetails['tax_amount']}',
+                  style: getTextStyle(
+                      fontSize:
+                          MEDIUM_MINUS_FONT_SIZE,
+                      color: CUSTOM_TEXT_COLOR,
+                      fontWeight: FontWeight.w400),
+                ),
+              );
+            }).toList(),
+      onExpansionChanged: (bool expanded) {
+        setState(() {});
+      },
+    ),
+  ),
     ],
   );
 
@@ -397,7 +420,7 @@ class _CartWidgetState extends State<CartWidget> {
       // height: 100,
       margin: const EdgeInsets.only(bottom: 8, top: 15, left: 10, right:10),
       child: Padding(
-                      padding: paddingXY(x: 0, y: 2),
+                      padding: paddingXY(x: 0, y: 0),
                       child:Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
@@ -422,7 +445,7 @@ class _CartWidgetState extends State<CartWidget> {
           ),
         ),
                               const SizedBox(
-                                width: 2,
+                                width: 4,
                               ),
           Container(
               width: 65,
@@ -484,7 +507,7 @@ class _CartWidgetState extends State<CartWidget> {
               )),
                      
                     const SizedBox(
-                                width: 7,
+                                width: 5,
                               ),
                     
                     Text(
@@ -676,7 +699,7 @@ Widget _prodListSection(){
       );
 
   Widget _totalSection(title, amount) => Padding(
-        padding: const EdgeInsets.only(top: 6, left: 10, right: 10),
+        padding: const EdgeInsets.only(top: 6, left: 6, right: 10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -688,6 +711,7 @@ Widget _prodListSection(){
                   // AppColors.getTextandCancelIcon(),
                   fontSize: LARGE_MINUS_FONT_SIZE),
             ),
+          const SizedBox(width: 8,),
             Text(
               amount,
               style: getTextStyle(
@@ -931,7 +955,7 @@ Widget _prodListSection(){
     for (OrderItem item in items) {
       quantity = item.orderedQuantity;
       log("Quantity Ordered : $quantity");
-      subTotalAmount = item.orderedQuantity * item.orderedPrice;
+      subTotalAmount += item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
       totalAmount = totalAmount + subTotalAmount;
       log('total after adding an item:$totalAmount');
