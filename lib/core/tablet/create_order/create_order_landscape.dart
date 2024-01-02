@@ -36,6 +36,7 @@ class CreateOrderLandscape extends StatefulWidget {
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
+    final ValueNotifier<List<OrderItem>> itemsNotifier = ValueNotifier<List<OrderItem>>([]);
    ParkOrder? parkOrder;
   late TextEditingController searchCtrl;
   late Size size;
@@ -61,6 +62,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 
   @override
   void dispose() {
+     itemsNotifier.dispose();
     searchCtrl.dispose();
     super.dispose();
   }
@@ -154,6 +156,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
           padding: leftSpace(x: 5),
           child: CartWidget(
            // order: parkOrder!,
+            itemsNotifier: itemsNotifier,
             customer: customer,
             orderList: items,
             taxes: const [],

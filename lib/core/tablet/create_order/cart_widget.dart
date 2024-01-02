@@ -40,6 +40,7 @@ import '../widget/select_customer_popup.dart';
 
 // ignore: must_be_immutable
 class CartWidget extends StatefulWidget {
+  final ValueNotifier<List<OrderItem>> itemsNotifier;
   ParkOrder? order;
   Customer? customer;
   List<OrderItem> orderList;
@@ -49,6 +50,7 @@ class CartWidget extends StatefulWidget {
       {Key? key,
       this.order,
       this.customer,
+      required this.itemsNotifier,
       required this.orderList,
       required this.onNewOrder,
       required this.onHome,
@@ -87,13 +89,14 @@ class _CartWidgetState extends State<CartWidget> {
     selectedCustomer = widget.customer;
     //totalItems = widget.order!.items.length;
     super.initState();
-
-    _callCalculations();
+ widget.itemsNotifier.addListener( _callCalculations);
+   
   }
 
   @override
   void didUpdateWidget(covariant CartWidget oldWidget) {
     // TODO: implement didUpdateWidget
+    
     _callCalculations();
     super.didUpdateWidget(oldWidget);
   }
@@ -101,7 +104,7 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   void dispose() {
     _prepareCart();
-
+widget.itemsNotifier.removeListener( _callCalculations);
     super.dispose();
   }
 
@@ -354,12 +357,12 @@ class _CartWidgetState extends State<CartWidget> {
       widget.orderList.isEmpty
       ? const SizedBox()
       : _subtotalSection("Item Total",
-    "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+    "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
       // Subtotal is the amount after deducting discount from the item total
       widget.orderList.isEmpty
       ? const SizedBox()
       : _subtotalSection("Subtotal",
-    "$appCurrency ${subTotalAmount.toStringAsFixed(2)}"),
+    "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
       // widget.orderList.isEmpty
       //     ? const SizedBox()
       //     : _subtotalSection("Discount", "- $appCurrency 0.00",
@@ -467,12 +470,16 @@ class _CartWidgetState extends State<CartWidget> {
                             item.orderedQuantity =
                                 item.orderedQuantity - 1;
                             //  _updateOrderPriceAndSave();
-                            _configureTaxAndTotal(widget.orderList);
+                           
+_callCalculations();
+                           // _configureTaxAndTotal(widget.orderList);
                           } else {
+                          log("after removing: ");   
                             widget.orderList.remove(item);
+                            _callCalculations();
                           }
                         });
-                        //    setState(() {});
+                         //   setState(() {});
                       },
                       child: const Icon(
                         Icons.remove,
@@ -496,7 +503,8 @@ class _CartWidgetState extends State<CartWidget> {
                           item.orderedQuantity =
                               item.orderedQuantity + 1;
                           // _updateOrderPriceAndSave();
-                          _configureTaxAndTotal(widget.orderList);
+                          _callCalculations();
+                        //  _configureTaxAndTotal(widget.orderList);
                           // setState(() {});
                         });
                       },
