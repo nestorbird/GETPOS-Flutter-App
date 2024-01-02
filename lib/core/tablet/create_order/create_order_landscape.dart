@@ -70,76 +70,85 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     size = MediaQuery.of(context).size;
     return Row(
       children: [
+        
         SizedBox(
-          width: size.width - 405,
-          height: size.height,
-          child: SingleChildScrollView(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              TitleAndSearchBar(
-                title: "Choose Category",
-                onSubmit: (text) {
-                  if (text.length >= 3) {
-                    categories.isEmpty
-                        ? const Center(
-                            child: Text(
-                            "No items found",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                        : _filterProductsCategories(text);
-                  } else {
-                    getProducts();
-                  }
-                },
-                onTextChanged: (changedtext) {
-                  if (changedtext.length >= 3) {
-                    categories.isEmpty
-                        ? const Center(
-                            child: Text(
-                            "No items found",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                        : _filterProductsCategories(changedtext);
-                  } else {
-                    getProducts();
-                  }
-                },
-                searchCtrl: searchCtrl,
-                searchHint: "Search product / category",
-                searchBoxWidth: size.width / 4,
-              ),
-              hightSpacer20,
-              categories.isEmpty
-                  ? const Center(
-                      child: Text(
-                      "No items found",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ))
-                  : getCategoryListWidg(),
-              hightSpacer20,
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount: categories.length,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: [
+          width: size.width - 505,
+        height: size.height,
+          child: Column(
+            children: [ TitleAndSearchBar(
+                  title: "Choose Category",
+                  onSubmit: (text) {
+                    if (text.length >= 3) {
                       categories.isEmpty
                           ? const Center(
                               child: Text(
                               "No items found",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ))
-                          : getCategoryItemsWidget(categories[index]),
-                      hightSpacer10
-                    ],
-                  );
-                },
-              ),
-            ],
-          )),
+                          : _filterProductsCategories(text);
+                    } else {
+                      getProducts();
+                    }
+                  },
+                  onTextChanged: (changedtext) {
+                    if (changedtext.length >= 3) {
+                      categories.isEmpty
+                          ? const Center(
+                              child: Text(
+                              "No items found",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ))
+                          : _filterProductsCategories(changedtext);
+                    } else {
+                      getProducts();
+                    }
+                  },
+                  searchCtrl: searchCtrl,
+                  searchHint: "Search product / category",
+                  searchBoxWidth: size.width / 4,
+                ),
+                 hightSpacer20,
+              Expanded(
+                flex: 2,
+                child: SingleChildScrollView(
+                  child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                 
+                 
+                  categories.isEmpty
+                      ? const Center(
+                          child: Text(
+                          "No items found",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ))
+                      : getCategoryListWidg(),
+                  hightSpacer20,
+                  ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          categories.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                  "No items found",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ))
+                              : getCategoryItemsWidget(categories[index]),
+                          hightSpacer10
+                        ],
+                      );
+                    },
+                  ),
+                              ],
+                            ),
+                ),
+              )
+      ],),
         ),
         Padding(
           padding: leftSpace(x: 5),

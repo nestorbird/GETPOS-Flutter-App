@@ -36,8 +36,9 @@ class TransactionItemLandscape extends StatelessWidget {
                 children: [
                   Text(
                     order.customer.name,
+                     overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w900),
+                        fontSize: MEDIUM_PLUS_FONT_SIZE, fontWeight: FontWeight.w600),
                   ),
                   hightSpacer10,
                   Text(
@@ -45,8 +46,8 @@ class TransactionItemLandscape extends StatelessWidget {
                         ? "9090909090"
                         : order.customer.phone,
                     style: getTextStyle(
-                        fontSize: MEDIUM_FONT_SIZE,
-                        fontWeight: FontWeight.w900),
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

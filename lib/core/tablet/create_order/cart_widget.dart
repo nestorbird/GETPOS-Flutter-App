@@ -83,7 +83,7 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   void initState() {
     isOrderProcessed = false;
-    selectedCashMode = true;
+    selectedCashMode = false;
     selectedCustomer = widget.customer;
     //totalItems = widget.order!.items.length;
     super.initState();
@@ -110,7 +110,7 @@ class _CartWidgetState extends State<CartWidget> {
     return Container(
         padding: paddingXY(x: 10, y: 10),
         color: AppColors.fontWhiteColor,
-        width: 300,
+        width: 400,
         height: Get.height,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +190,7 @@ class _CartWidgetState extends State<CartWidget> {
                   color: CUSTOM_TEXT_COLOR,
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
-            const SizedBox(width: 60),
+            const SizedBox(width: 150),
             Text(
               amount,
               style: getTextStyle(
@@ -273,8 +273,8 @@ class _CartWidgetState extends State<CartWidget> {
             Helper.showPopupForTablet(context, "Coming Soon..");
           } else {
             isOrderProcessed =
-                await createSale(!_isCODSelected ? "Card" : "Cash");
-            //await _placeOrderHandler();
+             //   await createSale(_isCODSelected ? "Card" : "Cash");
+            await _placeOrderHandler();
 
             // to be showed on successfull order placed
             _showOrderPlacedSuccessPopup();
@@ -315,7 +315,7 @@ class _CartWidgetState extends State<CartWidget> {
       
  child:  SingleChildScrollView(
                     child: Column(
-               mainAxisAlignment: MainAxisAlignment.start,
+               mainAxisAlignment: MainAxisAlignment.end,
                crossAxisAlignment: CrossAxisAlignment.start,
                children: [
                  
@@ -412,8 +412,8 @@ class _CartWidgetState extends State<CartWidget> {
 
  }
   Widget itemListWidget(OrderItem item) {
-    final Widget greySizedBox =
-        SizedBox(width: 1.0, child: Container(color: AppColors.getPrimary()));
+    // final Widget greySizedBox =
+    //     SizedBox(width: 1.0, child: Container(color: AppColors.getPrimary()));
 
     return Container(
       width: double.infinity,
@@ -421,45 +421,46 @@ class _CartWidgetState extends State<CartWidget> {
       margin: const EdgeInsets.only(bottom: 8, top: 15, left: 10, right:10),
       child: Padding(
                       padding: paddingXY(x: 0, y: 0),
-                      child:Row(
+                      child:
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                      
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
+                      
                             children: [
                               SizedBox(
                                 height: 20,
                                 width: 120,
                                 child:
-          Text(
-            item.name,
-            style: getTextStyle(
-              fontSize: SMALL_PLUS_FONT_SIZE,
-              color: const Color(0xFF3F3E4A),
-              fontWeight: FontWeight.w500,
-            ),
-            overflow: TextOverflow.ellipsis,
-            maxLines: 2,
-          ),
-        ),
-                              const SizedBox(
-                                width: 4,
+                                Text(
+                                  item.name,
+                                  style: getTextStyle(
+                                    fontSize: SMALL_PLUS_FONT_SIZE,
+                                    color: const Color(0xFF3F3E4A),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
                               ),
-          Container(
-              width: 65,
-              height: 20,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    color: AppColors.getPrimary(),
-                  ),
-                  borderRadius: BorderRadius.circular(
+                              const SizedBox(
+                                width: 36,
+                              ),
+                                Container(
+                                    width: 95,
+                                    height: 28,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: AppColors.getPrimary(),
+                                        ),
+                                        borderRadius: BorderRadius.circular(
                       BORDER_CIRCULAR_RADIUS_06)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  InkWell(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        InkWell(
                       onTap: () {
                         setState(() {
                           if (item.orderedQuantity > 1) {
@@ -477,8 +478,8 @@ class _CartWidgetState extends State<CartWidget> {
                         Icons.remove,
                         size: 18,
                       )),
-                  // greySizedBox,
-                  Container(
+                                        // greySizedBox,
+                                        Container(
                       color: AppColors.getPrimary().withOpacity(0.1),
                       child: Text(
                         item.orderedQuantity.toInt().toString(),
@@ -488,8 +489,8 @@ class _CartWidgetState extends State<CartWidget> {
                           color: AppColors.getPrimary(),
                         ),
                       )),
-                  //   greySizedBox,
-                  InkWell(
+                                        //   greySizedBox,
+                                        InkWell(
                       onTap: () {
                         setState(() {
                           item.orderedQuantity =
@@ -503,24 +504,24 @@ class _CartWidgetState extends State<CartWidget> {
                         Icons.add,
                         size: 18,
                       )),
-                ],
-              )),
-                     
-                    const SizedBox(
-                                width: 5,
-                              ),
-                    
-                    Text(
+                                      ],
+                                    )),
+                                       // widthSpacer40, 
+                                          const SizedBox(
+                                                      width: 36,
+                                                    ),
+                                          
+                                          Text(
                       '$appCurrency ${item.price.toStringAsFixed(2)}',
                       style: getTextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: MEDIUM_FONT_SIZE,
-          color: CUSTOM_TEXT_COLOR,
+                                fontWeight: FontWeight.w500,
+                                fontSize: MEDIUM_FONT_SIZE,
+                                color: CUSTOM_TEXT_COLOR,
                       ),
-                    ),
-        ]),
+                                          ),
+                              ]),
                         ]
-      ),
+                            ),
       ),
     );
   }
@@ -748,14 +749,16 @@ Widget _prodListSection(){
             border: Border.all(
                 color: isSelected ? Colors.black : AppColors.getPrimary(),
                 width: 0.5),
+              
             color: isSelected
                 ? Colors.white
                 : AppColors.getPrimary().withOpacity(0.1),
             borderRadius: BorderRadius.circular(8)),
+            width: 165,
         padding: paddingXY(x: 16, y: 6),
         child: Row(
           children: [
-            SvgPicture.asset(paymentIcon, height: 35),
+            SvgPicture.asset(paymentIcon, height: 35,),
             widthSpacer(10),
             Text(
               title,
@@ -806,7 +809,8 @@ Widget _prodListSection(){
       content: const SaleSuccessfulPopup(),
     );
     if (response == "home") {
-      widget.onHome();
+
+    widget.onNewOrder();
     } else if (response == "print_receipt") {
       widget.onPrintReceipt();
     } else if (response == "new_order") {
@@ -815,109 +819,59 @@ Widget _prodListSection(){
     }
   }
 
-  createSale(String paymentMethod) async {
-    paymentMethod = paymentMethod;
-    if (paymentMethod == "Card") {
-      return Helper.showPopup(context, "Coming Soon");
-    } else {
-      DateTime currentDateTime = DateTime.now();
-      String date =
-          DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
-      log('Date : $date');
-      String time = DateFormat().add_jm().format(currentDateTime).toString();
-      log('Time : $time');
-      orderId = await Helper.getOrderId();
-      log('Order No : $orderId');
-      DbHubManager dbHubManager = DbHubManager();
-
-      var hubManagerData = await dbHubManager.getManager();
-      HubManager hubManager = HubManager(
-        id: hubManagerData!.emailId,
-        name: hubManagerData.name,
-        phone: hubManagerData.phone,
-        emailId: hubManagerData.emailId,
-        profileImage: hubManagerData.profileImage,
-        cashBalance: hubManagerData.cashBalance.toDouble(),
-      );
-
-      saleOrder = SaleOrder(
-          id: orderId!,
-          orderAmount: grandTotal,
-          date: date,
-          time: time,
-          customer: widget.order!.customer,
-          manager: hubManager,
-          items: widget.order!.items,
-          transactionId: '',
-          paymentMethod: paymentMethod,
-          paymentStatus: "Paid",
-          transactionSynced: false,
-          parkOrderId:
-              "${widget.order!.transactionDateTime.millisecondsSinceEpoch}",
-          tracsactionDateTime: currentDateTime,
-          taxes: widget.order!.taxes);
-      if (!mounted) return;
-
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  SaleSuccessScreen(placedOrder: saleOrder!)));
-    }
-  }
-
+  
 //code before taxation module implemented
-  // Future<bool> _placeOrderHandler() async {
-  //   DateTime currentDateTime = DateTime.now();
-  //   String date =
-  //       DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
-  //   log('Date : $date');
-  //   String time = DateFormat().add_jm().format(currentDateTime).toString();
-  //   log('Time : $time');
-  //   String orderId = await Helper.getOrderId();
-  //   log('Order No : $orderId');
+  Future<bool> _placeOrderHandler() async {
+    DateTime currentDateTime = DateTime.now();
+    String date =
+        DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
+    log('Date : $date');
+    String time = DateFormat().add_jm().format(currentDateTime).toString();
+    log('Time : $time');
+    String orderId = await Helper.getOrderId();
+    log('Order No : $orderId');
 
-  //   double totalAmount = Helper().getTotal(currentCart!.items);
+    double grandTotal = Helper().getTotal(currentCart!.items);
 
-  //   SaleOrder saleOrder = SaleOrder(
-  //       id: orderId,
-  //       orderAmount: totalAmount,
-  //       date: date,
-  //       time: time,
-  //       customer: currentCart!.customer,
-  //       manager: Helper.hubManager!,
-  //       items: currentCart!.items,
-  //       transactionId: '',
-  //       paymentMethod: selectedCashMode
-  //           ? "Cash"
-  //           : "Card", //TODO:: Need to check when payment gateway is implemented
-  //       paymentStatus: "Paid",
-  //       transactionSynced: false,
-  //       parkOrderId:
-  //           "${currentCart!.transactionDateTime.millisecondsSinceEpoch}",
-  //       tracsactionDateTime: currentDateTime);
+    SaleOrder saleOrder = SaleOrder(
+        id: orderId,
+        orderAmount: grandTotal,
+        date: date,
+        time: time,
+        customer: currentCart!.customer,
+        manager: Helper.hubManager!,
+        items: currentCart!.items,
+        transactionId: '',
+        paymentMethod: selectedCashMode
+            ?  "Card"
+            :  "Cash", //TODO:: Need to check when payment gateway is implemented
+        paymentStatus: "Paid",
+        transactionSynced: false,
+        parkOrderId:
+            "${currentCart!.transactionDateTime.millisecondsSinceEpoch}",
+        tracsactionDateTime: currentDateTime);
 
-  //   CreateOrderService().createOrder(saleOrder).then((value) {
-  //     if (value.status!) {
-  //       // print("create order response::::YYYYY");
-  //       SaleOrder order = saleOrder;
-  //       order.transactionSynced = true;
-  //       order.id = value.message;
+    CreateOrderService().createOrder(saleOrder).then((value) {
+      if (value.status!) {
+        // print("create order response::::YYYYY");
+        SaleOrder order = saleOrder;
+        order.transactionSynced = true;
+        order.id = value.message;
 
-  //       DbSaleOrder()
-  //           .createOrder(order)
-  //           .then((value) => debugPrint('order sync and saved to db'));
-  //     } else {
-  //       DbSaleOrder()
-  //           .createOrder(saleOrder)
-  //           .then((value) => debugPrint('order saved to db'));
-  //     }
-  //   }).whenComplete(() {
-  //     DbParkedOrder().deleteOrder(currentCart!);
-  //   });
+        DbSaleOrder()
+            .createOrder(order)
+            .then((value) => debugPrint('order sync and saved to db'));
+      } else {
+        DbSaleOrder()
+            .createOrder(saleOrder)
+            .then((value) => debugPrint('order saved to db'));
+      }
+    }).whenComplete(() {
+      DbParkedOrder().deleteOrder(currentCart!);
+    });
 
-  //   return true;
-  // }
+    return true;
+  }
 
   void _prepareCart() {
     if (isOrderProcessed) {
@@ -943,7 +897,7 @@ Widget _prodListSection(){
   Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
     bool isTaxAvailable = false;
     totalAmount = 0.0;
-    subTotalAmount = 0.0;
+    subTotalAmount =0.0;
     taxAmount = 0.0;
     totalTaxAmount = 0.0;
     orderAmount = 0.0;
@@ -955,7 +909,7 @@ Widget _prodListSection(){
     for (OrderItem item in items) {
       quantity = item.orderedQuantity;
       log("Quantity Ordered : $quantity");
-      subTotalAmount += item.orderedQuantity * item.orderedPrice;
+      subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
       totalAmount = totalAmount + subTotalAmount;
       log('total after adding an item:$totalAmount');
@@ -970,7 +924,7 @@ Widget _prodListSection(){
             if (attribute.options.isNotEmpty) {
               for (var option in attribute.options) {
                 if (option.selected) {
-                  subTotalAmount += (option.price * item.orderedQuantity);
+                  subTotalAmount = (option.price * item.orderedQuantity);
                   log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
                 }
               }
@@ -985,6 +939,7 @@ Widget _prodListSection(){
 
           log('Tax Amount itemwise : $taxAmount');
           totalTaxAmount += taxAmount;
+          log('Total tax Amount: $totalTaxAmount');
 
           log('totalAmount itemwise : $totalAmount');
           taxation.add(Taxation(
@@ -1007,7 +962,7 @@ Widget _prodListSection(){
         DbTaxes().saveItemWiseTax(orderId, taxation);
         DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
-      //  setState(() {});
+       setState(() {});
       log("Total Amount:: $totalAmount");
     }
 
@@ -1024,7 +979,7 @@ Widget _prodListSection(){
         List<OrderTaxes> taxesData = [];
 
         message.tax.forEach((tax) async {
-          double taxAmount = totalAmount * tax.taxRate / 100;
+          double taxAmount =  totalAmount * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           taxTypeApplied = tax.taxType;

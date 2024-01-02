@@ -134,6 +134,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
           child: ButtonWidget(
             onPressed: () => widget.parkOrderClicked!(),
             title: "Parked Order",
+            colorTxt: AppColors.fontWhiteColor,
             primaryColor: AppColors.getTextandCancelIcon(),
             width: 200,
             borderRadius: 15,

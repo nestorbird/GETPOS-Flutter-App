@@ -144,7 +144,8 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 10,
-          childAspectRatio: Get.height > Get.width ? 3 : 4.8,
+          childAspectRatio: Get.height > Get.width ? 4 : 4,
+          //3:4.8
           // childAspectRatio: 4.8,
         ),
         shrinkWrap: true,
