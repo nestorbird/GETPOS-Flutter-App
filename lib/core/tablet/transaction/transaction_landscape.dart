@@ -140,13 +140,13 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
         controller: _scrollController,
         itemCount:
             state.hasReachedMax ? state.orders.length : state.orders.length + 1,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 10,
-          childAspectRatio: Get.height > Get.width ? 4 : 4,
+         // childAspectRatio: Get.height > Get.width ? 4 : 4, (this was used earlier)
           //3:4.8
-          // childAspectRatio: 4.8,
+           childAspectRatio: 5,
         ),
         shrinkWrap: true,
         primary: false,

@@ -20,8 +20,7 @@ class TransactionItemLandscape extends StatelessWidget {
     return InkWell(
       onTap: () => _handleOrderDetails(),
       child: Container(
-       // width: 200,
-       // height: 80,
+       
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.shadowBorder!, width: 0.4),
           borderRadius: BorderRadius.circular(8),
@@ -66,7 +65,7 @@ class TransactionItemLandscape extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 4,
+              flex: 6,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [

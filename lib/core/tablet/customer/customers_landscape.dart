@@ -47,7 +47,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
       child: Column(
         children: [
           TitleAndSearchBar(
-            title: "Customerss",
+            title: "Customer",
             keyboardType: TextInputType.number,
             onSubmit: (text) {
               if (text.isNotEmpty) {
@@ -86,7 +86,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
           crossAxisCount: 2,
           mainAxisSpacing: 10,
           crossAxisSpacing: 10,
-          childAspectRatio: 6.5,
+          childAspectRatio: 5,
         ),
         shrinkWrap: true,
         physics: const ScrollPhysics(),

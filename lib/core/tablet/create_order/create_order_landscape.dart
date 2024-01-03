@@ -302,7 +302,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                   child: Container(
                                     margin: paddingXY(x: 5, y: 20),
                                     padding: paddingXY(y: 0, x: 10),
-                                    width: 145,
+                                    width: 145, //to do here
                                     height: 90,
                                     decoration: BoxDecoration(
                                         color: AppColors.fontWhiteColor,
