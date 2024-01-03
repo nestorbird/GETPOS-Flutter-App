@@ -20,6 +20,8 @@ class TransactionItemLandscape extends StatelessWidget {
     return InkWell(
       onTap: () => _handleOrderDetails(),
       child: Container(
+       // width: 200,
+       // height: 80,
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.shadowBorder!, width: 0.4),
           borderRadius: BorderRadius.circular(8),
@@ -38,9 +40,9 @@ class TransactionItemLandscape extends StatelessWidget {
                     order.customer.name,
                      overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                        fontSize: MEDIUM_PLUS_FONT_SIZE, fontWeight: FontWeight.w600),
+                        fontSize: MEDIUM_PLUS_FONT_SIZE, fontWeight: FontWeight.w800),
                   ),
-                  hightSpacer10,
+                  hightSpacer5,
                   Text(
                     order.customer.phone.isEmpty
                         ? "9090909090"
@@ -58,9 +60,9 @@ class TransactionItemLandscape extends StatelessWidget {
               child: Text(
                 '$appCurrency ${order.orderAmount}',
                 style: getTextStyle(
-                    fontSize: LARGE_MINUS_FONT_SIZE,
+                    fontSize: MEDIUM_PLUS_FONT_SIZE,
                     color: AppColors.getPrimary(),
-                    fontWeight: FontWeight.w900),
+                    fontWeight: FontWeight.w800),
               ),
             ),
             Expanded(
@@ -73,17 +75,20 @@ class TransactionItemLandscape extends StatelessWidget {
                     overflow: TextOverflow.clip,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        fontWeight: FontWeight.w900),
+                        fontWeight: FontWeight.w600),
                   ),
-                  hightSpacer10,
+                  hightSpacer5,
                   Text(
                     // '27th Jul 2021, 11:00AM ',
                     '${order.date} ${order.time}',
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.center,
+                    
+                    
                     style: getTextStyle(
-                        fontSize: MEDIUM_MINUS_FONT_SIZE,
-                        fontWeight: FontWeight.w900),
+                        fontSize: MEDIUM_FONT_SIZE,
+                        color: const Color(0xFF707070),
+                        fontWeight: FontWeight.w500),
                   ),
                 ],
               ),

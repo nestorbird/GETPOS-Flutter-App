@@ -69,7 +69,9 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
             Text(
               widget.title,
               style: getTextStyle(
-                  fontSize: LARGE_PLUS_FONT_SIZE, color: AppColors.getTextandCancelIcon()),
+                  fontSize: EXTRA_LARGE_FONT_SIZE,
+                  fontWeight: FontWeight.w800,
+                   color: AppColors.getTextandCancelIcon()),
             ),
             const Spacer(),
             Visibility(
@@ -133,7 +135,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
           // width: double.infinity,
           child: ButtonWidget(
             onPressed: () => widget.parkOrderClicked!(),
-            title: "Parked Order",
+            title: "Parked Orders",
             colorTxt: AppColors.fontWhiteColor,
             primaryColor: AppColors.getTextandCancelIcon(),
             width: 200,
