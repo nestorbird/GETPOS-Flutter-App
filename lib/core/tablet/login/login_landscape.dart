@@ -110,6 +110,11 @@ class _LoginLandscapeState extends State<LoginLandscape> {
 
   /// HANDLE LOGIN BTN ACTION
   Future<void> login(String email, String password, String url) async {
+    if (email.isEmpty) {
+      Helper.showPopup(context, "Please Enter Email");
+    } else if (password.isEmpty) {
+      Helper.showPopup(context, "Please Enter Password");
+    } else {
     try {
       Helper.showLoaderDialog(context);
       CommanResponse response = await LoginService.login(email, password, url);
@@ -119,7 +124,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             await HubManagerDetails().getAccountDetails();
           // Start isolate with background processing and pass the receivePort
 
-          // to add the parameter appdocumentary.path
+         
           bool isSuccess = await useIsolate();
           if (isSuccess) {
             // Once the signal is received, navigate to ProductListHome
@@ -132,25 +137,14 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           if (!mounted) return;
           Helper.hideLoader(context);
           Helper.showPopup(context, response.message!);
-        }
-
-
-      // if (response.status!) {
-      //   //Adding static data into the database
-      //   // await addDataIntoDB();
-      //   useIsolate()
-      //   if (!mounted) return;
-      //   Helper.hideLoader(ctx);
-      //   Get.offAll(() => HomeTablet());
-      // } else {
-      //   if (!mounted) return;
-      //   Helper.hideLoader(ctx);
-      //   Helper.showPopup(ctx, response.message!);
-      // }
+        } 
     } catch (e) {
+      // ignore: use_build_context_synchronously
       Helper.hideLoader(ctx);
       log('Exception Caught :: $e');
+      // ignore: use_build_context_synchronously
       Helper.showSnackBar(context, SOMETHING_WRONG);
+    }
     }
   }
 
@@ -403,7 +397,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
 
   ///Method to check whether the API URL is correct.
   bool isValidInstanceUrl() {
-    String url = "https://${_urlCtrl.text}/api/";
+    url = "https://$url/api/";
     return Helper.isValidUrl(url);
   }
 

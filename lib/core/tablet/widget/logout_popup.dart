@@ -1,6 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_sale_order.dart';
+import 'package:nb_posx/utils/helper.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 
@@ -43,12 +49,12 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         ),
       );
 
-  Future<void> handleLogout() async {
-    await SyncHelper().logoutFlow();
-    Get.offAll(() => const LoginLandscape());
-  }
+  // Future<void> handleLogout() async {
+  //   await SyncHelper().logoutFlow();
+  //   Get.offAll(() => const LoginLandscape());
+  // }
 
-  @override
+ @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: 400,
@@ -71,4 +77,74 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
       ),
     );
   }
+
+
+ Future<void> handleLogout() async {
+   var offlineOrders = await DbSaleOrder().getOfflineOrders();
+  // var offlineOrders = await DbSaleOrder().getOrders();
+    if (offlineOrders.isEmpty) {
+      if (!mounted) return;
+      var res = await Helper.showConfirmationPopup(
+          context, LOGOUT_QUESTION, OPTION_YES,
+          hasCancelAction: true);
+      if (res != OPTION_CANCEL.toLowerCase()) {
+        //check this later
+      // await SyncHelper().logoutFlow();
+
+      await fetchMasterAndDeleteTransaction();
+      }
+    } else {
+      if (!mounted) return;
+ bool isInternetAvailable = await Helper.isNetworkAvailable();
+      var res= await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+      if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
+       
+var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+ 
+if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
+  // await   _checkForSyncNow();
+ //for testing only : await fetchDataAndNavigate();
+  // await fetchMasterAndDeleteTransaction();
+ var response = await SyncHelper().syncNowFlow();
+ 
+ if(response == true) {
+  
+  // ignore: use_build_context_synchronously
+  Get.offAll(() => const LoginLandscape());
+ }
+  await DbSaleOrder().modifySevenDaysOrdersFromToday();
+
+} 
+      }
+    }
+  }
+
+
+ 
+   Future<void> fetchMasterAndDeleteTransaction() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the transactional data
+    // await DBPreferences().deleteTransactionData;
+       await DbCustomer().deleteCustomer(DeleteCustomers);
+       await DbSaleOrder().delete();
+      log("Cleared the transactional data");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+       Get.offAll(() => const LoginLandscape());
+ 
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
+    }
+  }
+
 }

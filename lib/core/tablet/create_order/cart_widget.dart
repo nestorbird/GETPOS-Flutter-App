@@ -987,13 +987,11 @@ Widget _prodListSection(){
         List<OrderTaxes> taxesData = [];
 
         message.tax.forEach((tax) async {
-          double taxAmount =  totalAmount * tax.taxRate / 100;
+          double taxAmount = totalAmount! * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           taxTypeApplied = tax.taxType;
-// setState(() {
 
-// });
           log("Total Tax Amount orderwise : $totalTaxAmount");
           log('Total Amount Orderwise:: $totalAmount');
           taxesData.add(OrderTaxes(
@@ -1013,6 +1011,7 @@ Widget _prodListSection(){
         });
 
         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+        
       });
       setState(() {});
       log("Total Amount:: $totalAmount");
@@ -1026,12 +1025,11 @@ Widget _prodListSection(){
               'tax_amount': entry.value,
             })
         .toList();
-
-    grandTotal = totalAmount + totalTaxAmount;
     setState(() {});
+    grandTotal = totalAmount + totalTaxAmount;
     log('Grand Total:: $grandTotal');
-    // setState(() {});
   }
+
 
   void _updateOrderPriceAndSave() {
     for (OrderItem item in widget.order!.items) {

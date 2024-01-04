@@ -153,11 +153,11 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
             
             //to save the Url in DB
                   await DbInstanceUrl().saveUrl(_urlCtrl.text);
-
+  bool isInternetAvailable = await Helper.isNetworkAvailable();
                   String url = await DbInstanceUrl().getUrl();
                   //   String url = '${_urlCtrl.text}';
                   url = "https://${_urlCtrl.text}/api/";
-                  if (isValidInstanceUrl(url) == true) {
+                if (isValidInstanceUrl(url) == true && isInternetAvailable == true) {
                     pingPong(url);
                   } else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
@@ -184,12 +184,13 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
     }
   }
 
- Future<void> pingPong(String url) async {
+Future<void> pingPong(String url) async {
     //  String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';
     String apiUrl = '${url}method/ping';
     {
       try {
         final response = await http.get(Uri.parse(apiUrl));
+        log('Api url for ping pong: $apiUrl');
 
         if (response.statusCode == 200) {
           log('API Response:');
@@ -212,41 +213,38 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
     }
   }
 
-  Future<void> theme(String url) async {
+
+ Future<void> theme(String url) async {
     try {
       Helper.showLoaderDialog(context);
       //api theme path get and append
-      //  String apiUrl = "$BASE_URL$THEME_PATH";
-     
+
       String apiUrl = THEME_PATH;
       CommanResponse response = await ThemeService.fetchTheme(apiUrl);
       log('$response');
 
-      if (response.status!) {
-        //Adding static data into the database
-        // await addDataIntoDB();
-        log('$response');
-        //if (!mounted) return;
+      if (response.status != null && response.status!) {
+        // ignore: use_build_context_synchronously
         Helper.hideLoader(context);
-       
-         // ignore: use_build_context_synchronously
-         await Navigator.push(
+
+        log('url:$url');
+        // ignore: use_build_context_synchronously
+        await Navigator.push(
             context, MaterialPageRoute(builder: (context) => const LoginLandscape()));
-        
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
-        Helper.showPopup(context, response.message!);
-        // Navigator.pushReplacement(context,
-        //     MaterialPageRoute(builder: (context) => const Login()));
+        Helper.showPopup(context, response.message);
       }
     } catch (e) {
       // ignore: use_build_context_synchronously
       Helper.hideLoader(context);
       log('Exception Caught :: $e');
+
       debugPrintStack();
       // ignore: use_build_context_synchronously
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
   }
+  
 }
