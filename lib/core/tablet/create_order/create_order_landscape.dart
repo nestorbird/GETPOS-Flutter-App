@@ -71,12 +71,15 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Row(
+    //mainAxisAlignment: MainAxisAlignment.start,
+    //crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         
         SizedBox(
           width: size.width - 505,
         height: size.height,
           child: Column(
+            
             children: [ TitleAndSearchBar(
                   title: "Choose Category",
                   onSubmit: (text) {
@@ -302,7 +305,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                   child: Container(
                                     margin: paddingXY(x: 5, y: 20),
                                     padding: paddingXY(y: 0, x: 10),
-                                    width: 145, //to do here
+                                    width: 175, //to do here
                                     height: 90,
                                     decoration: BoxDecoration(
                                         color: AppColors.fontWhiteColor,

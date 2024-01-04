@@ -33,7 +33,7 @@ class TitleAndSearchBar extends StatefulWidget {
       required this.title,
       this.searchHint,
       this.searchCtrl,
-      this.searchBoxWidth = 330,
+      this.searchBoxWidth = 360,//330
       this.searchBoxVisible = true,
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
@@ -64,7 +64,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(
-              width: 20,
+              width: 3,
             ),
             Text(
               widget.title,

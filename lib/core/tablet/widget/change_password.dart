@@ -43,7 +43,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
         width: 400,
         child: Column(
           children: [
-            hightSpacer50,
+       
             hightSpacer50,
             SizedBox(
               height: 60,

@@ -35,7 +35,7 @@ class HomeTablet extends StatelessWidget {
           LeftSideMenu(selectedView: selectedTab),
           Container(
             color: const Color(0xFFF9F8FB),
-            padding: paddingXY(),
+            padding: paddingXY(x:10),
             child: Obx(() => SizedBox(
                   width: size.width - 100,
                   height: size.height,

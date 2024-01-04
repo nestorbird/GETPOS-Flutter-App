@@ -61,6 +61,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
+        
         children: [
           Align(
             alignment: Alignment.topRight,
@@ -80,7 +81,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
             child: Column(
               children: [
                 Container(
@@ -102,7 +103,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                         }
                       },
                     )),
-                hightSpacer20,
+                hightSpacer10,
                 customer != null
                     ? CustomerTile(
                         isCheckBoxEnabled: false,
@@ -135,8 +136,8 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                           )
                         : Container(
                             width: 380,
-                            height: 65,
-                            margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+                            height: 90,//65
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                             padding: mediumPaddingAll(),
                             decoration: BoxDecoration(
                               color:  AppColors.getPrimary().withOpacity(0.05),
@@ -146,7 +147,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                                 color:  AppColors.getPrimary().withOpacity(0.4),
                               ),
                             )),
-                hightSpacer40,
+                hightSpacer10,
                 InkWell(
                   onTap: () {
                     log(customer.toString());
@@ -158,7 +159,7 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   },
                   child: Container(
                     width: 380,
-                    height: 50,
+                    height: 48,
                     decoration: BoxDecoration(
                       color: searchCtrl.text.length == 10
                           ?  AppColors.getPrimary()
