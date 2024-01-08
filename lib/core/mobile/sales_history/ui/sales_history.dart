@@ -143,7 +143,8 @@ class _SalesHistoryState extends State<SalesHistory> {
    // orderFromLocalDB = await DbSaleOrder().getAllOrders();
 
     offlineOrders = orderFromLocalDB.reversed.toList();
-
+// ignore: use_build_context_synchronously
+//Helper.hideLoader(context);
     setState(() {});
   }
 
@@ -173,9 +174,10 @@ class _SalesHistoryState extends State<SalesHistory> {
 
   ///Function to fetch the offline orders from db, which is not synced.
   Future<void> getOfflineOrdersFromDb() async {
+  
     orderFromLocalDB = await DbSaleOrder().getOfflineOrders();
     offlineOrders = orderFromLocalDB.reversed.toList();
-
+//Helper.hideLoader(context);
     setState(() {});
   }
 

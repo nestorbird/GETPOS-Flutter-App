@@ -956,6 +956,7 @@ Widget _prodListSection(){
             taxType: tax.taxType,
             taxRate: tax.taxRate,
             taxationAmount: taxAmount,
+            
           ));
 
           // Update the taxAmountMap for the current tax type

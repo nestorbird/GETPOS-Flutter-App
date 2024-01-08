@@ -114,8 +114,9 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
 
   _getOrderedProductImage() {
     if (isUserOnline &&
-        widget.product.productImageUrl != null &&
-        widget.product.productImageUrl!.isNotEmpty) {
+        widget.product.productImage.isEmpty &&
+        widget.product.productImageUrl!.isEmpty) {
+          //To check when images are needed
       log('Image Url : ${widget.product.productImageUrl!}');
       return ClipRRect(
         borderRadius: BorderRadius.circular(8), // Image border

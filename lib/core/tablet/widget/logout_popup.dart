@@ -135,9 +135,11 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
 
 //   }
 Future<void> handleLogout() async {
-  var offlineOrders = await DbSaleOrder().getOfflineOrders();
 
-  if (offlineOrders.isEmpty) {
+  var offlineOrders = await DbSaleOrder().getOfflineOrders();
+ bool isInternetAvailable = await Helper.isNetworkAvailable();
+  if (offlineOrders.isEmpty &&  isInternetAvailable== true) {
+      Navigator.pop(context);
     if (!mounted) return;
     var res = await Helper.showConfirmationPopup(
         context, LOGOUT_QUESTION, OPTION_YES,
@@ -149,35 +151,83 @@ Future<void> handleLogout() async {
   } else {
     if (!mounted) return;
  // Navigator.pop(context);
+// Navigator.of(context, rootNavigator: true).pop();
+
+  // Check internet connectivity
+   bool isInternetAvailable = await Helper.isNetworkAvailable();
     // Show the popup indicating presence of offline orders
+    if(offlineOrders.isNotEmpty && isInternetAvailable==false){
     var res = await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
 
-    if (res == OPTION_OK.toLowerCase()) {
-      // Check internet connectivity
-      bool isInternetAvailable = await Helper.isNetworkAvailable();
-      
-      if (!isInternetAvailable) {
-        // Show popup for no internet
-        var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
-        
+  //     if (res == OPTION_OK.toLowerCase() || isInternetAvailable == true) {
+  // var response = await SyncHelper().syncNowFlow();
+   
+  //       if (response == true ) {
+  //        // await DbSaleOrder().modifySevenDaysOrdersFromToday();
+  //        // await fetchMasterAndDeleteTransaction();
+  //         Get.offAll(() => const LoginLandscape());
+  //       }
+       
+  //       await DbSaleOrder().modifySevenDaysOrdersFromToday();
+  //     }
+    
+
+     // if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
+     
+      // Show popup for no internet
+      //  var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+        if (res ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
+         var response = await SyncHelper().syncNowFlow();
+
+          var res = await Helper.showConfirmationPopup(
+        context, LOGOUT_QUESTION, OPTION_YES,
+        hasCancelAction: true);
+
+    if (res != OPTION_CANCEL.toLowerCase()) {
+      await fetchMasterAndDeleteTransaction();
+    }
+         
        // if (resp == OPTION_OK.toLowerCase()) {
           // Handle the action if the user chooses to continue without internet
           // This could be showing them how to get online or any other action
       //  }
      // } else {
         // If internet is available after acknowledging the offline orders, synchronize
-        var response = await SyncHelper().syncNowFlow();
+       
         
-        if (response == true &&resp == OPTION_OK.toLowerCase()&&  isInternetAvailable) {
+        if (response == true ) {
+         // await DbSaleOrder().modifySevenDaysOrdersFromToday();
+         // await fetchMasterAndDeleteTransaction();
           Get.offAll(() => const LoginLandscape());
         }
        
         await DbSaleOrder().modifySevenDaysOrdersFromToday();
       }
+     }
+     else{
+       if ( isInternetAvailable) {
+         var response = await SyncHelper().syncNowFlow();
+         
+       // if (resp == OPTION_OK.toLowerCase()) {
+          // Handle the action if the user chooses to continue without internet
+          // This could be showing them how to get online or any other action
+      //  }
+     // } else {
+        // If internet is available after acknowledging the offline orders, synchronize
+       // var res = await Helper.showConfirmationPopup(context, OFFLINE_ORDER_SYNCED, OPTION_OK);
+        
+        if (response == true ) {
+         // await DbSaleOrder().modifySevenDaysOrdersFromToday();
+         // await fetchMasterAndDeleteTransaction();
+          Get.offAll(() => const LoginLandscape());
+        }
+       
+        await DbSaleOrder().modifySevenDaysOrdersFromToday();
+      }
+     }
     }
   }
 }
-
 
  
    Future<void> fetchMasterAndDeleteTransaction() async {
@@ -206,4 +256,4 @@ Future<void> handleLogout() async {
     }
   }
 
-}
+
