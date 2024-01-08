@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
@@ -109,7 +111,7 @@ class TransactionDetailsPopup extends StatelessWidget {
                 _getOrderDetails(),
                 hightSpacer20,
                 _promoCodeSection(),
-                _subtotalSection("Subtotal", "$appCurrency 0.00"),
+                _subtotalSection("Subtotal", "$appCurrency "),
                 _subtotalSection("Discount", "- $appCurrency 0.00",
                     isDiscount: true),
                 _subtotalSection("Tax (0%)", "$appCurrency 0.00"),
@@ -137,12 +139,24 @@ class TransactionDetailsPopup extends StatelessWidget {
                 child: Container(
                   width: 50,
                   height: 50,
-                  color:  AppColors.getPrimary(),
-                  child: Image.network(
+                   child: order.items.isEmpty
+                        ? Image.network(
                     order.items[index].productImageUrl ??
                         "assets/images/burgar_img.png",
                     fit: BoxFit.fill,
-                  ),
+                  )
+                        : Image.asset(
+                            NO_IMAGE,
+                            height: 45,
+                            width: 45,
+                          ),
+                 // color:  AppColors.getPrimary(),
+                //  child: SvgPicture.asset(NO_IMAGE),
+                  // child: Image.network(
+                  //   order.items[index].productImageUrl ??
+                  //       "assets/images/burgar_img.png",
+                  //   fit: BoxFit.fill,
+                  // ),
                 ),
               ),
               widthSpacer(15),

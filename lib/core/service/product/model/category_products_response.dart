@@ -78,6 +78,8 @@ class Items {
       json['attributes'].forEach((v) {
         attributes!.add(Attributes.fromJson(v));
       });
+    } else {
+      attributes = [];
     }
     image = json['image'] ?? "";
     if (json['tax'] != null && json['tax'] != '') {

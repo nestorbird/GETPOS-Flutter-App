@@ -40,7 +40,15 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
   Widget get logoutConfirmBtnWidget => SizedBox(
         // width: double.infinity,
         child: ButtonWidget(
-          onPressed: () => handleLogout(),
+          onPressed: ()
+             => handleLogout(),
+    //       {
+    //       // Close the current popup
+    //   Navigator.pop(context);
+      
+    //   // Call the handleLogout function
+    //   handleLogout();
+    // },
           title: "Logout",
           primaryColor:AppColors.getPrimary(),
           width: 150,
@@ -79,45 +87,96 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
   }
 
 
- Future<void> handleLogout() async {
-   var offlineOrders = await DbSaleOrder().getOfflineOrders();
-  // var offlineOrders = await DbSaleOrder().getOrders();
-    if (offlineOrders.isEmpty) {
-      if (!mounted) return;
-      var res = await Helper.showConfirmationPopup(
-          context, LOGOUT_QUESTION, OPTION_YES,
-          hasCancelAction: true);
-      if (res != OPTION_CANCEL.toLowerCase()) {
-        //check this later
-      // await SyncHelper().logoutFlow();
+//  Future<void> handleLogout() async {
+ 
+//    var offlineOrders = await DbSaleOrder().getOfflineOrders();
+//   // var offlineOrders = await DbSaleOrder().getOrders();
+//     if (offlineOrders.isEmpty) {
+     
+//       if (!mounted) return;
+//       var res = await Helper.showConfirmationPopup(
+//           context, LOGOUT_QUESTION, OPTION_YES,
+//           hasCancelAction: true);
+//       if (res != OPTION_CANCEL.toLowerCase()) {
+        
+//         //check this later
+//       // await SyncHelper().logoutFlow();
 
-      await fetchMasterAndDeleteTransaction();
-      }
-    } else {
-      if (!mounted) return;
- bool isInternetAvailable = await Helper.isNetworkAvailable();
-      var res= await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
-      if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
-       
-var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+//       await fetchMasterAndDeleteTransaction();
+//       }
+//     } else {
+//       if (!mounted) return;
+//  bool isInternetAvailable = await Helper.isNetworkAvailable();
+//   if (offlineOrders.isNotEmpty) {
+//    //Navigator.of(context, rootNavigator: true).pop('dialog');
+//    Navigator.pop(context);
+//       var res= await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+//       if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
+//       //  Navigator.of(context, rootNavigator: true).pop('dialog');
+// var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
  
-if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
-  // await   _checkForSyncNow();
- //for testing only : await fetchDataAndNavigate();
-  // await fetchMasterAndDeleteTransaction();
- var response = await SyncHelper().syncNowFlow();
+// if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
+//   // await   _checkForSyncNow();
+//  //for testing only : await fetchDataAndNavigate();
+//   // await fetchMasterAndDeleteTransaction();
+//  var response = await SyncHelper().syncNowFlow();
  
- if(response == true) {
+//  if(response== true) {
   
-  // ignore: use_build_context_synchronously
-  Get.offAll(() => const LoginLandscape());
- }
-  await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//   // ignore: use_build_context_synchronously
+//   Get.offAll(() => const LoginLandscape());
+//  }
+//   await DbSaleOrder().modifySevenDaysOrdersFromToday();
 
-} 
+// } 
+//       }
+//       }
+//     }
+
+//   }
+Future<void> handleLogout() async {
+  var offlineOrders = await DbSaleOrder().getOfflineOrders();
+
+  if (offlineOrders.isEmpty) {
+    if (!mounted) return;
+    var res = await Helper.showConfirmationPopup(
+        context, LOGOUT_QUESTION, OPTION_YES,
+        hasCancelAction: true);
+
+    if (res != OPTION_CANCEL.toLowerCase()) {
+      await fetchMasterAndDeleteTransaction();
+    }
+  } else {
+    if (!mounted) return;
+ // Navigator.pop(context);
+    // Show the popup indicating presence of offline orders
+    var res = await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+
+    if (res == OPTION_OK.toLowerCase()) {
+      // Check internet connectivity
+      bool isInternetAvailable = await Helper.isNetworkAvailable();
+      
+      if (!isInternetAvailable) {
+        // Show popup for no internet
+        var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+        
+       // if (resp == OPTION_OK.toLowerCase()) {
+          // Handle the action if the user chooses to continue without internet
+          // This could be showing them how to get online or any other action
+      //  }
+     // } else {
+        // If internet is available after acknowledging the offline orders, synchronize
+        var response = await SyncHelper().syncNowFlow();
+        
+        if (response == true &&resp == OPTION_OK.toLowerCase()&&  isInternetAvailable) {
+          Get.offAll(() => const LoginLandscape());
+        }
+       
+        await DbSaleOrder().modifySevenDaysOrdersFromToday();
       }
     }
   }
+}
 
 
  
