@@ -53,27 +53,13 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SvgPicture.asset(
-                  CROSS_ICON,
-                  color: AppColors.getTextandCancelIcon(),
-                  width: 20,
-                ),
+          Row(
+mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children:[
+              const SizedBox(
+                width: 50,
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
-            child: Column(
-              children: [
-                Text(
+               Text(
                   "Add Customer",
                   style: getTextStyle(
                       fontSize: LARGE_FONT_SIZE,
@@ -81,81 +67,98 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                       color: AppColors.getTextandCancelIcon()),
                 ),
                 hightSpacer10,
-                Container(
-                    width: 400,
-                    height: 35,
-                    padding: horizontalSpace(),
-                    child: TextFieldWidget(
-                      boxDecoration: txtFieldBorderDecoration,
-                      txtCtrl: phoneCtrl,
-                      hintText: "Enter phone no.",
-                      txtColor: AppColors.getAsset(),
-                    )),
-                hightSpacer10,
-                Container(
-                    width: 400,
-                     height: 35,
-                    padding: horizontalSpace(),
-                    child: TextFieldWidget(
-                      boxDecoration: txtFieldBorderDecoration,
-                      txtCtrl: nameCtrl,
-                      hintText: "Enter name",
-                      txtColor: AppColors.getAsset(),
-                    )),
-                hightSpacer10,
-                Container(
-                    width: 400,
-                     height: 35,
-                    padding: horizontalSpace(),
-                    child: TextFieldWidget(
-                      boxDecoration: txtFieldBorderDecoration,
-                      txtCtrl: emailCtrl,
-                      hintText: "Enter email (optional)",
-                      txtColor: AppColors.getAsset(),
-                    )),
-                hightSpacer10,
-                InkWell(
-                  onTap: () {
-                    _newCustomerAPI();
-                    customer = Customer(
-                        id: emailCtrl.text,
-                        name: nameCtrl.text,
-                        email: emailCtrl.text,
-                        phone: phoneCtrl.text,
-                        isSynced: false,
-                        modifiedDateTime: DateTime.now()
-                        // ward: Ward(id: "01", name: "name"),
-                        // profileImage: Uint8List.fromList([]),
-                        );
-                    if (customer != null) {
-                      Get.back(result: customer);
-                    }
-                  },
-                  child: Container(
-                    width: 380,
-                    height: 35,
-                    decoration: BoxDecoration(
-                      color: AppColors.getPrimary(),
-                      // phoneCtrl.text.length == 10 && nameCtrl.text.isNotEmpty
-                      //     ? MAIN_COLOR
-                      //     : MAIN_COLOR.withOpacity(0.3),
-                      // border: Border.all(width: 1, color: MAIN_COLOR.withOpacity(0.3)),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Add & Create order",
-                        textAlign: TextAlign.center,
-                        style: getTextStyle(
-                            fontSize: LARGE_FONT_SIZE,
-                            color: AppColors.fontWhiteColor,
-                            fontWeight: FontWeight.w600),
-                      ),
+             InkWell(
+               onTap: () {
+                 Get.back();
+               },
+               child: Padding(
+                 padding: const EdgeInsets.only(right: 10),
+                 child: SvgPicture.asset(
+                   CROSS_ICON,
+                   color: AppColors.getTextandCancelIcon(),
+                   width: 20,
+                 ),
+               ),
+             ),
+            ],
+          ),
+          Column(
+            children: [
+             
+              Container(
+                  width: 400,
+                  height: 38,
+                  padding: horizontalSpace(),
+                  child: TextFieldWidget(
+                    boxDecoration: txtFieldBorderDecoration,
+                    txtCtrl: phoneCtrl,
+                    hintText: "Enter phone no.",
+                    txtColor: AppColors.getAsset(),
+                  )),
+              hightSpacer10,
+              Container(
+                  width: 400,
+                   height: 38,
+                  padding: horizontalSpace(),
+                  child: TextFieldWidget(
+                    boxDecoration: txtFieldBorderDecoration,
+                    txtCtrl: nameCtrl,
+                    hintText: "Enter name",
+                    txtColor: AppColors.getAsset(),
+                  )),
+              hightSpacer10,
+              Container(
+                  width: 400,
+                   height: 38,
+                  padding: horizontalSpace(),
+                  child: TextFieldWidget(
+                    boxDecoration: txtFieldBorderDecoration,
+                    txtCtrl: emailCtrl,
+                    hintText: "Enter email (optional)",
+                    txtColor: AppColors.getAsset(),
+                  )),
+              hightSpacer10,
+              InkWell(
+                onTap: () {
+                  _newCustomerAPI();
+                  customer = Customer(
+                      id: emailCtrl.text,
+                      name: nameCtrl.text,
+                      email: emailCtrl.text,
+                      phone: phoneCtrl.text,
+                      isSynced: false,
+                      modifiedDateTime: DateTime.now()
+                      // ward: Ward(id: "01", name: "name"),
+                      // profileImage: Uint8List.fromList([]),
+                      );
+                  if (customer != null) {
+                    Get.back(result: customer);
+                  }
+                },
+                child: Container(
+                  width: 380,
+                  height: 35,
+                  decoration: BoxDecoration(
+                    color: AppColors.getPrimary(),
+                    // phoneCtrl.text.length == 10 && nameCtrl.text.isNotEmpty
+                    //     ? MAIN_COLOR
+                    //     : MAIN_COLOR.withOpacity(0.3),
+                    // border: Border.all(width: 1, color: MAIN_COLOR.withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Add & Create order",
+                      textAlign: TextAlign.center,
+                      style: getTextStyle(
+                          fontSize: LARGE_FONT_SIZE,
+                          color: AppColors.fontWhiteColor,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
