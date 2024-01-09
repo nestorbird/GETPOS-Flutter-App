@@ -41,14 +41,14 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         // width: double.infinity,
         child: ButtonWidget(
           onPressed: ()
-            // => handleLogout(),
-          {
-          // Close the current popup
-      Navigator.pop(context);
+             => handleLogout(),
+    //       {
+    //       // Close the current popup
+    //   Navigator.pop(context);
       
-      // Call the handleLogout function
-      handleLogout();
-    },
+    //   // Call the handleLogout function
+    //   handleLogout();
+    // },
           title: "Logout",
           primaryColor:AppColors.getPrimary(),
           width: 150,
@@ -150,7 +150,7 @@ Future<void> handleLogout() async {
     }
   } else {
     if (!mounted) return;
- // Navigator.pop(context);
+  Navigator.pop(context);
 // Navigator.of(context, rootNavigator: true).pop();
 
   // Check internet connectivity
@@ -206,8 +206,7 @@ Future<void> handleLogout() async {
      }
      else{
        if ( isInternetAvailable) {
-       //  var response = await SyncHelper().syncNowFlow();
-       await SyncHelper().syncNowFlow();
+         var response = await SyncHelper().syncNowFlow();
          
        // if (resp == OPTION_OK.toLowerCase()) {
           // Handle the action if the user chooses to continue without internet
@@ -217,7 +216,7 @@ Future<void> handleLogout() async {
         // If internet is available after acknowledging the offline orders, synchronize
        // var res = await Helper.showConfirmationPopup(context, OFFLINE_ORDER_SYNCED, OPTION_OK);
         
-       // if (response == true ) {
+        if (response == true ) {
          // await DbSaleOrder().modifySevenDaysOrdersFromToday();
          // await fetchMasterAndDeleteTransaction();
           Get.offAll(() => const LoginLandscape());
@@ -228,7 +227,7 @@ Future<void> handleLogout() async {
      }
     }
   }
-
+}
 
  
    Future<void> fetchMasterAndDeleteTransaction() async {
