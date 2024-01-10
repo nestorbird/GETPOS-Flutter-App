@@ -56,14 +56,15 @@ const WELCOME_BACK = 'Welcome Back,';
 const SYNC_NOW_TXT = 'Sync now';
 const CREATE_ORDER_TXT = 'Create Order'; //Create Order Screen
 const PRODUCTS_TXT = 'Products';
-const CUSTOMERS_TXT = 'Customers';
+const CUSTOMERS_TXT = 'Select Customer';
+const CUSTOMER_TXT = 'Customers';
 const MY_ACCOUNT_TXT = 'My Account';
 const SALES_HISTORY_TXT = 'Order History';
 const FINANCE_TXT = 'Finance';
 
 //CREATE ORDER SCREEN
 
-const SELECT_CUSTOMER_TXT = 'Select Customer'; //Select Customer Screen
+const SELECT_CUSTOMER_TXT = 'Select Customers'; //Select Customer Screen
 const ADD_PRODUCT_TXT = 'Add Product';
 const OUT_OF_STOCK = 'Out of stock'; //Create Order Screen
 const ITEMS_TXT = 'Items';

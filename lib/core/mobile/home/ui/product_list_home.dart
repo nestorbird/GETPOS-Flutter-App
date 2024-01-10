@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
@@ -201,7 +202,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InkWell(
-                                  onTap: () => Navigator.pop(context),
+                                  onTap: () {
+                                 Navigator.of(context).pop();
+                                  print(Navigator.of(context).toString());
+                                  },
+                                
+                                   
+                                  
                                   child: Padding(
                                     padding: smallPaddingAll(),
                                     child: SvgPicture.asset(
@@ -210,7 +217,9 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       width: 25,
                                     ),
                                   ),
+                                  
                                 ),
+                                
                                 Text(
                                   _selectedCust != null
                                       ? _selectedCust!.name
@@ -684,7 +693,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                       mainAxisSpacing: 4.0),
                   itemBuilder: ((context, itemPosition) {
                     return GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           final state = _key.currentState;
                           if (state != null) {
                             debugPrint('isOpen:${state.isOpen}');
@@ -708,8 +717,30 @@ class _ProductListHomeState extends State<ProductListHome> {
                                   context, 'Sorry, item is not in stock.');
                             }
                           } else {
-                            Helper.showPopup(
-                                context, "Please select customer first");
+                            if(!widget.isForNewOrder){
+                           var cust = await Navigator.push(
+                                      context,
+                                       MaterialPageRoute(
+          builder: (context) => const ProductListHome(isForNewOrder: true,) ,
+
+        ),
+      );
+      print(Navigator.of(context).toString());
+
+       _key.currentState!.toggle();
+       print("Customer :: $cust");
+        if (cust != null) {
+      //getProducts();
+      print("Is New Order :: ${widget.isForNewOrder}");
+      setState(() {
+        _selectedCust = cust;
+      });
+    } else {
+      if (!mounted) return;
+      Navigator.pop(context);
+    }
+                            // Helper.showPopup(
+                            //     context, "Please select customer first");
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               ShowCaseWidget.of(context)
                                   .startShowCase([_focusKey]);
@@ -717,6 +748,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                             setState(() {
                               _scrollController.jumpTo(0);
                             });
+                         }
                           }
                         },
                         child: ColorFiltered(

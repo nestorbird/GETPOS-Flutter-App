@@ -11,6 +11,8 @@ import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
+import 'package:nb_posx/core/service/product/model/category_products_response.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
@@ -80,6 +82,7 @@ class _CartScreenState extends State<CartScreen> {
   late List<OrderTax>? getTaxesOrderwise;
   late List<OrderTaxTemplate>? getOrderTemplate;
    List<CouponCode> couponCodes = [];
+  List<OrderTaxes> taxesData = [];
 
   @override
   void initState() {
@@ -751,6 +754,19 @@ class _CartScreenState extends State<CartScreen> {
       log('Time : $time');
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
+
+    // DbOrderTax dbOrderTax = DbOrderTax();
+
+    // var OrderWisetax = await dbOrderTax.getOrderTaxes();
+    // OrderTax orderTax = OrderTax(
+    //   itemTaxTemplate: OrderWise
+    //   taxRate: Order
+
+
+    // ) 
+//await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
+
       DbHubManager dbHubManager = DbHubManager();
 
       var hubManagerData = await dbHubManager.getManager();
@@ -778,10 +794,10 @@ class _CartScreenState extends State<CartScreen> {
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
           tracsactionDateTime: currentDateTime,
-          taxes: widget.order.taxes);
+          taxes: savedTaxes);
       if (!mounted) return;
 
-      Navigator.pushReplacement(
+      Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) =>

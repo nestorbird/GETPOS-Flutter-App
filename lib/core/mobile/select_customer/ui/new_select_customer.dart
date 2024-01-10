@@ -22,6 +22,7 @@ import '../../../service/select_customer/api/create_customer.dart';
 import '../../../service/select_customer/api/get_customer.dart';
 
 class NewSelectCustomer extends StatefulWidget {
+ 
   const NewSelectCustomer({Key? key}) : super(key: key);
 
   @override

@@ -33,7 +33,8 @@ class CustomAppbar extends StatelessWidget {
           ? Row(
               children: [
                 InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () =>Navigator.of(context).pop(),
+                  // Navigator.pop(context),
                   child: Padding(
                     padding: smallPaddingAll(),
                     child: SvgPicture.asset(

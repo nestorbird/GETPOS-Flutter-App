@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
 
 import '../../constants/app_constants.dart';
 import '../models/order_item.dart';
@@ -209,4 +210,21 @@ class DbSaleOrder {
 
     return list;
   }
-}
+
+  Future<List> getOrderWiseTaxes(orderId, List<OrderTaxes> list) async{
+     box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+    List<OrderTax> list = [];
+
+    for (var item in box.values) {
+      var tax = item as OrderTax;
+     
+      var product = item as OrderItem;
+
+      if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
+        list.add(tax);
+      }
+    }
+    return list;
+  }
+  }
+

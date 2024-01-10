@@ -48,7 +48,9 @@ class _CustomersState extends State<Customers> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomAppbar(title: CUSTOMERS_TXT, hideSidemenu: true),
+            // ignore: unnecessary_string_interpolations
+           // AppBar(title: const Text("$CUSTOMERS_TXT"),leading: IconButton(icon: BackButton, onPressed: () {  },),)
+              const CustomAppbar(title: CUSTOMER_TXT, hideSidemenu: true),
               hightSpacer30,
               Padding(
                 padding: horizontalSpace(),
