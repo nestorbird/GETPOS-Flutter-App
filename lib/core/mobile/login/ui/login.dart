@@ -136,9 +136,9 @@ class _LoginState extends State<Login> {
 
         if (response.status!) {
           log("$response");
-            await HubManagerDetails().getAccountDetails();
+          await HubManagerDetails().getAccountDetails();
           // Start isolate with background processing and pass the receivePort
-          bool isSuccess = await useIsolate(isUserLoggedIn: isUserLoggedIn);
+          bool isSuccess = await useIsolate(isUserLoggedIn: true);
           if (isSuccess) {
             // Once the signal is received, navigate to ProductListHome
             await Navigator.push(
@@ -270,7 +270,7 @@ class _LoginState extends State<Login> {
             onTap: () {
               _emailCtrl.clear();
               _passCtrl.clear();
-           
+
               fetchDataAndNavigate();
 
               //Navigator.push(context,
@@ -393,9 +393,9 @@ class _LoginState extends State<Login> {
       //to save the url
       await DbInstanceUrl().saveUrl(url);
       log("Saved Url:$url");
-// while changing instance 
-        SyncHelper().logoutFlow();
-    
+// while changing instance
+      SyncHelper().logoutFlow();
+
       // ignore: use_build_context_synchronously
       await Navigator.pushAndRemoveUntil(
           context,

@@ -51,28 +51,16 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.topRight,
-            child: InkWell(
-              onTap: () {
-                Get.back();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SvgPicture.asset(
-                  CROSS_ICON,
-                  color: AppColors.getTextandCancelIcon(),
-                  width: 20,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 0),
-            child: Column(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                const SizedBox(
+                  width: 50.0,
+                ),
                 Text(
                   "Add Customer",
                   style: getTextStyle(
@@ -80,10 +68,51 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                       fontWeight: FontWeight.bold,
                       color: AppColors.getTextandCancelIcon()),
                 ),
-                hightSpacer10,
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: SvgPicture.asset(
+                      CROSS_ICON,
+                      color: AppColors.getTextandCancelIcon(),
+                      width: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            // Align(
+            //   alignment: Alignment.topRight,
+            //   child: InkWell(
+            //     onTap: () {
+            //       Get.back();
+            //     },
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(right: 10),
+            //       child: SvgPicture.asset(
+            //         CROSS_ICON,
+            //         color: AppColors.getTextandCancelIcon(),
+            //         width: 20,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+
+            Column(
+              children: [
+                // Text(
+                //   "Add Customer",
+                //   style: getTextStyle(
+                //       fontSize: LARGE_FONT_SIZE,
+                //       fontWeight: FontWeight.bold,
+                //       color: AppColors.getTextandCancelIcon()),
+                // ),
+                // hightSpacer10,
                 Container(
                     width: 400,
-                    height: 35,
+                    height: 38,
                     padding: horizontalSpace(),
                     child: TextFieldWidget(
                       boxDecoration: txtFieldBorderDecoration,
@@ -94,7 +123,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                 hightSpacer10,
                 Container(
                     width: 400,
-                     height: 35,
+                    height: 38,
                     padding: horizontalSpace(),
                     child: TextFieldWidget(
                       boxDecoration: txtFieldBorderDecoration,
@@ -105,7 +134,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                 hightSpacer10,
                 Container(
                     width: 400,
-                     height: 35,
+                    height: 38,
                     padding: horizontalSpace(),
                     child: TextFieldWidget(
                       boxDecoration: txtFieldBorderDecoration,
@@ -156,8 +185,8 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -31,7 +31,7 @@ import '../../transaction_history/view/transaction_screen.dart';
 
 class ProductListHome extends StatefulWidget {
   final bool isForNewOrder;
-  
+
   final ParkOrder? parkedOrder;
   const ProductListHome(
       {super.key, this.isForNewOrder = false, this.parkedOrder});
@@ -50,6 +50,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   HubManager? manager;
   late String managerName = '';
   //bool _isFABOpened = false;
+  bool isInternetAvailable = false;
   ParkOrder? parkOrder;
   Customer? _selectedCust;
   final _scrollController = ScrollController();
@@ -77,26 +78,25 @@ class _ProductListHomeState extends State<ProductListHome> {
 
   @override
   void initState() {
-     super.initState();
-     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    _getManagerName();
+    super.initState();
+    checkInternetAvailability();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _getManagerName();
 
-    
-    getProducts();
-    // _height = MediaQuery.of(context).size.height;
-    _searchTxtController = TextEditingController();
-    if (widget.parkedOrder != null) {
-      parkOrder = widget.parkedOrder;
-      _selectedCust = widget.parkedOrder!.customer;
-    }
-    if (widget.isForNewOrder && _selectedCust == null) {
-      Future.delayed(Duration.zero, () => goToSelectCustomer()); 
-      
-    }
-      });
+      getProducts();
+      // _height = MediaQuery.of(context).size.height;
+      _searchTxtController = TextEditingController();
+      if (widget.parkedOrder != null) {
+        parkOrder = widget.parkedOrder;
+        _selectedCust = widget.parkedOrder!.customer;
+      }
+      if (widget.isForNewOrder && _selectedCust == null) {
+        Future.delayed(Duration.zero, () => goToSelectCustomer());
+      }
+    });
+
     // _getManagerName();
 
-    
     // getProducts();
     // // _height = MediaQuery.of(context).size.height;
     // _searchTxtController = TextEditingController();
@@ -107,9 +107,20 @@ class _ProductListHomeState extends State<ProductListHome> {
     // if (widget.isForNewOrder && _selectedCust == null) {
     //   Future.delayed(Duration.zero, () => goToSelectCustomer());
     // }
-   
   }
-  
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -158,8 +169,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                               fontWeight: FontWeight.w500,
                                             )),
                                         hightSpacer5,
-                                        Text( manager != null ?
-                                          manager!.name : "",
+                                        Text(
+                                          manager != null ? manager!.name : "",
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
                                               color: AppColors.secondary),
@@ -337,22 +348,33 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                 Clip.antiAliasWithSaveLayer,
                                             decoration: const BoxDecoration(
                                                 shape: BoxShape.circle),
-                                            child: categories[position]
-                                                    .items
-                                                    .first
-                                                    .productImage
-                                                    .isEmpty
-                                                ? Image.asset(
-                                                    NO_IMAGE,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                : Image.memory(
+                                            child: (isInternetAvailable &&
                                                     categories[position]
                                                         .items
                                                         .first
-                                                        .productImage,
+                                                        .productImageUrl!
+                                                        .isNotEmpty)
+                                                ? Image.network(
+                                                    categories[position]
+                                                        .items
+                                                        .first
+                                                        .productImageUrl!,
                                                     fit: BoxFit.fill,
-                                                  ),
+                                                  )
+                                                : (isInternetAvailable &&
+                                                        categories[position]
+                                                            .items
+                                                            .first
+                                                            .productImage
+                                                            .isEmpty)
+                                                    ? Image.asset(
+                                                        NO_IMAGE,
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                    : Image.asset(
+                                                        NO_IMAGE,
+                                                        fit: BoxFit.fill,
+                                                      ),
                                           ),
                                           hightSpacer10,
                                           Text(
@@ -386,7 +408,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                         //       );
                         //     }
                         //   },
-                        // ),a
+                        // ),
                         categories.isEmpty
                             ? const Center(
                                 child: Text(
@@ -708,8 +730,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                                   context, 'Sorry, item is not in stock.');
                             }
                           } else {
-                            Helper.showPopup(
-                                context, "Please select customer first");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ProductListHome(
+                                        isForNewOrder: true)));
+                            // Helper.showPopup(
+                            //     context, "Please select customer first");
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               ShowCaseWidget.of(context)
                                   .startShowCase([_focusKey]);
@@ -823,6 +850,10 @@ class _ProductListHomeState extends State<ProductListHome> {
           );
         }));
   }
+
+  // Future<bool> isInternetAvailable() async {
+  //  return await Helper.isNetworkAvailable();
+  // }
 
   Future<void> getProducts() async {
     //Fetching data from DbProduct database

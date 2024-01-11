@@ -10,7 +10,7 @@ import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
 
-import '../../../../../configs/theme_config.dart';
+
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../network/api_helper/comman_response.dart';
@@ -22,7 +22,7 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import '../../../database/db_utils/db_instance_url.dart';
-import '../../../network/api_constants/api_paths.dart';
+
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
 import '../../service/login/api/login_api_service.dart';
@@ -47,10 +47,10 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "akshay@yopmail.com";
-    _passCtrl.text = "Qwerty@123";
-   // _urlCtrl.text = instanceUrl;
-     _getUrlKey();
+    _emailCtrl.text = "";
+    _passCtrl.text = "";
+    // _urlCtrl.text = instanceUrl;
+    _getUrlKey();
 
     // _getAppVersion();
   }
@@ -93,8 +93,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                         hightSpacer20,
                         forgotPasswordSection(),
                         hightSpacer20,
-                         changeInstanceUrlSection(),
-                         hightSpacer20,
+                        changeInstanceUrlSection(),
+                        hightSpacer20,
                         termAndPolicySection,
                         hightSpacer32,
                         loginBtnWidget(),
@@ -115,20 +115,20 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     } else if (password.isEmpty) {
       Helper.showPopup(context, "Please Enter Password");
     } else {
-    try {
-      Helper.showLoaderDialog(context);
-      CommanResponse response = await LoginService.login(email, password, url);
+      try {
+        Helper.showLoaderDialog(context);
+        CommanResponse response =
+            await LoginService.login(email, password, url);
 
- if (response.status!) {
+        if (response.status!) {
           log("$response");
-            await HubManagerDetails().getAccountDetails();
+          await HubManagerDetails().getAccountDetails();
           // Start isolate with background processing and pass the receivePort
 
-         
           bool isSuccess = await useIsolate();
           if (isSuccess) {
             // Once the signal is received, navigate to ProductListHome
-           Get.offAll(() => HomeTablet());
+            Get.offAll(() => HomeTablet());
           } else {
             // ignore: use_build_context_synchronously
             Helper.showSnackBar(context, "Synchronization failed");
@@ -137,14 +137,14 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           if (!mounted) return;
           Helper.hideLoader(context);
           Helper.showPopup(context, response.message!);
-        } 
-    } catch (e) {
-      // ignore: use_build_context_synchronously
-      Helper.hideLoader(ctx);
-      log('Exception Caught :: $e');
-      // ignore: use_build_context_synchronously
-      Helper.showSnackBar(context, SOMETHING_WRONG);
-    }
+        }
+      } catch (e) {
+        // ignore: use_build_context_synchronously
+        Helper.hideLoader(ctx);
+        log('Exception Caught :: $e');
+        // ignore: use_build_context_synchronously
+        Helper.showSnackBar(context, SOMETHING_WRONG);
+      }
     }
   }
 
@@ -261,8 +261,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         ],
       );
 
-      //CHANGE INSTANCE URL TEXTBOX SECTION
-       Widget changeInstanceUrlSection() => Row(
+  //CHANGE INSTANCE URL TEXTBOX SECTION
+  Widget changeInstanceUrlSection() => Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           InkWell(
@@ -289,7 +289,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       );
 
 //FETCH MASTER'S AND TRANSACTION
-       Future<void> fetchDataAndNavigate() async {
+  Future<void> fetchDataAndNavigate() async {
     // log('Entering fetchDataAndNavigate');
     try {
       // Fetch the URL
@@ -314,7 +314,6 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       log('Error: $e');
     }
   }
-
 
   /// TERM AND CONDITION SECTION
   Widget get termAndPolicySection => Padding(

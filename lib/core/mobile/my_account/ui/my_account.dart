@@ -30,6 +30,7 @@ import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../utils/ui_utils/text_styles/edit_text_hint_style.dart';
 import '../../../../../widgets/custom_appbar.dart';
+import '../../../../configs/local_notification_service.dart';
 import '../../change_password/ui/change_password.dart';
 import '../../login/ui/login.dart';
 
@@ -43,17 +44,17 @@ class MyAccount extends StatefulWidget {
 class _MyAccountState extends State<MyAccount> {
   String? name, email, phone, version;
   bool syncNowActive = true;
-bool isInternetAvailable =false;
+  bool isInternetAvailable = false;
   late Uint8List profilePic;
-SaleOrder? offlineOrderPlaced;
+  SaleOrder? offlineOrderPlaced;
   @override
   void initState() {
     super.initState();
 
     profilePic = Uint8List.fromList([]);
     getManagerName();
-
   }
+
   ///Function to fetch the hub manager account details
   getManagerName() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -128,7 +129,7 @@ SaleOrder? offlineOrderPlaced;
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const ChangePassword()));
@@ -162,51 +163,101 @@ SaleOrder? offlineOrderPlaced;
   }
 
   Future<void> handleLogout() async {
-   var offlineOrders = await DbSaleOrder().getOfflineOrders();
-  // var offlineOrders = await DbSaleOrder().getOrders();
-    if (offlineOrders.isEmpty) {
+    var offlineOrders = await DbSaleOrder().getOfflineOrders();
+    // var offlineOrders = await DbSaleOrder().getOrders();
+    bool isInternetAvailable = await Helper.isNetworkAvailable();
+
+    ///if there are no offline orders
+    ///scessfully logout
+    if (offlineOrders.isEmpty && isInternetAvailable) {
       if (!mounted) return;
       var res = await Helper.showConfirmationPopup(
           context, LOGOUT_QUESTION, OPTION_YES,
           hasCancelAction: true);
       if (res != OPTION_CANCEL.toLowerCase()) {
         //check this later
-      // await SyncHelper().logoutFlow();
-
-      await fetchMasterAndDeleteTransaction();
+        // await SyncHelper().logoutFlow();
+        await fetchMasterAndDeleteTransaction();
       }
-    } else {
+    }
+    // else if (isInternetAvailable == true) {
+    //   LocalNotificationService().showNotification(
+    //       id: 0,
+    //       title: 'Background Sync',
+    //       body: 'Please wait Background sync work in progess');
+    // }
+    else {
       if (!mounted) return;
- bool isInternetAvailable = await Helper.isNetworkAvailable();
-      var res= await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
-      if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
-       
-var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
- 
-if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
-  // await   _checkForSyncNow();
- //for testing only : await fetchDataAndNavigate();
-  // await fetchMasterAndDeleteTransaction();
- var response = await SyncHelper().syncNowFlow();
- 
- if(response == true) {
-  
-  // ignore: use_build_context_synchronously
-  await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const Login(),
-        ),
-      );
- }
-  await DbSaleOrder().modifySevenDaysOrdersFromToday();
 
-} 
+      ///there are offline orders
+      ///and internet is on
+      if (offlineOrders.isNotEmpty && isInternetAvailable == false) {
+        var res = await Helper.showConfirmationPopup(
+            context, OFFLINE_ORDER_MSG, OPTION_OK);
+        if (res == OPTION_OK.toLowerCase()) {
+          if (isInternetAvailable == true) {
+            LocalNotificationService().showNotification(
+                id: 0,
+                title: 'Background Sync',
+                body: 'Please wait Background sync work in progess');
+            var response = await SyncHelper().syncNowFlow();
+
+            if (response == true) {
+              // ignore: use_build_context_synchronously
+              await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Login(),
+                ),
+              );
+            }
+            await DbSaleOrder().modifySevenDaysOrdersFromToday();
+          } else {
+            // Navigator.of(context).pop();
+            // Navigator.pop(context);
+          }
+        }
+      } else {
+        if (isInternetAvailable) {
+          LocalNotificationService().showNotification(
+              id: 0,
+              title: 'Background Sync',
+              body: 'Please wait Background sync work in progess');
+          var response = await SyncHelper().syncNowFlow();
+
+          if (response == true) {
+            LocalNotificationService().showNotification(
+                id: 1,
+                title: 'Background Sync',
+                body: 'Background Sync completed.');
+
+            // ignore: use_build_context_synchronously
+            await fetchMasterAndDeleteTransaction();
+            // await Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const Login(),
+            //   ),
+            // );
+          }
+          await DbSaleOrder().modifySevenDaysOrdersFromToday();
+        } else {
+          // Navigator.of(context).pop();
+          // Navigator.pop(context);
+        }
+
+        // var resp = await Helper.showConfirmationPopup(
+        //     context, GET_ONLINE_MSG, OPTION_OK);
+
+        // if (res == OPTION_OK.toLowerCase() && isInternetAvailable) {
+        // await   _checkForSyncNow();
+        //for testing only : await fetchDataAndNavigate();
+        // await fetchMasterAndDeleteTransaction();
+
+        // }
       }
     }
   }
-
-
 
 // _checkForSyncNow() async {
 //  List< SaleOrder> offlineOrders =await DbSaleOrder().getOfflineOrders();
@@ -230,7 +281,7 @@ if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
 
 //     if (response.status!) {
 //       // Order synced successfully
-//       DbSaleOrder().createOrder(order); 
+//       DbSaleOrder().createOrder(order);
 //       log('Order synced and deleted from local storage');
 //       //If order synced successfully , delete transaction data
 //      await fetchMasterAndDeleteTransaction();
@@ -245,10 +296,6 @@ if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
 //   }
 // }
 
-
-
- 
-
   Future<void> fetchDataAndNavigate() async {
     // log('Entering fetchDataAndNavigate');
     try {
@@ -262,7 +309,7 @@ if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
       log("Saved Url:$url");
       // Navigate to a different screen
       // ignore: use_build_context_synchronously
-      await Navigator.pushReplacement(
+      await Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const Login(),
@@ -296,9 +343,9 @@ if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
       // Clear the transactional data
-    // await DBPreferences().deleteTransactionData;
-       await DbCustomer().deleteCustomer(DeleteCustomers);
-       await DbSaleOrder().delete();
+      // await DBPreferences().deleteTransactionData;
+      await DbCustomer().deleteCustomer(DeleteCustomers);
+      await DbSaleOrder().delete();
       log("Cleared the transactional data");
       //to save the url
       await DbInstanceUrl().saveUrl(url);
