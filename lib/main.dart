@@ -179,7 +179,7 @@ Future<void> init() async {
   }
 }
 
-Future<bool> useIsolate({bool? isUserLoggedIn}) async {
+Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
   var rootToken = RootIsolateToken.instance!;
   //WidgetsFlutterBinding.ensureInitialized();
   //final appDocumentDirectory = await getApplicationDocumentsDirectory();
@@ -187,7 +187,7 @@ Future<bool> useIsolate({bool? isUserLoggedIn}) async {
 // Hive.init(appDocumentDirectory.path);
 
   DartPluginRegistrant.ensureInitialized();
-  if (isUserLoggedIn!) {
+  if (isUserLoggedIn) {
     LocalNotificationService().showNotification(
         id: 0,
         title: 'Background Sync',

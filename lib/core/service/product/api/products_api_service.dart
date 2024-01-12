@@ -102,8 +102,8 @@ class ProductsService {
             await DBPreferences().savePreference(
                 PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
 
-            var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
-            //     var imageBytes = Uint8List.fromList([]);
+            //  var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+            var imageBytes = Uint8List.fromList([]);
 
             Product product = Product(
                 id: item.id!,
@@ -188,8 +188,8 @@ class ProductsService {
 
           if (product.image != null) {
             //Fetching image bytes (Uint8List) from image url
-            //image = await Helper.getImageBytesFromUrl(product.image!);
-            image = Uint8List.fromList([]);
+            image = await Helper.getImageBytesFromUrl(product.image!);
+            // image = Uint8List.fromList([]);
           }
 
           //Creating object for product

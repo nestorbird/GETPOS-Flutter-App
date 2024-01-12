@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/constants/asset_paths.dart';
+import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
@@ -30,13 +32,14 @@ class HomeLandscapeState extends State<HomeLandscape> {
   List<Product> products = [];
   List<Category> categories = [];
   ParkOrder? parkOrder;
+  bool isInternetAvailable = true;
 
   @override
   void initState() {
     searchCtrl = TextEditingController();
     super.initState();
     getProducts();
-    
+    checkInternetAvailability();
   }
 
   @override
@@ -45,10 +48,21 @@ class HomeLandscapeState extends State<HomeLandscape> {
     super.dispose();
   }
 
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return 
-    SingleChildScrollView  (
+    return SingleChildScrollView(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,8 +170,34 @@ class HomeLandscapeState extends State<HomeLandscape> {
                             SizedBox(
                               height: 60,
                               width: 60,
-                              child:
-                                  Image.memory(cat.items[index].productImage),
+                              child: (isInternetAvailable &&
+                                      categories[index]
+                                          .items
+                                          .first
+                                          .productImageUrl!
+                                          .isNotEmpty)
+                                  ? Image.network(
+                                      categories[index]
+                                          .items
+                                          .first
+                                          .productImageUrl!,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : (isInternetAvailable &&
+                                          categories[index]
+                                              .items
+                                              .first
+                                              .productImage
+                                              .isEmpty)
+                                      ? Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        ),
+                              //    Image.memory(cat.items[index].productImage),
                             ),
                           ],
                         ),
@@ -194,7 +234,34 @@ class HomeLandscapeState extends State<HomeLandscape> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.memory(categories[index].image),
+                          //  Image.memory(categories[index].image),
+                          (isInternetAvailable &&
+                                  categories[index]
+                                      .items
+                                      .first
+                                      .productImageUrl!
+                                      .isNotEmpty)
+                              ? Image.network(
+                                  categories[index]
+                                      .items
+                                      .first
+                                      .productImageUrl!,
+                                  fit: BoxFit.fill,
+                                )
+                              : (isInternetAvailable &&
+                                      categories[index]
+                                          .items
+                                          .first
+                                          .productImage
+                                          .isEmpty)
+                                  ? Image.asset(
+                                      NO_IMAGE,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.asset(
+                                      NO_IMAGE,
+                                      fit: BoxFit.fill,
+                                    ),
                           hightSpacer4,
                           Text(
                             categories[index].name,

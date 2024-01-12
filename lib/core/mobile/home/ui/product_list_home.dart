@@ -365,7 +365,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                         categories[position]
                                                             .items
                                                             .first
-                                                            .productImage
+                                                            .productImageUrl!
                                                             .isEmpty)
                                                     ? Image.asset(
                                                         NO_IMAGE,
@@ -817,7 +817,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       decoration: const BoxDecoration(
                                           shape: BoxShape.circle),
-                                      child:
+                                      
+                                          child:
                                           // categories[catPosition]
                                           //         .items[itemPosition]
                                           //         .productImageUrl!
@@ -826,22 +827,28 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           //     : Image.memory(categories[catPosition]
                                           //         .items[itemPosition]
                                           //         .productImage),
-
-                                          (isInternetAvailable &&
-                                                  categories[catPosition]
+                                          isInternetAvailable &&
+                                                  (categories[catPosition]
                                                       .items[itemPosition]
-                                                      .productImageUrl !=
-null)
+                                                      .productImageUrl!.isNotEmpty
+                                                      // || categories[catPosition]
+                                                      // .items[itemPosition]
+                                                      // .productImageUrl != ""
+                                                      )
                                               ? Image.network(
                                                   categories[catPosition]
                                                       .items[itemPosition]
                                                       .productImageUrl!,
                                                   fit: BoxFit.fill,
                                                 )
-                                              : (isInternetAvailable &&
-                                                      categories[catPosition]
+                                              : isInternetAvailable &&
+                                                      (categories[catPosition]
                                                           .items[itemPosition]
-                                                          .productImageUrl == null)
+                                                          .productImageUrl!.isEmpty
+                                                          // || categories[catPosition]
+                                                          // .items[itemPosition]
+                                                          // .productImageUrl=="")
+                                                          )
                                                   ? Image.asset(
                                                       NO_IMAGE,
                                                       fit: BoxFit.fill,
