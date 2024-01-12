@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/database/models/attribute.dart';
+import 'package:nb_posx/utils/helper.dart';
 import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -14,10 +15,36 @@ import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../model/transaction.dart';
 
-class TransactionDetailsPopup extends StatelessWidget {
+class TransactionDetailsPopup extends StatefulWidget {
   final Transaction order;
   const TransactionDetailsPopup({Key? key, required this.order})
       : super(key: key);
+
+  @override
+  State<TransactionDetailsPopup> createState() =>
+      _TransactionDetailsPopupState();
+}
+
+class _TransactionDetailsPopupState extends State<TransactionDetailsPopup> {
+  bool isInternetAvailable = true; // Initial state
+
+  @override
+  void initState() {
+    super.initState();
+    checkInternetAvailability();
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +77,13 @@ class TransactionDetailsPopup extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      order.customer.name,
+                      widget.order.customer.name,
                       style: getTextStyle(
                           fontSize: LARGE_FONT_SIZE,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      'Order ID: ${order.id}',
+                      'Order ID: ${widget.order.id}',
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
@@ -68,16 +95,16 @@ class TransactionDetailsPopup extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      order.customer.phone.isEmpty
+                      widget.order.customer.phone.isEmpty
                           ? "9090909090"
-                          : order.customer.phone,
+                          : widget.order.customer.phone,
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
                       //'27th Jul 2021, 11:00AM ',
-                      '${order.date} ${order.time}',
+                      '${widget.order.date} ${widget.order.time}',
                       style: getTextStyle(
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
@@ -89,33 +116,35 @@ class TransactionDetailsPopup extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "${order.items.length} Items",
+                      "${widget.order.items.length} Items",
                       style: getTextStyle(
                           color: AppColors.getPrimary(),
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
-                      '$appCurrency ${order.orderAmount}',
+                      '$appCurrency ${widget.order.orderAmount}',
                       style: getTextStyle(
-                          color:  AppColors.getPrimary(),
+                          color: AppColors.getPrimary(),
                           fontSize: MEDIUM_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w600),
                     )
                   ],
                 ),
-                 Divider(
+                Divider(
                   color: AppColors.shadowBorder,
                   thickness: 1,
                 ),
                 _getOrderDetails(),
                 hightSpacer20,
                 _promoCodeSection(),
-                _subtotalSection("Subtotal", "$appCurrency ${order.orderAmount}"),
+                _subtotalSection(
+                    "Subtotal", "$appCurrency ${widget.order.orderAmount}"),
                 _subtotalSection("Discount", "- $appCurrency 0.00",
                     isDiscount: true),
-              //  _subtotalSection("Tax (0%)", "$appCurrency "),
-                _totalSection("Total", "$appCurrency ${order.orderAmount}"),
+                //  _subtotalSection("Tax (0%)", "$appCurrency "),
+                _totalSection(
+                    "Total", "$appCurrency ${widget.order.orderAmount}"),
               ],
             ),
           ),
@@ -125,7 +154,7 @@ class TransactionDetailsPopup extends StatelessWidget {
   }
 
   _getOrderDetails() {
-    final itemCount = order.items.length;
+    final itemCount = widget.order.items.length;
     return SizedBox(
       height: itemCount < 10 ? itemCount * 70 : 10 * 50,
       child: ListView.builder(
@@ -135,42 +164,60 @@ class TransactionDetailsPopup extends StatelessWidget {
           child: Row(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Container(
-                  width: 50,
-                  height: 50,
-                   child: order.items.isEmpty
-                        ? Image.network(
-                    order.items[index].productImageUrl ??
-                        "assets/images/burgar_img.png",
-                    fit: BoxFit.fill,
-                  )
-                        : Image.asset(
-                            NO_IMAGE,
-                            height: 45,
-                            width: 45,
-                          ),
-                 // color:  AppColors.getPrimary(),
-                //  child: SvgPicture.asset(NO_IMAGE),
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                      width: 50,
+                      height: 50,
+                      child: (isInternetAvailable &&
+                              widget.order.items[index].productImageUrl != null)
+                          ? Image.network(
+                              widget.order.items[index].productImageUrl!,
+                              fit: BoxFit.fill,
+                            )
+                          : (isInternetAvailable &&
+                                  widget.order.items[index].productImageUrl ==
+                                      null)
+                              ? Image.asset(
+                                  NO_IMAGE,
+                                  fit: BoxFit.fill,
+                                )
+                              : Image.asset(
+                                  NO_IMAGE,
+                                  fit: BoxFit.fill,
+                                ))
+
+                  //   order.items.isEmpty
+                  //       ? Image.network(
+                  //   widget.order.items[index].productImageUrl ??
+                  //       "assets/images/burgar_img.png",
+                  //   fit: BoxFit.fill,
+                  // )
+                  //       : Image.asset(
+                  //           NO_IMAGE,
+                  //           height: 45,
+                  //           width: 45,
+                  //         ),
+
+                  // color:  AppColors.getPrimary(),
+                  //  child: SvgPicture.asset(NO_IMAGE),
                   // child: Image.network(
-                  //   order.items[index].productImageUrl ??
+                  //   widget.order.items[index].productImageUrl ??
                   //       "assets/images/burgar_img.png",
                   //   fit: BoxFit.fill,
                   // ),
-                ),
-              ),
+                  ),
               widthSpacer(15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    order.items[index].name,
+                    widget.order.items[index].name,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    "${_getItemVariants(order.items[index].attributes)} x ${order.items[index].orderedQuantity}",
+                    "${_getItemVariants(widget.order.items[index].attributes)} x ${widget.order.items[index].orderedQuantity}",
                     style: getTextStyle(
                         fontSize: SMALL_FONT_SIZE,
                         fontWeight: FontWeight.normal),
@@ -183,7 +230,7 @@ class TransactionDetailsPopup extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "$appCurrency ${order.items[index].price.toStringAsFixed(2)}",
+                "$appCurrency ${widget.order.items[index].price.toStringAsFixed(2)}",
                 style: getTextStyle(
                     color: AppColors.getSecondary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -191,9 +238,9 @@ class TransactionDetailsPopup extends StatelessWidget {
               ),
               widthSpacer(5),
               Text(
-                " x${order.items[index].orderedQuantity.round() == 0 ? index + 1 : order.items[index].orderedQuantity.round()}",
+                " x${widget.order.items[index].orderedQuantity.round() == 0 ? index + 1 : widget.order.items[index].orderedQuantity.round()}",
                 style: getTextStyle(
-                    color:  AppColors.getPrimary(),
+                    color: AppColors.getPrimary(),
                     fontSize: MEDIUM_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),
@@ -250,7 +297,8 @@ class TransactionDetailsPopup extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
           color: AppColors.getPrimary().withOpacity(0.1),
-          border: Border.all(width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
+          border: Border.all(
+              width: 1, color: AppColors.getPrimary().withOpacity(0.5)),
           borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -298,14 +346,18 @@ class TransactionDetailsPopup extends StatelessWidget {
               title,
               style: getTextStyle(
                   fontWeight: FontWeight.w500,
-                  color: isDiscount ? AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
+                  color: isDiscount
+                      ? AppColors.getSecondary()
+                      : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
             Text(
               amount,
               style: getTextStyle(
                   fontWeight: FontWeight.w600,
-                  color: isDiscount ?  AppColors.getSecondary() : AppColors.getTextandCancelIcon(),
+                  color: isDiscount
+                      ? AppColors.getSecondary()
+                      : AppColors.getTextandCancelIcon(),
                   fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ],

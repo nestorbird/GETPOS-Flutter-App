@@ -49,7 +49,7 @@ class ProductsService {
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
           log("catObj:$catObj");
-          //var image = Uint8List.fromList([]);
+          //   var image = Uint8List.fromList([]);
           // var image = (catData.itemGroupImage == null ||
           //         catData.itemGroupImage!.isEmpty)
           //     ? Uint8List.fromList([])
@@ -102,8 +102,8 @@ class ProductsService {
             await DBPreferences().savePreference(
                 PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
 
-            //var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
-            var imageBytes = Uint8List.fromList([]);
+            var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+            //     var imageBytes = Uint8List.fromList([]);
 
             Product product = Product(
                 id: item.id!,

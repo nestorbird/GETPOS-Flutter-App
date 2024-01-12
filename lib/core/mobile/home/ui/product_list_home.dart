@@ -817,14 +817,39 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       decoration: const BoxDecoration(
                                           shape: BoxShape.circle),
-                                      child: categories[catPosition]
-                                              .items[itemPosition]
-                                              .productImage
-                                              .isEmpty
-                                          ? Image.asset(NO_IMAGE)
-                                          : Image.memory(categories[catPosition]
-                                              .items[itemPosition]
-                                              .productImage),
+                                      child:
+                                          // categories[catPosition]
+                                          //         .items[itemPosition]
+                                          //         .productImageUrl!
+                                          //         .isEmpty&&isInternetAvailable
+                                          //     ? Image.asset(NO_IMAGE)
+                                          //     : Image.memory(categories[catPosition]
+                                          //         .items[itemPosition]
+                                          //         .productImage),
+
+                                          (isInternetAvailable &&
+                                                  categories[catPosition]
+                                                      .items[itemPosition]
+                                                      .productImageUrl !=
+null)
+                                              ? Image.network(
+                                                  categories[catPosition]
+                                                      .items[itemPosition]
+                                                      .productImageUrl!,
+                                                  fit: BoxFit.fill,
+                                                )
+                                              : (isInternetAvailable &&
+                                                      categories[catPosition]
+                                                          .items[itemPosition]
+                                                          .productImageUrl == null)
+                                                  ? Image.asset(
+                                                      NO_IMAGE,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                  : Image.asset(
+                                                      NO_IMAGE,
+                                                      fit: BoxFit.fill,
+                                                    ),
                                     )),
                                 Container(
                                     padding: const EdgeInsets.all(6),

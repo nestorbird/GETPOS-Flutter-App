@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
@@ -16,6 +14,7 @@ import '../../../../database/models/product.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
+import '../../../utils/helper.dart';
 import '../widget/create_customer_popup.dart';
 import '../widget/select_customer_popup.dart';
 import '../widget/title_search_bar.dart';
@@ -28,6 +27,7 @@ class ProductsLandscape extends StatefulWidget {
 }
 
 class _ProductsLandscapeState extends State<ProductsLandscape> {
+  bool isInternetAvailable = false;
   late TextEditingController searchCtrl;
   late Size size;
   Customer? customer;
@@ -37,6 +37,7 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
   @override
   void initState() {
     searchCtrl = TextEditingController();
+    checkInternetAvailability();
     super.initState();
     getProducts();
   }
@@ -163,18 +164,37 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
                             ),
                           ),
                           Container(
-                              height: 60,
-                              width: 60,
-                              decoration:
-                                  const BoxDecoration(shape: BoxShape.circle),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: cat.items[index].productImage.isNotEmpty
-                                  ? Image.memory(cat.items[index].productImage,
-                                      fit: BoxFit.fill)
-                                  : Image.asset(
-                                      NO_IMAGE,
-                                      fit: BoxFit.fill,
-                                    )),
+                            height: 60,
+                            width: 60,
+                            decoration:
+                                const BoxDecoration(shape: BoxShape.circle),
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: (isInternetAvailable &&
+                                    cat.items[index].productImageUrl != null)
+                                ? Image.network(
+                                    cat.items[index].productImageUrl!,
+                                    fit: BoxFit.fill,
+                                  )
+                                : (isInternetAvailable &&
+                                        cat.items[index].productImageUrl ==
+                                            null)
+                                    ? Image.asset(
+                                        NO_IMAGE,
+                                        fit: BoxFit.fill,
+                                      )
+                                    : Image.asset(
+                                        NO_IMAGE,
+                                        fit: BoxFit.fill,
+                                      ),
+
+                            //  cat.items[index].productImage.isNotEmpty
+                            //     ? Image.memory(cat.items[index].productImage,
+                            //         fit: BoxFit.fill)
+                            //     : Image.asset(
+                            //         NO_IMAGE,
+                            //         fit: BoxFit.fill,
+                            //       )
+                          ),
                         ],
                       ),
                     ));
@@ -272,5 +292,17 @@ class _ProductsLandscapeState extends State<ProductsLandscape> {
         .toList();
 
     setState(() {});
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 }

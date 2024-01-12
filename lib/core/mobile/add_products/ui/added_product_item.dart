@@ -7,6 +7,7 @@ import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/models/attribute.dart';
 import '../../../../database/models/order_item.dart';
+import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 
@@ -34,11 +35,29 @@ class AddedProductItem extends StatefulWidget {
 }
 
 class _AddedProductItemState extends State<AddedProductItem> {
+  bool isInternetAvailable = true;
   // final Widget _greySizedBox = SizedBox(
   //     width: 1.0,
   //     child: Container(
   //       color: AppColors.getPrimary(),
   //     ));
+  @override
+  void initState() {
+    checkInternetAvailability();
+    super.initState();
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,19 +77,36 @@ class _AddedProductItemState extends State<AddedProductItem> {
             color: AppColors.getPrimary().withOpacity(0.1),
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: widget.product.productImage.isEmpty
-              ? Image.asset(
-                  NO_IMAGE,
-                  fit: BoxFit.fill,
-                )
-              // SvgPicture.asset(
-              //     NO_IMAGE,
-              //     fit: BoxFit.fill,
-              //   )
-              : Image.memory(
-                  widget.product.productImage,
-                  fit: BoxFit.fill,
-                ),
+          child:
+              // widget.product.productImage.isEmpty
+              //     ? Image.asset(
+              //         NO_IMAGE,
+              //         fit: BoxFit.fill,
+              //       )
+              //     // SvgPicture.asset(
+              //     //     NO_IMAGE,
+              //     //     fit: BoxFit.fill,
+              //     //   )
+              //     : Image.memory(
+              //         widget.product.productImage,
+              //         fit: BoxFit.fill,
+              //       ),
+
+              (isInternetAvailable && widget.product.productImageUrl != null)
+                  ? Image.network(
+                      widget.product.productImageUrl!,
+                      fit: BoxFit.fill,
+                    )
+                  : (isInternetAvailable &&
+                          widget.product.productImageUrl == null)
+                      ? Image.asset(
+                          NO_IMAGE,
+                          fit: BoxFit.fill,
+                        )
+                      : Image.asset(
+                          NO_IMAGE,
+                          fit: BoxFit.fill,
+                        ),
         ),
         widthSpacer(15),
         Expanded(

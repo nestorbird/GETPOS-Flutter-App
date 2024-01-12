@@ -26,9 +26,10 @@ import 'cart_widget.dart';
 // ignore: must_be_immutable
 class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
-  
+
   final RxString selectedView;
-   CreateOrderLandscape({Key? key,required this.order, required this.selectedView})
+  CreateOrderLandscape(
+      {Key? key, required this.order, required this.selectedView})
       : super(key: key);
 
   @override
@@ -36,8 +37,10 @@ class CreateOrderLandscape extends StatefulWidget {
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
-    final ValueNotifier<List<OrderItem>> itemsNotifier = ValueNotifier<List<OrderItem>>([]);
-   ParkOrder? parkOrder;
+  bool isInternetAvailable = true;
+  final ValueNotifier<List<OrderItem>> itemsNotifier =
+      ValueNotifier<List<OrderItem>>([]);
+  ParkOrder? parkOrder;
   late TextEditingController searchCtrl;
   late Size size;
   Customer? customer;
@@ -48,6 +51,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 
   @override
   void initState() {
+    checkInternetAvailability();
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
@@ -57,12 +61,11 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       customer = Helper.activeParkedOrder!.customer;
       items = Helper.activeParkedOrder!.items;
     }
-    
   }
 
   @override
   void dispose() {
-     itemsNotifier.dispose();
+    itemsNotifier.dispose();
     searchCtrl.dispose();
     super.dispose();
   }
@@ -71,94 +74,93 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Row(
-    //mainAxisAlignment: MainAxisAlignment.start,
-    //crossAxisAlignment: CrossAxisAlignment.end,
+      //mainAxisAlignment: MainAxisAlignment.start,
+      //crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        
         SizedBox(
           width: size.width - 505,
-        height: size.height,
+          height: size.height,
           child: Column(
-            
-            children: [ TitleAndSearchBar(
-                  title: "Choose Category",
-                  onSubmit: (text) {
-                    if (text.length >= 3) {
-                      categories.isEmpty
-                          ? const Center(
-                              child: Text(
-                              "No items found",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ))
-                          : _filterProductsCategories(text);
-                    } else {
-                      getProducts();
-                    }
-                  },
-                  onTextChanged: (changedtext) {
-                    if (changedtext.length >= 3) {
-                      categories.isEmpty
-                          ? const Center(
-                              child: Text(
-                              "No items found",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ))
-                          : _filterProductsCategories(changedtext);
-                    } else {
-                      getProducts();
-                    }
-                  },
-                  searchCtrl: searchCtrl,
-                  searchHint: "Search product / category",
-                  searchBoxWidth: size.width / 4,
-                ),
-                 hightSpacer20,
+            children: [
+              TitleAndSearchBar(
+                title: "Choose Category",
+                onSubmit: (text) {
+                  if (text.length >= 3) {
+                    categories.isEmpty
+                        ? const Center(
+                            child: Text(
+                            "No items found",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                        : _filterProductsCategories(text);
+                  } else {
+                    getProducts();
+                  }
+                },
+                onTextChanged: (changedtext) {
+                  if (changedtext.length >= 3) {
+                    categories.isEmpty
+                        ? const Center(
+                            child: Text(
+                            "No items found",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                        : _filterProductsCategories(changedtext);
+                  } else {
+                    getProducts();
+                  }
+                },
+                searchCtrl: searchCtrl,
+                searchHint: "Search product / category",
+                searchBoxWidth: size.width / 4,
+              ),
+              hightSpacer20,
               Expanded(
                 flex: 2,
                 child: SingleChildScrollView(
                   child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                 
-                 
-                  categories.isEmpty
-                      ? const Center(
-                          child: Text(
-                          "No items found",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
-                      : getCategoryListWidg(),
-                  hightSpacer20,
-                  ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          categories.isEmpty
-                              ? const Center(
-                                  child: Text(
-                                  "No items found",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ))
-                              : getCategoryItemsWidget(categories[index]),
-                          hightSpacer10
-                        ],
-                      );
-                    },
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      categories.isEmpty
+                          ? const Center(
+                              child: Text(
+                              "No items found",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ))
+                          : getCategoryListWidg(),
+                      hightSpacer20,
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: categories.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            children: [
+                              categories.isEmpty
+                                  ? const Center(
+                                      child: Text(
+                                      "No items found",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ))
+                                  : getCategoryItemsWidget(categories[index]),
+                              hightSpacer10
+                            ],
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                              ],
-                            ),
                 ),
               )
-      ],),
+            ],
+          ),
         ),
         Padding(
           padding: leftSpace(x: 5),
           child: CartWidget(
-           // order: parkOrder!,
+            // order: parkOrder!,
             itemsNotifier: itemsNotifier,
             customer: customer,
             orderList: items,
@@ -424,29 +426,59 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(left: 5),
-                            height: 60,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.amber),
-                            child: categories[index].image.isNotEmpty
-                                ? Image.memory(
-                                    categories[index].items.first.productImage,
-                                    height: 50,
-                                    width: 50,
-                                    fit: BoxFit.fill,
-                                  )
-                                :  Image.asset(
-                  NO_IMAGE,
-                  fit: BoxFit.fill,
-                )
-                                // Image.asset(
-                                //     BURGAR_IMAGE,
-                                //     height: 50,
-                                //     width: 50,
-                                //     fit: BoxFit.fill,
-                                //   ),
-                          ),
+                              margin: const EdgeInsets.only(left: 5),
+                              height: 60,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle, color: Colors.amber),
+                              child: (isInternetAvailable &&
+                                      categories[index]
+                                              .items[index]
+                                              .productImageUrl !=
+                                          null)
+                                  ? Image.network(
+                                      categories[index]
+                                          .items[index]
+                                          .productImageUrl!,
+                                      fit: BoxFit.fill,
+                                      height: 50,
+                                      width: 50,
+                                    )
+                                  : (isInternetAvailable &&
+                                          categories[index]
+                                                  .items[index]
+                                                  .productImageUrl ==
+                                              null)
+                                      ? Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        ))
+                          // categories[index].image.isNotEmpty
+                          //     ? Image.memory(
+                          //         categories[index]
+                          //             .items
+                          //             .first
+                          //             .productImage,
+                          //         height: 50,
+                          //         width: 50,
+                          //         fit: BoxFit.fill,
+                          //       )
+                          //     : Image.asset(
+                          //         NO_IMAGE,
+                          //         fit: BoxFit.fill,
+                          //       ))
+
+                          // Image.asset(
+                          //     BURGAR_IMAGE,
+                          //     height: 50,
+                          //     width: 50,
+                          //     fit: BoxFit.fill,
+                          //   ),
+                          ,
                           Text(
                             categories[index].name,
                             maxLines: 1,
@@ -461,6 +493,18 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
             );
           }),
     );
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 
   Future<void> getProducts() async {
@@ -484,7 +528,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         // contentPadding: paddingXY(x: 0, y: 0),
         title: "",
         titlePadding: paddingXY(x: 0, y: 0),
-      //   custom: Container(),
+        //   custom: Container(),
         content: CreateCustomerPopup(
           phoneNo: result,
         ),
