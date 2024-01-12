@@ -40,15 +40,15 @@ class _ThemeChangeState extends State<ThemeChange> {
   late TextEditingController _urlCtrl;
   String? version;
   AppColors appColors = AppColors();
-   bool isInternetAvailable = false;
-  
+  bool isInternetAvailable = false;
+
   @override
   void initState() {
     super.initState();
 
     _urlCtrl = TextEditingController();
 
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "";
 
     //updateColorsFromThemeResponse(appColors);
   }
@@ -131,7 +131,8 @@ class _ThemeChangeState extends State<ThemeChange> {
                   String url = await DbInstanceUrl().getUrl();
                   //   String url = '${_urlCtrl.text}';
                   url = "https://${_urlCtrl.text}/api/";
-                  if (isValidInstanceUrl(url) == true && isInternetAvailable == true) {
+                  if (isValidInstanceUrl(url) == true &&
+                      isInternetAvailable == true) {
                     await pingPong(url);
                   } else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
@@ -221,5 +222,4 @@ class _ThemeChangeState extends State<ThemeChange> {
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
   }
-  
 }

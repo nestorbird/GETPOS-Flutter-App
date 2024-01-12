@@ -62,7 +62,7 @@ void main() async {
 
   isUserLoggedIn = await DbHubManager().getManager() != null;
   //isUserLoggedIn = await DBPreferences().getPreference('MANAGER');
-  
+
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
   await SyncHelper().launchFlow(isUserLoggedIn);
@@ -141,10 +141,8 @@ class MobileApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-     
       home: const SplashScreen(),
     );
-    
   }
 }
 
@@ -166,9 +164,9 @@ class TabletApp extends StatelessWidget {
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
-    LocalNotificationService().initNotification();
- final appDocumentDirectory = await getApplicationDocumentsDirectory();
- Hive.init(appDocumentDirectory.path);
+  LocalNotificationService().initNotification();
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
   NetworkManager.init();
   // //Initializing hive database
   await DBPreferences().openPreferenceBox();
@@ -181,15 +179,15 @@ Future<void> init() async {
   }
 }
 
-Future<bool> useIsolate({ bool isUserLoggedIn = false}) async {
+Future<bool> useIsolate({bool? isUserLoggedIn}) async {
   var rootToken = RootIsolateToken.instance!;
   //WidgetsFlutterBinding.ensureInitialized();
   //final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
 // Hive.init(appDocumentDirectory.path);
-  
-DartPluginRegistrant.ensureInitialized();  
-  if (!isUserLoggedIn) {
+
+  DartPluginRegistrant.ensureInitialized();
+  if (isUserLoggedIn!) {
     LocalNotificationService().showNotification(
         id: 0,
         title: 'Background Sync',
@@ -197,8 +195,11 @@ DartPluginRegistrant.ensureInitialized();
   }
   final ReceivePort receivePort = ReceivePort();
   try {
-    var isolate = await Isolate.spawn(runHeavyTaskWithIsolate,
-        [receivePort.sendPort, rootToken, isUserLoggedIn,]);
+    var isolate = await Isolate.spawn(runHeavyTaskWithIsolate, [
+      receivePort.sendPort,
+      rootToken,
+      isUserLoggedIn,
+    ]);
   } on Object {
     debugPrint('Isolate Failed');
     receivePort.close();
@@ -219,13 +220,14 @@ DartPluginRegistrant.ensureInitialized();
   }
 }
 
-Future<dynamic> runHeavyTaskWithIsolate(List<dynamic> args,) async {
-  
+Future<dynamic> runHeavyTaskWithIsolate(
+  List<dynamic> args,
+) async {
   BackgroundIsolateBinaryMessenger.ensureInitialized(args[1]);
- final appDocumentDirectory = await getApplicationDocumentsDirectory();
+  final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
-Hive.init(appDocumentDirectory.path);
- DartPluginRegistrant.ensureInitialized();
+  Hive.init(appDocumentDirectory.path);
+  DartPluginRegistrant.ensureInitialized();
   registerHiveTypeAdapters();
 
   try {
@@ -234,10 +236,10 @@ Hive.init(appDocumentDirectory.path);
     log("Args :: ${args[2]}");
     log("Isolate started");
     if (args[2]) {
-        debugPrint("inside launch flow");
+      debugPrint("inside launch flow");
       await SyncHelper().launchFlow(args[2]);
     } else {
-        debugPrint("inside login flow");
+      debugPrint("inside login flow");
       await SyncHelper().loginFlow();
     }
 
@@ -248,35 +250,42 @@ Hive.init(appDocumentDirectory.path);
   }
 }
 
+getColors() async {
+  int primaryColor =
+      int.tryParse(await DBPreferences().getPreference(PRIMARY_COLOR)) ??
+          0xFFDC1E44;
 
-  getColors()async{
-int primaryColor =
-            int.tryParse(await DBPreferences().getPreference(PRIMARY_COLOR)) ?? 0xFFDC1E44;
+  int secondaryColor =
+      int.tryParse(await DBPreferences().getPreference(SECONDARY_COLOR)) ??
+          0xFF62B146;
 
+  int accentColor =
+      int.tryParse(await DBPreferences().getPreference(ACCENT_COLOR)) ??
+          0xFF707070;
+  int textandCancelIcon =
+      int.tryParse(await DBPreferences().getPreference(TEXT_AND_CANCELICON)) ??
+          0xFF000000;
+  int shadowBorder =
+      int.tryParse(await DBPreferences().getPreference(SHADOW_BORDER)) ??
+          0xFFC7C5C5;
+  int hintText = int.tryParse(await DBPreferences().getPreference(HINT_TEXT)) ??
+      0xFFF3F2F5;
+  int fontWhiteColor =
+      int.tryParse(await DBPreferences().getPreference(FONT_WHITE_COLOR)) ??
+          0xFFFFFFFF;
+  int parkOrderButton =
+      int.tryParse(await DBPreferences().getPreference(PARK_ORDER_BUTTON)) ??
+          0xFF4A4A4A;
+  int active =
+      int.tryParse(await DBPreferences().getPreference(ACTIVE)) ?? 0xFFFEF9FA;
 
-        int secondaryColor =
-            int.tryParse(await DBPreferences().getPreference(SECONDARY_COLOR)) ?? 0xFF62B146;
-
-        int accentColor =
-            int.tryParse(await DBPreferences().getPreference(ACCENT_COLOR)) ?? 0xFF707070;
-        int textandCancelIcon =
-            int.tryParse(await DBPreferences().getPreference(TEXT_AND_CANCELICON)) ?? 0xFF000000;
-        int shadowBorder =
-            int.tryParse(await DBPreferences().getPreference(SHADOW_BORDER)) ?? 0xFFC7C5C5;
-        int hintText = int.tryParse(await DBPreferences().getPreference(HINT_TEXT)) ?? 0xFFF3F2F5;
-        int fontWhiteColor =
-            int.tryParse(await DBPreferences().getPreference(FONT_WHITE_COLOR)) ?? 0xFFFFFFFF;
-        int parkOrderButton =
-            int.tryParse(await DBPreferences().getPreference(PARK_ORDER_BUTTON)) ?? 0xFF4A4A4A;
-        int active = int.tryParse(await DBPreferences().getPreference(ACTIVE)) ?? 0xFFFEF9FA;
-
-        AppColors.primary = Color(primaryColor);
-        AppColors.secondary = Color(secondaryColor);
-        AppColors.asset = Color(accentColor);
-        AppColors.textandCancelIcon = Color(textandCancelIcon);
-        AppColors.shadowBorder = Color(shadowBorder);
-        AppColors.hintText = Color(hintText);
-        AppColors.fontWhiteColor = Color(fontWhiteColor);
-        AppColors.parkOrderButton = Color(parkOrderButton);
-        AppColors.active = Color(active);
+  AppColors.primary = Color(primaryColor);
+  AppColors.secondary = Color(secondaryColor);
+  AppColors.asset = Color(accentColor);
+  AppColors.textandCancelIcon = Color(textandCancelIcon);
+  AppColors.shadowBorder = Color(shadowBorder);
+  AppColors.hintText = Color(hintText);
+  AppColors.fontWhiteColor = Color(fontWhiteColor);
+  AppColors.parkOrderButton = Color(parkOrderButton);
+  AppColors.active = Color(active);
 }

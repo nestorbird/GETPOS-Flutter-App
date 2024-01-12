@@ -7,7 +7,8 @@ import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/utils/helper.dart';
-import '../../../../../configs/theme_config.dart';
+
+
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../utils/helpers/sync_helper.dart';
