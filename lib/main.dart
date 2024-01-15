@@ -23,6 +23,7 @@ import 'package:nb_posx/database/models/sales_order_req.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
+import 'package:nb_posx/utils/helper.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'constants/app_constants.dart';
@@ -173,15 +174,15 @@ Future<void> init() async {
 
   registerHiveTypeAdapters();
   getColors();
-
+  isUserLoggedIn = await DBPreferences().getPreference(SuccessKey) == 1;
   if (isUserLoggedIn) {
-    useIsolate(isUserLoggedIn: isUserLoggedIn);
+    await useIsolate(isUserLoggedIn: isUserLoggedIn);
   }
 }
 
-Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
+useIsolate({bool isUserLoggedIn = false}) async {
   var rootToken = RootIsolateToken.instance!;
-  //WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   //final appDocumentDirectory = await getApplicationDocumentsDirectory();
 
 // Hive.init(appDocumentDirectory.path);
@@ -195,7 +196,7 @@ Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
   }
   final ReceivePort receivePort = ReceivePort();
   try {
-    var isolate = await Isolate.spawn(runHeavyTaskWithIsolate, [
+    await Isolate.spawn(runHeavyTaskWithIsolate, [
       receivePort.sendPort,
       rootToken,
       isUserLoggedIn,
@@ -206,18 +207,19 @@ Future<bool> useIsolate({bool isUserLoggedIn = false}) async {
   }
   final response = await receivePort.first;
   log('Isolate Result: $response');
-  if (response == true) {
-    if (!isUserLoggedIn) {
-      LocalNotificationService().showNotification(
-          id: 1, title: 'Background Sync', body: 'Background Sync completed.');
-    }
-
-    return true;
-  } else {
+  // if (response == true) {
+  if (isUserLoggedIn) {
     LocalNotificationService().showNotification(
-        id: 1, title: 'Background Sync', body: 'Background Sync failed.');
-    return false;
+        id: 1, title: 'Background Sync', body: 'Background Sync completed.');
   }
+  log('Isolate Result: $response');
+  // return true;
+  // }
+  //  else {
+  //   LocalNotificationService().showNotification(
+  //       id: 1, title: 'Background Sync', body: 'Background Sync failed.');
+  //   return false;
+  // }
 }
 
 Future<dynamic> runHeavyTaskWithIsolate(

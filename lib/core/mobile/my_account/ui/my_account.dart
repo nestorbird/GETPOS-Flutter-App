@@ -44,13 +44,13 @@ class MyAccount extends StatefulWidget {
 class _MyAccountState extends State<MyAccount> {
   String? name, email, phone, version;
   bool syncNowActive = true;
-  bool isInternetAvailable = false;
+  bool internetAvailable = true;
   late Uint8List profilePic;
   SaleOrder? offlineOrderPlaced;
   @override
   void initState() {
     super.initState();
-
+    checkNetworkAvailable();
     profilePic = Uint8List.fromList([]);
     getManagerName();
   }
@@ -163,13 +163,13 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   Future<void> handleLogout() async {
+    // bool internetAvailable = await Helper.isNetworkAvailable();
     var offlineOrders = await DbSaleOrder().getOfflineOrders();
     // var offlineOrders = await DbSaleOrder().getOrders();
-    bool isInternetAvailable = await Helper.isNetworkAvailable();
 
     ///if there are no offline orders
     ///scessfully logout
-    if (offlineOrders.isEmpty && isInternetAvailable) {
+    if (offlineOrders.isEmpty && internetAvailable) {
       if (!mounted) return;
       var res = await Helper.showConfirmationPopup(
           context, LOGOUT_QUESTION, OPTION_YES,
@@ -191,11 +191,11 @@ class _MyAccountState extends State<MyAccount> {
 
       ///there are offline orders
       ///and internet is on
-      if (offlineOrders.isNotEmpty && isInternetAvailable == false) {
+      if (offlineOrders.isNotEmpty && internetAvailable == false) {
         var res = await Helper.showConfirmationPopup(
             context, OFFLINE_ORDER_MSG, OPTION_OK);
         if (res == OPTION_OK.toLowerCase()) {
-          if (isInternetAvailable == true) {
+          if (internetAvailable == true) {
             LocalNotificationService().showNotification(
                 id: 0,
                 title: 'Background Sync',
@@ -218,14 +218,14 @@ class _MyAccountState extends State<MyAccount> {
           }
         }
       } else {
-        if (isInternetAvailable) {
+        if (internetAvailable) {
           LocalNotificationService().showNotification(
               id: 0,
               title: 'Background Sync',
               body: 'Please wait Background sync work in progess');
-          var response = await SyncHelper().syncNowFlow();
-
-          if (response == true) {
+          // var response = 
+          await SyncHelper().syncNowFlow();
+          // if (response == true) {
             LocalNotificationService().showNotification(
                 id: 1,
                 title: 'Background Sync',
@@ -239,7 +239,7 @@ class _MyAccountState extends State<MyAccount> {
             //     builder: (context) => const Login(),
             //   ),
             // );
-          }
+          // }
           await DbSaleOrder().modifySevenDaysOrdersFromToday();
         } else {
           // Navigator.of(context).pop();
@@ -364,6 +364,18 @@ class _MyAccountState extends State<MyAccount> {
     } catch (e) {
       // Handle any errors that may occur during this process
       log('Error: $e');
+    }
+  }
+
+  checkNetworkAvailable() async {
+    try {
+      bool isInternetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        internetAvailable = isInternetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
     }
   }
 }

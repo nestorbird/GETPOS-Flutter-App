@@ -25,16 +25,21 @@ import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/item_options.dart';
+import '../../../service/product/api/products_api_service.dart';
 import '../../customers/ui/customers.dart';
 import '../../select_customer/ui/new_select_customer.dart';
 import '../../transaction_history/view/transaction_screen.dart';
 
 class ProductListHome extends StatefulWidget {
   final bool isForNewOrder;
+  // final bool isAppLoggedIn;
 
   final ParkOrder? parkedOrder;
-  const ProductListHome(
-      {super.key, this.isForNewOrder = false, this.parkedOrder});
+  const ProductListHome({
+    super.key,
+    this.isForNewOrder = false,
+    this.parkedOrder,
+  });
 
   @override
   State<ProductListHome> createState() => _ProductListHomeState();
@@ -79,21 +84,22 @@ class _ProductListHomeState extends State<ProductListHome> {
   @override
   void initState() {
     super.initState();
-    checkInternetAvailability();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _getManagerName();
+    _syncDataOnInAppLogin();
 
-      getProducts();
-      // _height = MediaQuery.of(context).size.height;
-      _searchTxtController = TextEditingController();
-      if (widget.parkedOrder != null) {
-        parkOrder = widget.parkedOrder;
-        _selectedCust = widget.parkedOrder!.customer;
-      }
-      if (widget.isForNewOrder && _selectedCust == null) {
-        Future.delayed(Duration.zero, () => goToSelectCustomer());
-      }
-    });
+    checkInternetAvailability();
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    _getManagerName();
+    getProducts();
+    // _height = MediaQuery.of(context).size.height;
+    _searchTxtController = TextEditingController();
+    if (widget.parkedOrder != null) {
+      parkOrder = widget.parkedOrder;
+      _selectedCust = widget.parkedOrder!.customer;
+    }
+    if (widget.isForNewOrder && _selectedCust == null) {
+      Future.delayed(Duration.zero, () => goToSelectCustomer());
+    }
+    // });
 
     // _getManagerName();
 
@@ -817,8 +823,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       decoration: const BoxDecoration(
                                           shape: BoxShape.circle),
-                                      
-                                          child:
+                                      child:
                                           // categories[catPosition]
                                           //         .items[itemPosition]
                                           //         .productImageUrl!
@@ -830,11 +835,12 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           isInternetAvailable &&
                                                   (categories[catPosition]
                                                       .items[itemPosition]
-                                                      .productImageUrl!.isNotEmpty
-                                                      // || categories[catPosition]
-                                                      // .items[itemPosition]
-                                                      // .productImageUrl != ""
-                                                      )
+                                                      .productImageUrl!
+                                                      .isNotEmpty
+                                                  // || categories[catPosition]
+                                                  // .items[itemPosition]
+                                                  // .productImageUrl != ""
+                                                  )
                                               ? Image.network(
                                                   categories[catPosition]
                                                       .items[itemPosition]
@@ -844,11 +850,12 @@ class _ProductListHomeState extends State<ProductListHome> {
                                               : isInternetAvailable &&
                                                       (categories[catPosition]
                                                           .items[itemPosition]
-                                                          .productImageUrl!.isEmpty
-                                                          // || categories[catPosition]
-                                                          // .items[itemPosition]
-                                                          // .productImageUrl=="")
-                                                          )
+                                                          .productImageUrl!
+                                                          .isEmpty
+                                                      // || categories[catPosition]
+                                                      // .items[itemPosition]
+                                                      // .productImageUrl=="")
+                                                      )
                                                   ? Image.asset(
                                                       NO_IMAGE,
                                                       fit: BoxFit.fill,
@@ -992,6 +999,13 @@ class _ProductListHomeState extends State<ProductListHome> {
       amount += item.orderedPrice * item.orderedQuantity;
     }
     parkOrder!.orderAmount = amount;
+  }
+
+  _syncDataOnInAppLogin() async {
+    // if (widget.isAppLoggedIn) {
+    await ProductsService().getCategoryProduct();
+    setState(() {});
+    // }
   }
 
   void goToSelectCustomer() async {
