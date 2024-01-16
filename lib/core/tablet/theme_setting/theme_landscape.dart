@@ -1,23 +1,17 @@
 import 'dart:developer';
 import 'dart:io';
 
-
-
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
-
-
 
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 
-
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
-
 
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
@@ -48,7 +42,6 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
     _urlCtrl = TextEditingController();
 
     _urlCtrl.text = instanceUrl;
-   
   }
 
   @override
@@ -83,7 +76,7 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 child: Container(
-                  width: 550,
+                    width: 550,
                     padding: paddingXY(),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -152,20 +145,20 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
   Widget continueButtonWidget(context) => Center(
         child: ButtonWidget(
           onPressed: () async {
-            
             //to save the Url in DB
-                  await DbInstanceUrl().saveUrl(_urlCtrl.text);
-  bool isInternetAvailable = await Helper.isNetworkAvailable();
-                  String url = await DbInstanceUrl().getUrl();
-                  //   String url = '${_urlCtrl.text}';
-                  url = "https://${_urlCtrl.text}/api/";
-                if (isValidInstanceUrl(url) == true && isInternetAvailable == true) {
-                    pingPong(url);
-                  } else if (url.isEmpty) {
-                    Helper.showPopup(context, "Please Enter Url");
-                  } else {
-                    Helper.showPopup(context, invalidErrorText);
-                  }
+            await DbInstanceUrl().saveUrl(_urlCtrl.text);
+            bool isInternetAvailable = await Helper.isNetworkAvailable();
+            String url = await DbInstanceUrl().getUrl();
+            //   String url = '${_urlCtrl.text}';
+            url = "https://${_urlCtrl.text}/api/";
+            if (isValidInstanceUrl(url) == true &&
+                isInternetAvailable == true) {
+              pingPong(url);
+            } else if (url.isEmpty) {
+              Helper.showPopup(context, "Please Enter Url");
+            } else {
+              Helper.showPopup(context, invalidErrorText);
+            }
           },
           title: CONTINUE_TXT,
           primaryColor: AppColors.getPrimary(),
@@ -175,7 +168,7 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         ),
       );
 
- bool isValidInstanceUrl(String url) {
+  bool isValidInstanceUrl(String url) {
     //String url = "https://${_urlCtrl.text}/api/";
     if (url == "https://${_urlCtrl.text}/api/") {
       return Helper.isValidUrl(url);
@@ -186,7 +179,7 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
     }
   }
 
-Future<void> pingPong(String url) async {
+  Future<void> pingPong(String url) async {
     //  String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';
     String apiUrl = '${url}method/ping';
     {
@@ -215,8 +208,7 @@ Future<void> pingPong(String url) async {
     }
   }
 
-
- Future<void> theme(String url) async {
+  Future<void> theme(String url) async {
     try {
       Helper.showLoaderDialog(context);
       //api theme path get and append
@@ -232,7 +224,11 @@ Future<void> pingPong(String url) async {
         log('url:$url');
         // ignore: use_build_context_synchronously
         await Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const LoginLandscape()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => const LoginLandscape(
+                      isAppLoggedIn: true,
+                    )));
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);
@@ -248,5 +244,4 @@ Future<void> pingPong(String url) async {
       Helper.showSnackBar(context, SOMETHING_WRONG);
     }
   }
-  
 }

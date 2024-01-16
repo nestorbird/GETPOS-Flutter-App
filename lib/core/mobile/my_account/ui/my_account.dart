@@ -163,7 +163,7 @@ class _MyAccountState extends State<MyAccount> {
   }
 
   Future<void> handleLogout() async {
-    // bool internetAvailable = await Helper.isNetworkAvailable();
+    checkNetworkAvailable();
     var offlineOrders = await DbSaleOrder().getOfflineOrders();
     // var offlineOrders = await DbSaleOrder().getOrders();
 
@@ -195,6 +195,7 @@ class _MyAccountState extends State<MyAccount> {
         var res = await Helper.showConfirmationPopup(
             context, OFFLINE_ORDER_MSG, OPTION_OK);
         if (res == OPTION_OK.toLowerCase()) {
+          checkNetworkAvailable();
           if (internetAvailable == true) {
             LocalNotificationService().showNotification(
                 id: 0,
@@ -217,28 +218,32 @@ class _MyAccountState extends State<MyAccount> {
             // Navigator.pop(context);
           }
         }
+      } else if (offlineOrders.isEmpty && internetAvailable == false) {
+        if (!mounted) return;
+        await Helper.showConfirmationPopup(
+            context, OFFLINE_ORDER_MSG, OPTION_OK);
       } else {
         if (internetAvailable) {
           LocalNotificationService().showNotification(
               id: 0,
               title: 'Background Sync',
               body: 'Please wait Background sync work in progess');
-          // var response = 
+          // var response =
           await SyncHelper().syncNowFlow();
           // if (response == true) {
-            LocalNotificationService().showNotification(
-                id: 1,
-                title: 'Background Sync',
-                body: 'Background Sync completed.');
+          LocalNotificationService().showNotification(
+              id: 1,
+              title: 'Background Sync',
+              body: 'Background Sync completed.');
 
-            // ignore: use_build_context_synchronously
-            await fetchMasterAndDeleteTransaction();
-            // await Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => const Login(),
-            //   ),
-            // );
+          // ignore: use_build_context_synchronously
+          await fetchMasterAndDeleteTransaction();
+          // await Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const Login(),
+          //   ),
+          // );
           // }
           await DbSaleOrder().modifySevenDaysOrdersFromToday();
         } else {

@@ -32,6 +32,7 @@ import '../../transaction_history/view/transaction_screen.dart';
 
 class ProductListHome extends StatefulWidget {
   final bool isForNewOrder;
+  final bool isAppLoggedIn;
   // final bool isAppLoggedIn;
 
   final ParkOrder? parkedOrder;
@@ -39,6 +40,7 @@ class ProductListHome extends StatefulWidget {
     super.key,
     this.isForNewOrder = false,
     this.parkedOrder,
+    this.isAppLoggedIn = false,
   });
 
   @override
@@ -84,7 +86,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   @override
   void initState() {
     super.initState();
-    _syncDataOnInAppLogin();
+   
 
     checkInternetAvailability();
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -100,7 +102,7 @@ class _ProductListHomeState extends State<ProductListHome> {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
     // });
-
+   
     // _getManagerName();
 
     // getProducts();
@@ -1002,10 +1004,10 @@ class _ProductListHomeState extends State<ProductListHome> {
   }
 
   _syncDataOnInAppLogin() async {
-    // if (widget.isAppLoggedIn) {
-    await ProductsService().getCategoryProduct();
-    setState(() {});
-    // }
+    if (widget.isAppLoggedIn) {
+      await ProductsService().getCategoryProduct();
+      setState(() {});
+    }
   }
 
   void goToSelectCustomer() async {

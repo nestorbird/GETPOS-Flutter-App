@@ -154,7 +154,7 @@ class OrderItem extends HiveObject {
 
   @override
   String toString() {
-    return 'OrderItem(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, productImage: $productImage, productUpdatedTime: $productUpdatedTime, tax:$tax)';
+    return 'OrderItem(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, productImage: $productImage,productImageUrl:$productImageUrl, productUpdatedTime: $productUpdatedTime, tax:$tax)';
   }
 
   @override

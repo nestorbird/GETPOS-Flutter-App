@@ -138,24 +138,23 @@ class _LoginState extends State<Login> {
 
         if (response.status!) {
           log("$response");
-
           // dataLoadInLandingScreen();
           // await ProductsService().getCategoryProduct();
           await HubManagerDetails().getAccountDetails();
-
-          // Start isolate with background processing and pass the receivePort
           if (widget.isAppLoggedIn) {
             await ProductsService().getCategoryProduct();
           }
           Helper.hideLoader(context);
+          // Start isolate with background processing and pass the receivePort
           useIsolate(isUserLoggedIn: true);
-
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ProductListHome()));
-
           // if (isSuccess) {
           // Once the signal is received, navigate to ProductListHome
-
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ProductListHome(
+                        isAppLoggedIn: true,
+                      )));
           // } else {
           //   Helper.showSnackBar(context, "Synchronization failed");
           // }

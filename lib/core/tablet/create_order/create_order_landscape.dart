@@ -492,13 +492,6 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                               .items[0]
                                               .productImageUrl!
                                               .isEmpty))
-
-                                      //         ==
-                                      //     null ||
-                                      // categories[position]
-                                      //         .items[position]
-                                      //         .productImageUrl! ==
-                                      //     ""))
                                       ? Image.asset(
                                           NO_IMAGE,
                                           fit: BoxFit.fill,

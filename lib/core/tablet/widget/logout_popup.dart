@@ -235,9 +235,8 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
     ///if there are no offline orders
     ///scessfully logout
     if (offlineOrders.isEmpty && isInternetAvailable) {
-      Navigator.pop(context);
       if (!mounted) return;
-
+      Navigator.pop(context);
       var res = await Helper.showConfirmationPopup(
           context, LOGOUT_QUESTION, OPTION_YES,
           hasCancelAction: true);
@@ -253,11 +252,13 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
     //       title: 'Background Sync',
     //       body: 'Please wait Background sync work in progess');
     // }
+    else if (offlineOrders.isEmpty && isInternetAvailable == false) {
+      if (!mounted) return;
+      Navigator.pop(context);
+      await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+    } 
     else {
       if (!mounted) return;
-
-      ///there are offline orders
-      ///and internet is on
       if (offlineOrders.isNotEmpty && isInternetAvailable == false) {
         Navigator.pop(context);
         var res = await Helper.showConfirmationPopup(
@@ -268,16 +269,13 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
                 id: 0,
                 title: 'Background Sync',
                 body: 'Please wait Background sync work in progess');
-            var response = await SyncHelper().syncNowFlow();
 
+            var response = await SyncHelper().syncNowFlow();
             if (response == true) {
               // ignore: use_build_context_synchronously
               Get.offAll(() => const LoginLandscape());
             }
             await DbSaleOrder().modifySevenDaysOrdersFromToday();
-          } else {
-            // Navigator.of(context).pop();
-            // Navigator.pop(context);
           }
         }
       } else {
