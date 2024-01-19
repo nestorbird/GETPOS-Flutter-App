@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 
@@ -93,14 +94,14 @@ class _AddedProductItemState extends State<AddedProductItem> {
               //       ),
               //TODO:Need to fix this as NO_image are not show if the productimageurl is null in add item popup
               (isInternetAvailable &&
-                      (widget.product.productImageUrl != "" ||
-                          widget.product.productImageUrl != null))
+                      (widget.product.productImageUrl != ""))
+                         // widget.product.productImageUrl != null))
                   ? Image.network(
                       widget.product.productImageUrl!,
                       fit: BoxFit.fill,
                     )
                   : (isInternetAvailable &&
-                          (widget.product.productImageUrl == "" ||
+                          (widget.product.productImageUrl!.isEmpty||
                               widget.product.productImageUrl == null))
                       ? Image.asset(
                           NO_IMAGE,

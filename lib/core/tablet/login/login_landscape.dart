@@ -150,7 +150,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
               await ProductsService().getCategoryProduct();
             }
             // Start isolate with background processing and pass the receivePort
-            useIsolate(isUserLoggedIn: true);
+           await useIsolate(isUserLoggedIn: true);
           }
           // if (isSuccess) {
           // Once the signal is received, navigate to ProductListHome
