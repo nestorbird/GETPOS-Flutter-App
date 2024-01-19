@@ -227,7 +227,7 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
             context,
             MaterialPageRoute(
                 builder: (context) => const LoginLandscape(
-                      isAppLoggedIn: true,
+                      isUserLoggedIn: true,
                     )));
       } else {
         if (!mounted) return;

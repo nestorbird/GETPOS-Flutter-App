@@ -20,7 +20,6 @@ class TransactionItemLandscape extends StatelessWidget {
     return InkWell(
       onTap: () => _handleOrderDetails(),
       child: Container(
-       
         decoration: BoxDecoration(
           border: Border.all(color: AppColors.shadowBorder!, width: 0.4),
           borderRadius: BorderRadius.circular(8),
@@ -37,9 +36,10 @@ class TransactionItemLandscape extends StatelessWidget {
                 children: [
                   Text(
                     order.customer.name,
-                     overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                        fontSize: MEDIUM_PLUS_FONT_SIZE, fontWeight: FontWeight.w800),
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        fontWeight: FontWeight.w800),
                   ),
                   hightSpacer5,
                   Text(
@@ -82,10 +82,9 @@ class TransactionItemLandscape extends StatelessWidget {
                     '${order.date} ${order.time}',
                     overflow: TextOverflow.clip,
                     textAlign: TextAlign.center,
-                    
-                    
+
                     style: getTextStyle(
-                        fontSize: MEDIUM_FONT_SIZE,
+                        fontSize: MEDIUM_MINUS_FONT_SIZE,
                         color: const Color(0xFF707070),
                         fontWeight: FontWeight.w500),
                   ),

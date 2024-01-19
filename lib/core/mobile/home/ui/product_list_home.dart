@@ -86,7 +86,6 @@ class _ProductListHomeState extends State<ProductListHome> {
   @override
   void initState() {
     super.initState();
-   
 
     checkInternetAvailability();
     // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -102,7 +101,7 @@ class _ProductListHomeState extends State<ProductListHome> {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
     // });
-   
+
     // _getManagerName();
 
     // getProducts();

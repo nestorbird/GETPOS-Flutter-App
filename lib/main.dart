@@ -235,6 +235,7 @@ Future<dynamic> runHeavyTaskWithIsolate(
   try {
     SendPort resultPort = args[0];
     log("Args :: ${args[0]}");
+    log("Args :: ${args[1]}");
     log("Args :: ${args[2]}");
     log("Isolate started");
     if (args[2]) {

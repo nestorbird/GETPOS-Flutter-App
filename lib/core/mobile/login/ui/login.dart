@@ -33,8 +33,8 @@ import '../../webview_screens/enums/topic_types.dart';
 import '../../webview_screens/ui/webview_screen.dart';
 
 class Login extends StatefulWidget {
-  final bool isAppLoggedIn;
-  const Login({Key? key, this.isAppLoggedIn = false}) : super(key: key);
+  final bool isUserLoggedIn;
+  const Login({Key? key, this.isUserLoggedIn = false}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
           // dataLoadInLandingScreen();
           // await ProductsService().getCategoryProduct();
           await HubManagerDetails().getAccountDetails();
-          if (widget.isAppLoggedIn) {
+          if (widget.isUserLoggedIn) {
             await ProductsService().getCategoryProduct();
           }
           Helper.hideLoader(context);

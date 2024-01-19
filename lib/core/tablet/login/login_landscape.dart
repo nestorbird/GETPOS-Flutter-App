@@ -9,6 +9,7 @@ import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
+import 'package:nb_posx/utils/helpers/sync_helper.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -24,14 +25,15 @@ import '../../../database/db_utils/db_instance_url.dart';
 
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
+import '../../service/customer/api/customer_api_service.dart';
 import '../../service/login/api/login_api_service.dart';
 import '../../service/product/api/products_api_service.dart';
 import '../forgot_password/forgot_password_landscape.dart';
 import '../home_tablet.dart';
 
 class LoginLandscape extends StatefulWidget {
-  final bool isAppLoggedIn;
-  const LoginLandscape({Key? key, this.isAppLoggedIn = false})
+  final bool isUserLoggedIn;
+  const LoginLandscape({Key? key, this.isUserLoggedIn = false})
       : super(key: key);
 
   @override
@@ -49,8 +51,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _emailCtrl = TextEditingController();
     _passCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "akshay@yopmail.com";
-    _passCtrl.text = "Qwerty@123";
+    _emailCtrl.text = "";
+    _passCtrl.text = "";
     // _urlCtrl.text = instanceUrl;
     _getUrlKey();
 
@@ -72,39 +74,41 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.fontWhiteColor,
-        body: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Container(
-                    width: 550,
-                    padding: paddingXY(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        headingLblWidget(),
-                        hightSpacer50,
-                        // instanceUrlTxtboxSection(context),
-                        // hightSpacer50,
-                        subHeadingLblWidget(),
-                        hightSpacer25,
-                        emailTxtboxSection(),
-                        hightSpacer20,
-                        passwordTxtboxSection(),
-                        hightSpacer20,
-                        forgotPasswordSection(),
-                        hightSpacer20,
-                        changeInstanceUrlSection(),
-                        hightSpacer20,
-                        termAndPolicySection,
-                        hightSpacer32,
-                        loginBtnWidget(),
-                      ],
-                    ),
-                  )),
-            )
-          ],
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Stack(
+            children: [
+              Center(
+                child: Container(
+                  width: 550,
+                  padding: paddingXY(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      headingLblWidget(),
+                      hightSpacer50,
+                      // instanceUrlTxtboxSection(context),
+                      // hightSpacer50,
+                      subHeadingLblWidget(),
+                      hightSpacer25,
+                      emailTxtboxSection(),
+                      hightSpacer20,
+                      passwordTxtboxSection(),
+                      hightSpacer20,
+                      forgotPasswordSection(),
+                      hightSpacer20,
+                      changeInstanceUrlSection(),
+                      hightSpacer20,
+                      termAndPolicySection,
+                      hightSpacer32,
+                      loginBtnWidget(),
+                      hightSpacer30
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -124,13 +128,30 @@ class _LoginLandscapeState extends State<LoginLandscape> {
 
         if (response.status!) {
           log("$response");
-          await HubManagerDetails().getAccountDetails();
-          if (widget.isAppLoggedIn) {
-            await ProductsService().getCategoryProduct();
-          }
-          // Start isolate with background processing and pass the receivePort
 
-          useIsolate(isUserLoggedIn: true);
+          ///
+          ///if it is a Windown Platfrom (run without isolates)
+          ///
+          if (Platform.isWindows) {
+            if (widget.isUserLoggedIn) {
+              await SyncHelper().loginFlow();
+            } else {
+              await SyncHelper().launchFlow(isUserLoggedIn);
+            }
+          }
+
+          ///
+          /// else run other platform android, tablet (run with isolates)
+          ///
+          else {
+            await HubManagerDetails().getAccountDetails();
+            if (widget.isUserLoggedIn) {
+              // await CustomerService().getCustomers();
+              await ProductsService().getCategoryProduct();
+            }
+            // Start isolate with background processing and pass the receivePort
+            useIsolate(isUserLoggedIn: true);
+          }
           // if (isSuccess) {
           // Once the signal is received, navigate to ProductListHome
           Get.offAll(() => HomeTablet());
@@ -384,7 +405,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       );
 
   /// LOGIN BUTTON
-  Widget loginBtnWidget() => SizedBox(
+  Widget loginBtnWidget() => Container(
+        margin: const EdgeInsets.only(bottom: 20.0),
         width: double.infinity,
         child: ButtonWidget(
           onPressed: () async {

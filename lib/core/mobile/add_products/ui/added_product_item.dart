@@ -91,14 +91,17 @@ class _AddedProductItemState extends State<AddedProductItem> {
               //         widget.product.productImage,
               //         fit: BoxFit.fill,
               //       ),
-
-              (isInternetAvailable && widget.product.productImageUrl != null)
+              //TODO:Need to fix this as NO_image are not show if the productimageurl is null in add item popup
+              (isInternetAvailable &&
+                      (widget.product.productImageUrl != "" ||
+                          widget.product.productImageUrl != null))
                   ? Image.network(
                       widget.product.productImageUrl!,
                       fit: BoxFit.fill,
                     )
                   : (isInternetAvailable &&
-                          widget.product.productImageUrl == null)
+                          (widget.product.productImageUrl == "" ||
+                              widget.product.productImageUrl == null))
                       ? Image.asset(
                           NO_IMAGE,
                           fit: BoxFit.fill,

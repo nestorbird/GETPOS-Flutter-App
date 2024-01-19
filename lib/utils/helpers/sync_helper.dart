@@ -112,7 +112,7 @@ class SyncHelper {
   Future<bool> getDetails() async {
     if (await Helper.isNetworkAvailable()) {
       await HubManagerDetails().getAccountDetails();
-      var _ = await CustomerService().getCustomers();
+      await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
       await OrderwiseTaxes().getOrderwiseTaxes();
       // _ = await ProductsService().getProducts();

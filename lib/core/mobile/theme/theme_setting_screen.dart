@@ -209,7 +209,7 @@ class _ThemeChangeState extends State<ThemeChange> {
             context,
             MaterialPageRoute(
                 builder: (context) => const Login(
-                      isAppLoggedIn: true,
+                      isUserLoggedIn: true,
                     )));
       } else {
         if (!mounted) return;

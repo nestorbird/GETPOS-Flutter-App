@@ -256,8 +256,7 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
       if (!mounted) return;
       Navigator.pop(context);
       await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
-    } 
-    else {
+    } else {
       if (!mounted) return;
       if (offlineOrders.isNotEmpty && isInternetAvailable == false) {
         Navigator.pop(context);
@@ -285,7 +284,7 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
               title: 'Background Sync',
               body: 'Please wait Background sync work in progess');
           var response = await SyncHelper().syncNowFlow();
-
+          //TODO: Need to fix this as sync complete notification are not appear
           if (response == true) {
             LocalNotificationService().showNotification(
                 id: 1,
