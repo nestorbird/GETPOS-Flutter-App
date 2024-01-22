@@ -48,8 +48,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController();
-    _passCtrl = TextEditingController();
+    _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
+    _passCtrl = TextEditingController(text: "Admin@123");
     _getUrlKey();
 
     // url = instanceUrl;
