@@ -48,7 +48,7 @@ class _ThemeChangeState extends State<ThemeChange> {
 
     _urlCtrl = TextEditingController();
 
-    _urlCtrl.text = "";
+    _urlCtrl.text = "getpos.in";
 
     //updateColorsFromThemeResponse(appColors);
   }
@@ -206,7 +206,11 @@ class _ThemeChangeState extends State<ThemeChange> {
         log('url:$url');
         // ignore: use_build_context_synchronously
         await Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Login()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => const Login(
+                      isUserLoggedIn: true,
+                    )));
       } else {
         if (!mounted) return;
         Helper.hideLoader(context);

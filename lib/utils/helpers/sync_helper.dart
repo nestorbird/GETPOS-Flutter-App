@@ -27,15 +27,14 @@ class SyncHelper {
   Future<bool> loginFlow() async {
     await getDetails();
     await GetPreviousOrder().getOrdersOnLogin();
-   
+
     return true;
   }
 
   ///
   /// when user is logged In and launching the app
   ///
-  Future<bool> 
-  launchFlow(bool isUserLoggedIn) async {
+  Future<bool> launchFlow(bool isUserLoggedIn) async {
     if (isUserLoggedIn) {
       await syncNowFlow();
       await DbSaleOrder().modifySevenDaysOrdersFromToday();
@@ -64,7 +63,6 @@ class SyncHelper {
   Future<bool> syncNowFlow() async {
     List<Customer> offlineCustomers = await DbCustomer().getOfflineCustomers();
     if (offlineCustomers.isNotEmpty) {
-    
       await Future.forEach(offlineCustomers, (Customer customer) async {
         var res = await CreateCustomer()
             .createNew(customer.phone, customer.name, customer.email);
@@ -80,10 +78,10 @@ class SyncHelper {
     }
 
     List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
-   //List<SaleOrder> offlineOrders = await DbSaleOrder().getAllOrders();
+    //List<SaleOrder> offlineOrders = await DbSaleOrder().getAllOrders();
 
     if (offlineOrders.isNotEmpty) {
-        debugPrint("offline order is not empty");
+      debugPrint("offline order is not empty");
       // ignore: unused_local_variable
       var result = await Future.forEach(offlineOrders, (SaleOrder order) async {
         var customers = await DbCustomer().getCustomer(order.customer.phone);
@@ -96,16 +94,15 @@ class SyncHelper {
         }
       });
     }
- await getDetails();
+    await getDetails();
     // var isResp = await getDetails();
     // if (isResp== true){
     //   log('isResp:$isResp');
     //   return true;
-      
+
     // }
-   
+
     return true;
-    
   }
 
   ///
@@ -115,7 +112,7 @@ class SyncHelper {
   Future<bool> getDetails() async {
     if (await Helper.isNetworkAvailable()) {
       await HubManagerDetails().getAccountDetails();
-      var _ = await CustomerService().getCustomers();
+      await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
       await OrderwiseTaxes().getOrderwiseTaxes();
       // _ = await ProductsService().getProducts();

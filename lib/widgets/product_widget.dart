@@ -40,9 +40,11 @@ class _ProductWidgetState extends State<ProductWidget> {
   late double stockQty;
   String? price;
   String? productStockUpdateDate;
+  bool isInternetAvailable = true;
 
   @override
   void initState() {
+    checkInternetAvailability();
     stockQty = widget.product!.stock > 0 ? widget.product!.stock : 0;
     price = Helper().formatCurrency(widget.product!.price);
     productStockUpdateDate = _getDateTimeString();
@@ -146,18 +148,37 @@ class _ProductWidgetState extends State<ProductWidget> {
   }
 
   _getProductImage() {
-    if (widget.asset != null && widget.asset!.isNotEmpty) {
-      return Image.memory(
-        widget.asset!,
-        height: widget.enableAddProductButton ? 60 : 70,
+    if (isInternetAvailable && widget.product!.productImageUrl != null) {
+      Image.network(
+        widget.product!.productImageUrl!,
+        fit: BoxFit.fill,
       );
     } else {
-      return Image.asset(
-        NO_IMAGE,
-        fit: BoxFit.fill,
-        // height: widget.enableAddProductButton ? 60 : 70,
-      );
+      if (isInternetAvailable && widget.product!.productImageUrl == null) {
+        Image.asset(
+          NO_IMAGE,
+          fit: BoxFit.fill,
+        );
+      } else {
+        Image.asset(
+          NO_IMAGE,
+          fit: BoxFit.fill,
+        );
+      }
     }
+
+    // if (widget.asset != null && widget.asset!.isNotEmpty) {
+    //   return Image.memory(
+    //     widget.asset!,
+    //     height: widget.enableAddProductButton ? 60 : 70,
+    //   );
+    // } else {
+    //   return Image.asset(
+    //     NO_IMAGE,
+    //     fit: BoxFit.fill,
+    //     // height: widget.enableAddProductButton ? 60 : 70,
+    //   );
+    // }
   }
 
   _getDateTimeString() {
@@ -165,5 +186,17 @@ class _ProductWidgetState extends State<ProductWidget> {
         DateFormat.yMd().add_jm().format(widget.product!.productUpdatedTime);
     log('Formatted Date : $productUpdateDate');
     return productUpdateDate;
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 }

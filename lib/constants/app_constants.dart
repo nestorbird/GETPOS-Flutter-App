@@ -122,8 +122,9 @@ const RETURN_TO_HOME_TXT = 'Home Page';
 const CHANGE_PASSWORD = 'Change Password';
 const LOGOUT_TITLE = 'Logout';
 const LOGOUT_QUESTION = 'Do you really want to logout?';
-const OFFLINE_ORDER_MSG = 'Please turn on the internet & sync your offline order first';
-const OFFLINE_ORDER_SYNCED ='Offline Order has been synced';
+const OFFLINE_ORDER_MSG =
+    'Please turn on the internet & sync your offline order first';
+const OFFLINE_ORDER_SYNCED = 'Offline Order has been synced';
 const GET_ONLINE_MSG = 'Get your internet connectivity back.';
 
 //SALES HISTORY SCREEN

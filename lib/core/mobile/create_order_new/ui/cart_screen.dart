@@ -75,14 +75,13 @@ class _CartScreenState extends State<CartScreen> {
   double? centralGovTaxAmount = 0.0;
   double taxAmount = 0.0;
   String? taxTypeApplied;
- late String paymentMethod;
- late HubManager? hubManager;
+  late String paymentMethod;
+  late HubManager? hubManager;
   SaleOrder? saleOrder;
   List<Map<String, dynamic>> taxDetailsList = [];
   late List<OrderTax>? getTaxesOrderwise;
   late List<OrderTaxTemplate>? getOrderTemplate;
-   List<CouponCode> couponCodes = [];
-  List<OrderTaxes> taxesData = [];
+  List<CouponCode> couponCodes = [];
 
   @override
   void initState() {
@@ -93,16 +92,13 @@ class _CartScreenState extends State<CartScreen> {
     //_getTaxes();
     //totalAmount = Helper().getTotal(widget.order.items);
 
-   // totalItems = widget.order.items.length;
+    // totalItems = widget.order.items.length;
     // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }
 
   @override
   Widget build(BuildContext context) {
-
- 
-    
     return SafeArea(
         child: Scaffold(
       body: SingleChildScrollView(
@@ -410,12 +406,12 @@ class _CartScreenState extends State<CartScreen> {
                         isAmountAndItemsVisible: false,
                         buttonTitle: 'View Parked Orders',
                         onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const OrderListScreen()),
-                              (route) => route.isFirst);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const OrderListScreen()),
+                            // (route) => route.isFirst
+                          );
                         }),
                     hightSpacer20
                   ],
@@ -1005,7 +1001,6 @@ List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesD
         });
 
         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
-        
       });
       setState(() {});
       log("Total Amount:: $totalAmount");

@@ -35,14 +35,15 @@ class Product extends HiveObject {
   @HiveField(7)
   Uint8List productImage;
 
+  @HiveField(10)
+  String? productImageUrl;
+
   @HiveField(8)
   DateTime productUpdatedTime;
 
   @HiveField(9)
   //double tax;
   List<Taxes> tax;
-
-  String? productImageUrl;
 
   Product(
       {required this.id,
@@ -69,8 +70,9 @@ class Product extends HiveObject {
       double? orderedQuantity,
       double? orderedPrice,
       Uint8List? productImage,
+      String? productImageUrl,
       DateTime? productUpdatedTime,
-     List<Taxes>? tax }) {
+      List<Taxes>? tax}) {
     return Product(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -80,6 +82,7 @@ class Product extends HiveObject {
       price: price ?? this.price,
       attributes: attributes ?? this.attributes,
       productImage: productImage ?? this.productImage,
+      productImageUrl: productImageUrl ?? productImageUrl,
       productUpdatedTime: productUpdatedTime ?? this.productUpdatedTime,
       tax: tax ?? this.tax,
     );
@@ -95,6 +98,7 @@ class Product extends HiveObject {
       'price': price,
       'attributes': attributes.map((x) => x.toMap()).toList(),
       'productImage': productImage,
+      'productImageUrl': productImageUrl,
       'productUpdatedTime': productUpdatedTime.toIso8601String(),
       'tax': tax.map((x) => x.toMap()).toList(),
     };
@@ -111,12 +115,13 @@ class Product extends HiveObject {
         attributes: List<Attribute>.from(
             map['attributes']?.map((x) => Attribute.fromMap(x))),
         productImage: map['productImage'],
+        productImageUrl: map['productImageUrl'],
         productUpdatedTime: map['productUpdatedTime'],
-       // tax: map['tax']
+        // tax: map['tax']
         tax: (map['tax'] as List<Map<String, dynamic>>?)
-     ?.map((taxMap) => Taxes.fromMap(taxMap))
-     .toList() ?? []);
-       
+                ?.map((taxMap) => Taxes.fromMap(taxMap))
+                .toList() ??
+            []);
   }
 
   String toJson() => json.encode(toMap());
@@ -126,7 +131,7 @@ class Product extends HiveObject {
 
   @override
   String toString() {
-    return 'Product(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes,  productImage: $productImage, productUpdatedTime: $productUpdatedTime, tax: $tax)';
+    return 'Product(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes,  productImage: $productImage,productImageUrl:$productImageUrl, productUpdatedTime: $productUpdatedTime, tax: $tax)';
   }
 
   @override
@@ -142,8 +147,9 @@ class Product extends HiveObject {
         other.price == price &&
         other.attributes == attributes &&
         other.productImage == productImage &&
+        other.productImageUrl == productImageUrl &&
         other.productUpdatedTime == productUpdatedTime &&
-         other.tax == tax;
+        other.tax == tax;
   }
 
   @override
@@ -156,8 +162,8 @@ class Product extends HiveObject {
         price.hashCode ^
         attributes.hashCode ^
         productImage.hashCode ^
+        productImageUrl.hashCode ^
         productUpdatedTime.hashCode ^
-        tax.hashCode
-        ;
+        tax.hashCode;
   }
 }

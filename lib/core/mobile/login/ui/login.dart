@@ -27,12 +27,14 @@ import '../../../../../widgets/text_field_widget.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../service/login/api/login_api_service.dart';
 import '../../../service/my_account/api/get_hub_manager_details.dart';
+import '../../../service/product/api/products_api_service.dart';
 import '../../forgot_password/ui/forgot_password.dart';
 import '../../webview_screens/enums/topic_types.dart';
 import '../../webview_screens/ui/webview_screen.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  final bool isUserLoggedIn;
+  const Login({Key? key, this.isUserLoggedIn = false}) : super(key: key);
 
   @override
   State<Login> createState() => _LoginState();
@@ -46,8 +48,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController(text: "akshay@yopmail.com");
-    _passCtrl = TextEditingController(text: "Qwerty@123");
+    _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
+    _passCtrl = TextEditingController(text: "Admin@123");
     _getUrlKey();
 
     // url = instanceUrl;
@@ -136,18 +138,26 @@ class _LoginState extends State<Login> {
 
         if (response.status!) {
           log("$response");
+          // dataLoadInLandingScreen();
+          // await ProductsService().getCategoryProduct();
           await HubManagerDetails().getAccountDetails();
-          // Start isolate with background processing and pass the receivePort
-          bool isSuccess = await useIsolate(isUserLoggedIn: true);
-          if (isSuccess) {
-            // Once the signal is received, navigate to ProductListHome
-            await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const ProductListHome()));
-          } else {
-            Helper.showSnackBar(context, "Synchronization failed");
+          if (widget.isUserLoggedIn) {
+            await ProductsService().getCategoryProduct();
           }
+          Helper.hideLoader(context);
+          // Start isolate with background processing and pass the receivePort
+         await useIsolate(isUserLoggedIn: true);
+          // if (isSuccess) {
+          // Once the signal is received, navigate to ProductListHome
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const ProductListHome(
+                        isAppLoggedIn: true,
+                      )));
+          // } else {
+          //   Helper.showSnackBar(context, "Synchronization failed");
+          // }
         } else {
           if (!mounted) return;
           Helper.hideLoader(context);
@@ -380,6 +390,12 @@ class _LoginState extends State<Login> {
   bool isValidInstanceUrl() {
     url = "https://$url/api/";
     return Helper.isValidUrl(url);
+  }
+
+  dataLoadInLandingScreen() async {
+    await ProductsService().getCategoryProduct();
+    await HubManagerDetails().getAccountDetails();
+    setState(() {});
   }
 
   Future<void> fetchDataAndNavigate() async {

@@ -5,7 +5,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/helper.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/db_utils/db_sale_order.dart';
@@ -14,7 +13,6 @@ import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/long_button_widget.dart';
 import '../../../service/create_order/api/create_sales_order.dart';
-import '../../create_order_new/ui/new_create_order.dart';
 import '../../home/ui/product_list_home.dart';
 
 class SaleSuccessScreen extends StatefulWidget {
@@ -32,7 +30,7 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
   void initState() {
     super.initState();
     log("${widget.placedOrder}");
-  CreateOrderService().createOrder(widget.placedOrder).then((value) {
+    CreateOrderService().createOrder(widget.placedOrder).then((value) {
       if (value.status!) {
         // print("create order response::::YYYYY");
         SaleOrder order = widget.placedOrder;
@@ -41,7 +39,7 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         //order.save();
 
         DbSaleOrder().createOrder(order).then((value) {
-        log('order sync and saved to db');
+          log('order sync and saved to db');
           //Helper.showPopup(context, "Order synced and saved locally");
         });
       } else {
@@ -110,13 +108,13 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
                 onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>  NewCreateOrder())),
+                        builder: (context) => const ProductListHome())),
                 //() {
-                  // Navigator.pushAndRemoveUntil(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => NewCreateOrder()),
-                  //     (route) => route.isFirst);
-               // },
+                // Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => NewCreateOrder()),
+                //     (route) => route.isFirst);
+                // },
               ),
             ],
           ),

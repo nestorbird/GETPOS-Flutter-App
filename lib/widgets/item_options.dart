@@ -39,16 +39,13 @@ class _ItemOptionsState extends State<ItemOptions> {
     } else {
       itemTotal = item.price * widget.orderItem.orderedQuantity;
     }
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     _calculateItemPrice();
-    
   }
 
   @override
@@ -86,9 +83,8 @@ class _ItemOptionsState extends State<ItemOptions> {
                           widget.orderItem.orderedQuantity =
                               widget.orderItem.orderedQuantity + 1;
                           _calculateItemPrice();
-                        
+
                           // _selectedCustomerSection();
-                          
                         }
                       });
                     },
@@ -170,14 +166,14 @@ class _ItemOptionsState extends State<ItemOptions> {
                     child: Container(
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
-                          border: Border.all(color:AppColors.getPrimary()),
+                          border: Border.all(color: AppColors.getPrimary()),
                           // border: Border.all(color: Colors.yellow.shade800),
                           color: AppColors.getPrimary(),
                           // color: Colors.yellow.shade800,
                           borderRadius:
                               BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                         ),
-                        child:  Icon(
+                        child: Icon(
                           Icons.check,
                           size: 18.0,
                           color: AppColors.fontWhiteColor,
@@ -188,7 +184,8 @@ class _ItemOptionsState extends State<ItemOptions> {
                     child: Container(
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.getTextandCancelIcon()),
+                        border:
+                            Border.all(color: AppColors.getTextandCancelIcon()),
                         borderRadius:
                             BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                       ),
@@ -293,6 +290,4 @@ class _ItemOptionsState extends State<ItemOptions> {
       setState(() {});
     }
   }
- 
-
 }

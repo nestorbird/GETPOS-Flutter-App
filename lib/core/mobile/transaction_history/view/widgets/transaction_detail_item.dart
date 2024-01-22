@@ -26,18 +26,19 @@ class TransactionDetailItem extends StatefulWidget {
 }
 
 class _TransactionDetailItemState extends State<TransactionDetailItem> {
-  bool isUserOnline = true;
-
+ // bool isUserOnline = true;
+  bool isInternetAvailable = true;
   @override
   void initState() {
-    _checkUserAvailability();
+    checkInternetAvailability();
+ //   _checkUserAvailability();
     super.initState();
   }
 
-  _checkUserAvailability() async {
-    isUserOnline = await Helper.isNetworkAvailable();
-    setState(() {});
-  }
+  // _checkUserAvailability() async {
+  //   isUserOnline = await Helper.isNetworkAvailable();
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +88,7 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                       '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color:  AppColors.getPrimary(),
+                          color: AppColors.getPrimary(),
                           fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -113,10 +114,10 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
   }
 
   _getOrderedProductImage() {
-    if (isUserOnline &&
+    if (isInternetAvailable&&
         widget.product.productImage.isEmpty &&
         widget.product.productImageUrl!.isEmpty) {
-          //To check when images are needed
+      //To check when images are needed
       log('Image Url : ${widget.product.productImageUrl!}');
       return ClipRRect(
         borderRadius: BorderRadius.circular(8), // Image border
@@ -129,21 +130,37 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
       );
     } else {
       log('Local image');
-      return widget.product.productImage.isEmpty
-          ? Image.asset(
-                                                    NO_IMAGE,
-                                                    fit: BoxFit.fill,
-                                                  )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(8), // Image border
-              child: SizedBox(
-                // Image radius
-                height: 80,
-                child: Image.memory(widget.product.productImage,
-                    fit: BoxFit.cover),
-              ),
-            );
+      return (isInternetAvailable &&
+              widget.product.productImageUrl !=
+                  null)
+          ? Image.network(
+              widget.product.productImageUrl!,
+              fit: BoxFit.fill,
+            )
+          : (isInternetAvailable &&
+                 widget.product.productImageUrl ==
+                      null)
+              ? Image.asset(
+                  NO_IMAGE,
+                  fit: BoxFit.fill,
+                )
+              : Image.asset(
+                  NO_IMAGE,
+                  fit: BoxFit.fill,
+                );
       // Image.memory(widget.product.productImage);
+    }
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
     }
   }
 }

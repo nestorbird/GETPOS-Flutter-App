@@ -135,18 +135,16 @@ class OrderItem extends HiveObject {
       productImage: Uint8List.fromList(data), //map['productImage'],
       productUpdatedTime: DateTime.parse(map['productUpdatedTime']),
       productImageUrl: map['productImageUrl'],
-    //      tax: (map['tax'] as List<Map<String, dynamic>>?)
-    //  ?.map((taxMap) => Taxes.fromMap(taxMap))
-    //  .toList() ?? []);
-     // tax:(map['tax'] as List<Map<String, dynamic>>?)?? map((taxMap) => Taxes.fromMap(taxMap))
-    //   tax: (map['tax'] as List<Map<String, dynamic>>?)
-    // ?.map((taxMap) => Taxes.fromMap(taxMap))
-    // ?.toList() ?? [];
-    tax:List<Taxes>.from(
-          map['tax']?.map((x) => Taxes.fromMap(x))),
+      //      tax: (map['tax'] as List<Map<String, dynamic>>?)
+      //  ?.map((taxMap) => Taxes.fromMap(taxMap))
+      //  .toList() ?? []);
+      // tax:(map['tax'] as List<Map<String, dynamic>>?)?? map((taxMap) => Taxes.fromMap(taxMap))
+      //   tax: (map['tax'] as List<Map<String, dynamic>>?)
+      // ?.map((taxMap) => Taxes.fromMap(taxMap))
+      // ?.toList() ?? [];
+      tax: List<Taxes>.from(map['tax']?.map((x) => Taxes.fromMap(x))),
     );
-      //tax: map['tax']
-    
+    //tax: map['tax']
   }
 
   String toJson() => json.encode(toMap());
@@ -156,7 +154,7 @@ class OrderItem extends HiveObject {
 
   @override
   String toString() {
-    return 'OrderItem(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, productImage: $productImage, productUpdatedTime: $productUpdatedTime, tax:$tax)';
+    return 'OrderItem(id: $id,  name: $name, group: $group, description: $description, stock: $stock, price: $price, attributes: $attributes, orderedQuantity: $orderedQuantity, orderedPrice: $orderedPrice, productImage: $productImage,productImageUrl:$productImageUrl, productUpdatedTime: $productUpdatedTime, tax:$tax)';
   }
 
   @override

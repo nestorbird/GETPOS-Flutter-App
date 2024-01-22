@@ -9,7 +9,7 @@ import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
-
+import 'package:nb_posx/utils/helpers/sync_helper.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
@@ -22,15 +22,17 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import '../../../database/db_utils/db_instance_url.dart';
-
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
 import '../../service/login/api/login_api_service.dart';
+import '../../service/product/api/products_api_service.dart';
 import '../forgot_password/forgot_password_landscape.dart';
 import '../home_tablet.dart';
 
 class LoginLandscape extends StatefulWidget {
-  const LoginLandscape({Key? key}) : super(key: key);
+  final bool isUserLoggedIn;
+  const LoginLandscape({Key? key, this.isUserLoggedIn = false})
+      : super(key: key);
 
   @override
   State<LoginLandscape> createState() => _LoginLandscapeState();
@@ -44,8 +46,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController();
-    _passCtrl = TextEditingController();
+    _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
+    _passCtrl = TextEditingController(text: "Admin@123");
     _urlCtrl = TextEditingController();
     _emailCtrl.text = "";
     _passCtrl.text = "";
@@ -70,39 +72,41 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.fontWhiteColor,
-        body: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Container(
-                    width: 550,
-                    padding: paddingXY(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        headingLblWidget(),
-                        hightSpacer50,
-                        // instanceUrlTxtboxSection(context),
-                        // hightSpacer50,
-                        subHeadingLblWidget(),
-                        hightSpacer25,
-                        emailTxtboxSection(),
-                        hightSpacer20,
-                        passwordTxtboxSection(),
-                        hightSpacer20,
-                        forgotPasswordSection(),
-                        hightSpacer20,
-                        changeInstanceUrlSection(),
-                        hightSpacer20,
-                        termAndPolicySection,
-                        hightSpacer32,
-                        loginBtnWidget(),
-                      ],
-                    ),
-                  )),
-            )
-          ],
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Stack(
+            children: [
+              Center(
+                child: Container(
+                  width: 550,
+                  padding: paddingXY(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      headingLblWidget(),
+                      hightSpacer50,
+                      // instanceUrlTxtboxSection(context),
+                      // hightSpacer50,
+                      subHeadingLblWidget(),
+                      hightSpacer25,
+                      emailTxtboxSection(),
+                      hightSpacer20,
+                      passwordTxtboxSection(),
+                      hightSpacer20,
+                      forgotPasswordSection(),
+                      hightSpacer20,
+                      changeInstanceUrlSection(),
+                      hightSpacer20,
+                      termAndPolicySection,
+                      hightSpacer32,
+                      loginBtnWidget(),
+                      hightSpacer30
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -122,17 +126,37 @@ class _LoginLandscapeState extends State<LoginLandscape> {
 
         if (response.status!) {
           log("$response");
-          await HubManagerDetails().getAccountDetails();
-          // Start isolate with background processing and pass the receivePort
 
-          bool isSuccess = await useIsolate();
-          if (isSuccess) {
-            // Once the signal is received, navigate to ProductListHome
-            Get.offAll(() => HomeTablet());
-          } else {
-            // ignore: use_build_context_synchronously
-            Helper.showSnackBar(context, "Synchronization failed");
+          ///
+          ///if it is a Windown Platfrom (run without isolates)
+          ///
+          if (Platform.isWindows) {
+            if (widget.isUserLoggedIn) {
+              await SyncHelper().loginFlow();
+            } else {
+              await SyncHelper().launchFlow(isUserLoggedIn);
+            }
           }
+
+          ///
+          /// else run other platform android, tablet (run with isolates)
+          ///
+          else {
+            await HubManagerDetails().getAccountDetails();
+            if (widget.isUserLoggedIn) {
+              // await CustomerService().getCustomers();
+              await ProductsService().getCategoryProduct();
+            }
+            // Start isolate with background processing and pass the receivePort
+            await useIsolate(isUserLoggedIn: true);
+          }
+          // if (isSuccess) {
+          // Once the signal is received, navigate to ProductListHome
+          Get.offAll(() => HomeTablet());
+          // } else {
+          //   // ignore: use_build_context_synchronously
+          //   Helper.showSnackBar(context, "Synchronization failed");
+          // }
         } else {
           if (!mounted) return;
           Helper.hideLoader(context);
@@ -379,7 +403,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       );
 
   /// LOGIN BUTTON
-  Widget loginBtnWidget() => SizedBox(
+  Widget loginBtnWidget() => Container(
+        margin: const EdgeInsets.only(bottom: 20.0),
         width: double.infinity,
         child: ButtonWidget(
           onPressed: () async {

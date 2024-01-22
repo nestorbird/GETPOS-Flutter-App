@@ -26,17 +26,26 @@ class SalesDetailsItems extends StatefulWidget {
 }
 
 class _SalesDetailsItemsState extends State<SalesDetailsItems> {
-  bool isUserOnline = true;
+  // bool isUserOnline = true;
+  bool isInternetAvailable = false;
 
   @override
   void initState() {
     _checkUserAvailability();
+
     super.initState();
   }
 
   _checkUserAvailability() async {
-    isUserOnline = await Helper.isNetworkAvailable();
-    setState(() {});
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 
   @override
@@ -99,7 +108,7 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
   }
 
   _getOrderedProductImage() {
-    if (isUserOnline && widget.product!.productImageUrl!.isNotEmpty) {
+    if (isInternetAvailable && widget.product!.productImageUrl != null) {
       log('Image Url : ${widget.product!.productImageUrl!}');
       return ClipRRect(
         borderRadius: BorderRadius.circular(8), // Image border
@@ -112,20 +121,37 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
       );
     } else {
       log('Local image');
-      return widget.product!.productImage.isEmpty
-          ? Image.asset(
-              NO_IMAGE,
-              fit: BoxFit.fill,
-            )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(8), // Image border
-              child: SizedBox(
-                // Image radius
-                height: 80,
-                child: Image.memory(widget.product!.productImage,
-                    fit: BoxFit.cover),
-              ),
-            );
+      return
+          //  widget.product!.productImage.isEmpty
+          //     ? Image.asset(
+          //         NO_IMAGE,
+          //         fit: BoxFit.fill,
+          //       )
+          //     : ClipRRect(
+          //         borderRadius: BorderRadius.circular(8), // Image border
+          //         child: SizedBox(
+          //           // Image radius
+          //           height: 80,
+          //           child: Image.memory(widget.product!.productImage,
+          //               fit: BoxFit.cover),
+          //         ),
+          //       );
+
+          (isInternetAvailable && widget.product!.productImageUrl != null)
+              ? Image.network(
+                  widget.product!.productImageUrl!,
+                  fit: BoxFit.fill,
+                )
+              : (isInternetAvailable && widget.product!.productImageUrl == null)
+                  ? Image.asset(
+                      NO_IMAGE,
+                      fit: BoxFit.fill,
+                    )
+                  : Image.asset(
+                      NO_IMAGE,
+                      fit: BoxFit.fill,
+                    );
+
       // Image.memory(widget.product!.productImage);
     }
   }

@@ -80,7 +80,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                         'Parked Order',
                         style: getTextStyle(
                             fontSize: LARGE_MINUS_FONT_SIZE,
-                            color:  AppColors.getAsset()),
+                            color: AppColors.getAsset()),
                       ),
                     ),
                     Align(
@@ -107,8 +107,9 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                           Container(
                               padding: const EdgeInsets.all(6),
                               margin: const EdgeInsets.only(left: 20),
-                              decoration:  BoxDecoration(
-                                  shape: BoxShape.circle, color:  AppColors.getPrimary()),
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.getPrimary()),
                               child: Text(
                                 widget.order != null
                                     ? widget.order.items.length
@@ -131,7 +132,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             flex: 2,
                             child: ParkedOrderHeaderData(
                               heading: "Customer Name",
-                              headingColor:  AppColors.getAsset(),
+                              headingColor: AppColors.getAsset(),
                               content: widget.order.customer.name,
                             )),
                         Expanded(
@@ -139,7 +140,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             child: ParkedOrderHeaderData(
                               heading: "Mobile",
                               content: widget.order.customer.phone,
-                              headingColor:  AppColors.getAsset(),
+                              headingColor: AppColors.getAsset(),
                               // crossAlign: CrossAxisAlignment.center,
                             )),
                         InkWell(
@@ -147,7 +148,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                               "Do you want to delete this parked order?"),
                           child: Container(
                             decoration: BoxDecoration(
-                                color:  AppColors.getPrimary(),
+                                color: AppColors.getPrimary(),
                                 borderRadius: BorderRadius.circular(20)),
                             padding: miniPaddingAll(),
                             child: SvgPicture.asset(
@@ -167,7 +168,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             flex: 2,
                             child: ParkedOrderHeaderData(
                               heading: "Date & Time",
-                              headingColor:  AppColors.getAsset(),
+                              headingColor: AppColors.getAsset(),
                               content: Helper.getFormattedDateTime(
                                   widget.order.transactionDateTime),
                             )),
@@ -181,10 +182,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                             flex: 2,
                             child: ParkedOrderHeaderData(
                               heading: "Order Amount",
-                              headingColor:  AppColors.getAsset(),
+                              headingColor: AppColors.getAsset(),
                               content:
                                   "$appCurrency ${totalAmount.toStringAsFixed(2)}",
-                              contentColor:  AppColors.getPrimary(),
+                              contentColor: AppColors.getPrimary(),
                             )),
                       ],
                     )),
@@ -286,7 +287,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color:  AppColors.getPrimary(),
+          color: AppColors.getPrimary(),
         ),
         child: Row(
           children: [
@@ -353,7 +354,8 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         height: 60,
         width: MediaQuery.of(context).size.width / 4,
         decoration: BoxDecoration(
-            color: AppColors.getSecondary(), borderRadius: BorderRadius.circular(5)),
+            color: AppColors.getSecondary(),
+            borderRadius: BorderRadius.circular(5)),
         child: Text(
           "Add more products",
           textAlign: TextAlign.center,
@@ -433,7 +435,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
       log('Tax Percentage after adding ${item.name} :: $taxPercentage');
       // subTotalAmount =
       //     subTotalAmount + (item.orderedPrice * item.orderedQuantity);
-          subTotalAmount = item.orderedQuantity * item.orderedPrice;
+      subTotalAmount = item.orderedQuantity * item.orderedPrice;
       log('SubTotal after adding ${item.name} :: $subTotalAmount');
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {

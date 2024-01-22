@@ -39,11 +39,10 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: Get.height - 400,
+        height: Get.height - 300,
         width: 400,
         child: Column(
           children: [
-       
             hightSpacer50,
             SizedBox(
               height: 60,
