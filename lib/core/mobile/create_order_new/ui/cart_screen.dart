@@ -761,7 +761,7 @@ class _CartScreenState extends State<CartScreen> {
 
     // ) 
 //await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
-List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
+//List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
 
       DbHubManager dbHubManager = DbHubManager();
 
@@ -790,7 +790,7 @@ List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesD
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
           tracsactionDateTime: currentDateTime,
-          taxes: savedTaxes);
+          taxes: []);
       if (!mounted) return;
 
       Navigator.push(

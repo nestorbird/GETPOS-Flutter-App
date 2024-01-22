@@ -239,6 +239,7 @@ class _LoginState extends State<Login> {
               txtCtrl: _passCtrl,
               hintText: PASSWORD_HINT,
               password: true,
+              
             ),
           ],
         ),
@@ -292,8 +293,8 @@ class _LoginState extends State<Login> {
                 CHANGE_INSTANCE_URL_TXT,
                 style: getTextStyle(
                     color: AppColors.getPrimary(),
-                    fontSize: MEDIUM_MINUS_FONT_SIZE,
-                    fontWeight: FontWeight.normal),
+                    fontSize: MEDIUM_FONT_SIZE,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),
