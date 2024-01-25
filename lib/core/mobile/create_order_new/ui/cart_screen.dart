@@ -759,7 +759,7 @@ class _CartScreenState extends State<CartScreen> {
 
 
     // ) 
-//await DbTaxes().getTaxes();
+
 //await DbOrderTax().getOrderTaxes();
 //List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
 
@@ -774,6 +774,8 @@ class _CartScreenState extends State<CartScreen> {
         profileImage: hubManagerData.profileImage,
         cashBalance: hubManagerData.cashBalance.toDouble(),
       );
+
+    
       //If itemwise tax is applicable
   var taxes = await DbTaxes().getItemWiseTax(orderId!);
      log("Taxes :: $taxes");
@@ -960,14 +962,13 @@ log("OrderWise Taxes :: $tax");
           )
         
           );
-
-          // Update the taxAmountMap for the current tax type
+      // Update the taxAmountMap for the current tax type
           taxAmountMap.update(
             tax.taxType,
             (value) => value + taxAmount!,
             ifAbsent: () => taxAmount!,
           );
-        
+    //       Hive.box('TAX_BOX').putAt(4,taxAmount);
         });
 
         log("Total Tax Amount itemwise: $totalTaxAmount");

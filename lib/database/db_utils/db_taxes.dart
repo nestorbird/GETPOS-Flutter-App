@@ -40,31 +40,13 @@ class DbTaxes {
     return list;
   }
 
-  Future<Taxes?> getProductDetails(String key) async {
-    box = await Hive.openBox<Taxes>(TAX_BOX);
-    return box.get(key);
-  }
 
   Future<int> deleteTaxes() async {
     box = await Hive.openBox<Taxes>(TAX_BOX);
     return box.clear();
   }
 
-  Future<List<Taxes>> getAllProducts() async {
-    box = await Hive.openBox<Taxes>(TAX_BOX);
-    List<Taxes> list = [];
-    for (var item in box.values) {
-      var tax = item as Taxes;
-      getProducts();
-      var product = item as OrderItem;
-      if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
-        list.add(tax);
-      }
-    }
-   
-    return list;
-  }
-
+  
 //to save tax list in db for itemwise taxation
   Future<List> saveItemWiseTax(orderId, List<Taxes> list) async {
     box = await Hive.openBox<Taxes>(TAX_BOX);
@@ -76,13 +58,13 @@ class DbTaxes {
   }
 
    Future<List<Taxes>> getItemWiseTax(String orderId) async {
-    var box = await Hive.openBox<Taxes>(TAX_BOX);
-    
-    // Assuming you have stored the itemTaxTemplate as the key for each item
-    List<Taxes> taxList = box.values.where((tax) => tax.taxId== orderId).toList();
+  var box = await Hive.openBox<Taxes>(TAX_BOX);
 
-    return taxList;
-  }
+  // Assuming you have stored the itemTaxTemplate as the key for each item
+  List<Taxes> taxList = box.values.where((tax) => tax.itemTaxTemplate == orderId).toList();
+
+  return taxList;
+}
 //  Future<List<Taxes>> getItemWiseTax(String orderId ) async {
 //   var box = await Hive.openBox<Taxes>(TAX_BOX);
 
