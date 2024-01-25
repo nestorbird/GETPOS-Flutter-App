@@ -86,6 +86,7 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                     ),
                     Text(
                       '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
+                     // '$appCurrency ${widget.product.orderedPrice.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           color: AppColors.getPrimary(),

@@ -201,10 +201,10 @@ class DbSaleOrder {
   }
 
   //to save tax list in db for orderwise taxation
-  Future<List> saveOrderWiseTax(orderId, List<OrderTaxes> list) async {
+  Future<List> saveOrderWiseTax(orderId, List<OrderTax> list) async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
-    for (OrderTaxes item in list) {
-      await box.put(item.id, item);
+    for (OrderTax item in list) {
+      await box.put(item.itemTaxTemplate, item);
     }
     // var taxwiseOrder=  await box.putAll();
 

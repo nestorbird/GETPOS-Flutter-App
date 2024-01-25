@@ -21,21 +21,21 @@ class DbOrderTax {
 
  
 
-  Future<List<OrderTax>> getOrderTaxes() async {
-    box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
-    List<OrderTax> list = [];
+  // Future<List<OrderTax>> getOrderTaxes() async {
+  //   box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+  //   List<OrderTax> list = [];
 
-    for (var item in box.values) {
-      var tax = item as OrderTax;
+  //   for (var item in box.values) {
+  //     var tax = item as OrderTax;
      
-      var product = item as OrderItem;
+  //     var product = item as OrderItem;
 
-      if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
-        list.add(tax);
-      }
-    }
-    return list;
-  }
+  //     if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
+  //       list.add(tax);
+  //     }
+  //   }
+  //   return list;
+  // }
 
  
 
@@ -49,12 +49,24 @@ class DbOrderTax {
    
 
 //to save tax list in db for orderwise taxation
-  Future<List> saveOrderWiseTax(orderId, List<OrderTaxes> list) async {
-    box = await Hive.openBox<OrderTaxes>(ORDERTAX_BOX);
-    for (OrderTaxes item in list) {
-      await box.put(item.id, item);
+  Future<List> saveOrderWiseTax(orderId, List<OrderTax> list) async {
+    box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+    for (OrderTax item in list) {
+      await box.put(item.itemTaxTemplate, item);
     }
 
     return list;
   }
+  //to fetch the Orderwise tax list
+Future<List<OrderTax>> getOrderWiseTax(String orderId) async {
+  final box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+  
+  // Assuming 'id' is the property that represents the orderId in OrderTaxes
+  final List<OrderTax> orderTaxesList = box.values
+      .where((orderTax) => orderTax.itemTaxTemplate == orderId)
+      .toList();
+
+  return orderTaxesList;
+}
+  
 }

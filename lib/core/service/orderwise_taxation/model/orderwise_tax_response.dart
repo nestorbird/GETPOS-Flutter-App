@@ -59,7 +59,7 @@ class Message {
 
 class Taxes {
   String name;
-
+  String taxId ;
   String itemTaxTemplate;
   String chargeType;
   String taxType;
@@ -71,6 +71,7 @@ class Taxes {
   double total;
   Taxes({
     required this.name,
+    required this.taxId ,
     required this.itemTaxTemplate,
     required this.chargeType,
     required this.taxType,
@@ -83,6 +84,7 @@ class Taxes {
   });
   factory Taxes.fromJson(Map<String, dynamic> json) => Taxes(
         name: json["name"],
+         taxId: json["tax_id"] ?? "",
         itemTaxTemplate: json["item_tax_template"],
         chargeType: json["charge_type"],
         taxType: json["tax_type"],
@@ -95,6 +97,7 @@ class Taxes {
       );
   Map<String, dynamic> toJson() => {
         "name": name,
+        "tax_id": taxId,
         "item_tax_template": itemTaxTemplate,
         "charge_type": chargeType,
         "tax_type": taxType,

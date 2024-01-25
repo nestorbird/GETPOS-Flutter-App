@@ -18,6 +18,7 @@ import 'package:nb_posx/database/models/hub_manager.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 import 'package:nb_posx/widgets/product_shimmer_widget.dart';
@@ -920,7 +921,7 @@ class _CartWidgetState extends State<CartWidget> {
         }
 
         // Calculating tax amount
-        List<Taxation> taxation = [];
+        List<Taxes> taxation = [];
         item.tax.forEach((tax) async {
           double taxAmount = subTotalAmount * tax.taxRate / 100;
 
@@ -929,12 +930,12 @@ class _CartWidgetState extends State<CartWidget> {
           log('Total tax Amount: $totalTaxAmount');
 
           log('totalAmount itemwise : $totalAmount');
-          taxation.add(Taxation(
-            id: '',
+          taxation.add(Taxes(
+            taxId: '',
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,
-            taxationAmount: taxAmount,
+            taxAmount: taxAmount,
           ));
 
           // Update the taxAmountMap for the current tax type
@@ -963,7 +964,7 @@ class _CartWidgetState extends State<CartWidget> {
 
       await Future.forEach<OrderTaxTemplate>(data,
           (OrderTaxTemplate message) async {
-        List<OrderTaxes> taxesData = [];
+        List<OrderTax> taxesData = [];
 
         message.tax.forEach((tax) async {
           double taxAmount = totalAmount! * tax.taxRate / 100;
@@ -973,12 +974,12 @@ class _CartWidgetState extends State<CartWidget> {
 
           log("Total Tax Amount orderwise : $totalTaxAmount");
           log('Total Amount Orderwise:: $totalAmount');
-          taxesData.add(OrderTaxes(
-            id: '',
+          taxesData.add(OrderTax(
+            taxId: tax.taxId,
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,
-            taxationAmount: taxAmount,
+            taxAmount: taxAmount,
           ));
 
           // Update the taxAmountMap for the current tax type

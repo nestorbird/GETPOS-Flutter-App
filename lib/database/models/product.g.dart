@@ -26,6 +26,7 @@ class ProductAdapter extends TypeAdapter<Product> {
       attributes: (fields[6] as List).cast<Attribute>(),
       productImage: fields[7] as Uint8List,
       productUpdatedTime: fields[8] as DateTime,
+      productImageUrl: fields[10] as String?,
       tax: (fields[9] as List).cast<Taxes>(),
     );
   }
@@ -33,7 +34,7 @@ class ProductAdapter extends TypeAdapter<Product> {
   @override
   void write(BinaryWriter writer, Product obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,6 +51,8 @@ class ProductAdapter extends TypeAdapter<Product> {
       ..write(obj.attributes)
       ..writeByte(7)
       ..write(obj.productImage)
+      ..writeByte(10)
+      ..write(obj.productImageUrl)
       ..writeByte(8)
       ..write(obj.productUpdatedTime)
       ..writeByte(9)

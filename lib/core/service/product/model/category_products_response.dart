@@ -196,14 +196,16 @@ class Tax {
   String? itemTaxTemplate;
   double? taxRate;
   String? taxType;
+  double? taxAmount;
 
-  Tax({this.taxId, this.itemTaxTemplate, this.taxType, this.taxRate});
+  Tax({this.taxId, this.itemTaxTemplate, this.taxType, this.taxRate, this.taxAmount});
 
   Tax.fromJson(Map<String, dynamic> json) {
     taxId = json['taxId'] ?? "";
     itemTaxTemplate = json['item_tax_template'] ?? "";
     taxType = json['tax_type'] ?? "";
     taxRate = json['tax_rate'] ?? 0.0;
+    taxAmount = json['tax_amount'] ?? 0.0;
   }
 
   Map<String, dynamic> toJson() {
@@ -212,6 +214,7 @@ class Tax {
     data['item_tax_template'] = itemTaxTemplate;
     data['tax_type'] = taxType;
     data['tax_rate'] = taxRate;
+    data['tax_amount'] = taxAmount;
     return data;
   }
 }

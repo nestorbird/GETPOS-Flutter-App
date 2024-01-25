@@ -19,11 +19,15 @@ class Taxes extends HiveObject {
   @HiveField(3)
   double taxRate;
 
+  @HiveField(4)
+  double? taxAmount;
+
   Taxes({
     required this.taxId,
     required this.itemTaxTemplate,
     required this.taxType,
     required this.taxRate,
+    required this.taxAmount,
   });
 
   Taxes copyWith({
@@ -38,6 +42,7 @@ class Taxes extends HiveObject {
       itemTaxTemplate: itemTaxTemplate ?? this.itemTaxTemplate,
       taxType: taxType ?? this.taxType,
       taxRate: taxRate ?? this.taxRate,
+      taxAmount: taxAmount ?? this.taxAmount
     );
   }
 
@@ -47,6 +52,7 @@ class Taxes extends HiveObject {
       'item_tax_template': itemTaxTemplate,
       'tax_type': taxType,
       'tax_rate': taxRate,
+      'tax_amount':taxAmount
     };
   }
 
@@ -55,7 +61,8 @@ class Taxes extends HiveObject {
       taxId: map["tax_id"] ?? "",
       itemTaxTemplate: map['item_tax_template'] ?? '',
       taxType: map['tax_type'] ?? '',
-      taxRate: map['tax_rate'] ?? '',
+     taxRate: (map['tax_rate'] ?? 0.0).toDouble(),
+    taxAmount: (map['tax_amount'] ?? 0.0).toDouble(),
     );
   }
   String toJson() => json.encode(toMap());
@@ -64,7 +71,7 @@ class Taxes extends HiveObject {
 //
   @override
   String toString() =>
-      'Taxes(tax_id: $taxId,item_tax_template: $itemTaxTemplate, tax_type: $taxType, tax_rate: $taxRate )';
+      'Taxes(tax_id: $taxId,item_tax_template: $itemTaxTemplate, tax_type: $taxType, tax_rate: $taxRate , tax_amount: $taxAmount)';
 
   @override
   bool operator ==(Object other) {
@@ -74,7 +81,8 @@ class Taxes extends HiveObject {
         other.taxId == taxId &&
         other.itemTaxTemplate == itemTaxTemplate &&
         other.taxType == taxType &&
-        other.taxRate == taxRate;
+        other.taxRate == taxRate &&
+        other.taxAmount == taxAmount;
   }
 
   @override
@@ -82,5 +90,6 @@ class Taxes extends HiveObject {
       taxId.hashCode ^
       itemTaxTemplate.hashCode ^
       taxType.hashCode ^
-      taxRate.hashCode;
+      taxRate.hashCode ^
+      taxAmount.hashCode;
 }

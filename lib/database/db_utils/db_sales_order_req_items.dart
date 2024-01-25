@@ -7,9 +7,9 @@ import 'package:nb_posx/database/models/taxes.dart';
 class DbSaleOrderRequestItems {
   late Box box;
 
-  Future<List> saveItemWiseTaxRequest(orderId, List<Taxation> list) async {
-    box = await Hive.openBox<Taxation>(SALES_ORDER_REQUEST_ITEMS_BOX);
-    for (Taxation item in list) {
+  Future<List> saveItemWiseTaxRequest(orderId, List<Taxes> list) async {
+    box = await Hive.openBox<Taxes>(SALES_ORDER_REQUEST_ITEMS_BOX);
+    for (Taxes item in list) {
       await box.put(item.taxType, item);
     }
 

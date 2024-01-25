@@ -38,9 +38,11 @@ class OrderwiseTaxes {
           if (catData.tax.isNotEmpty) {
             for (var tax in catData.tax) {
               var orderTax = OrderTax(
+                taxId: tax.taxId,
                   itemTaxTemplate: tax.itemTaxTemplate,
                   taxType: tax.taxType,
-                  taxRate: tax.taxRate);
+                  taxRate: tax.taxRate,
+                  taxAmount: tax.taxAmount);
               taxes.add(orderTax);
             }
           }
@@ -63,9 +65,11 @@ class OrderwiseTaxes {
             var taxData = taxObj as cat_resp.Taxes;
 
             OrderTax ordertax = OrderTax(
+              taxId: taxData.taxId ,
               itemTaxTemplate: taxData.itemTaxTemplate,
               taxType: taxData.taxType,
               taxRate: taxData.taxRate,
+              taxAmount: taxData.taxRate,
             );
             taxesOrder.add(ordertax);
           });
