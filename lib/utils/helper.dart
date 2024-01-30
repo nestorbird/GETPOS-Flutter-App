@@ -256,6 +256,10 @@ class Helper {
       orderNo = "1";
       await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
     }
+    //  else {
+    //  // orderNo = (int.parse(orderNo) + 1).toString();
+    //  // await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
+    // }
     String orderSeries = await DBPreferences().getPreference(SalesSeries);
     print("ORDER SERIES :: $orderSeries");
     String orderId = orderSeries

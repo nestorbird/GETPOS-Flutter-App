@@ -49,8 +49,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
     _passCtrl = TextEditingController(text: "Admin@123");
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "";
-    _passCtrl.text = "";
+   // _emailCtrl.text = "";
+   // _passCtrl.text = "";
     // _urlCtrl.text = instanceUrl;
     _getUrlKey();
 
@@ -257,6 +257,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         ),
       );
 
+
+
   /// FORGOT PASSWORD SECTION
   Widget forgotPasswordSection() => Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -304,8 +306,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                 CHANGE_INSTANCE_URL_TXT,
                 style: getTextStyle(
                     color: AppColors.getPrimary(),
-                    fontSize: MEDIUM_MINUS_FONT_SIZE,
-                    fontWeight: FontWeight.normal),
+                    fontSize: LARGE_MINUS_FONT_SIZE,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),

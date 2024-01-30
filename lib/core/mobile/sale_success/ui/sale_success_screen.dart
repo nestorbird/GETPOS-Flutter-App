@@ -7,6 +7,8 @@ import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
+import '../../../../database/db_utils/db_constants.dart';
+import '../../../../database/db_utils/db_preferences.dart';
 import '../../../../database/db_utils/db_sale_order.dart';
 import '../../../../database/models/sale_order.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
@@ -38,15 +40,18 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         order.id = value.message;
         //order.save();
 
-        DbSaleOrder().createOrder(order).then((value) {
+
+        DbSaleOrder().createOrder(order).then((value) async {
           log('order sync and saved to db');
           //Helper.showPopup(context, "Order synced and saved locally");
+           //await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, order.id);
         });
       } else {
-        DbSaleOrder().createOrder(widget.placedOrder).then((value) {
+        DbSaleOrder().createOrder(widget.placedOrder).then((value) async {
           log('order saved to db');
-          Helper.showPopup(context,
-              "Order saved locally, and will be synced when you restart the app.");
+          //await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, widget.placedOrder.id);
+          // Helper.showPopup(context,
+          //     "Order saved locally, and will be synced when you restart the app.");
         });
       }
     });

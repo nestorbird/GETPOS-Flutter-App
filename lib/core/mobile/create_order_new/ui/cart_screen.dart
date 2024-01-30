@@ -732,7 +732,7 @@ class _CartScreenState extends State<CartScreen> {
       );
 
   createSale(String paymentMethod) async {
-    paymentMethod = paymentMethod;
+   // paymentMethod = paymentMethod;
     if (paymentMethod == "Card") {
       return Helper.showPopup(context, "Coming Soon");
     } else {
@@ -790,7 +790,7 @@ class _CartScreenState extends State<CartScreen> {
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
           tracsactionDateTime: currentDateTime,
-          taxes: tax);
+          taxes: tax ?? []);
       if (!mounted) return;
 
       Navigator.push(
