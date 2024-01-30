@@ -2,10 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:nb_posx/database/db_utils/db_instance_url.dart';
-
 import '../../../../../constants/app_constants.dart';
-
 import '../../../../../database/db_utils/db_constants.dart';
 import '../../../../../database/db_utils/db_hub_manager.dart';
 import '../../../../../database/db_utils/db_preferences.dart';
@@ -70,8 +67,14 @@ class HubManagerDetails {
         await dbHubManager.getManager();
 
         //Saving the Sales Series
-        await DBPreferences()
-            .savePreference(SalesSeries, hubManagerData.series);
+        if (hubManagerData.series.isNotEmpty) {
+          await DBPreferences()
+              .savePreference(SalesSeries, hubManagerData.series);
+        } else {
+          //SAL-ORD-2024-00333
+          String salesOrderSeries = "SAL-ORD-YYYY-#####";
+          await DBPreferences().savePreference(SalesSeries, salesOrderSeries);
+        }
 
         //returning the CommanResponse as true
         return CommanResponse(

@@ -1,12 +1,9 @@
 // ignore_for_file: unnecessary_string_interpolations
 
-
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
@@ -16,7 +13,6 @@ import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dar
 //import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
-import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
@@ -28,7 +24,6 @@ import 'package:nb_posx/widgets/long_button_widget.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_parked_order.dart';
-
 import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
@@ -84,7 +79,7 @@ class _CartScreenState extends State<CartScreen> {
   late List<OrderTax>? getTaxesOrderwise;
   late List<OrderTaxTemplate>? getOrderTemplate;
   List<CouponCode> couponCodes = [];
-  List<OrderTaxTemplate> data =[];
+  List<OrderTaxTemplate> data = [];
   List<Taxes>? taxesData;
 
   @override
@@ -750,15 +745,14 @@ class _CartScreenState extends State<CartScreen> {
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
 
-    // DbOrderTax dbOrderTax = DbOrderTax();
+      // DbOrderTax dbOrderTax = DbOrderTax();
 
-    // var OrderWisetax = await dbOrderTax.getOrderTaxes();
-    // OrderTax orderTax = OrderTax(
-    //   itemTaxTemplate: OrderWise
-    //   taxRate: Order
+      // var OrderWisetax = await dbOrderTax.getOrderTaxes();
+      // OrderTax orderTax = OrderTax(
+      //   itemTaxTemplate: OrderWise
+      //   taxRate: Order
 
-
-    // ) 
+      // )
 
 //await DbOrderTax().getOrderTaxes();
 //List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
@@ -774,14 +768,12 @@ class _CartScreenState extends State<CartScreen> {
         profileImage: hubManagerData.profileImage,
         cashBalance: hubManagerData.cashBalance.toDouble(),
       );
-
-    
       //If itemwise tax is applicable
-  var taxes = await DbTaxes().getItemWiseTax(orderId!);
-     log("Taxes :: $taxes");
+      var taxes = await DbTaxes().getItemWiseTax(orderId!);
+      log("Taxes :: $taxes");
 //if OrderWise taxation is applicable
-var tax=  await DbOrderTax().getOrderWiseTax(orderId!);
-log("OrderWise Taxes :: $tax");
+      var tax = await DbOrderTax().getOrderWiseTax(orderId!);
+      log("OrderWise Taxes :: $tax");
 
       saleOrder = SaleOrder(
           id: orderId!,
@@ -798,12 +790,8 @@ log("OrderWise Taxes :: $tax");
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
           tracsactionDateTime: currentDateTime,
-          taxes: data.isNotEmpty ?
-          data.first.tax.isEmpty
-          ?[]
-          : data.first.tax : []);
+          taxes: tax);
       if (!mounted) return;
-     
 
       Navigator.push(
           context,
@@ -945,9 +933,8 @@ log("OrderWise Taxes :: $tax");
 
         // Calculating tax amount
         List<Taxes> taxation = [];
-      item.tax.forEach((tax) {
-
-         taxAmount = subTotalAmount * tax.taxRate / 100;
+        for (var tax in item.tax) {
+          taxAmount = subTotalAmount * tax.taxRate / 100;
 
           log('Tax Amount itemwise : $taxAmount');
           totalTaxAmount += taxAmount!;
@@ -959,27 +946,23 @@ log("OrderWise Taxes :: $tax");
             taxType: tax.taxType,
             taxRate: tax.taxRate,
             taxAmount: taxAmount,
-          )
-        
-          );
-      // Update the taxAmountMap for the current tax type
+          ));
+          // Update the taxAmountMap for the current tax type
           taxAmountMap.update(
             tax.taxType,
             (value) => value + taxAmount!,
             ifAbsent: () => taxAmount!,
           );
-    //       Hive.box('TAX_BOX').putAt(4,taxAmount);
-        });
+          //       Hive.box('TAX_BOX').putAt(4,taxAmount);
+        }
 
         log("Total Tax Amount itemwise: $totalTaxAmount");
-         orderId = await Helper.getOrderId();
-      log('Order No : $orderId');
-       
-     await   DbTaxes().saveItemWiseTax(orderId, taxation);
-     
-   
-  
-   //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
+        orderId = await Helper.getOrderId();
+        log('Order No : $orderId');
+
+        await DbTaxes().saveItemWiseTax(orderId, taxation);
+
+        //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
       setState(() {});
       log("Total Amount:: $totalAmount");
@@ -989,16 +972,15 @@ log("OrderWise Taxes :: $tax");
     if (!isTaxAvailable) {
       taxAmount = 0.0;
       totalTaxAmount = 0.0;
-     data =
-          await DbOrderTaxTemplate().getOrderTaxesTemplate();
+      data = await DbOrderTaxTemplate().getOrderTaxesTemplate();
       log('data: $data');
 
       await Future.forEach<OrderTaxTemplate>(data,
           (OrderTaxTemplate message) async {
         List<OrderTax> taxesData = [];
 
-        message.tax.forEach((tax)  {
-           taxAmount = totalAmount! * tax.taxRate / 100;
+        for (var tax in message.tax) {
+          taxAmount = totalAmount! * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount!;
           taxTypeApplied = tax.taxType;
@@ -1019,14 +1001,12 @@ log("OrderWise Taxes :: $tax");
             (value) => value + taxAmount!,
             ifAbsent: () => taxAmount!,
           );
-        });
+        }
 
-     await   DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
-     await DbOrderTax().saveOrderWiseTax(orderId, taxesData);
-      orderId = await Helper.getOrderId();
-      log('Order No : $orderId');
-     var taxes = await DbOrderTax().getOrderWiseTax(orderId!);
-     log("Taxes :: $taxes");
+        orderId = await Helper.getOrderId();
+        log('Order No : $orderId');
+        //await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+        await DbOrderTax().saveOrderWiseTax(orderId!, taxesData);
       });
       setState(() {});
       log("Total Amount:: $totalAmount");
@@ -1040,7 +1020,6 @@ log("OrderWise Taxes :: $tax");
               'tax_amount': entry.value,
             })
         .toList();
-         
     setState(() {});
     grandTotal = totalAmount! + totalTaxAmount;
     log('Grand Total:: $grandTotal');
