@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:hive/hive.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/database/models/order_item.dart';
-import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'db_constants.dart';
 

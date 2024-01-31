@@ -12,7 +12,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/configs/local_notification_service.dart';
 import 'package:nb_posx/configs/network_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
@@ -23,7 +22,6 @@ import 'package:nb_posx/database/models/sales_order_req.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
-import 'package:nb_posx/utils/helper.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'constants/app_constants.dart';

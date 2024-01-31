@@ -25,7 +25,6 @@ import '../../../database/db_utils/db_instance_url.dart';
 
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
-import '../../service/customer/api/customer_api_service.dart';
 import '../../service/login/api/login_api_service.dart';
 import '../../service/product/api/products_api_service.dart';
 import '../forgot_password/forgot_password_landscape.dart';

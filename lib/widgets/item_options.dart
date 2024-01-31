@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../core/mobile/add_products/ui/added_product_item.dart';
 import '../database/models/attribute.dart';

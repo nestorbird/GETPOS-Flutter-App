@@ -15,7 +15,6 @@ import 'package:nb_posx/network/api_constants/api_paths.dart';
 // import 'package:printing/printing.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../core/mobile/home/ui/home.dart';
 import '../database/db_utils/db_constants.dart';

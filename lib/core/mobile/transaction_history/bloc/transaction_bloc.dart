@@ -6,14 +6,11 @@ import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/service/sales_history/api/get_previous_order.dart';
-import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/models/attribute.dart';
-import 'package:nb_posx/database/models/hub_manager.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
 import 'package:stream_transform/stream_transform.dart';
 

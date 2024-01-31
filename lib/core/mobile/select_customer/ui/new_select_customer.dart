@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 
 import '../../../../database/db_utils/db_customer.dart';

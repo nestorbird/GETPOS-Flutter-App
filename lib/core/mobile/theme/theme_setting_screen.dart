@@ -1,24 +1,16 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 
-import 'package:nb_posx/configs/theme_config.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
-import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
-import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
-import 'package:nb_posx/core/tablet/login/login_landscape.dart';
-import 'package:nb_posx/database/db_utils/db_customer.dart';
-import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
-import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/helper.dart';

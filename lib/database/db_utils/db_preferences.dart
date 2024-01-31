@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/database/models/customer.dart';
 import 'package:nb_posx/database/models/sale_order.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';

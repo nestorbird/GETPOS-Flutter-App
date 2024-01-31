@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 
-import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 
 import '../../../../../constants/app_constants.dart';
 

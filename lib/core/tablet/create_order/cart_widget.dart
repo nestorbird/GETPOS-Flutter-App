@@ -1,28 +1,22 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
-import 'package:nb_posx/core/mobile/sale_success/ui/sale_success_screen.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
-import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
-import 'package:nb_posx/database/models/hub_manager.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
-import 'package:nb_posx/widgets/product_shimmer_widget.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/models/customer.dart';
@@ -966,7 +960,7 @@ class _CartWidgetState extends State<CartWidget> {
         List<OrderTaxes> taxesData = [];
 
         message.tax.forEach((tax) async {
-          double taxAmount = totalAmount! * tax.taxRate / 100;
+          double taxAmount = totalAmount* tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount;
           taxTypeApplied = tax.taxType;

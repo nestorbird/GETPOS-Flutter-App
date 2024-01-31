@@ -412,7 +412,7 @@ class _LoginState extends State<Login> {
 // while changing instance
       SyncHelper().logoutFlow();
 
-      // ignore: use_build_context_synchronously
+    
       await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const ThemeChange()),

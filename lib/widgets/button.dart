@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../utils/ui_utils/text_styles/custom_text_style.dart';
 
+// ignore: must_be_immutable
 class ButtonWidget extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String title;
@@ -37,7 +36,7 @@ class ButtonWidget extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        margin: EdgeInsets.all(20),
+        margin:const EdgeInsets.all(20),
         width: width,
         height: height,
         decoration: BoxDecoration(

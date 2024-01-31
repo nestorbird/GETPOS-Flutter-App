@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/utils/helper.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_categories.dart';
@@ -48,9 +48,12 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   List<Category> categories = [];
   // ParkOrder? parkOrder;
   late List<OrderItem> items;
+  late ScrollController _scrollController;
+  final _key = GlobalKey<ExpandableFabState>();
 
   @override
   void initState() {
+    _scrollController = ScrollController();
     checkInternetAvailability();
     items = [];
     searchCtrl = TextEditingController();
@@ -118,6 +121,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
               Expanded(
                 flex: 2,
                 child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
@@ -201,7 +205,6 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         ),
         hightSpacer10,
         SizedBox(
-          // color: Colors.amber,
           height: 140,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -402,7 +405,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                     margin: const EdgeInsets.only(left: 45),
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: const Color(0xFF62B146)),
+                                        color: Color(0xFF62B146)),
                                     child: Text(
                                       cat.items[position].stock
                                           .toInt()
@@ -442,7 +445,15 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
           itemBuilder: (context, position) {
-            return InkWell(
+            return GestureDetector(
+              onTap: (() {
+                log("TAPPED:::::");
+                final state = _key.currentState;
+                if (state != null && state.isOpen) {
+                  state.toggle();
+                }
+                _scrollToIndex(position);
+              }),
               child: categories.isEmpty
                   ? const Center(
                       child: Text(
@@ -584,6 +595,19 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       debugPrint("Customer selected");
     }
     setState(() {});
+  }
+
+  double _scrollToOffset(int index) {
+    // Calculate the scroll offset for the given index
+    // You'll need to adjust this based on your actual item heights
+    double itemHeight = 200;
+    return itemHeight * index;
+  }
+
+  void _scrollToIndex(int index) {
+    double offset = _scrollToOffset(index);
+    _scrollController.animateTo(offset,
+        duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
   }
 
   void _filterProductsCategories(String searchTxt) {
