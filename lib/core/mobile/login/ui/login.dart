@@ -48,8 +48,8 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController(text: "akshay@yopmail.com");
-    _passCtrl = TextEditingController(text: "Qwerty@123");
+    _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
+    _passCtrl = TextEditingController(text: "Admin@123");
     _getUrlKey();
 
     // url = instanceUrl;
@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
           }
           Helper.hideLoader(context);
           // Start isolate with background processing and pass the receivePort
-          useIsolate(isUserLoggedIn: true);
+         await useIsolate(isUserLoggedIn: true);
           // if (isSuccess) {
           // Once the signal is received, navigate to ProductListHome
           Navigator.push(

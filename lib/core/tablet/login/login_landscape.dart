@@ -22,7 +22,6 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import '../../../database/db_utils/db_instance_url.dart';
-
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
 import '../../service/login/api/login_api_service.dart';
@@ -47,8 +46,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController();
-    _passCtrl = TextEditingController();
+    _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
+    _passCtrl = TextEditingController(text: "Admin@123");
     _urlCtrl = TextEditingController();
     _emailCtrl.text = "";
     _passCtrl.text = "";
@@ -149,7 +148,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
               await ProductsService().getCategoryProduct();
             }
             // Start isolate with background processing and pass the receivePort
-            useIsolate(isUserLoggedIn: true);
+            await useIsolate(isUserLoggedIn: true);
           }
           // if (isSuccess) {
           // Once the signal is received, navigate to ProductListHome
