@@ -43,7 +43,7 @@ class Message {
         isDefault: json["is_default"],
         disabled: json["disabled"],
         company: json["company"],
-        taxCategory: json["tax_category"],
+        taxCategory: json["tax_category"] ?? "",
         tax: List<Taxes>.from(json["tax"].map((x) => Taxes.fromJson(x))),
       );
   Map<String, dynamic> toJson() => {
