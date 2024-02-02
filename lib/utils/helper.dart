@@ -2,18 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+// import 'package:pdf/pdf.dart';
+// import 'package:pdf/widgets.dart' as pw;
+// import 'package:printing/printing.dart';
+import 'package:esc_pos_printer/esc_pos_printer.dart';
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image/image.dart' as img;
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
-// import 'package:pdf/pdf.dart';
-// import 'package:pdf/widgets.dart' as pw;
-// import 'package:printing/printing.dart';
-import 'package:esc_pos_printer/esc_pos_printer.dart';
 
 import '../constants/app_constants.dart';
 import '../core/mobile/home/ui/home.dart';
@@ -25,7 +26,6 @@ import '../database/models/sale_order.dart';
 import '../widgets/popup_widget.dart';
 import 'ui_utils/padding_margin.dart';
 import 'ui_utils/text_styles/custom_text_style.dart';
-import 'package:image/image.dart' as img;
 
 class Helper {
   static HubManager? hubManager;
@@ -248,7 +248,7 @@ class Helper {
   }
 
   static Future<String> getOrderId() async {
-    NumberFormat numberFormat = NumberFormat("0000");
+    NumberFormat numberFormat = NumberFormat("00000");
     DateTime currentDateTime = DateTime.now();
     String orderNo = await DBPreferences().getPreference(CURRENT_ORDER_NUMBER);
     log('Order No::$orderNo');
@@ -256,12 +256,17 @@ class Helper {
       orderNo = "1";
       await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
     }
+    //  else {
+    //  // orderNo = (int.parse(orderNo) + 1).toString();
+    //  // await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
+    // }
     String orderSeries = await DBPreferences().getPreference(SalesSeries);
+    print("ORDER SERIES :: $orderSeries");
     String orderId = orderSeries
-        .replaceAll(".YYYY.", "${currentDateTime.year}")
-        .replaceAll(".MM.", "${currentDateTime.month}")
-        .replaceAll(".####", numberFormat.format(int.parse(orderNo)));
-
+        .replaceAll("YYYY", "${currentDateTime.year}")
+        .replaceAll("MM", "${currentDateTime.month}")
+        .replaceAll("#####", numberFormat.format(int.parse(orderNo)));
+    print("NEXT ORDER NUMBER :: $orderId");
     return orderId;
   }
 
@@ -518,4 +523,8 @@ class Helper {
   //       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
   //       children: [pw.Text(keyName), pw.Text(dataValue)]);
   // }
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static BuildContext getContext() {
+    return navigatorKey.currentContext!;
+  }
 }

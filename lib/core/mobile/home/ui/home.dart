@@ -159,7 +159,7 @@ class _HomeState extends State<Home> {
                       onReturn: () {},
                     ),
                     HomeTile(
-                      title: CUSTOMERS_TXT,
+                      title: CUSTOMER_TXT,
                       asset: CUSTOMER_IMAGE,
                       nextScreen: const Customers(),
                       onReturn: () {},

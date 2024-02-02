@@ -8,7 +8,7 @@ import '../../../constants/app_constants.dart';
 //
 TextStyle getTextStyle({
   fontWeight = FontWeight.bold,
-  fontSize = SMALL_FONT_SIZE,
+  double? fontSize = SMALL_FONT_SIZE,
   Color? color,
   // color = AppColors.getTextandCancelIcon
 }) 

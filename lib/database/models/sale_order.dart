@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 
 import '../db_utils/db_constants.dart';
@@ -136,7 +137,8 @@ class SaleOrder extends HiveObject {
       paymentStatus: map['paymentStatus'],
       transactionSynced: map['transactionSynced'],
       tracsactionDateTime: map['tracsactionDateTime'],
-      taxes: map['taxes'],
+    //  taxes: map['taxes'],
+    taxes: List<OrderTax>.from(map['taxes']?.map((x)  => OrderItem.fromMap(x))),
     );
   }
 

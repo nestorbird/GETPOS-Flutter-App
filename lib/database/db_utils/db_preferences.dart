@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:nb_posx/database/models/customer.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
@@ -80,12 +82,17 @@ class DBPreferences {
 
   Future<int> incrementOrderNo(String orderId) async {
     prefBox = await Hive.openBox(PREFERENCE_BOX);
+   String orderSeries = await DBPreferences().getPreference(SalesSeries);
+    log("ORDER SERIES :: $orderSeries" as num);
     var list = orderId.split("-");
     //String orderNo = list.last;
-    String orderNo = list.elementAt(list.indexOf(list.last) - 1);
+    String orderNo = list.elementAt(list.indexOf(list.last));
     if (orderNo.isEmpty) orderNo = "0001";
     int newOrderNo = int.parse(orderNo) + 1;
-    await savePreference(CURRENT_ORDER_NUMBER, "$newOrderNo");
+    await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, "$newOrderNo");
+    log("Order No:: $orderNo" as num);
+    log("New Order No:: $newOrderNo" as num);
+   
     return newOrderNo;
   }
 }

@@ -293,7 +293,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
     var data = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => const NewSelectCustomer()));
     if (data != null) {
-      getProducts();
+      //getProducts();
       setState(() {
         _selectedCust = data;
       });

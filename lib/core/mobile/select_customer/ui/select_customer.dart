@@ -52,7 +52,7 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
                 ? const NeverScrollableScrollPhysics()
                 : const ScrollPhysics(),
             child: Column(children: [
-              const CustomAppbar(title: SELECT_CUSTOMER_TXT),
+              const CustomAppbar(title: CUSTOMER_TXT),
               Padding(
                   padding: mediumPaddingAll(),
                   child: SearchWidget(

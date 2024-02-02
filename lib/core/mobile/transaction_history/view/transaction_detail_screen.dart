@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
 
 import '../../../../constants/app_constants.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
@@ -50,6 +51,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                       heading: SALE_AMOUNT_TXT,
                       content:
                           '$appCurrency ${widget.order.orderAmount.toStringAsFixed(2)}',
+                        
                       headingColor:  AppColors.getAsset(),
                       contentColor:AppColors.getPrimary(),
                       // crossAlign: CrossAxisAlignment.center,

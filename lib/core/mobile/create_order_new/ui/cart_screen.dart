@@ -6,17 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
+//import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
-import 'package:nb_posx/database/db_utils/db_sale_order.dart';
-import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
@@ -24,7 +24,6 @@ import 'package:nb_posx/widgets/long_button_widget.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_parked_order.dart';
-
 import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
@@ -71,7 +70,7 @@ class _CartScreenState extends State<CartScreen> {
   double? centralGovTax = 0.0;
   double stateGovTaxAmount = 0.0;
   double? centralGovTaxAmount = 0.0;
-  double taxAmount = 0.0;
+  double? taxAmount;
   String? taxTypeApplied;
   late String paymentMethod;
   late HubManager? hubManager;
@@ -80,17 +79,14 @@ class _CartScreenState extends State<CartScreen> {
   late List<OrderTax>? getTaxesOrderwise;
   late List<OrderTaxTemplate>? getOrderTemplate;
   List<CouponCode> couponCodes = [];
+  List<OrderTaxTemplate> data = [];
+  List<Taxes>? taxesData;
 
   @override
   void initState() {
     super.initState();
     //_getAllPromoCodes();
 
-    // _getOrderTaxTemplate();
-    //_getTaxes();
-    //totalAmount = Helper().getTotal(widget.order.items);
-
-    // totalItems = widget.order.items.length;
     // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }
@@ -736,7 +732,7 @@ class _CartScreenState extends State<CartScreen> {
       );
 
   createSale(String paymentMethod) async {
-    paymentMethod = paymentMethod;
+   // paymentMethod = paymentMethod;
     if (paymentMethod == "Card") {
       return Helper.showPopup(context, "Coming Soon");
     } else {
@@ -748,6 +744,19 @@ class _CartScreenState extends State<CartScreen> {
       log('Time : $time');
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
+
+      // DbOrderTax dbOrderTax = DbOrderTax();
+
+      // var OrderWisetax = await dbOrderTax.getOrderTaxes();
+      // OrderTax orderTax = OrderTax(
+      //   itemTaxTemplate: OrderWise
+      //   taxRate: Order
+
+      // )
+
+//await DbOrderTax().getOrderTaxes();
+//List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
+
       DbHubManager dbHubManager = DbHubManager();
 
       var hubManagerData = await dbHubManager.getManager();
@@ -759,6 +768,12 @@ class _CartScreenState extends State<CartScreen> {
         profileImage: hubManagerData.profileImage,
         cashBalance: hubManagerData.cashBalance.toDouble(),
       );
+      //If itemwise tax is applicable
+      var taxes = await DbTaxes().getItemWiseTax(orderId!);
+      log("Taxes :: $taxes");
+//if OrderWise taxation is applicable
+      var tax = await DbOrderTax().getOrderWiseTax(orderId!);
+      log("OrderWise Taxes :: $tax");
 
       saleOrder = SaleOrder(
           id: orderId!,
@@ -775,10 +790,10 @@ class _CartScreenState extends State<CartScreen> {
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
           tracsactionDateTime: currentDateTime,
-          taxes: widget.order.taxes);
+          taxes: tax ?? []);
       if (!mounted) return;
 
-      Navigator.pushReplacement(
+      Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) =>
@@ -917,33 +932,37 @@ class _CartScreenState extends State<CartScreen> {
         }
 
         // Calculating tax amount
-        List<Taxation> taxation = [];
-        item.tax.forEach((tax) async {
-          double taxAmount = subTotalAmount * tax.taxRate / 100;
+        List<Taxes> taxation = [];
+        for (var tax in item.tax) {
+          taxAmount = subTotalAmount * tax.taxRate / 100;
 
           log('Tax Amount itemwise : $taxAmount');
-          totalTaxAmount += taxAmount;
+          totalTaxAmount += taxAmount!;
 
           log('totalAmount itemwise : $totalAmount');
-          taxation.add(Taxation(
-            id: '',
+          taxation.add(Taxes(
+            taxId: '',
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,
-            taxationAmount: taxAmount,
+            taxAmount: taxAmount,
           ));
-
           // Update the taxAmountMap for the current tax type
           taxAmountMap.update(
             tax.taxType,
-            (value) => value + taxAmount,
-            ifAbsent: () => taxAmount,
+            (value) => value + taxAmount!,
+            ifAbsent: () => taxAmount!,
           );
-        });
+          //       Hive.box('TAX_BOX').putAt(4,taxAmount);
+        }
 
         log("Total Tax Amount itemwise: $totalTaxAmount");
-        DbTaxes().saveItemWiseTax(orderId, taxation);
-        DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
+        orderId = await Helper.getOrderId();
+        log('Order No : $orderId');
+
+        await DbTaxes().saveItemWiseTax(orderId, taxation);
+
+        //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
       setState(() {});
       log("Total Amount:: $totalAmount");
@@ -953,39 +972,41 @@ class _CartScreenState extends State<CartScreen> {
     if (!isTaxAvailable) {
       taxAmount = 0.0;
       totalTaxAmount = 0.0;
-      List<OrderTaxTemplate> data =
-          await DbOrderTaxTemplate().getOrderTaxesTemplate();
+      data = await DbOrderTaxTemplate().getOrderTaxesTemplate();
       log('data: $data');
 
       await Future.forEach<OrderTaxTemplate>(data,
           (OrderTaxTemplate message) async {
-        List<OrderTaxes> taxesData = [];
+        List<OrderTax> taxesData = [];
 
-        message.tax.forEach((tax) async {
-          double taxAmount = totalAmount! * tax.taxRate / 100;
+        for (var tax in message.tax) {
+          taxAmount = totalAmount! * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
-          totalTaxAmount += taxAmount;
+          totalTaxAmount += taxAmount!;
           taxTypeApplied = tax.taxType;
 
           log("Total Tax Amount orderwise : $totalTaxAmount");
           log('Total Amount Orderwise:: $totalAmount');
-          taxesData.add(OrderTaxes(
-            id: '',
+          taxesData.add(OrderTax(
+            taxId: '',
             itemTaxTemplate: tax.itemTaxTemplate,
             taxType: tax.taxType,
             taxRate: tax.taxRate,
-            taxationAmount: taxAmount,
+            taxAmount: taxAmount!,
           ));
 
           // Update the taxAmountMap for the current tax type
           taxAmountMap.update(
             tax.taxType,
-            (value) => value + taxAmount,
-            ifAbsent: () => taxAmount,
+            (value) => value + taxAmount!,
+            ifAbsent: () => taxAmount!,
           );
-        });
+        }
 
-        DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+        orderId = await Helper.getOrderId();
+        log('Order No : $orderId');
+        //await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+        await DbOrderTax().saveOrderWiseTax(orderId!, taxesData);
       });
       setState(() {});
       log("Total Amount:: $totalAmount");

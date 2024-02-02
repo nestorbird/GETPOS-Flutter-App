@@ -17,6 +17,7 @@ const OPTION_BOX = 'options';
 const ORDER_ITEM_BOX = 'order_items';
 const TAX_BOX = 'taxes';
 const ORDERTAX_BOX = 'ordertaxes';
+const ORDERWISE_TAX_BOX = 'orderwisetaxes';
 const ORDERTAXTEMPLATE_BOX = 'ordertaxtemplate';
 const URL_BOX = 'url';
 const SALES_ORDER_REQUEST_ITEMS_BOX = 'salesordererequestitems';

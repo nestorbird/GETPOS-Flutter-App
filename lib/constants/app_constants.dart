@@ -64,7 +64,7 @@ const FINANCE_TXT = 'Finance';
 
 //CREATE ORDER SCREEN
 
-const SELECT_CUSTOMER_TXT = 'Select Customer'; //Select Customer Screen
+const SELECT_CUSTOMER_TXT = 'Select Customers'; //Select Customer Screen
 const ADD_PRODUCT_TXT = 'Add Product';
 const OUT_OF_STOCK = 'Out of stock'; //Create Order Screen
 const ITEMS_TXT = 'Items';

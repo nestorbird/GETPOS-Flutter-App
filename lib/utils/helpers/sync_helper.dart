@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:nb_posx/core/service/orderwise_taxation/api/orderwise_api_service.dart';
 import 'package:nb_posx/core/service/select_customer/api/create_customer.dart';
@@ -131,4 +130,6 @@ class SyncHelper {
     //   }
     // }
   }
+
+ 
 }

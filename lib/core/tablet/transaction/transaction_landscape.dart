@@ -102,7 +102,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
             debugPrint("parked order clicked");
           },
           searchCtrl: searchCtrl,
-          searchHint: "Customer name/mobile/order id",
+          searchHint: "Enter Customer mobile",
         ),
         hightSpacer20,
         BlocBuilder<TransactionBloc, TransactionState>(
@@ -123,7 +123,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
               );
             default:
               return const Center(
-                child: CircularProgressIndicator(),
+                child: BottomLoader(),
               );
           }
         }),
@@ -144,9 +144,9 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 10,
-         // childAspectRatio: Get.height > Get.width ? 4 : 4, (this was used earlier)
+          // childAspectRatio: Get.height > Get.width ? 4 : 4, (this was used earlier)
           //3:4.8
-           childAspectRatio: 5,
+          childAspectRatio: 5,
         ),
         shrinkWrap: true,
         primary: false,
@@ -155,9 +155,15 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           if (state.orders.isEmpty) {
             return const ShimmerWidget();
           } else {
-            return position >= state.orders.length && !state.hasReachedMax
-                ? const Center(child: BottomLoader())
+            return position >= state.orders.length
+                ? state.hasReachedMax
+                    ? const BottomLoader()
+                    : const SizedBox()
                 : TransactionItemLandscape(order: state.orders[position]);
+
+            // return position >= state.orders.length && !state.hasReachedMax
+            //     ? const Center(child: BottomLoader())
+            //     : TransactionItemLandscape(order: state.orders[position]);
           }
         },
       ),

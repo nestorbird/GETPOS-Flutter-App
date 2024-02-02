@@ -18,10 +18,11 @@ class SearchWidgetTablet extends StatefulWidget {
   Function(String text)? onSubmit;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
-
+ VoidCallback? onTap;
   SearchWidgetTablet(
       {Key? key,
       this.searchHint,
+      this.onTap,
       this.searchTextController,
       this.onTextChanged,
       this.onSubmit,
@@ -40,6 +41,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
     return Container(
       decoration: searchTxtFieldBorderDecoration,
       child: TextField(
+          onTap: widget.onTap,
         style: getTextStyle(
             fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
         cursorColor: AppColors.getTextandCancelIcon(),

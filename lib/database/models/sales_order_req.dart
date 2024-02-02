@@ -76,7 +76,7 @@ class SalesOrderRequest extends HiveObject {
       'items': items!.map((x) => x.toMap()).toList(),
       'mode_of_payment': modeOfPayment,
       'mpesa_No': mpesaNo,
-      'tax': tax,
+      'tax':tax?.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -90,7 +90,9 @@ class SalesOrderRequest extends HiveObject {
           map['selected_option']?.map((x) => SaleOrderRequestItems.fromMap(x))),
       modeOfPayment: map['mode_of_payment'],
       mpesaNo: map['mpesa_no'],
-      tax: map['tax'],
+      tax:List<OrderTax>.from(
+        map['tax']?.map((x) => OrderTax.fromMap(x)),
+    )
     );
   }
 

@@ -204,10 +204,10 @@ for (var order in offlineOrders) {
 GetPreviousOrder getPreviousOrder = GetPreviousOrder();
     List<Transaction> previousOrders = await getPreviousOrder.getSavedOrders();
 
-   // return savedOrders;
+  
 
-//     // Fetch all previous orders from the local database
-// List<SaleOrder> previousOrders = await DbSaleOrder().getOrders();
+    // Fetch all previous orders from the local database
+ //List<SaleOrder> previousOrders = await DbSaleOrder().getOrders();
 
 // to avoid duplicacy
 for (var order in previousOrders) {
@@ -240,55 +240,7 @@ return allTransactions;
 
    
 
-// // Fetch offline orders
-// List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
 
-// // Combine both previous orders and offline orders
-// List<Transaction> allTransactions = [];
-
-// // Add offline orders to allTransactions
-// for (var order in offlineOrders) {
-//   Transaction transaction = Transaction(
-//     id: order.id,
-//     date: order.date,
-//     time: order.time,
-//     customer: order.customer,
-//     items: order.items,
-//     orderAmount: order.orderAmount,
-//     tracsactionDateTime: order.tracsactionDateTime,
-//   );
-
-//   allTransactions.add(transaction);
-// }
-
-// // Fetch all previous orders from the local database
-// List<SaleOrder> previousOrders = await DbSaleOrder().getOrders();
-
-// // to avoid duplicacy
-// for (var order in previousOrders) {
-//   // Check whether an order with the same id already exists
-//   bool orderExists = allTransactions.any((transaction) => transaction.id == order.id);
-
-//   // If the order doesn't exist, add it to allTransactions
-//   if (!orderExists) {
-//     Transaction transaction = Transaction(
-//       id: order.id,
-//       date: order.date,
-//       time: order.time,
-//       customer: order.customer,
-//       items: order.items,
-//       orderAmount: order.orderAmount,
-//       tracsactionDateTime: order.tracsactionDateTime,
-//     );
-
-//     allTransactions.add(transaction);
-//   }
-// }
-
-// return allTransactions;
-
-//     }
- // }
   Future<List<Transaction>> _processRequest(String apiUrl) async {
     try {
       List<Transaction> sales = [];
@@ -423,12 +375,6 @@ return allTransactions;
 
     throw Exception("Error fetching transactions");
   }
-  // Future<void> getOrdersFromDB(val) async {
-  //   //Fetch the data from local database
-  // order = await DbSaleOrder().getOrders();
-  //   isOrdersFound = order.isNotEmpty;
-  //   if (val == 0) setState(() {});
-    
-  // }
+  
 }
   

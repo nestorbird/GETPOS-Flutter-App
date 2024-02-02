@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:m_toast/m_toast.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
@@ -31,6 +32,7 @@ import '../home_tablet.dart';
 
 class LoginLandscape extends StatefulWidget {
   final bool isUserLoggedIn;
+
   const LoginLandscape({Key? key, this.isUserLoggedIn = false})
       : super(key: key);
 
@@ -39,6 +41,8 @@ class LoginLandscape extends StatefulWidget {
 }
 
 class _LoginLandscapeState extends State<LoginLandscape> {
+ 
+
   late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
   late BuildContext ctx;
   late String url;
@@ -49,8 +53,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
     _passCtrl = TextEditingController(text: "Admin@123");
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "";
-    _passCtrl.text = "";
+    // _emailCtrl.text = "";
+    // _passCtrl.text = "";
     // _urlCtrl.text = instanceUrl;
     _getUrlKey();
 
@@ -132,7 +136,13 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           ///
           if (Platform.isWindows) {
             if (widget.isUserLoggedIn) {
+              // toast.errorToast(
+              //     message: 'Please wait Background sync work in progess',
+              //     alignment: Alignment.topCenter);
               await SyncHelper().loginFlow();
+              // toast.successToast(
+              //     message: 'Background Sync completed',
+              //     alignment: Alignment.topCenter);
             } else {
               await SyncHelper().launchFlow(isUserLoggedIn);
             }
@@ -304,8 +314,8 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                 CHANGE_INSTANCE_URL_TXT,
                 style: getTextStyle(
                     color: AppColors.getPrimary(),
-                    fontSize: MEDIUM_MINUS_FONT_SIZE,
-                    fontWeight: FontWeight.normal),
+                    fontSize: LARGE_MINUS_FONT_SIZE,
+                    fontWeight: FontWeight.bold),
               ),
             ),
           ),

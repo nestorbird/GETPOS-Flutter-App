@@ -23,13 +23,15 @@ class TitleAndSearchBar extends StatefulWidget {
   Function? parkOrderClicked;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
+  VoidCallback? onTap;
 
   TitleAndSearchBar(
       {Key? key,
       required this.title,
       this.searchHint,
+      this.onTap,
       this.searchCtrl,
-      this.searchBoxWidth = 360,//330
+      this.searchBoxWidth = 360, //330
       this.searchBoxVisible = true,
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
@@ -67,7 +69,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
               style: getTextStyle(
                   fontSize: EXTRA_LARGE_FONT_SIZE,
                   fontWeight: FontWeight.w800,
-                   color: AppColors.getTextandCancelIcon()),
+                  color: AppColors.getTextandCancelIcon()),
             ),
             const Spacer(),
             Visibility(
@@ -76,12 +78,12 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
                 width: widget.searchBoxWidth,
                 padding: horizontalSpace(x: 10),
                 child: SearchWidgetTablet(
+                  onTap: widget.onTap,
                   searchHint: widget.searchHint,
                   searchTextController: widget.searchCtrl,
                   onTextChanged: (val) => widget.onTextChanged!(val),
                   onSubmit: (val) => widget.onSubmit!(val),
                   keyboardType: widget.keyboardType,
-                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ),

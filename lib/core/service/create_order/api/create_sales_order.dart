@@ -75,6 +75,8 @@ class CreateOrderService {
       log("$orderRequest");
       log(json.encode(body));
 
+//log(jsonEncode(body, toEncodable: (dynamic nonEncodable) => nonEncodable.toString()));
+
       var apiResponse =
           await APIUtils.postRequest(CREATE_SALES_ORDER_PATH, body);
 

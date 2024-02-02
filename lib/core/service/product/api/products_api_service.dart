@@ -92,6 +92,7 @@ class ProductsService {
                   itemTaxTemplate: taxData.itemTaxTemplate!,
                   taxType: taxData.taxType!,
                   taxRate: taxData.taxRate!,
+                  taxAmount:taxData.taxAmount,
                 );
                 taxes.add(tax);
               }
