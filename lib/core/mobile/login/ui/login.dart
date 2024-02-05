@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
+import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/main.dart';
@@ -44,6 +45,7 @@ class _LoginState extends State<Login> {
   late TextEditingController _emailCtrl, _passCtrl;
   late String url;
   String? version;
+  String prefix = "";
 
   @override
   void initState() {
@@ -53,7 +55,8 @@ class _LoginState extends State<Login> {
     _getUrlKey();
 
     // url = instanceUrl;
-
+     var dbPreferences = DBPreferences();
+ dbPreferences.savePreference(SSL_PREFIX, prefix);
     _getAppVersion();
   }
 
@@ -323,7 +326,7 @@ class _LoginState extends State<Login> {
                                   builder: (context) => WebViewScreen(
                                         topicTypes:
                                             TopicTypes.TERMS_AND_CONDITIONS,
-                                        apiUrl: "https://$url/api/",
+                                        apiUrl: "$prefix://$url/api/",
                                       )));
                         } else {
                           Helper.showPopup(context, INVALID_URL);
@@ -349,7 +352,7 @@ class _LoginState extends State<Login> {
                               MaterialPageRoute(
                                   builder: (context) => WebViewScreen(
                                         topicTypes: TopicTypes.PRIVACY_POLICY,
-                                        apiUrl: "https://$url/api/",
+                                        apiUrl: "$prefix://$url/api/",
                                       )));
                         } else {
                           Helper.showPopup(context, INVALID_URL);
@@ -389,7 +392,7 @@ class _LoginState extends State<Login> {
 
   ///Method to check whether the API URL is correct.
   bool isValidInstanceUrl() {
-    url = "https://$url/api/";
+    url = "$prefix://$url/api/";
     return Helper.isValidUrl(url);
   }
 

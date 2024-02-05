@@ -28,9 +28,10 @@ class DbInstanceUrl {
     String url = box.get(URL_KEY) ?? instanceUrl;
     return url;
   }
-
   Future<int> deleteUrl() async {
     box = await Hive.openBox<String>(URL_BOX);
     return await box.clear();
   }
+
+  
 }

@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:get/get.dart';
+
 class ThemeResponse {
   ThemeResponse({
     required this.message,
@@ -8,7 +10,7 @@ class ThemeResponse {
 
   ThemeResponse.fromJson(Map<String, dynamic> json) {
     message = Message.fromJson(json['message']);
-    log('Hi');
+   
   }
 
   Map<String, dynamic> toJson() {
@@ -58,15 +60,15 @@ class ColorsData {
   late final String active;
 
   ColorsData.fromJson(Map<String, dynamic> json) {
-    primary = json['primary'];
-    secondary = json['secondary'];
-    asset = json['asset'];
-    textandCancelIcon = json['textandCancelIcon'] ?? "#000000";
-    shadowBorder = json['shadowBorder'] ?? "#C7C5C5";
-    hintText = json['hintText'] ?? "#FFFFFF";
-    fontWhiteColor = json['fontWhiteColor'] ?? "#F3F2F5";
-    parkOrderButton = json['parkOrderButton'] ?? "#000000";
-    active = json['active'] ?? "#FEF9FA";
+    primary = json['primary'] == "" ? "#DC1E44" : json['primary'];
+    secondary = json['secondary'] == "" ? "#62B146" : json['secondary'];
+    asset = json['asset']  == "" ? "#707070" : json['asset'];
+    textandCancelIcon = json['text_and_cancel_icon'] == "" ? "#000000" : json['text_and_cancel_icon'];
+    shadowBorder = json['shadow_border'] == "" ? "#C7C5C5" : json['shadow_border'];
+    hintText = json['hint_text']  == "" ? "#F3F2F5" : json['hint_text'];
+    fontWhiteColor = json['font_white_color'] == ""? "#FFFFFF" : json['font_white_color'];
+    parkOrderButton = json['park_order_button'] == ""?  "#4A4A4A" : json['park_order_button'];
+    active = json['active'] == ""? "#FEF9FA" : json['active'];
   }
 
   Map<String, dynamic> toJson() {

@@ -30,6 +30,7 @@ class ForgotPasswordLandscape extends StatefulWidget {
 class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
   late TextEditingController _emailCtrl;
   late TextEditingController _urlCtrl;
+  String prefix = "";
   @override
   void initState() {
     super.initState();
@@ -37,6 +38,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
     _urlCtrl = TextEditingController();
     _urlCtrl.text = instanceUrl;
     // _getAppVersion();
+    
   }
 
   @override
@@ -202,7 +204,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
 
   /// HANDLE FORGOT PASS BTN CLICK
   Future<void> _handleForgotPassBtnClick() async {
-    String url = "https://${_urlCtrl.text}/api/";
+    String url = "$prefix://${_urlCtrl.text}/api/";
 
     try {
       Helper.showLoaderDialog(context);

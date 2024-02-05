@@ -94,15 +94,15 @@ class _ChangePasswordState extends State<ChangePassword> {
                     ),
                   )
                 : Container(),
-            Center(
-              child: Text(
-                CHANGE_PASSWORD_SET_MSG,
-                style: getTextStyle(
-                    color: AppColors.fontWhiteColor,
-                    fontSize: SMALL_PLUS_FONT_SIZE,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
+            // Center(
+            //   child: Text(
+            //     CHANGE_PASSWORD_SET_MSG,
+            //     style: getTextStyle(
+            //         color: AppColors.fontWhiteColor,
+            //         fontSize: SMALL_PLUS_FONT_SIZE,
+            //         fontWeight: FontWeight.w500),
+            //   ),
+            // ),
             hightSpacer45,
             Container(
               margin: horizontalSpace(),

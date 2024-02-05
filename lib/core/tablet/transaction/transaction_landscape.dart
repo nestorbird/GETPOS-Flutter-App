@@ -102,7 +102,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
             debugPrint("parked order clicked");
           },
           searchCtrl: searchCtrl,
-          searchHint: "Customer name/mobile/order id",
+          searchHint: "Customer mobile number",
         ),
         hightSpacer20,
         BlocBuilder<TransactionBloc, TransactionState>(

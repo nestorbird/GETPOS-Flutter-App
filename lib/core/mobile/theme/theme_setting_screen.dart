@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,6 +16,7 @@ import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
 import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
@@ -41,7 +43,9 @@ class _ThemeChangeState extends State<ThemeChange> {
   String? version;
   AppColors appColors = AppColors();
   bool isInternetAvailable = false;
-
+  String prefix = "";
+  bool? isSSL = true;
+  RegExp? ipExp;
   @override
   void initState() {
     super.initState();
@@ -121,6 +125,18 @@ class _ThemeChangeState extends State<ThemeChange> {
               txtCtrl: _urlCtrl,
               hintText: URL_HINT,
             ),
+            hightSpacer20,
+            CheckboxListTile(
+              //checkbox positioned at right
+              value: isSSL,
+              onChanged: (bool? value) {
+                setState(() {
+                  isSSL = value;
+                });
+              },
+              activeColor: AppColors.primary,
+              title: const Text("Use SSL"),
+            ),
             hightSpacer100,
             Center(
               child: ButtonWidget(
@@ -130,19 +146,50 @@ class _ThemeChangeState extends State<ThemeChange> {
                   bool isInternetAvailable = await Helper.isNetworkAvailable();
                   String url = await DbInstanceUrl().getUrl();
                   //   String url = '${_urlCtrl.text}';
-                  url = "https://${_urlCtrl.text}/api/";
+
+                  isSSL! ? prefix = "https" : prefix = "http";
+                  var dbPreferences = DBPreferences();
+                  await dbPreferences.savePreference(SSL_PREFIX, prefix);
+                  // url = "https://${_urlCtrl.text}/api/";
                   if (isValidInstanceUrl(url) == true &&
                       isInternetAvailable == true) {
+                    url = "$prefix://${_urlCtrl.text}/api/";
+
                     await pingPong(url);
-                  } else if (url.isEmpty) {
+                  }
+                  //                 else if
+                  //                    (RegExp(r'^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$').hasMatch(Uri.parse(url).host)) {
+                  //   await theme(url);
+                  // }
+
+// else if(RegExp(
+//       r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$").hasMatch(Uri.parse(url).host)) {
+//  await theme(url);
+// }
+
+                  else if (isValidIPv4(url)) {
+                     String url = await DbInstanceUrl().getUrl();
+                    // var dbPreferences = DBPreferences();
+                    // await dbPreferences.savePreference(IP_ADDRESS, url);
+                    await theme(url);
+                  }
+                  // RegExp ipExp = RegExp(
+                  //     r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$",
+                  //     caseSensitive: false,
+                  //     multiLine: false);
+
+                  else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
                   } else {
                     Helper.showPopup(context, invalidErrorText);
                   }
                 },
                 title: CONTINUE_TXT,
-                primaryColor: const Color(0xFFDC1E44),
-                //primaryColor: AppColors.getPrimary(),
+                // primaryColor: const Color(0xFFDC1E44),
+                primaryColor: AppColors.getPrimary(),
                 width: MediaQuery.of(context).size.width,
               ),
             ),
@@ -152,13 +199,28 @@ class _ThemeChangeState extends State<ThemeChange> {
 
   bool isValidInstanceUrl(String url) {
     //String url = "https://${_urlCtrl.text}/api/";
-    if (url == "https://${_urlCtrl.text}/api/") {
+    if (url == "$prefix://${_urlCtrl.text}/api/") {
       return Helper.isValidUrl(url);
-    } else {
-      url = "https://$url/api/";
+    }
+    //  else if
+    //                  (RegExp(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$').hasMatch(Uri.parse(url).host)){
+    //      return Helper.isValidUrl(url);
+    //                  }
+    else {
+      url = "$prefix://$url/api/";
 
       return Helper.isValidUrl(url);
     }
+  }
+
+  bool isValidIPv4(String ipAddress) {
+    // Regular expression for IPv4 address
+    final ipv4Regex = RegExp(r'^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$');
+
+    return ipv4Regex.hasMatch(ipAddress);
   }
 
   Future<void> pingPong(String url) async {

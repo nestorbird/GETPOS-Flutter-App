@@ -193,12 +193,19 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          cat.name,
-          style: getTextStyle(
-            fontSize: LARGE_FONT_SIZE,
-          ),
+        Row(
+          children: [
+            Text(
+              cat.name,
+              style: getTextStyle(
+                fontSize: LARGE_FONT_SIZE,
+              ),
+            ),
+            widthSpacer(10),
+            const Icon(Icons.swap_horizontal_circle_outlined)
+          ],
         ),
+      
         hightSpacer10,
         SizedBox(
           // color: Colors.amber,
