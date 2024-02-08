@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-
-
 import '../../../constants/app_constants.dart';
 import '../../../utils/ui_utils/padding_margin.dart';
 import '../../../utils/ui_utils/spacer_widget.dart';
 import '../../../utils/ui_utils/text_styles/custom_text_style.dart';
 
 class AlertDialogWidget {
-  Future show(String question, String positiveOption,
+  Future show(String question, String positiveOption, BuildContext context,
       {bool hasCancelAction = false}) {
     var body = Container(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12), color: AppColors.fontWhiteColor),
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.fontWhiteColor),
       child: Column(
         children: [
           Text(
@@ -29,7 +28,8 @@ class AlertDialogWidget {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    Get.back(result: positiveOption.toLowerCase());
+                    Navigator.pop(context, positiveOption.toLowerCase());
+                    // Get.back(result: positiveOption.toLowerCase());
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
@@ -49,7 +49,8 @@ class AlertDialogWidget {
                   ? Expanded(
                       child: InkWell(
                         onTap: () {
-                          Get.back(result: "no");
+                          Navigator.pop(context);
+                          // Get.back(result: "no");
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 10),

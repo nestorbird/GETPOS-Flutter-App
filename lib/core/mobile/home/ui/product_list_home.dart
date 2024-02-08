@@ -291,6 +291,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                             )),
                         hightSpacer15,
                         SearchWidget(
+                          searchHint: 'Search product / category',
+                          searchTextController: _searchTxtController,
                           onTap: () {
                             final state = _key.currentState;
                             if (state != null) {
@@ -300,8 +302,6 @@ class _ProductListHomeState extends State<ProductListHome> {
                               }
                             }
                           },
-                          searchHint: 'Search product / category',
-                          searchTextController: _searchTxtController,
                           onTextChanged: ((changedtext) {
                             final state = _key.currentState;
                             if (state != null) {

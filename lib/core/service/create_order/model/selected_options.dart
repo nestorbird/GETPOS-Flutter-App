@@ -1,9 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-import 'package:nb_posx/database/models/sales_order_req_items.dart';
-
-import '../../../../database/models/taxes.dart';
 
 // class SalesOrderRequest {
 //   late String hubManager;

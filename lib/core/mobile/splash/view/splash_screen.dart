@@ -1,13 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
-
-import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
-
-import '../../../../configs/theme_config.dart';
-import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../main.dart';
 import '../../home/ui/product_list_home.dart';

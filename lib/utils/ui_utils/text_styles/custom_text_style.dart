@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
 
 // Pass in the height and it return a vertical spacer

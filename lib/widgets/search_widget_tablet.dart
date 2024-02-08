@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../utils/ui_utils/padding_margin.dart';
@@ -19,14 +18,16 @@ class SearchWidgetTablet extends StatefulWidget {
   Function(String text)? onSubmit;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
-  VoidCallback? onTap;
+ VoidCallback? onTap;
+  
 
   SearchWidgetTablet(
       {Key? key,
       this.searchHint,
+      this.onTap,
       this.searchTextController,
       this.onTextChanged,
-      this.onTap,
+     
       this.onSubmit,
       this.keyboardType = TextInputType.text,
        this.inputFormatter
@@ -43,6 +44,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
     return Container(
       decoration: searchTxtFieldBorderDecoration,
       child: TextField(
+          onTap: widget.onTap,
         style: getTextStyle(
             fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
         cursorColor: AppColors.getTextandCancelIcon(),
@@ -50,7 +52,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.done,
         autocorrect: true,
-        onTap: widget.onTap,
+  
         decoration: InputDecoration(
           hintText: widget.searchHint ?? SEARCH_HINT_TXT,
           contentPadding: const EdgeInsets.only(left: 10, right: 10),

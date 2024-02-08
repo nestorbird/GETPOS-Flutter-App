@@ -523,4 +523,8 @@ class Helper {
   //       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
   //       children: [pw.Text(keyName), pw.Text(dataValue)]);
   // }
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  static BuildContext getContext() {
+    return navigatorKey.currentContext!;
+  }
 }

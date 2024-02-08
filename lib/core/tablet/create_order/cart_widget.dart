@@ -1,36 +1,31 @@
-import 'dart:developer';
+import 'dart:developer' show log;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
-import 'package:nb_posx/core/mobile/sale_success/ui/sale_success_screen.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
 import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
-import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
-import 'package:nb_posx/database/models/hub_manager.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/utils/helper.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
-import 'package:nb_posx/widgets/product_shimmer_widget.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/models/customer.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../widgets/customer_tile.dart';
+import '../../../database/db_utils/db_order_tax.dart';
 import '../../../database/db_utils/db_parked_order.dart';
 import '../../../database/db_utils/db_sale_order.dart';
 import '../../../database/models/attribute.dart';
@@ -69,7 +64,7 @@ class _CartWidgetState extends State<CartWidget> {
   Customer? selectedCustomer;
   ParkOrder? currentCart;
   String? orderId;
-  late bool selectedCashMode;
+  late bool selectedCardMode;
   late bool isOrderProcessed;
   double totalAmount = 0.0;
   double subTotalAmount = 0.0;
@@ -88,7 +83,7 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   void initState() {
     isOrderProcessed = false;
-    selectedCashMode = false;
+    selectedCardMode = false;
     selectedCustomer = widget.customer;
     //totalItems = widget.order!.items.length;
     super.initState();
@@ -98,7 +93,6 @@ class _CartWidgetState extends State<CartWidget> {
   @override
   void didUpdateWidget(covariant CartWidget oldWidget) {
     // TODO: implement didUpdateWidget
-
     _callCalculations();
     super.didUpdateWidget(oldWidget);
   }
@@ -114,7 +108,6 @@ class _CartWidgetState extends State<CartWidget> {
   Widget build(BuildContext context) {
     var customHeight = Get.height;
     return Container(
-      //TODO:Chnages in cart- shown different in tablet and windows
       margin: customHeight == Get.height
           ? const EdgeInsets.only(bottom: 0.0)
           : const EdgeInsets.only(bottom: 35.0),
@@ -273,22 +266,8 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
-        // _prepareCart();
-        // if (currentCart != null) {
-        //   if (selectedCashMode == true) {
-        //     Helper.showPopupForTablet(context, "Coming Soon..");
-        //   } else {
-        //     isOrderProcessed =
-        //         //   await createSale(_isCODSelected ? "Card" : "Cash");
-        //         await _placeOrderHandler();
-
-        //     // to be showed on successfull order placed
-        //     _showOrderPlacedSuccessPopup();
-        //   }
-        // } else {
-        //   Helper.showPopupForTablet(context, "Please add items in cart");
-        // }
-if (selectedCashMode == true) {
+       
+        if (selectedCardMode == true) {
           Helper.showPopupForTablet(context, "Coming Soon..");
         } else {
           _prepareCart();
@@ -297,7 +276,9 @@ if (selectedCashMode == true) {
             _showOrderPlacedSuccessPopup();
           }
         } 
-
+        // else {
+        //   Helper.showPopupForTablet(context, "Please add items in cart");
+        // }
       },
       child: Container(
         width: double.infinity,
@@ -729,9 +710,9 @@ if (selectedCashMode == true) {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _paymentOption(PAYMENT_CASH_ICON, "Cash", selectedCashMode),
+          _paymentOption(PAYMENT_CASH_ICON, "Cash", selectedCardMode),
           const SizedBox(width: 15),
-          _paymentOption(PAYMENT_CARD_ICON, "Card", !selectedCashMode),
+          _paymentOption(PAYMENT_CARD_ICON, "Card", !selectedCardMode),
         ],
       ),
     );
@@ -741,7 +722,7 @@ if (selectedCashMode == true) {
     return InkWell(
       onTap: () {
         setState(() {
-          selectedCashMode = !selectedCashMode;
+          selectedCardMode = !selectedCardMode;
         });
       },
       child: Container(
@@ -831,19 +812,8 @@ if (selectedCashMode == true) {
     String orderId = await Helper.getOrderId();
     log('Order No : $orderId');
 
-
-DbHubManager dbHubManager = DbHubManager();
-
-    var hubManagerData = await dbHubManager.getManager();
-      HubManager hubManager = HubManager(
-        id: hubManagerData!.emailId,
-        name: hubManagerData.name,
-        phone: hubManagerData.phone,
-        emailId: hubManagerData.emailId,
-        profileImage: hubManagerData.profileImage,
-        cashBalance: hubManagerData.cashBalance.toDouble(),
-      );
-      //If itemwise tax is applicable
+    double grandTotal = Helper().getTotal(currentCart!.items);
+//If itemwise tax is applicable
       var taxes = await DbTaxes().getItemWiseTax(orderId!);
       log("Taxes :: $taxes");
 //if OrderWise taxation is applicable
@@ -851,7 +821,7 @@ DbHubManager dbHubManager = DbHubManager();
       log("OrderWise Taxes :: $tax");
 
 
-    double grandTotal = Helper().getTotal(currentCart!.items);
+   // double grandTotal = Helper().getTotal(currentCart!.items);
 
     SaleOrder saleOrder = SaleOrder(
         id: orderId,
@@ -862,7 +832,7 @@ DbHubManager dbHubManager = DbHubManager();
         manager: Helper.hubManager!,
         items: currentCart!.items,
         transactionId: '',
-        paymentMethod: selectedCashMode
+        paymentMethod: selectedCardMode
             ? "Card"
             : "Cash", //TODO:: Need to check when payment gateway is implemented
         paymentStatus: "Paid",
@@ -1000,8 +970,8 @@ DbHubManager dbHubManager = DbHubManager();
           (OrderTaxTemplate message) async {
         List<OrderTax> taxesData = [];
 
-        for (var tax in message.tax) {
-          taxAmount = totalAmount! * tax.taxRate / 100;
+        message.tax.forEach((tax) async {
+          double taxAmount = totalAmount! * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
           totalTaxAmount += taxAmount!;
           taxTypeApplied = tax.taxType;
@@ -1022,7 +992,7 @@ DbHubManager dbHubManager = DbHubManager();
             (value) => value + taxAmount!,
             ifAbsent: () => taxAmount!,
           );
-        }
+        });
 
         orderId = await Helper.getOrderId();
         log('Order No : $orderId');

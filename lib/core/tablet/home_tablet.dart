@@ -10,7 +10,6 @@ import 'create_order/create_order_landscape.dart';
 import 'customer/customers_landscape.dart';
 import 'my_account/my_account_landscape.dart';
 import 'parked_order/orderlist_parked_landscape.dart';
-import 'product/products_landscape.dart';
 import 'transaction/transaction_screen_landscape.dart';
 import 'widget/left_side_menu.dart';
 
