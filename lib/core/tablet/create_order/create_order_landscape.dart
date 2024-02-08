@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/database/models/park_order.dart';
@@ -37,6 +38,7 @@ class CreateOrderLandscape extends StatefulWidget {
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
+   final _key = GlobalKey<ExpandableFabState>();
   bool isInternetAvailable = true;
   final ValueNotifier<List<OrderItem>> itemsNotifier =
       ValueNotifier<List<OrderItem>>([]);
@@ -85,29 +87,41 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
               TitleAndSearchBar(
                 title: "Choose Category",
                 onSubmit: (text) {
-                  if (text.length >= 3) {
-                    categories.isEmpty
-                        ? const Center(
-                            child: Text(
-                            "No items found",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                        : _filterProductsCategories(text);
+                  // if (text.length >= 3) {
+                  //   categories.isEmpty
+                  //       ? const Center(
+                  //           child: Text(
+                  //           "No items found",
+                  //           style: TextStyle(fontWeight: FontWeight.bold),
+                  //         ))
+                  //       : _filterProductsCategories(text);
+                  if (searchCtrl.text.length >= 3) {
+                    _filterProductsCategories(searchCtrl.text);
+                  
                   } else {
                     getProducts();
                   }
                 },
-                onTextChanged: (changedtext) {
-                  if (changedtext.length >= 3) {
-                    categories.isEmpty
-                        ? const Center(
-                            child: Text(
-                            "No items found",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                        : _filterProductsCategories(changedtext);
-                  } else {
+                onTextChanged: ((changedtext) {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    debugPrint('isOpen:${state.isOpen}');
+                    if (state.isOpen) {
+                      state.toggle();
+                    }
+                  }
+                  if (changedtext.length < 3) {
                     getProducts();
+                    // _filterProductsCategories(changedtext);
+                  }
+                }),
+                onTap: () {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    debugPrint('isOpen:${state.isOpen}');
+                    if (state.isOpen) {
+                      state.toggle();
+                    }
                   }
                 },
                 searchCtrl: searchCtrl,
@@ -201,8 +215,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 fontSize: LARGE_FONT_SIZE,
               ),
             ),
-            widthSpacer(10),
-            const Icon(Icons.swap_horizontal_circle_outlined)
+            // widthSpacer(10),
+            // const Icon(Icons.swap_horizontal_circle_outlined)
           ],
         ),
       

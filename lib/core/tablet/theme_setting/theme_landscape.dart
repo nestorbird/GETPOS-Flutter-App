@@ -11,7 +11,9 @@ import 'package:nb_posx/constants/asset_paths.dart';
 
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
 
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
@@ -35,13 +37,15 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
   late BuildContext ctx;
   String? version;
   AppColors appColors = AppColors();
+   bool? isSSL = true;
+   String prefix = "";
   @override
   void initState() {
     super.initState();
 
     _urlCtrl = TextEditingController();
 
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "getpos.in";
   }
 
   @override
@@ -89,9 +93,12 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
                           subHeadingLblWidget(),
                           hightSpacer25,
                           instanceUrlTxtboxSection(context),
-                          hightSpacer50,
+                          hightSpacer25,
+                          useSSLCheckbox(context),
+                           hightSpacer50,
                           continueButtonWidget(_urlCtrl.text),
                           hightSpacer20,
+                          
                         ])),
               ),
             ),
@@ -142,19 +149,54 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
         ),
       );
 
+ //Input field for entering the instance URL
+  Widget useSSLCheckbox(context) => Padding(
+        // margin: horizontalSpace(),
+        padding: smallPaddingAll(),
+        child: SizedBox(
+          height: 55,
+          child: CheckboxListTile(
+              //checkbox positioned at right
+              value: isSSL,
+              onChanged: (bool? value) {
+                setState(() {
+                  isSSL = value;
+                });
+              },
+              activeColor: AppColors.primary,
+              title: const Text("Use SSL"),
+            ),
+        ),
+      );
+
+
+
   Widget continueButtonWidget(context) => Center(
         child: ButtonWidget(
           onPressed: () async {
             //to save the Url in DB
-            await DbInstanceUrl().saveUrl(_urlCtrl.text);
-            bool isInternetAvailable = await Helper.isNetworkAvailable();
-            String url = await DbInstanceUrl().getUrl();
-            //   String url = '${_urlCtrl.text}';
-            url = "https://${_urlCtrl.text}/api/";
-            if (isValidInstanceUrl(url) == true &&
-                isInternetAvailable == true) {
-              pingPong(url);
-            } else if (url.isEmpty) {
+                  await DbInstanceUrl().saveUrl(_urlCtrl.text);
+                  bool isInternetAvailable = await Helper.isNetworkAvailable();
+                  String url = await DbInstanceUrl().getUrl();
+                  //   String url = '${_urlCtrl.text}';
+
+                  isSSL! ? prefix = "https" : prefix = "http";
+                  var dbPreferences = DBPreferences();
+                  await dbPreferences.savePreference(SSL_PREFIX, prefix);
+                  // url = "https://${_urlCtrl.text}/api/";
+                  if (isValidInstanceUrl(url) == true &&
+                      isInternetAvailable == true) {
+                    url = "$prefix://${_urlCtrl.text}/api/";
+
+                    await pingPong(url);
+                  }
+                   else if (isValidIPv4(url)) {
+                     String url = await DbInstanceUrl().getUrl();
+                    var dbPreferences = DBPreferences();
+                    await dbPreferences.savePreference(IP_ADDRESS, url);
+                    await theme(url);
+                  }
+             else if (url.isEmpty) {
               Helper.showPopup(context, "Please Enter Url");
             } else {
               Helper.showPopup(context, invalidErrorText);
@@ -170,14 +212,24 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
 
   bool isValidInstanceUrl(String url) {
     //String url = "https://${_urlCtrl.text}/api/";
-    if (url == "https://${_urlCtrl.text}/api/") {
+    if (url == "$prefix://${_urlCtrl.text}/api/") {
       return Helper.isValidUrl(url);
     } else {
-      url = "https://$url/api/";
+      url = "$prefix://$url/api/";
 
       return Helper.isValidUrl(url);
     }
   }
+   bool isValidIPv4(String ipAddress) {
+    // Regular expression for IPv4 address
+    final ipv4Regex = RegExp(r'^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
+        r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$');
+
+    return ipv4Regex.hasMatch(ipAddress);
+  }
+
 
   Future<void> pingPong(String url) async {
     //  String apiUrl = 'https://${_urlCtrl.text}/api/method/ping';

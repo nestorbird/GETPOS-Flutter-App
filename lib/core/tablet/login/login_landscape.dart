@@ -48,7 +48,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     super.initState();
     _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
     _passCtrl = TextEditingController(text: "Admin@123");
-    _urlCtrl = TextEditingController();
+   // _urlCtrl = TextEditingController();
    // _emailCtrl.text = "";
    // _passCtrl.text = "";
     // _urlCtrl.text = instanceUrl;
@@ -320,6 +320,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
+       log(url);
       // Clear the database
       await DBPreferences().delete();
       log("Cleared the DB");

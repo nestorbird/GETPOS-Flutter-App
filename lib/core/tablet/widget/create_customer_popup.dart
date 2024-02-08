@@ -145,7 +145,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                 hightSpacer10,
                 InkWell(
                   onTap: () {
-                    _newCustomerAPI();
+                   
                     customer = Customer(
                         id: emailCtrl.text,
                         name: nameCtrl.text,
@@ -156,6 +156,7 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                         // ward: Ward(id: "01", name: "name"),
                         // profileImage: Uint8List.fromList([]),
                         );
+                         _newCustomerAPI();
                     if (customer != null) {
                       Get.back(result: customer);
                     }
@@ -192,25 +193,26 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   }
 
   Future<void> _newCustomerAPI() async {
-    CommanResponse response = await CreateCustomer()
+  
+    await CreateCustomer()
         .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
     /* if (response.status!) {
       filterCustomerData(phoneCtrl.text);
     } */
-    {
-      Customer tempCustomer = Customer(
-          // profileImage: image,
-          // ward: Ward(id: "1", name: "1"),
-          email: emailCtrl.text.trim(),
-          id: phoneCtrl.text.trim(),
-          name: nameCtrl.text.trim(),
-          phone: phoneCtrl.text.trim(),
-          isSynced: false,
-          modifiedDateTime: DateTime.now());
-      List<Customer> customers = [];
-      customers.add(tempCustomer);
-      await DbCustomer().addCustomers(customers);
-      //     filterCustomerData(_phoneCtrl.text);
-    }
+    // {
+    //   Customer tempCustomer = Customer(
+    //       // profileImage: image,
+    //       // ward: Ward(id: "1", name: "1"),
+    //       email: emailCtrl.text.trim(),
+    //       id: phoneCtrl.text.trim(),
+    //       name: nameCtrl.text.trim(),
+    //       phone: phoneCtrl.text.trim(),
+    //       isSynced: false,
+    //       modifiedDateTime: DateTime.now());
+    //   List<Customer> customers = [];
+    //   customers.add(tempCustomer);
+    //   await DbCustomer().addCustomers(customers);
+    //   //     filterCustomerData(_phoneCtrl.text);
+    // }
   }
 }

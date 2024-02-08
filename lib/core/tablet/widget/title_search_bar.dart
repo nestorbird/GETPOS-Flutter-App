@@ -24,6 +24,7 @@ class TitleAndSearchBar extends StatefulWidget {
   final bool hideOperatorDetails;
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
+  VoidCallback? onTap;
   Function? parkOrderClicked;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
@@ -38,6 +39,7 @@ class TitleAndSearchBar extends StatefulWidget {
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
       this.onTextChanged,
+      this.onTap,
       this.parkOrderClicked,
       this.onSubmit,
       this.inputFormatter,
@@ -80,12 +82,13 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
                 width: widget.searchBoxWidth,
                 padding: horizontalSpace(x: 10),
                 child: SearchWidgetTablet(
+                  onTap: widget.onTap,
                   searchHint: widget.searchHint,
                   searchTextController: widget.searchCtrl,
                   onTextChanged: (val) => widget.onTextChanged!(val),
                   onSubmit: (val) => widget.onSubmit!(val),
                   keyboardType: widget.keyboardType,
-                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
+                 // inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ),

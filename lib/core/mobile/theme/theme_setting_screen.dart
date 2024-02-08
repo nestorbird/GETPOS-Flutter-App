@@ -157,29 +157,15 @@ class _ThemeChangeState extends State<ThemeChange> {
 
                     await pingPong(url);
                   }
-                  //                 else if
-                  //                    (RegExp(r'^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
-                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
-                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
-                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$').hasMatch(Uri.parse(url).host)) {
-                  //   await theme(url);
-                  // }
-
-// else if(RegExp(
-//       r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$").hasMatch(Uri.parse(url).host)) {
-//  await theme(url);
-// }
+                 
 
                   else if (isValidIPv4(url)) {
                      String url = await DbInstanceUrl().getUrl();
-                    // var dbPreferences = DBPreferences();
-                    // await dbPreferences.savePreference(IP_ADDRESS, url);
+                    var dbPreferences = DBPreferences();
+                    await dbPreferences.savePreference(IP_ADDRESS, url);
                     await theme(url);
                   }
-                  // RegExp ipExp = RegExp(
-                  //     r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$",
-                  //     caseSensitive: false,
-                  //     multiLine: false);
+                  
 
                   else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
@@ -202,10 +188,7 @@ class _ThemeChangeState extends State<ThemeChange> {
     if (url == "$prefix://${_urlCtrl.text}/api/") {
       return Helper.isValidUrl(url);
     }
-    //  else if
-    //                  (RegExp(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$').hasMatch(Uri.parse(url).host)){
-    //      return Helper.isValidUrl(url);
-    //                  }
+    
     else {
       url = "$prefix://$url/api/";
 

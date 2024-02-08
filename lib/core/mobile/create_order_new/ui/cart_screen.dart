@@ -10,6 +10,7 @@ import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
+import 'package:nb_posx/database/db_utils/db_order_item.dart';
 //import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
@@ -81,6 +82,7 @@ class _CartScreenState extends State<CartScreen> {
   List<CouponCode> couponCodes = [];
   List<OrderTaxTemplate> data = [];
   List<Taxes>? taxesData;
+  List<ParkOrder>? parkOrders;
 
   @override
   void initState() {
@@ -88,7 +90,7 @@ class _CartScreenState extends State<CartScreen> {
     //_getAllPromoCodes();
 
     // paymentMethod = "Cash";
-    _configureTaxAndTotal(widget.order.items);
+    _configureTaxAndTotal(parkOrders!);
   }
 
   @override
@@ -745,14 +747,7 @@ class _CartScreenState extends State<CartScreen> {
       orderId = await Helper.getOrderId();
       log('Order No : $orderId');
 
-      // DbOrderTax dbOrderTax = DbOrderTax();
-
-      // var OrderWisetax = await dbOrderTax.getOrderTaxes();
-      // OrderTax orderTax = OrderTax(
-      //   itemTaxTemplate: OrderWise
-      //   taxRate: Order
-
-      // )
+     
 
 //await DbOrderTax().getOrderTaxes();
 //List<OrderTax> savedTaxes = await DbSaleOrder().getOrderWiseTaxes(orderId,taxesData) as List<OrderTax>;
@@ -774,7 +769,8 @@ class _CartScreenState extends State<CartScreen> {
 //if OrderWise taxation is applicable
       var tax = await DbOrderTax().getOrderWiseTax(orderId!);
       log("OrderWise Taxes :: $tax");
-
+    //  await DbOrderItem().updateTaxAmounts(orderId!);
+//log("Updatesd tax List Inside item :: $updatedTax");
       saleOrder = SaleOrder(
           id: orderId!,
           orderAmount: grandTotal,
@@ -786,6 +782,7 @@ class _CartScreenState extends State<CartScreen> {
           transactionId: '',
           paymentMethod: paymentMethod,
           paymentStatus: "Paid",
+
           transactionSynced: false,
           parkOrderId:
               "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
@@ -801,100 +798,7 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
-//   //Taxation calculation for Itemwise and Orderwise
-
-//   _configureTaxAndTotal(List<OrderItem> items) async {
-//     bool isTaxAvailable = false;
-
-//     for (OrderItem item in items) {
-//       quantity = item.orderedQuantity;
-//       log("Quantity Ordered : $quantity");
-//       subTotalAmount = item.orderedQuantity * item.orderedPrice;
-//       log('SubTotal after adding ${item.name} :: $subTotalAmount');
-//       totalAmount += subTotalAmount;
-//       log('total after adding an item:$totalAmount');
-// //stateGovTaxAmount += taxAmount;
-
-//       //Itemwise taxation is applicable
-//       if (item.tax.isNotEmpty) {
-//         isTaxAvailable = true;
-// //calculating subtotal amount to calculate taxes for attributes in items
-//         if (item.attributes.isNotEmpty) {
-//           for (var attribute in item.attributes) {
-//             if (attribute.options.isNotEmpty) {
-//               for (var option in attribute.options) {
-//                 if (option.selected) {
-//                   subTotalAmount =
-//                       subTotalAmount + (option.price * item.orderedQuantity);
-//                   log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
-//                 }
-//               }
-//             }
-//           }
-//         }
-// //calculating tax amount
-//         List<Taxation> taxation = [];
-//         item.tax.forEach((tax) async {
-//           taxAmount = subTotalAmount * tax.taxRate / 100;
-//           for (Taxation taxes in taxation) {
-//             taxTypeApplied = taxes.taxType;
-//             taxTypeAmountStored += taxAmount;
-//           }
-
-//           log('Tax Amount itemwise : $taxAmount');
-//           totalTaxAmount += taxAmount;
-
-//           log('totalAmount itemwise : $totalAmount');
-//           taxation.add(Taxation(
-//               id: orderId,
-//               itemTaxTemplate: tax.itemTaxTemplate,
-//               taxType: tax.taxType,
-//               taxRate: tax.taxRate,
-//               taxationAmount: taxAmount));
-//         });
-//         log("Total Tax Amount itemwise: $totalTaxAmount");
-//         DbTaxes().saveItemWiseTax(orderId, taxation);
-//         DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
-//       }
-
-//       log("Total Amount:: $totalAmount");
-//       setState(() {});
-
-//     }
-
-//     // Order wise tax applicable
-//     if (!isTaxAvailable) {
-//       List<OrderTaxTemplate> data =
-//           await DbOrderTaxTemplate().getOrderTaxesTemplate();
-//       log('data: $data');
-//       for (OrderTaxTemplate message in data) {
-//         List<OrderTaxes> taxesData = [];
-//         // message.isDefault==1.forEach(())
-//         message.tax.forEach((tax) async {
-//           taxAmount = totalAmount * tax.taxRate / 100;
-//           log('Tax Amount : $taxAmount');
-//           totalTaxAmount += taxAmount;
-//           taxTypeApplied = tax.taxType;
-
-//           log("Total Tax Amount orderwise : $totalTaxAmount");
-//           log('Total Amount Orderwise:: $totalAmount');
-//           taxesData.add(OrderTaxes(
-//               id: orderId,
-//               itemTaxTemplate: tax.itemTaxTemplate,
-//               taxType: tax.taxType,
-//               taxRate: tax.taxRate,
-//               taxationAmount: taxAmount));
-//         });
-//         //  log("Total Tax Amount orderwise : $totalTaxAmount");
-//         //  DbOrderTax().saveOrderWiseTax(orderId, taxesData);
-//         DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
-//       }
-//     }
-//     log("Total Amount:: $totalAmount");
-//     setState(() {});
-//   }
-
-  Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
+ Future<void> _configureTaxAndTotal(List<ParkOrder> items) async {
     bool isTaxAvailable = false;
     totalAmount = 0.0;
     subTotalAmount = 0.0;
@@ -905,25 +809,25 @@ class _CartScreenState extends State<CartScreen> {
     // Map to store tax amounts for each tax type
     Map<String, double> taxAmountMap = {};
 
-    for (OrderItem item in items) {
-      quantity = item.orderedQuantity;
+    for (ParkOrder order in items) {
+      quantity = order.items[7].orderedQuantity;
       log("Quantity Ordered : $quantity");
-      subTotalAmount = item.orderedQuantity * item.orderedPrice;
-      log('SubTotal after adding ${item.name} :: $subTotalAmount');
+      subTotalAmount = order.items[7].orderedQuantity * order.items[7].orderedPrice;
+      log('SubTotal after adding ${order.items[7].name} :: $subTotalAmount');
       totalAmount = totalAmount! + subTotalAmount;
       log('total after adding an item:$totalAmount');
 
       // Itemwise taxation is applicable
-      if (item.tax.isNotEmpty) {
+      if (order.items[7].tax!.isNotEmpty) {
         isTaxAvailable = true;
 
         // Calculating subtotal amount to calculate taxes for attributes in items
-        if (item.attributes.isNotEmpty) {
-          for (var attribute in item.attributes) {
+        if (order.items[7].attributes.isNotEmpty) {
+          for (var attribute in order.items[7].attributes) {
             if (attribute.options.isNotEmpty) {
               for (var option in attribute.options) {
                 if (option.selected) {
-                  subTotalAmount += (option.price * item.orderedQuantity);
+                  subTotalAmount += (option.price * order.items[7].orderedQuantity);
                   log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
                 }
               }
@@ -933,7 +837,7 @@ class _CartScreenState extends State<CartScreen> {
 
         // Calculating tax amount
         List<Taxes> taxation = [];
-        for (var tax in item.tax) {
+        for (var tax in order.items[7].tax!) {
           taxAmount = subTotalAmount * tax.taxRate / 100;
 
           log('Tax Amount itemwise : $taxAmount');
@@ -960,8 +864,8 @@ class _CartScreenState extends State<CartScreen> {
         orderId = await Helper.getOrderId();
         log('Order No : $orderId');
 
-        await DbTaxes().saveItemWiseTax(orderId, taxation);
-
+        await DbTaxes().saveItemWiseTax(orderId!, taxation);
+//await DbOrderItem().updateTaxAmounts(orderId!);
         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
       setState(() {});
@@ -1012,7 +916,7 @@ class _CartScreenState extends State<CartScreen> {
       log("Total Amount:: $totalAmount");
     }
 
-    //taxAmountMap contains the accumulated tax amounts for each tax type
+    //taxAmountMap contains the accumulated tax amounts for each tax type shown in expansion tile
     taxDetailsList = taxAmountMap.entries
         .map((entry) => {
               'tax_type': entry.key,
@@ -1025,14 +929,146 @@ class _CartScreenState extends State<CartScreen> {
     log('Grand Total:: $grandTotal');
   }
 
-  void _updateOrderPriceAndSave() {
+//   Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
+//     bool isTaxAvailable = false;
+//     totalAmount = 0.0;
+//     subTotalAmount = 0.0;
+//     taxAmount = 0.0;
+//     totalTaxAmount = 0.0;
+//     orderAmount = 0.0;
+//     grandTotal = 0.0;
+//     // Map to store tax amounts for each tax type
+//     Map<String, double> taxAmountMap = {};
+
+//     for (OrderItem item in items) {
+//       quantity = item.orderedQuantity;
+//       log("Quantity Ordered : $quantity");
+//       subTotalAmount = item.orderedQuantity * item.orderedPrice;
+//       log('SubTotal after adding ${item.name} :: $subTotalAmount');
+//       totalAmount = totalAmount! + subTotalAmount;
+//       log('total after adding an item:$totalAmount');
+
+//       // Itemwise taxation is applicable
+//       if (item.tax!.isNotEmpty) {
+//         isTaxAvailable = true;
+
+//         // Calculating subtotal amount to calculate taxes for attributes in items
+//         if (item.attributes.isNotEmpty) {
+//           for (var attribute in item.attributes) {
+//             if (attribute.options.isNotEmpty) {
+//               for (var option in attribute.options) {
+//                 if (option.selected) {
+//                   subTotalAmount += (option.price * item.orderedQuantity);
+//                   log('SubTotal after adding ${attribute.name} :: $subTotalAmount');
+//                 }
+//               }
+//             }
+//           }
+//         }
+
+//         // Calculating tax amount
+//         List<Taxes> taxation = [];
+//         for (var tax in item.tax!) {
+//           taxAmount = subTotalAmount * tax.taxRate / 100;
+
+//           log('Tax Amount itemwise : $taxAmount');
+//           totalTaxAmount += taxAmount!;
+
+//           log('totalAmount itemwise : $totalAmount');
+//           taxation.add(Taxes(
+//             taxId: '',
+//             itemTaxTemplate: tax.itemTaxTemplate,
+//             taxType: tax.taxType,
+//             taxRate: tax.taxRate,
+//             taxAmount: taxAmount,
+//           ));
+//           // Update the taxAmountMap for the current tax type
+//           taxAmountMap.update(
+//             tax.taxType,
+//             (value) => value + taxAmount!,
+//             ifAbsent: () => taxAmount!,
+//           );
+//           //       Hive.box('TAX_BOX').putAt(4,taxAmount);
+//         }
+
+//         log("Total Tax Amount itemwise: $totalTaxAmount");
+//         orderId = await Helper.getOrderId();
+//         log('Order No : $orderId');
+
+//         await DbTaxes().saveItemWiseTax(orderId!, taxation);
+// //await DbOrderItem().updateTaxAmounts(orderId!);
+//         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
+//       }
+//       setState(() {});
+//       log("Total Amount:: $totalAmount");
+//     }
+
+//     // Order wise tax applicable
+//     if (!isTaxAvailable) {
+//       taxAmount = 0.0;
+//       totalTaxAmount = 0.0;
+//       data = await DbOrderTaxTemplate().getOrderTaxesTemplate();
+//       log('data: $data');
+
+//       await Future.forEach<OrderTaxTemplate>(data,
+//           (OrderTaxTemplate message) async {
+//         List<OrderTax> taxesData = [];
+
+//         for (var tax in message.tax) {
+//           taxAmount = totalAmount! * tax.taxRate / 100;
+//           log('Tax Amount : $taxAmount');
+//           totalTaxAmount += taxAmount!;
+//           taxTypeApplied = tax.taxType;
+
+//           log("Total Tax Amount orderwise : $totalTaxAmount");
+//           log('Total Amount Orderwise:: $totalAmount');
+//           taxesData.add(OrderTax(
+//             taxId: '',
+//             itemTaxTemplate: tax.itemTaxTemplate,
+//             taxType: tax.taxType,
+//             taxRate: tax.taxRate,
+//             taxAmount: taxAmount!,
+//           ));
+
+//           // Update the taxAmountMap for the current tax type
+//           taxAmountMap.update(
+//             tax.taxType,
+//             (value) => value + taxAmount!,
+//             ifAbsent: () => taxAmount!,
+//           );
+//         }
+
+//         orderId = await Helper.getOrderId();
+//         log('Order No : $orderId');
+//         //await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
+//         await DbOrderTax().saveOrderWiseTax(orderId!, taxesData);
+//       });
+//       setState(() {});
+//       log("Total Amount:: $totalAmount");
+//     }
+
+//     //taxAmountMap contains the accumulated tax amounts for each tax type shown in expansion tile
+//     taxDetailsList = taxAmountMap.entries
+//         .map((entry) => {
+//               'tax_type': entry.key,
+//               //'rate': entry.value / subTotalAmount * 100, // Calculate rate based on accumulated tax amount
+//               'tax_amount': entry.value,
+//             })
+//         .toList();
+//     setState(() {});
+//     grandTotal = totalAmount! + totalTaxAmount;
+//     log('Grand Total:: $grandTotal');
+//   }
+
+  Future<void> _updateOrderPriceAndSave() async {
     for (OrderItem item in widget.order.items) {
       orderAmount = orderAmount! + item.orderedPrice * item.orderedQuantity;
     }
     widget.order.orderAmount = orderAmount!;
     log('orderAmount after deleting:: $orderAmount');
-
-    _configureTaxAndTotal(widget.order.items);
+parkOrders = await DbParkedOrder().getOrders();
+await _configureTaxAndTotal(parkOrders!);
+    //_configureTaxAndTotal(widget.order.items);
     // calculateItemWiseTax(taxDetailsList,subTotalAmount);
   }
 

@@ -292,7 +292,18 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
                 body: 'Background Sync completed.');
 
             // ignore: use_build_context_synchronously
-            await fetchMasterAndDeleteTransaction();
+            // await fetchMasterAndDeleteTransaction();
+             if (!mounted) return;
+             var res = await Helper.showConfirmationPopup(
+                context, LOGOUT_QUESTION, OPTION_YES,
+                hasCancelAction: true);
+            if (res != OPTION_CANCEL.toLowerCase()) {
+              // ignore: use_build_context_synchronously
+              await fetchMasterAndDeleteTransaction();
+            }
+            await DbSaleOrder().modifySevenDaysOrdersFromToday();
+          
+//  Navigator.pop(context);
             // await Navigator.pushReplacement(
             //   context,
             //   MaterialPageRoute(

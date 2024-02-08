@@ -273,21 +273,31 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
-        _prepareCart();
-        if (currentCart != null) {
-          if (selectedCashMode == true) {
-            Helper.showPopupForTablet(context, "Coming Soon..");
-          } else {
-            isOrderProcessed =
-                //   await createSale(_isCODSelected ? "Card" : "Cash");
-                await _placeOrderHandler();
+        // _prepareCart();
+        // if (currentCart != null) {
+        //   if (selectedCashMode == true) {
+        //     Helper.showPopupForTablet(context, "Coming Soon..");
+        //   } else {
+        //     isOrderProcessed =
+        //         //   await createSale(_isCODSelected ? "Card" : "Cash");
+        //         await _placeOrderHandler();
 
-            // to be showed on successfull order placed
+        //     // to be showed on successfull order placed
+        //     _showOrderPlacedSuccessPopup();
+        //   }
+        // } else {
+        //   Helper.showPopupForTablet(context, "Please add items in cart");
+        // }
+if (selectedCashMode == true) {
+          Helper.showPopupForTablet(context, "Coming Soon..");
+        } else {
+          _prepareCart();
+          if (currentCart != null) {
+            isOrderProcessed = await _placeOrderHandler();
             _showOrderPlacedSuccessPopup();
           }
-        } else {
-          Helper.showPopupForTablet(context, "Please add items in cart");
-        }
+        } 
+
       },
       child: Container(
         width: double.infinity,
@@ -821,13 +831,28 @@ class _CartWidgetState extends State<CartWidget> {
     String orderId = await Helper.getOrderId();
     log('Order No : $orderId');
 
-    double grandTotal = Helper().getTotal(currentCart!.items);
-//If itemwise tax is applicable
+
+DbHubManager dbHubManager = DbHubManager();
+
+    var hubManagerData = await dbHubManager.getManager();
+      HubManager hubManager = HubManager(
+        id: hubManagerData!.emailId,
+        name: hubManagerData.name,
+        phone: hubManagerData.phone,
+        emailId: hubManagerData.emailId,
+        profileImage: hubManagerData.profileImage,
+        cashBalance: hubManagerData.cashBalance.toDouble(),
+      );
+      //If itemwise tax is applicable
       var taxes = await DbTaxes().getItemWiseTax(orderId!);
       log("Taxes :: $taxes");
 //if OrderWise taxation is applicable
       var tax = await DbOrderTax().getOrderWiseTax(orderId!);
       log("OrderWise Taxes :: $tax");
+
+
+    double grandTotal = Helper().getTotal(currentCart!.items);
+
     SaleOrder saleOrder = SaleOrder(
         id: orderId,
         orderAmount: grandTotal,
@@ -890,7 +915,7 @@ class _CartWidgetState extends State<CartWidget> {
     }
   }
 
- Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
+  Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
     bool isTaxAvailable = false;
     totalAmount = 0.0;
     subTotalAmount = 0.0;
@@ -910,7 +935,7 @@ class _CartWidgetState extends State<CartWidget> {
       log('total after adding an item:$totalAmount');
 
       // Itemwise taxation is applicable
-      if (item.tax.isNotEmpty) {
+      if (item.tax!.isNotEmpty) {
         isTaxAvailable = true;
 
         // Calculating subtotal amount to calculate taxes for attributes in items
@@ -929,7 +954,7 @@ class _CartWidgetState extends State<CartWidget> {
 
         // Calculating tax amount
         List<Taxes> taxation = [];
-        for (var tax in item.tax) {
+        for (var tax in item.tax!) {
           taxAmount = subTotalAmount * tax.taxRate / 100;
 
           log('Tax Amount itemwise : $taxAmount');
@@ -956,7 +981,7 @@ class _CartWidgetState extends State<CartWidget> {
         orderId = await Helper.getOrderId();
         log('Order No : $orderId');
 
-        await DbTaxes().saveItemWiseTax(orderId, taxation);
+        await DbTaxes().saveItemWiseTax(orderId!, taxation);
 
         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
@@ -1020,6 +1045,7 @@ class _CartWidgetState extends State<CartWidget> {
     grandTotal = totalAmount! + totalTaxAmount;
     log('Grand Total:: $grandTotal');
   }
+
 
 
   void _updateOrderPriceAndSave() {

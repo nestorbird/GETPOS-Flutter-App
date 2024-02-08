@@ -65,8 +65,20 @@ class CreateCustomer {
             apiStatus: ApiStatus.REQUEST_SUCCESS);
       }
     }
+Customer tempCustomer = Customer(
+        // profileImage: image,
+        // ward: Ward(id: "1", name: "1"),
+        email: email.trim(),
+        id: phone.trim(),
+        name: name.trim(),
+        phone: phone.trim(),
+        isSynced: false,
+        modifiedDateTime: DateTime.now());
 
+    List<Customer> customers = [];
+    customers.add(tempCustomer);
+    await DbCustomer().addCustomers(customers);
     return CommanResponse(
-        status: false, message: NO_INTERNET, apiStatus: ApiStatus.NO_INTERNET);
+       status: true, message: tempCustomer, apiStatus: ApiStatus.NO_INTERNET);
   }
 }

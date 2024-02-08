@@ -235,21 +235,22 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
         .createNew(_phoneCtrl.text, _nameCtrl.text, _emailCtrl.text);
     if (response.status!) {
       filterCustomerData(_phoneCtrl.text);
-    } else {
-      Customer tempCustomer = Customer(
-          // profileImage: image,
-          // ward: Ward(id: "1", name: "1"),
-          email: _emailCtrl.text.trim(),
-          id: _phoneCtrl.text.trim(),
-          name: _nameCtrl.text.trim(),
-          phone: _phoneCtrl.text.trim(),
-          isSynced: false,
-          modifiedDateTime: DateTime.now());
-      List<Customer> customers = [];
-      customers.add(tempCustomer);
-      await DbCustomer().addCustomers(customers);
-      filterCustomerData(_phoneCtrl.text);
-    }
+    } 
+    // else {
+    //   Customer tempCustomer = Customer(
+    //       // profileImage: image,
+    //       // ward: Ward(id: "1", name: "1"),
+    //       email: _emailCtrl.text.trim(),
+    //       id: _phoneCtrl.text.trim(),
+    //       name: _nameCtrl.text.trim(),
+    //       phone: _phoneCtrl.text.trim(),
+    //       isSynced: false,
+    //       modifiedDateTime: DateTime.now());
+    //   List<Customer> customers = [];
+    //   customers.add(tempCustomer);
+    //   await DbCustomer().addCustomers(customers);
+    //   filterCustomerData(_phoneCtrl.text);
+    // }
   }
 
   Future<void> _askCustomerAPI(String searchText) async {

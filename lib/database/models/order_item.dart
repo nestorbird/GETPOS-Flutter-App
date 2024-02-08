@@ -48,7 +48,7 @@ class OrderItem extends HiveObject {
   String? productImageUrl;
 
   @HiveField(12)
-  List<Taxes> tax;
+  List<Taxes>? tax;
 
   OrderItem(
       {required this.id,
