@@ -102,14 +102,14 @@ class ParkedDataItemLandscape extends StatelessWidget {
 
   Future<void> _handleDelete(BuildContext context) async {
     var response = await AlertDialogWidget().show(
-        "Do you want to delete this parked order", OPTION_YES,
+        "Do you want to delete this parked order", OPTION_YES,context,
         hasCancelAction: true);
 
     if (response == "yes") {
       DbParkedOrder().deleteOrder(order);
       onDelete();
       await AlertDialogWidget()
-          .show("Parked Order Deleted Successfully", OPTION_YES);
+          .show("Parked Order Deleted Successfully", OPTION_YES,context);
     }
   }
 

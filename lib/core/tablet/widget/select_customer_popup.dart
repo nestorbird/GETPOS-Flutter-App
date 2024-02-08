@@ -39,10 +39,11 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
 
   @override
   void initState() {
+    searchCtrl = TextEditingController();
     if (widget.customer != null) {
       customer = widget.customer!;
     }
-    searchCtrl = TextEditingController();
+
     // _phoneCtrl = TextEditingController();
     if (customer != null) {
       searchCtrl.text = customer!.phone;
@@ -61,14 +62,14 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        
         children: [
           Align(
             alignment: Alignment.topRight,
             child: InkWell(
               onTap: () {
                 //on close
-                Get.back(result: null);
+                // Get.back(result: null);
+                Navigator.pop(context);
               },
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
@@ -136,15 +137,15 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                           )
                         : Container(
                             width: 380,
-                            height: 90,//65
+                            height: 90, //65
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                             padding: mediumPaddingAll(),
                             decoration: BoxDecoration(
-                              color:  AppColors.getPrimary().withOpacity(0.05),
+                              color: AppColors.getPrimary().withOpacity(0.05),
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 width: 0.5,
-                                color:  AppColors.getPrimary().withOpacity(0.4),
+                                color: AppColors.getPrimary().withOpacity(0.4),
                               ),
                             )),
                 hightSpacer10,
@@ -152,9 +153,11 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                   onTap: () {
                     log(customer.toString());
                     if (customer != null) {
-                      Get.back(result: customer);
+                      searchCtrl.text = customer!.phone;
+                      Navigator.pop(context, customer);
                     } else if (customer == null) {
-                      Get.back(result: searchCtrl.text);
+                      // Get.back(result: searchCtrl.text);
+                      Navigator.pop(context, searchCtrl.text);
                     }
                   },
                   child: Container(
@@ -162,8 +165,8 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                     height: 48,
                     decoration: BoxDecoration(
                       color: searchCtrl.text.length == 10
-                          ?  AppColors.getPrimary()
-                          :  AppColors.getPrimary().withOpacity(0.3),
+                          ? AppColors.getPrimary()
+                          : AppColors.getPrimary().withOpacity(0.3),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Center(
@@ -171,7 +174,8 @@ class _SelectCustomerPopupState extends State<SelectCustomerPopup> {
                         "Continue",
                         textAlign: TextAlign.center,
                         style: getTextStyle(
-                            fontSize: LARGE_FONT_SIZE, color: AppColors.fontWhiteColor),
+                            fontSize: LARGE_FONT_SIZE,
+                            color: AppColors.fontWhiteColor),
                       ),
                     ),
                   ),

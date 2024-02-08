@@ -77,8 +77,6 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return Row(
-      //mainAxisAlignment: MainAxisAlignment.start,
-      //crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         SizedBox(
           width: size.width - 505,

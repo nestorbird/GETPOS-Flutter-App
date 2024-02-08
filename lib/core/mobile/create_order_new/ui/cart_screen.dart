@@ -771,7 +771,7 @@ class _CartScreenState extends State<CartScreen> {
       //If itemwise tax is applicable
       var taxes = await DbTaxes().getItemWiseTax(orderId!);
       log("Taxes :: $taxes");
-//if OrderWise taxation is applicable
+      //if OrderWise taxation is applicable
       var tax = await DbOrderTax().getOrderWiseTax(orderId!);
       log("OrderWise Taxes :: $tax");
 

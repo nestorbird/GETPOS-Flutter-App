@@ -3,7 +3,6 @@
 import 'dart:developer';
 import 'dart:isolate';
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
@@ -23,7 +22,6 @@ import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:path_provider/path_provider.dart';
-
 import 'constants/app_constants.dart';
 import 'core/mobile/splash/view/splash_screen.dart';
 import 'core/tablet/home_tablet.dart';

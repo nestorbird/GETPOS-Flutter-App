@@ -39,7 +39,8 @@ class UpdatedHubManagerDetails {
 
       //If success response from api
       if (hubManagerDetails.message.message == "success") {
-        var hubManagerData = hubManagerDetails.message;
+       
+         var hubManagerData = hubManagerDetails.message;
 
         //Creating instance of DbHubManager
         DbHubManager dbHubManager = DbHubManager();
