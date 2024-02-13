@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
 import 'package:nb_posx/core/mobile/transaction_history/model/transaction.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import '../../../../../constants/app_constants.dart';
 import '../model/sale_order_list_response.dart';
 import '../../../../../database/db_utils/db_constants.dart';
@@ -106,7 +107,10 @@ class GetPreviousOrder {
           //   customerImage =
           //       await Helper.getImageBytesFromUrl(order.customerImage);
           // }
-
+         String  orderId = await Helper.getOrderId();
+      log('Order No : $orderId');
+ var tax = await DbOrderTax().getOrderWiseTax(orderId!);
+      log("OrderWise Taxes :: $tax");
           //Creating a SaleOrder
           SaleOrder saleOrder = SaleOrder(
               id: order.name!,
@@ -127,6 +131,7 @@ class GetPreviousOrder {
               paymentMethod: order.modeOfPayment!,
               paymentStatus: "",
               transactionSynced: true,
+              taxes: tax ?? []
               );
 
           sales.add(saleOrder);

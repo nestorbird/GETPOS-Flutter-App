@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive/hive.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/database/models/order_item.dart';
@@ -60,6 +62,9 @@ class DbTaxes {
     box = await Hive.openBox<List>(TAX_BOX);
     
     await box.put(orderId, list);
+
+    var data = await box.get(orderId);
+    log("Data :: $data");
    
     return list;
   }
@@ -84,6 +89,7 @@ Future<List<Taxes>>? getItemWiseTax(String orderId) async {
       return List<Taxes>.empty();
     }
     var list = itemTaxesList.cast<Taxes>(); 
+     box.close();
     return list;
     
   }
