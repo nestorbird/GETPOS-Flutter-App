@@ -5,7 +5,6 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/utils/helper.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_categories.dart';
 import '../../../../../database/models/category.dart';

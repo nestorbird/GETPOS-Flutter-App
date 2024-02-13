@@ -4,7 +4,6 @@
 
 // ignore_for_file: constant_identifier_names
 
-import 'package:nb_posx/core/service/create_order/model/selected_options.dart';
 
 const CUSTOMER_BOX = 'customers';
 const HUB_MANAGER_BOX = 'hub_manager';

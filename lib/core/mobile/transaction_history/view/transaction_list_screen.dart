@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nb_posx/configs/theme_config.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
-import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/models/park_order.dart';

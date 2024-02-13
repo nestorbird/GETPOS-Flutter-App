@@ -28,12 +28,13 @@ class MyAccountLandscape extends StatefulWidget {
 class _MyAccountLandscapeState extends State<MyAccountLandscape> {
   var isChangePasswordVisible = true;
   double iconWidth = 80;
-
-  late String cashCollected = "00.00";
+//TODO:: Updation in finance
+  late String cashCollected;
 
   @override
   void initState() {
     super.initState();
+     cashCollected = "00.00";
     _initView();
   }
 
@@ -46,6 +47,7 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
   _initView() async {
     if (await Helper.isNetworkAvailable()) {
       // print("INTERNET AVAILABLE");
+      // ignore: use_build_context_synchronously
       Helper.showLoaderDialog(context);
       await UpdatedHubManagerDetails().getUpdatedAccountDetails();
       if (!mounted) return;

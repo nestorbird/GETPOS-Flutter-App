@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
 
     // url = instanceUrl;
      var dbPreferences = DBPreferences();
- dbPreferences.savePreference(SSL_PREFIX, prefix);
+ dbPreferences.getPreference(SSL_PREFIX);
     _getAppVersion();
   }
 
@@ -287,8 +287,6 @@ class _LoginState extends State<Login> {
 
               fetchDataAndNavigate();
 
-              //Navigator.push(context,
-              // MaterialPageRoute(builder: (context) => const ThemeChange()));
             },
             child: Padding(
               padding: rightSpace(),
@@ -407,6 +405,7 @@ class _LoginState extends State<Login> {
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
+      log(url);
       // Clear the database
       await DBPreferences().delete();
       log("Cleared the DB");
@@ -416,7 +415,7 @@ class _LoginState extends State<Login> {
 // while changing instance
       SyncHelper().logoutFlow();
 
-      // ignore: use_build_context_synchronously
+    
       await Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const ThemeChange()),

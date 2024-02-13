@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../utils/ui_utils/text_styles/custom_text_style.dart';
 
 // ignore: must_be_immutable

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../utils/ui_utils/card_border_shape.dart';
 import '../utils/ui_utils/padding_margin.dart';

@@ -1,8 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
-import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
-import 'package:nb_posx/database/models/orderwise_tax.dart';
 
 class DbOrderTaxTemplate {
   late Box box;

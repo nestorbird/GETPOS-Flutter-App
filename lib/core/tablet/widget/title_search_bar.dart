@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
-import '../../../../../constants/asset_paths.dart';
-import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
@@ -24,20 +20,24 @@ class TitleAndSearchBar extends StatefulWidget {
   final bool hideOperatorDetails;
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
+  VoidCallback? onTap;
   Function? parkOrderClicked;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
+ 
 
   TitleAndSearchBar(
       {Key? key,
       required this.title,
       this.searchHint,
+      this.onTap,
       this.searchCtrl,
-      this.searchBoxWidth = 360,//330
+      this.searchBoxWidth = 360, //330
       this.searchBoxVisible = true,
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
       this.onTextChanged,
+   
       this.parkOrderClicked,
       this.onSubmit,
       this.inputFormatter,
@@ -71,7 +71,7 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
               style: getTextStyle(
                   fontSize: EXTRA_LARGE_FONT_SIZE,
                   fontWeight: FontWeight.w800,
-                   color: AppColors.getTextandCancelIcon()),
+                  color: AppColors.getTextandCancelIcon()),
             ),
             const Spacer(),
             Visibility(
@@ -80,12 +80,12 @@ class _TitleAndSearchBarState extends State<TitleAndSearchBar> {
                 width: widget.searchBoxWidth,
                 padding: horizontalSpace(x: 10),
                 child: SearchWidgetTablet(
+                  onTap: widget.onTap,
                   searchHint: widget.searchHint,
                   searchTextController: widget.searchCtrl,
                   onTextChanged: (val) => widget.onTextChanged!(val),
                   onSubmit: (val) => widget.onSubmit!(val),
                   keyboardType: widget.keyboardType,
-                  inputFormatter: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
             ),

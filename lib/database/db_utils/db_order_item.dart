@@ -1,4 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/database/db_utils/db_taxes.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 import '../models/order_item.dart';
 import 'db_constants.dart';
@@ -56,4 +58,24 @@ class DbOrderItem {
     box.close();
     return list;
   }
+
+ // Method to update tax amounts
+  Future<void> updateTaxAmounts(String orderId,) async {
+    // Retrieve tax amounts from the database
+    final List<Taxes>? itemTaxesList = await DbTaxes().getItemWiseTax(orderId);
+
+    // Update the tax field of each OrderItem
+    box = await Hive.openBox<OrderItem>(ORDER_ITEM_BOX);
+    for (var itemId in box.keys) {
+      var itemInDB = box.get(itemId) as OrderItem?;
+      if (itemInDB != null) {
+        // Check if the order ID matches
+        if (itemInDB.id == orderId) {
+          itemInDB.tax = itemTaxesList; // Update the tax field
+          await itemInDB.save(); // Save the updated OrderItem
+        }
+      }
+    }
+  }
+
 }

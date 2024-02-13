@@ -1,12 +1,10 @@
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../database/models/product.dart';

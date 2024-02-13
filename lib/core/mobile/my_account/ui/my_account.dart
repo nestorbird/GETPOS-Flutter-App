@@ -5,18 +5,12 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
-import 'package:nb_posx/core/service/create_order/api/create_sales_order.dart';
-import 'package:nb_posx/database/db_utils/db_categories.dart';
+
 import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
-import 'package:nb_posx/database/models/customer.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
-import 'package:nb_posx/main.dart';
-import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 

@@ -59,18 +59,29 @@ class ColorsData {
   late final String parkOrderButton;
   late final String active;
 
-  ColorsData.fromJson(Map<String, dynamic> json) {
-    primary = json['primary'] == "" ? "#DC1E44" : json['primary'];
-    secondary = json['secondary'] == "" ? "#62B146" : json['secondary'];
-    asset = json['asset']  == "" ? "#707070" : json['asset'];
-    textandCancelIcon = json['text_and_cancel_icon'] == "" ? "#000000" : json['text_and_cancel_icon'];
-    shadowBorder = json['shadow_border'] == "" ? "#C7C5C5" : json['shadow_border'];
-    hintText = json['hint_text']  == "" ? "#F3F2F5" : json['hint_text'];
-    fontWhiteColor = json['font_white_color'] == ""? "#FFFFFF" : json['font_white_color'];
-    parkOrderButton = json['park_order_button'] == ""?  "#4A4A4A" : json['park_order_button'];
-    active = json['active'] == ""? "#FEF9FA" : json['active'];
-  }
+  // ColorsData.fromJson(Map<String, dynamic> json) {
+  //   primary = json['primary'] == "" ? "#DC1E44" : json['primary'];
+  //   secondary = json['secondary'] == "" ? "#62B146" : json['secondary'];
+  //   asset = json['asset']  == "" ? "#707070" : json['asset'];
+  //   textandCancelIcon = json['text_and_cancel_icon'] == "" ? "#000000" : json['text_and_cancel_icon'];
+  //   shadowBorder = json['shadow_border'] == "" ? "#C7C5C5" : json['shadow_border'];
+  //   hintText = json['hint_text']  == "" ? "#F3F2F5" : json['hint_text'];
+  //   fontWhiteColor = json['font_white_color'] == ""? "#FFFFFF" : json['font_white_color'];
+  //   parkOrderButton = json['park_order_button'] == ""?  "#4A4A4A" : json['park_order_button'];
+  //   active = json['active'] == ""? "#FEF9FA" : json['active'];
+  // }
 
+ColorsData.fromJson(Map<String, dynamic> json) {
+    primary = json['primary'] != null && json['primary'] != "" ? json['primary'] : "#DC1E44";
+    secondary = json['secondary'] != null && json['secondary'] != "" ? json['secondary'] : "#62B146";
+    asset = json['asset']  != null && json['asset'] != "" ? json['asset'] : "#707070";
+    textandCancelIcon = json['text_and_cancel_icon'] != null && json['text_and_cancel_icon'] != "" ? json['text_and_cancel_icon'] : "#000000";
+    shadowBorder = json['shadow_border'] != null && json['shadow_border'] != "" ? json['shadow_border'] : "#C7C5C5";
+    hintText = json['hint_text']  != null && json['hint_text'] != "" ? json['hint_text'] : "#F3F2F5";
+    fontWhiteColor = json['font_white_color'] != null && json['font_white_color'] != "" ? json['font_white_color'] : "#FFFFFF";
+    parkOrderButton = json['park_order_button'] != null && json['park_order_button'] != "" ? json['park_order_button'] : "#4A4A4A";
+    active = json['active'] != null && json['active'] != "" ? json['active'] : "#FEF9FA";
+}
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['primary'] = primary;

@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../configs/theme_config.dart';
 import '../../../constants/asset_paths.dart';
 import '../../../utils/ui_utils/padding_margin.dart';
 import '../../../utils/ui_utils/spacer_widget.dart';

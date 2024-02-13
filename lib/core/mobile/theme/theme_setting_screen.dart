@@ -1,19 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 
-import 'package:nb_posx/configs/theme_config.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/login/ui/login.dart';
-import 'package:nb_posx/core/mobile/splash/view/splash_screen.dart';
-import 'package:nb_posx/core/service/theme/api/model/theme_response.dart';
 import 'package:nb_posx/core/service/theme/api/theme_api_service.dart';
 import 'package:nb_posx/core/tablet/login/login_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
@@ -157,29 +152,15 @@ class _ThemeChangeState extends State<ThemeChange> {
 
                     await pingPong(url);
                   }
-                  //                 else if
-                  //                    (RegExp(r'^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
-                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
-                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\.'
-                  //         r'(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$').hasMatch(Uri.parse(url).host)) {
-                  //   await theme(url);
-                  // }
-
-// else if(RegExp(
-//       r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$").hasMatch(Uri.parse(url).host)) {
-//  await theme(url);
-// }
+                 
 
                   else if (isValidIPv4(url)) {
                      String url = await DbInstanceUrl().getUrl();
-                    // var dbPreferences = DBPreferences();
-                    // await dbPreferences.savePreference(IP_ADDRESS, url);
+                    var dbPreferences = DBPreferences();
+                    await dbPreferences.savePreference(IP_ADDRESS, url);
                     await theme(url);
                   }
-                  // RegExp ipExp = RegExp(
-                  //     r"^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$",
-                  //     caseSensitive: false,
-                  //     multiLine: false);
+                  
 
                   else if (url.isEmpty) {
                     Helper.showPopup(context, "Please Enter Url");
@@ -202,10 +183,7 @@ class _ThemeChangeState extends State<ThemeChange> {
     if (url == "$prefix://${_urlCtrl.text}/api/") {
       return Helper.isValidUrl(url);
     }
-    //  else if
-    //                  (RegExp(r'^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$').hasMatch(Uri.parse(url).host)){
-    //      return Helper.isValidUrl(url);
-    //                  }
+    
     else {
       url = "$prefix://$url/api/";
 

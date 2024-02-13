@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
-import 'package:nb_posx/database/models/orderwise_tax.dart';
 import 'package:nb_posx/database/models/taxes.dart';
 
 import '../../../../../constants/app_constants.dart';

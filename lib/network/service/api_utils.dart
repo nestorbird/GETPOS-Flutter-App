@@ -101,7 +101,9 @@ class APIUtils {
     // } else {
        
     var dbPreferences = DBPreferences();
+    
                   String prefix = await dbPreferences.getPreference(SSL_PREFIX); 
+
     String appendInstanceUrl = await _getUrlKey();
     instanceUrl = "$prefix://$appendInstanceUrl/api/";
     Uri uri = Uri.parse(instanceUrl + url);

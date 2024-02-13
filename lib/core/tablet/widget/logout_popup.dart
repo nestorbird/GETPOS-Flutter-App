@@ -1,4 +1,5 @@
 import 'dart:developer';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -25,6 +26,11 @@ class LogoutPopupView extends StatefulWidget {
 }
 
 class _LogoutPopupViewState extends State<LogoutPopupView> {
+  // static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  //  ShowMToast toast = ShowMToast(navigatorKey.currentContext!);
+
+
+
   /// LOGIN BUTTON
   Widget get cancelBtnWidget => SizedBox(
         // width: double.infinity,
@@ -64,6 +70,10 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
 
   @override
   Widget build(BuildContext context) {
+    // BuildContext? context = navigatorKey.currentContext;
+    // if (context != null) {
+    //   toast = ShowMToast(context);
+    // }
     return SizedBox(
       width: 400,
       height: 200,
@@ -264,10 +274,16 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
             context, OFFLINE_ORDER_MSG, OPTION_OK);
         if (res == OPTION_OK.toLowerCase()) {
           if (isInternetAvailable == true) {
+            // if (Platform.isWindows) {
+            //   toast.errorToast(
+            //       message: 'Please wait Background sync work in progess',
+            //       alignment: Alignment.topCenter);
+            // } else {
             LocalNotificationService().showNotification(
                 id: 0,
                 title: 'Background Sync',
                 body: 'Please wait Background sync work in progess');
+            // }
 
             var response = await SyncHelper().syncNowFlow();
             if (response == true) {
@@ -279,28 +295,50 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         }
       } else {
         if (isInternetAvailable) {
+          if (!mounted) return;
+          Navigator.pop(context);
+          // if (Platform.isWindows) {
+          //   toast.errorToast(
+          //       message: 'Please wait Background sync work in progess',
+          //       alignment: Alignment.topCenter);
+          // } else {
           LocalNotificationService().showNotification(
               id: 0,
               title: 'Background Sync',
               body: 'Please wait Background sync work in progess');
+          // }
           var response = await SyncHelper().syncNowFlow();
+
           //TODO: Need to fix this as sync complete notification are not appear
+
           if (response == true) {
+            // if (Platform.isWindows) {
+            //   toast.errorToast(
+            //       message: 'Background Sync completed',
+            //       alignment: Alignment.topCenter);
+            // } else {
             LocalNotificationService().showNotification(
                 id: 1,
                 title: 'Background Sync',
                 body: 'Background Sync completed.');
+            // }
 
-            // ignore: use_build_context_synchronously
-            await fetchMasterAndDeleteTransaction();
             // await Navigator.pushReplacement(
             //   context,
             //   MaterialPageRoute(
             //     builder: (context) => const Login(),
             //   ),
             // );
+            if (!mounted) return;
+            var res = await Helper.showConfirmationPopup(
+                context, LOGOUT_QUESTION, OPTION_YES,
+                hasCancelAction: true);
+            if (res != OPTION_CANCEL.toLowerCase()) {
+              // ignore: use_build_context_synchronously
+              await fetchMasterAndDeleteTransaction();
+            }
+            await DbSaleOrder().modifySevenDaysOrdersFromToday();
           }
-          await DbSaleOrder().modifySevenDaysOrdersFromToday();
         } else {
           // Navigator.of(context).pop();
           // Navigator.pop(context);
@@ -334,7 +372,7 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
       log("Saved Url:$url");
       // Navigate to a different screen
       // ignore: use_build_context_synchronously
-      Get.offAll(() => const LoginLandscape());
+      Get.offAll(() => LoginLandscape());
 
       // Save the URL again
       //await DBPreferences().savePreference('url', url);

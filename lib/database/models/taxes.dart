@@ -19,7 +19,7 @@ class Taxes extends HiveObject {
   @HiveField(3)
   double taxRate;
 
-  @HiveField(4)
+  @HiveField(4,defaultValue: 0.0)
   double? taxAmount;
 
   Taxes({

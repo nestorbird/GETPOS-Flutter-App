@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/network/api_helper/comman_response.dart';
-import '../../../../../configs/theme_config.dart';
+// import 'package:nb_posx/network/api_helper/comman_response.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/models/customer.dart';
@@ -12,7 +11,7 @@ import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/text_field_widget.dart';
-import '../../../database/db_utils/db_customer.dart';
+// import '../../../database/db_utils/db_customer.dart';
 import '../../service/select_customer/api/create_customer.dart';
 
 // ignore: must_be_immutable
@@ -145,17 +144,17 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
                 hightSpacer10,
                 InkWell(
                   onTap: () {
-                    _newCustomerAPI();
                     customer = Customer(
-                        id: emailCtrl.text,
-                        name: nameCtrl.text,
-                        email: emailCtrl.text,
-                        phone: phoneCtrl.text,
-                        isSynced: false,
-                        modifiedDateTime: DateTime.now()
+                    id: emailCtrl.text,
+                    name: nameCtrl.text,
+                    email: emailCtrl.text,
+                    phone: phoneCtrl.text,
+                    isSynced: false,
+                    modifiedDateTime: DateTime.now()
                         // ward: Ward(id: "01", name: "name"),
                         // profileImage: Uint8List.fromList([]),
                         );
+                    _newCustomerAPI();
                     if (customer != null) {
                       Get.back(result: customer);
                     }
@@ -192,25 +191,27 @@ class _CreateCustomerPopupState extends State<CreateCustomerPopup> {
   }
 
   Future<void> _newCustomerAPI() async {
-    CommanResponse response = await CreateCustomer()
-        .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
+    await CreateCustomer()
+    .createNew(phoneCtrl.text, nameCtrl.text, emailCtrl.text);
     /* if (response.status!) {
       filterCustomerData(phoneCtrl.text);
     } */
-    {
-      Customer tempCustomer = Customer(
-          // profileImage: image,
-          // ward: Ward(id: "1", name: "1"),
-          email: emailCtrl.text.trim(),
-          id: phoneCtrl.text.trim(),
-          name: nameCtrl.text.trim(),
-          phone: phoneCtrl.text.trim(),
-          isSynced: false,
-          modifiedDateTime: DateTime.now());
-      List<Customer> customers = [];
-      customers.add(tempCustomer);
-      await DbCustomer().addCustomers(customers);
-      //     filterCustomerData(_phoneCtrl.text);
-    }
+    ///OFFLINE CUSTOMER:: create in newCustomerAPI service
+    // {
+    //   Customer tempCustomer = Customer(
+    //       // profileImage: image,
+    //       // ward: Ward(id: "1", name: "1"),
+    //       email: emailCtrl.text.trim(),
+    //       id: phoneCtrl.text.trim(),
+    //       name: nameCtrl.text.trim(),
+    //       phone: phoneCtrl.text.trim(),
+    //       isSynced: false,
+    //       modifiedDateTime: DateTime.now());
+          
+    //     List<Customer> customers = [];
+    //     customers.add(tempCustomer);
+    //     await DbCustomer().addCustomers(customers);
+      
+    // }
   }
 }

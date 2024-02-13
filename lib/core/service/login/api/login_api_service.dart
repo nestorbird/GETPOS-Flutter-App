@@ -1,5 +1,4 @@
-import 'dart:developer';
-import 'package:http/http.dart' as http;
+
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_constants.dart';
 import '../../../../../database/db_utils/db_preferences.dart';
@@ -8,8 +7,7 @@ import '../../../../../network/api_helper/api_status.dart';
 import '../../../../../network/api_helper/comman_response.dart';
 import '../../../../../network/service/api_utils.dart';
 import '../../../../../utils/helper.dart';
-import '../../../../../utils/helpers/sync_helper.dart';
-import '../../../../database/db_utils/db_instance_url.dart';
+
 import '../model/login_response.dart';
 
 class LoginService {

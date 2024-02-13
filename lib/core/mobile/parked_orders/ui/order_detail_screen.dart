@@ -6,7 +6,6 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_parked_order.dart';
