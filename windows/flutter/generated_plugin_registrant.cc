@@ -14,4 +14,6 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("CharsetConverterPlugin"));
   ConnectivityPlusWindowsPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ConnectivityPlusWindowsPlugin"));
+  WindowsNotificationPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("WindowsNotificationPluginCApi"));
 }
