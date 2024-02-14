@@ -4,7 +4,8 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   charset_converter
-  connectivity_plus_windows
+  connectivity_plus
+  windows_notification
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
