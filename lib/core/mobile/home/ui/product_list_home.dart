@@ -60,6 +60,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   bool isInternetAvailable = false;
   ParkOrder? parkOrder;
   Customer? _selectedCust;
+ // PosProfileCashier? _selectedPosProfile;   TO BE ADDED
   final _scrollController = ScrollController();
   //HubManager? hubManagerData;
   double _scrollToOffset(int index) {
@@ -100,7 +101,10 @@ class _ProductListHomeState extends State<ProductListHome> {
     if (widget.isForNewOrder && _selectedCust == null) {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
-    // });
+    //  if (widget.isNewShift && _selectedPosProfile == null && _sele) {
+    //   Future.delayed(Duration.zero, () => _selectPosProfile());
+    // }
+   
 
     // _getManagerName();
 

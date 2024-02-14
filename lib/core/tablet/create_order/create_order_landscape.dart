@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/utils/helper.dart';
 
@@ -320,7 +321,11 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     child: GestureDetector(
                         onTap: () {
                           if (customer == null) {
-                            _handleCustomerPopup();
+                           // _handleCustomerPopup();
+                             Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const OpenShiftManagement()));
+
                           } else {
                             if (cat.items[position].stock > 0) {
                               var item = OrderItem.fromJson(
