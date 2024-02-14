@@ -904,8 +904,7 @@ class _CartWidgetState extends State<CartWidget> {
 
   for (OrderItem item in items) {
     // Reset taxAmountMap for each item
-    taxAmountMap.clear();
-
+   
     quantity = item.orderedQuantity;
     log("Quantity Ordered : $quantity");
     subTotalAmount = item.orderedQuantity * item.orderedPrice;
@@ -957,9 +956,17 @@ class _CartWidgetState extends State<CartWidget> {
       item.tax!.clear();
       item.tax!.addAll(taxation);
     //  await DbTaxes().saveItemWiseTax(orderId!, taxation);
-     
-     
-    } else if (!isTaxAvailable){
+    }
+  //     setState(() {});
+  //     log("Total Amount:: $totalAmount");
+    
+   }
+     //for (OrderItem item in items) {
+     if (!isTaxAvailable ){
+      
+    taxAmountMap.clear();
+   
+
       // Order wise tax applicable
       taxAmount = 0.0;
       totalTaxAmount = 0.0;
@@ -1016,7 +1023,7 @@ class _CartWidgetState extends State<CartWidget> {
    });
     
   }
-}
+
 
 
 
