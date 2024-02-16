@@ -161,7 +161,7 @@ class _ItemOptionsState extends State<ItemOptions> {
           children: [
             option.selected
                 ? Visibility(
-                    visible: option.selected,
+                    visible: true,
                     child: Container(
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
@@ -198,15 +198,13 @@ class _ItemOptionsState extends State<ItemOptions> {
             Text(
               option.name,
               style: getTextStyle(
-                  fontSize: SMALL_PLUS_FONT_SIZE,
-                  fontWeight: FontWeight.normal),
+                  fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
             ),
             const Spacer(),
             Text(
               "$appCurrency ${option.price.toStringAsFixed(2)}",
               style: getTextStyle(
-                  fontSize: SMALL_PLUS_FONT_SIZE,
-                  fontWeight: FontWeight.normal),
+                  fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
             ),
           ],
         ),

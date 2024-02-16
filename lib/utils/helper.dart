@@ -109,7 +109,8 @@ class Helper {
   }
 
   //Function to show the popup with one button with on pressed functionality to close popup.
-  static showPopup(BuildContext context, String message) async {
+  static showPopup(BuildContext context, String message,
+      {bool? barrierDismissible = false}) async {
     await showGeneralDialog(
         context: context,
         transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -125,10 +126,13 @@ class Helper {
           return SizedBox(
             height: 100,
             child: SimplePopup(
+              barrier: barrierDismissible,
               message: message,
               buttonText: OPTION_OK.toUpperCase(),
               onOkPressed: () {
-                Navigator.pop(context);
+                barrierDismissible == true
+                    ? SystemNavigator.pop()
+                    : Navigator.pop(context);
               },
             ),
           );
@@ -183,13 +187,13 @@ class Helper {
         },
         pageBuilder: (context, animation, secondaryAnimation) {
           return SizedBox(
-            height: 100,
+            height: 80,
             child: SimplePopup(
               message: message,
               buttonText: btnTxt,
               hasCancelAction: hasCancelAction,
               onOkPressed: () {
-                Navigator.pop(context, btnTxt.toLowerCase());
+                SystemNavigator.pop();
               },
             ),
           );
@@ -365,14 +369,21 @@ class Helper {
     activeParkedOrder = parkedOrder;
   }
 
-  ///Function to check whether the input URL is valid or not
   static bool isValidUrl(String url) {
+    // Regex to check valid URL
+    String regex =
+        "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
+    return RegExp(regex).hasMatch(url);
+  }
+
+  ///Function to check whether the input URL is valid or not
+  /* static bool isValidUrl(String url) {
     // Regex to check valid URL
     String regex =
         "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
 
     return RegExp(regex).hasMatch(url);
-  }
+  }*/
 
   //TODO:: Need to handle the print receipt here
   ///Helper method to print the invoice in PDF format and through printer device.

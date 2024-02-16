@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -8,6 +9,8 @@ import '../../../../../database/db_utils/db_parked_order.dart';
 import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../widgets/shimmer_widget.dart';
+import '../../../network/api_helper/comman_response.dart';
+import '../../service/login/api/verify_instance_service.dart';
 import '../widget/title_search_bar.dart';
 import 'parked_data_item_landscape.dart';
 
@@ -28,26 +31,37 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
   late bool fetchingData;
 
   @override
-  void initState() {
+  void initState() {   verify();
     fetchingData = true;
     searchCtrl = TextEditingController();
     super.initState();
     getParkedOrders();
   }
 
+
+  
+  final FocusNode _focusNode = FocusNode();
+
   @override
   void dispose() {
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(10),
-        child: Column(
+        child:GestureDetector (onTap: _handleTap,child: Column(
           children: [
-            TitleAndSearchBar(
+            TitleAndSearchBar(focusNode: _focusNode,
+              inputFormatter: [FilteringTextInputFormatter.digitsOnly],
               title: "Parked Orders",
               onSubmit: (text) {
                 if (text.length >= 3) {
@@ -64,18 +78,18 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
                 }
               },
               searchCtrl: searchCtrl,
-              searchHint: "Enter your mobile",
+              searchHint: "Enter customer mobile number",
             ),
             hightSpacer20,
             parkedOrders.isEmpty
                 ? const Center(
-                    child: Text("No order founds ",
+                    child: Text("No order found ",
                         style: TextStyle(fontWeight: FontWeight.bold)))
                 : Expanded(
                     child: productGrid(),
                   ),
           ],
-        ));
+        )));
   }
 
   Widget productGrid() {
@@ -134,5 +148,12 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
         .toList();
 
     setState(() {});
+  }verify() async {
+    CommanResponse res = await VerificationUrl.checkAppStatus();
+    if (res.message == true) {
+    } else {
+      Helper.showPopup(context, "Please update your app to latest version",
+          barrierDismissible: true);
+    }
   }
 }

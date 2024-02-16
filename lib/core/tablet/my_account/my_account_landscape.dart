@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_hub_manager.dart';
@@ -11,39 +10,32 @@ import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
-
 import '../../service/finance/api/get_updated_account_details.dart';
 import '../widget/change_password.dart';
 import '../widget/finance.dart';
 import '../widget/logout_popup.dart';
 import '../widget/title_search_bar.dart';
-
 class MyAccountLandscape extends StatefulWidget {
   const MyAccountLandscape({Key? key}) : super(key: key);
-
   @override
   State<MyAccountLandscape> createState() => _MyAccountLandscapeState();
 }
-
 class _MyAccountLandscapeState extends State<MyAccountLandscape> {
   var isChangePasswordVisible = true;
   double iconWidth = 80;
 //TODO:: Updation in finance
   late String cashCollected;
-
   @override
   void initState() {
     super.initState();
      cashCollected = "00.00";
     _initView();
   }
-
   _getcashCollected() async {
     HubManager manager = await DbHubManager().getManager() as HubManager;
     cashCollected = Helper().formatCurrency(manager.cashBalance);
     setState(() {});
   }
-
   _initView() async {
     if (await Helper.isNetworkAvailable()) {
       // print("INTERNET AVAILABLE");
@@ -58,7 +50,6 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
       _getcashCollected();
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -215,3 +206,12 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
     );
   }
 }
+
+
+
+
+
+
+
+
+

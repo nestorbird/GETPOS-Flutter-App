@@ -66,7 +66,8 @@ class TransactionItemLandscape extends StatelessWidget {
             Expanded(
               flex: 6,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
                     'Order ID: ${order.id}',
@@ -77,6 +78,7 @@ class TransactionItemLandscape extends StatelessWidget {
                   ),
                   hightSpacer5,
                   Text(
+                    
                     // '27th Jul 2021, 11:00AM ',
                     '${order.date} ${order.time}',
                     overflow: TextOverflow.clip,

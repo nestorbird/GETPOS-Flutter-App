@@ -88,7 +88,6 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     //_getAllPromoCodes();
-
     // paymentMethod = "Cash";
     _configureTaxAndTotal(widget.order.items);
   }

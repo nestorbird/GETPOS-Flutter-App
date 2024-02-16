@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
@@ -42,9 +43,12 @@ class HomeLandscapeState extends State<HomeLandscape> {
     checkInternetAvailability();
   }
 
+ final FocusNode _focusNode = FocusNode();
+
   @override
   void dispose() {
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 

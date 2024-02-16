@@ -33,8 +33,11 @@ import 'database/models/hub_manager.dart';
 import 'database/models/option.dart';
 import 'database/models/order_item.dart';
 import 'database/models/park_order.dart';
+import 'database/models/payment_type.dart';
+import 'database/models/pos_profile_cashier.dart';
 import 'database/models/product.dart';
 import 'database/models/sale_order.dart';
+import 'database/models/shift_management.dart';
 import 'utils/helpers/sync_helper.dart';
 
 bool isUserLoggedIn = false;
@@ -60,6 +63,9 @@ void main() async {
   isUserLoggedIn = await DbHubManager().getManager() != null;
   //isUserLoggedIn = await DBPreferences().getPreference('MANAGER');
 
+  //Registering hive database type adapters
+  registerHiveTypeAdapters();
+  isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
   await SyncHelper().launchFlow(isUserLoggedIn);
@@ -68,9 +74,7 @@ void main() async {
   isTabletMode = Device.get().isTablet;
   if (isTabletMode) {
     await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft],
-    );
-
+        [DeviceOrientation.landscapeLeft]);
     runApp(const TabletApp());
   } else {
     await SystemChrome.setPreferredOrientations(
@@ -124,6 +128,16 @@ void registerHiveTypeAdapters() {
 
 //Registering salesorderrequest adapter
   Hive.registerAdapter(SalesOrderRequestAdapter());
+
+  
+  ///Registering PAYMENT METHOD adapter
+  Hive.registerAdapter(PaymentTypeAdapter());
+
+  ///Registering POS PROFILE CASHIER adapter
+  Hive.registerAdapter(PosProfileCashierAdapter());
+
+  ///Registering SHIFT MANAGEMENT adapter
+  Hive.registerAdapter(ShiftManagementAdapter());
 }
 
 class MobileApp extends StatelessWidget {

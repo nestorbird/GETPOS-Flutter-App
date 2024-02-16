@@ -72,7 +72,7 @@ class CustomerList {
       required this.image});
 
   CustomerList.fromJson(Map<String, dynamic> json) {
-    customerName = json['customer_name'] ?? "";
+    customerName = json['customer_name'] ?? "Guest";
     emailId = json['email_id'] ?? "";
     mobileNo = json['mobile_no'] ?? "";
     ward = json['ward'] ?? "";

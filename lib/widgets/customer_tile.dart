@@ -77,7 +77,7 @@ class _CustomerTileState extends State<CustomerTile> {
                 child: Padding(
                   padding: horizontalSpace(),
                   child: Text(
-                      widget.customer != null ? widget.customer!.name : "",
+                      widget.customer != null ? widget.customer!.name : "Guest",
                       style: getTextStyle(
                           fontSize: LARGE_MINUS_FONT_SIZE,
                           color: AppColors.getPrimary(),

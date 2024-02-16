@@ -66,12 +66,15 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               Padding(
                 padding: horizontalSpace(),
                 child: SearchWidget(
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly,LengthLimitingTextInputFormatter(12)],
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(12)
+                  ],
                   searchHint: SEARCH_HINT_TXT,
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
-                    if (text.isNotEmpty && text.isNotEmpty) {
+                    if (text.isNotEmpty) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -79,7 +82,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                     // }
                   },
                   onSubmit: (text) {
-                    if (text.isNotEmpty && text.isNotEmpty) {
+                    if (text.isNotEmpty ) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -105,8 +108,8 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                             isSubtitle: true,
                             isHighlighted: true,
                             onCheckChanged: (p0) {
-                                 Navigator.pop(context, customers[position]);
-           },
+                              Navigator.pop(context, customers[position]);
+                            },
                           );
                         }
                       })
@@ -154,7 +157,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
   }
 
   _addNewCustomerUI() {
-    return Column(
+    return SingleChildScrollView(child:Column(
       children: [
         Center(
             child: Padding(
@@ -171,12 +174,12 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
             child: Text(
           "Add Customer",
           style: getTextStyle(
-            fontSize: LARGE_MINUS_FONT_SIZE,
+            fontSize: LARGE_PLUS_FONT_SIZE,
             fontWeight: FontWeight.w600,
           ),
         )),
         hightSpacer20,
-        Padding(
+      Padding(
           padding: horizontalSpace(x: 20),
           child: TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
@@ -225,7 +228,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               title: "Cancel",
             )),
       ],
-    );
+    ));
   }
 
   Future<void> _newCustomerAPI() async {

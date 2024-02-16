@@ -11,16 +11,6 @@ import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:nb_posx/widgets/button.dart';
 import 'package:nb_posx/widgets/text_field_widget.dart'; // for making HTTP requests
 
-// class OpenShiftManagement extends StatefulWidget {
-//    final bool isNewShift;
-//     final RxString selectedView;
-//   const OpenShiftManagement({super.key,this.isNewShift = false,required this.selectedView});
-
-//   @override
-//   State<OpenShiftManagement>createState() => _OpenShiftManagementState();
-// }
-
-// class _OpenShiftManagementState extends State<OpenShiftManagement> {
 
   class OpenShiftManagement extends StatefulWidget {
     final bool isNewShift;
@@ -95,7 +85,7 @@ Widget openShiftHeadingWidget()=>Center(
           ),
         ),
 );
-
+//In progress - Pos Cashier 
 Widget posCashierSection()=>Container(
     decoration: BoxDecoration(border: Border.all(color: AppColors.getTextandCancelIcon()),
     borderRadius: BorderRadius.circular(6.0)),
@@ -113,6 +103,7 @@ Widget posCashierSection()=>Container(
                    
                   },
                 ));
+                //Dynamic widgets for Payment Method
   Widget paymentMethodsWidget()=>Column(
     children: [
         TextFieldWidget(

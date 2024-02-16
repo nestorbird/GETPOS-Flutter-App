@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
+import 'package:nb_posx/core/service/login/api/verify_instance_service.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -20,6 +23,7 @@ import '../../../../database/models/hub_manager.dart';
 import '../../../../database/models/order_item.dart';
 import '../../../../database/models/park_order.dart';
 import '../../../../database/models/product.dart';
+import '../../../../network/api_helper/comman_response.dart';
 import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
@@ -466,6 +470,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                   child: FloatingActionButton(
                       heroTag: 'finance',
                       onPressed: (() async {
+                    
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -499,6 +504,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                   child: FloatingActionButton(
                       heroTag: 'account',
                       onPressed: (() async {
+                    
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -533,6 +539,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                   child: FloatingActionButton(
                       heroTag: 'transactions',
                       onPressed: (() async {
+                   
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -568,6 +575,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                   child: FloatingActionButton(
                       heroTag: 'customers',
                       onPressed: (() async {
+                     
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -632,6 +640,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                   child: FloatingActionButton(
                       heroTag: 'create order',
                       onPressed: (() async {
+                    
                         await Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -955,6 +964,17 @@ class _ProductListHomeState extends State<ProductListHome> {
 
     // await DBPreferences().savePreference(Manager, manager!.name);
     // await DBPreferences().getPreference(Manager);
+  }
+
+  verify() async {
+    CommanResponse res = await VerificationUrl.checkAppStatus();
+    if (res.message == true) {
+      _getManagerName();
+      getProducts();
+    } else {
+      Helper.showPopup(context, "Please update your app to latest version",
+          barrierDismissible: true);
+    }
   }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {

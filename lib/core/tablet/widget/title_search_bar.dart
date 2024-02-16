@@ -40,7 +40,7 @@ class TitleAndSearchBar extends StatefulWidget {
    
       this.parkOrderClicked,
       this.onSubmit,
-      this.inputFormatter,
+       this.inputFormatter,
       this.keyboardType = TextInputType.text})
       : super(key: key);
 

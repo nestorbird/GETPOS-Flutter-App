@@ -30,6 +30,7 @@ import '../../../database/db_utils/db_order_tax.dart';
 import '../../../database/db_utils/db_parked_order.dart';
 import '../../../database/db_utils/db_sale_order.dart';
 import '../../../database/models/attribute.dart';
+import '../../../database/models/hub_manager.dart';
 import '../../../database/models/park_order.dart';
 import '../../../database/models/sale_order.dart';
 import '../../service/create_order/api/create_sales_order.dart';
@@ -214,11 +215,11 @@ class _CartWidgetState extends State<CartWidget> {
 
   _handleCustomerPopup() async {
     final result = await Get.defaultDialog(
-      // contentPadding: paddingXY(x: 0, y: 0),
-      title: "",
-      titlePadding: paddingXY(x: 0, y: 0),
+      contentPadding: EdgeInsets.zero,
+      //   title: "",
+//titlePadding: paddingXY(x: 0, y: 0),
       // custom: Container(),
-      content: SelectCustomerPopup(
+      custom: SelectCustomerPopup(
         customer: selectedCustomer,
       ),
     );
@@ -227,7 +228,7 @@ class _CartWidgetState extends State<CartWidget> {
       selectedCustomer = await Get.defaultDialog(
         // contentPadding: paddingXY(x: 0, y: 0),
         title: "",
-        titlePadding: paddingXY(x: 0, y: 0),
+        titlePadding: paddingXY(x: 1, y: 1),
         // custom: Container(),
         content: CreateCustomerPopup(
           phoneNo: result,
@@ -321,8 +322,7 @@ class _CartWidgetState extends State<CartWidget> {
                   //  const Divider(color: Colors.black38),
                 ],
               ),
-            ),
-          );
+            ));
   }
 
   Widget billSection() {
@@ -765,7 +765,7 @@ class _CartWidgetState extends State<CartWidget> {
     selectedCustomer = widget.customer;
     return selectedCustomer != null
         ? InkWell(
-            onTap: () => _handleCustomerPopup(),
+            //   onTap: () => _handleCustomerPopup(),
             child: CustomerTile(
               isCheckBoxEnabled: false,
               isDeleteButtonEnabled: false,
@@ -778,13 +778,13 @@ class _CartWidgetState extends State<CartWidget> {
         : Container();
   }
 
-  void _calculateOrderAmount() {
+  /* void _calculateOrderAmount() {
     double amount = 0;
     for (var item in currentCart!.items) {
       amount += item.orderedPrice * item.orderedQuantity;
     }
     currentCart!.orderAmount = amount;
-  }
+  }*/
 
   void _showOrderPlacedSuccessPopup() async {
     var response = await Get.defaultDialog(
@@ -798,7 +798,8 @@ class _CartWidgetState extends State<CartWidget> {
     if (response == "home") {
       widget.onNewOrder();
     } else if (response == "print_receipt") {
-      widget.onPrintReceipt();
+      selectedCustomer = null;
+      widget.onNewOrder();
     } else if (response == "new_order") {
       selectedCustomer = null;
       widget.onNewOrder();
@@ -833,7 +834,7 @@ class _CartWidgetState extends State<CartWidget> {
         orderAmount: grandTotal,
         date: date,
         time: time,
-        customer: currentCart!.customer,
+        customer: widget.customer!,
         manager: Helper.hubManager!,
         items: currentCart!.items,
         transactionId: '',
@@ -881,10 +882,10 @@ class _CartWidgetState extends State<CartWidget> {
         customer: selectedCustomer!,
         manager: Helper.hubManager!,
         items: widget.orderList,
-        orderAmount: 0,
+        orderAmount: totalAmount,
         transactionDateTime: DateTime.now(),
       );
-      _calculateOrderAmount();
+      //_calculateOrderAmount();
       DbParkedOrder().saveOrder(currentCart!);
       Helper.activeParkedOrder = null;
     }

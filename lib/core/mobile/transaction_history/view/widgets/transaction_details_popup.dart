@@ -57,7 +57,7 @@ class _TransactionDetailsPopupState extends State<TransactionDetailsPopup> {
                 Get.back();
               },
               child: Padding(
-                padding: const EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 15),
                 child: SvgPicture.asset(
                   CROSS_ICON,
                   color: AppColors.getTextandCancelIcon(),
@@ -377,7 +377,7 @@ class _TransactionDetailsPopupState extends State<TransactionDetailsPopup> {
             Text(
               amount,
               style: getTextStyle(
-                  fontWeight: FontWeight.w700, fontSize: MEDIUM_PLUS_FONT_SIZE),
+                  fontWeight: FontWeight.w700, fontSize: LARGE_FONT_SIZE),
             ),
           ],
         ),

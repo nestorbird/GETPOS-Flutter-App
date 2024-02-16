@@ -45,6 +45,7 @@ const INVALID_PASSWORD = 'Password should be at least of 6 characters';
 const INVALID_URL = 'Please enter valid ERP URL';
 const CLOSE_APP_QUESTION = 'Do you want to close the app?';
 const OPTION_YES = 'Yes';
+const OPTION_CONTINUE = "Continue";
 const OPTION_NO = 'No';
 const OPTION_OK = 'Ok';
 const OPTION_CANCEL = 'Cancel';
@@ -246,11 +247,11 @@ const double MY_ACCOUNT_ICON_PADDING_RIGHT = 24;
 const double MY_ACCOUNT_ICON_PADDING_BOTTOM = 8;
 
 // SALE SUCCESS
-const double SALE_SUCCESS_IMAGE_HEIGHT = 150;
+const double SALE_SUCCESS_IMAGE_HEIGHT = 120;
 const double SALE_SUCCESS_IMAGE_WIDTH = 150;
 
 // FONT SIZES
-const double LARGE_FONT_SIZE = 20;
+const double LARGE_FONT_SIZE = 16;
 const double LARGE_PLUS_FONT_SIZE = 22;
 const double EXTRA_LARGE_FONT_SIZE = 24;
 const double SMALL_MINUS_FONT_SIZE = 8;
