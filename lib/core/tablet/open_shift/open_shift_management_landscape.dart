@@ -50,46 +50,53 @@ late TextEditingController _openingCashCtrl;
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
-     
-      appBar: AppBar(
-      //  leadingWidth: ,
-        title:  Center(
-          child: Text(
-            "Open Shift",
-            style: getTextStyle(
-              // color: MAIN_COLOR,
-              fontWeight: FontWeight.bold,
-              fontSize: 26.0,
-        
+    return Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: AppColors.fontWhiteColor,
+        body:  SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Stack(
+            children: [
+              Center(
+                child:
+                Container(
+                  width: 450,
+                  padding: paddingXY(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      hightSpacer10,
+                      openShiftHeadingWidget(),
+                      hightSpacer120,
+                      hightSpacer20,
+                      posCashierSection(),
+                      hightSpacer30,
+                      paymentMethodsWidget(),
+                      hightSpacer30,
+                      openShiftBtnWidget(),
+                      hightSpacer30
+                    ],
+                  ),
+                ),
+              )
+            ],
+          )),
+    );
+}
+
+//WIDGETS
+Widget openShiftHeadingWidget()=>Center(
+  child: Text(
+          OPEN_SHIFT.toUpperCase(),
+          style: getTextStyle(
+            // color: MAIN_COLOR,
+            fontWeight: FontWeight.bold,
+            fontSize: LARGE_PLUS_FONT_SIZE,
           ),
         ),
-        
-      ),
-      ),
-    //  body:
-   
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-            children: [
-              // hightSpacer40,
-          //  const CustomAppbar(title: OPEN_SHIFT, hideSidemenu: true, showBackBtn: true,),
-            hightSpacer100,
-             Stack(
-              children: [
-                
-                Center(
-                  child: Container(
-                    width: 550,
-                    padding: paddingXY(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                //To select POS Profile name
-                 Container(
+);
+
+Widget posCashierSection()=>Container(
     decoration: BoxDecoration(border: Border.all(color: AppColors.getTextandCancelIcon()),
     borderRadius: BorderRadius.circular(6.0)),
     
@@ -105,89 +112,49 @@ late TextEditingController _openingCashCtrl;
                   onChanged: (value) {
                    
                   },
-                ),
-                 ),
-                hightSpacer20,
-                TextFieldWidget(
+                ));
+  Widget paymentMethodsWidget()=>Column(
+    children: [
+        TextFieldWidget(
               txtCtrl: _openingCashCtrl,
               hintText: 'Enter Opening Cash Balance',
               boxDecoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              verticalContentPadding: 10,
+              verticalContentPadding: 16,
               password: false, // Not a password field
             ),
-           hightSpacer20,
-            TextFieldWidget(
+            hightSpacer30,
+        TextFieldWidget(
               txtCtrl: _openingDigitalCtrl,
               hintText: 'Enter Opening Digital Balance',
               boxDecoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              verticalContentPadding: 10,
+              verticalContentPadding: 16,
               password: false, // Not a password field
             ),
-                  hightSpacer20,
-                // Dynamic payment method fields
-                for (var method in paymentMethods)
-                  TextFormField(
-                    decoration: InputDecoration(labelText: 'Enter $method Amount'),
-                    keyboardType: TextInputType.number,
-                    onChanged: (value) {
-                    },
-                  ),
-                       hightSpacer50,
-                   openShiftWidget() 
-              ],
-            ),
-          ),
-                ),
-              ],
-            )
-            ],
-          ),
-        ),
-        ),
-    );
-  }
-  //Open Shift through custom Open Shift buttom
-             Widget openShiftWidget() => Center(
-               child: Container(
-                       margin: const EdgeInsets.only(bottom: 20.0),
-                       width: 800,
-                  
-                       child: ButtonWidget(
-                       
-                         onPressed: () async {
-                           setState(() {
-                  isShiftOpen = true;
-                });
-                           widget.selectedView.value = "Order";
-                          
+        
+    ],
+  );
 
-            //                 Navigator.push(
-            // context,
-            // MaterialPageRoute(builder: (context) =>  CreateOrderLandscape(selectedView: widget.selectedView, order: null, isShiftCreated: true,)));
-
-                          // await fetchData(_emailCtrl.text, _passCtrl.text, url);
-                          
-                         },
-                         title: "Open Shift",
-                         primaryColor: AppColors.getPrimary(),
-                         // width: MediaQuery.of(context).size.width - 150,
-                         height: 60,
-                         fontSize: LARGE_PLUS_FONT_SIZE,
-                       ),
-                     ),
-             );
-
-  //             makeActiveOrder(ParkOrder parkedOrder) {
-  //   Helper.activateParkedOrder(parkedOrder);
-  //   DbParkedOrder().deleteOrder(parkedOrder);
-  //   widget.selectedView.value = "Order";
-  // }
-
-
+// WIDGETS- BUTTON
+  Widget openShiftBtnWidget()=> ButtonWidget(
+          colorTxt:AppColors.fontWhiteColor,
+          isMarginRequired: false,
+          width: 600,
+          onPressed: () async {
+            setState(() {
+              isShiftOpen = true;
+             });
+              widget.selectedView.value = "Order";   
+          },
+          title: OPEN_SHIFT.toUpperCase(),
+          primaryColor: AppColors.getPrimary(),
+          // width: MediaQuery.of(context).size.width - 150,
+          height: 60,
+          fontSize: LARGE_FONT_SIZE,
+  );
 }

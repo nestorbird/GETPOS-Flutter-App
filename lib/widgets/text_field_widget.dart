@@ -53,7 +53,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
         decoration: widget.password
             ? InputDecoration(
                 hintText: widget._hintText,
-                hintStyle: const TextStyle(fontSize: 14),
+                hintStyle: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText ?  Icons.visibility_off : Icons.visibility,

@@ -13,12 +13,14 @@ class ButtonWidget extends StatelessWidget {
   final double width;
   final double height;
   final double fontSize;
+  bool isMarginRequired;
   late Color? colorTxt= AppColors.fontWhiteColor!;
   final double borderRadius;
 
      ButtonWidget  (
     {Key? key,
       required this.onPressed,
+      this.isMarginRequired=true,
       //this.colorBG = MAIN_COLOR,
     required this.primaryColor,
      this.colorTxt,
@@ -36,7 +38,7 @@ class ButtonWidget extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        margin:const EdgeInsets.all(20),
+        margin:isMarginRequired?const EdgeInsets.all(20): const EdgeInsets.all(0),
         width: width,
         height: height,
         decoration: BoxDecoration(
