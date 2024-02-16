@@ -64,6 +64,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Text(
+               
                 '$appCurrency ${order.orderAmount}',
                 style: getTextStyle(
                     fontSize: LARGE_MINUS_FONT_SIZE,

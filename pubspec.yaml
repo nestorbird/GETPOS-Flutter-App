@@ -70,6 +70,7 @@ dependencies:
   flutter_local_notifications: ^16.2.0
   m_toast: ^0.2.4
   windows_notification: ^1.0.0
+  lottie: ^2.6.0
  # wifi: ^0.1.5
 
 dev_dependencies:

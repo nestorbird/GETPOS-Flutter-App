@@ -34,7 +34,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
     super.initState();
     _emailCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "getpos.in";
     // _getAppVersion();
   }
 
@@ -170,7 +170,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
                     ),
                     hightSpacer50,
                     instanceUrlTxtboxSection(context),
-                    hightSpacer50,
+                    hightSpacer20,
                     emailTxtboxSection,
                     hightSpacer20,
                     hightSpacer20,

@@ -27,8 +27,7 @@ class SearchWidgetTablet extends StatefulWidget {
       this.onTextChanged,
       this.onSubmit,
       this.keyboardType = TextInputType.text,
-       this.inputFormatter
-      })
+      this.inputFormatter})
       : super(key: key);
 
   @override

@@ -122,7 +122,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
               children: [
                 Text(
                   widget.product.name,
-                  style: getTextStyle(fontSize: SMALL_PLUS_FONT_SIZE),
+                  style: getTextStyle(fontSize: LARGE_FONT_SIZE),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),
@@ -200,7 +200,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           onTap: () => widget.onItemRemove!(),
                           child: const Icon(
                             Icons.remove,
-                            size: 18,
+                            size: 25,
                           )),
                       //   _greySizedBox,
                       Container(
@@ -208,7 +208,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           child: Text(
                             selectedQty,
                             style: getTextStyle(
-                              fontSize: MEDIUM_FONT_SIZE,
+                              fontSize: MEDIUM_PLUS_FONT_SIZE,
                               fontWeight: FontWeight.w600,
                               color: AppColors.getPrimary(),
                             ),
@@ -218,7 +218,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           onTap: () => widget.onItemAdd!(),
                           child: const Icon(
                             Icons.add,
-                            size: 18,
+                            size: 25,
                           )),
                     ],
                   ))

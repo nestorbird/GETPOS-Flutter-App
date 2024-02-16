@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
 import '../../../constants/app_constants.dart';
@@ -33,12 +34,14 @@ class SaleSuccessfulPopup extends StatelessWidget {
                     ),
                   ))),
           Center(
-            child: SvgPicture.asset(
+            child: Lottie.asset(SUCCESS_IMAGE,
+                animate:
+                    true), /*SvgPicture.asset(
               SUCCESS_IMAGE,
               height: SALE_SUCCESS_IMAGE_HEIGHT,
               width: SALE_SUCCESS_IMAGE_WIDTH,
               fit: BoxFit.contain,
-            ),
+            ),*/
           ),
           hightSpacer30,
           Text(
@@ -52,12 +55,22 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "Print Receipt",
                 onTap: () {
                   Navigator.pop(context, "home");
                 },
               )),
+          // Padding(
+          //     padding: const EdgeInsets.only(left: 35, right: 35),
+          //     child: LongButton(
+          //       isAmountAndItemsVisible: false,
+          //       buttonTitle: RETURN_TO_HOME_TXT,
+          //       onTap: () {
+          //         Navigator.pop(context, "home");
+          //       },
+          //     )),
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(

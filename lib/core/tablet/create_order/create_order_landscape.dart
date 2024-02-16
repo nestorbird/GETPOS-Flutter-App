@@ -17,7 +17,9 @@ import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../database/models/order_item.dart';
+import '../../../network/api_helper/comman_response.dart';
 import '../../../widgets/item_options.dart';
+import '../../service/login/api/verify_instance_service.dart';
 import '../widget/create_customer_popup.dart';
 import '../widget/select_customer_popup.dart';
 import '../widget/title_search_bar.dart';
@@ -58,6 +60,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
+    verify();
     getProducts();
     if (Helper.activeParkedOrder != null) {
       log("park order is active");
@@ -66,11 +69,20 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     }
   }
 
+  final FocusNode _focusNode = FocusNode();
+
   @override
   void dispose() {
     itemsNotifier.dispose();
     searchCtrl.dispose();
+    _focusNode.dispose();
     super.dispose();
+  }
+
+  void _handleTap() {
+    if (_focusNode.hasFocus) {
+      _focusNode.unfocus();
+    }
   }
 
   @override
@@ -224,10 +236,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          cat.name,
-          style: getTextStyle(
-            fontSize: LARGE_FONT_SIZE,
+        Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: Text(
+            cat.name,
+            style: getTextStyle(
+              fontSize: LARGE_FONT_SIZE,
+            ),
           ),
         ),
         hightSpacer10,
@@ -311,6 +326,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     padding: const EdgeInsets.only(right: 15),
                     child: GestureDetector(
                         onTap: () {
+                          _handleTap();
+
                           if (customer == null) {
                             _handleCustomerPopup();
                           } else {
@@ -353,16 +370,17 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                       children: [
                                         hightSpacer40,
                                         SizedBox(
-                                          //height: 30,
+                                          height: 20,
                                           child: Text(
                                             cat.items[position].name,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            textAlign: TextAlign.start,
+                                            textAlign: TextAlign.center,
                                             style: getTextStyle(
+
                                                 // color: DARK_GREY_COLOR,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: SMALL_PLUS_FONT_SIZE),
+                                                // fontWeight: FontWeight.w500,
+                                                fontSize: MEDIUM_FONT_SIZE),
                                           ),
                                         ),
                                         hightSpacer4,
@@ -467,7 +485,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 
   getCategoryListWidg() {
     return SizedBox(
-      height: 100,
+      height: 120,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
@@ -490,7 +508,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     ))
                   : Container(
                       margin: paddingXY(y: 5),
-                      width: 75,
+                      width: 100,
                       decoration: BoxDecoration(
                         color: AppColors.fontWhiteColor,
                         borderRadius: BorderRadius.circular(10),
@@ -565,7 +583,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: getTextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontSize: LARGE_FONT_SIZE,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ],
@@ -646,5 +665,14 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         .toList();
 
     setState(() {});
+  }
+
+  verify() async {
+    CommanResponse res = await VerificationUrl.checkAppStatus();
+    if (res.message == true) {
+    } else {
+      Helper.showPopup(context, "Please update your app to latest version",
+          barrierDismissible: true);
+    }
   }
 }

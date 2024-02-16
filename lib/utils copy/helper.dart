@@ -2,20 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
+import 'package:nb_posx/database/models/park_order.dart';
+import 'package:nb_posx/network/api_constants/api_paths.dart';
 // import 'package:pdf/pdf.dart';
 // import 'package:pdf/widgets.dart' as pw;
 // import 'package:printing/printing.dart';
 import 'package:esc_pos_printer/esc_pos_printer.dart';
-import 'package:esc_pos_utils/esc_pos_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image/image.dart' as img;
-import 'package:intl/intl.dart';
-import 'package:nb_posx/configs/theme_dynamic_colors.dart';
-import 'package:nb_posx/core/mobile/create_order_new/ui/new_create_order.dart';
-import 'package:nb_posx/database/models/park_order.dart';
-import 'package:nb_posx/network/api_constants/api_paths.dart';
 
+import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../core/mobile/home/ui/home.dart';
 import '../database/db_utils/db_constants.dart';
@@ -26,6 +25,7 @@ import '../database/models/sale_order.dart';
 import '../widgets/popup_widget.dart';
 import 'ui_utils/padding_margin.dart';
 import 'ui_utils/text_styles/custom_text_style.dart';
+import 'package:image/image.dart' as img;
 
 class Helper {
   static HubManager? hubManager;
@@ -100,7 +100,7 @@ class Helper {
       style: getTextStyle(
           fontSize: MEDIUM_MINUS_FONT_SIZE,
           fontWeight: FontWeight.normal,
-          color: AppColors.fontWhiteColor),
+          color: WHITE_COLOR),
     ));
     ScaffoldMessenger.of(context)
         .showSnackBar(snackBar)
@@ -109,8 +109,7 @@ class Helper {
   }
 
   //Function to show the popup with one button with on pressed functionality to close popup.
-  static showPopup(BuildContext context, String message,
-      {bool? barrierDismissible = false}) async {
+  static showPopup(BuildContext context, String message) async {
     await showGeneralDialog(
         context: context,
         transitionBuilder: (context, animation, secondaryAnimation, child) {
@@ -126,13 +125,10 @@ class Helper {
           return SizedBox(
             height: 100,
             child: SimplePopup(
-              barrier: barrierDismissible,
               message: message,
               buttonText: OPTION_OK.toUpperCase(),
               onOkPressed: () {
-                barrierDismissible == true
-                    ? SystemNavigator.pop()
-                    : Navigator.pop(context);
+                Navigator.pop(context);
               },
             ),
           );
@@ -157,7 +153,7 @@ class Helper {
           return SizedBox(
             height: 100,
             child: Padding(
-              padding: const EdgeInsets.only(left: 400, right: 400),
+              padding: const EdgeInsets.only(left: 400 , right: 400),
               child: SimplePopup(
                 message: message,
                 buttonText: OPTION_OK.toUpperCase(),
@@ -187,13 +183,13 @@ class Helper {
         },
         pageBuilder: (context, animation, secondaryAnimation) {
           return SizedBox(
-            height: 80,
+            height: 100,
             child: SimplePopup(
               message: message,
               buttonText: btnTxt,
               hasCancelAction: hasCancelAction,
               onOkPressed: () {
-                SystemNavigator.pop();
+                Navigator.pop(context, btnTxt.toLowerCase());
               },
             ),
           );
@@ -252,25 +248,16 @@ class Helper {
   }
 
   static Future<String> getOrderId() async {
-    NumberFormat numberFormat = NumberFormat("00000");
+    NumberFormat numberFormat = NumberFormat("0000");
     DateTime currentDateTime = DateTime.now();
     String orderNo = await DBPreferences().getPreference(CURRENT_ORDER_NUMBER);
-    log('Order No::$orderNo');
-    if (orderNo.isEmpty) {
-      orderNo = "1";
-      await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
-    }
-    //  else {
-    //  // orderNo = (int.parse(orderNo) + 1).toString();
-    //  // await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, orderNo);
-    // }
+    if (orderNo.isEmpty) orderNo = "1";
     String orderSeries = await DBPreferences().getPreference(SalesSeries);
-    print("ORDER SERIES :: $orderSeries");
     String orderId = orderSeries
-        .replaceAll("YYYY", "${currentDateTime.year}")
-        .replaceAll("MM", "${currentDateTime.month}")
-        .replaceAll("#####", numberFormat.format(int.parse(orderNo)));
-    print("NEXT ORDER NUMBER :: $orderId");
+        .replaceAll(".YYYY.", "${currentDateTime.year}")
+        .replaceAll(".MM.", "${currentDateTime.month}")
+        .replaceAll(".####", numberFormat.format(int.parse(orderNo)));
+
     return orderId;
   }
 
@@ -297,9 +284,9 @@ class Helper {
     if (paymentStatus == "Unpaid") {
       return Colors.red;
     } else if (paymentStatus == "Paid") {
-      return const Color(0xFF62B146);
+      return GREEN_COLOR;
     } else {
-      return const Color(0xFFDC1E44);
+      return MAIN_COLOR;
     }
   }
 
@@ -369,15 +356,8 @@ class Helper {
     activeParkedOrder = parkedOrder;
   }
 
-  static bool isValidUrl(String url) {
-    // Regex to check valid URL
-    String regex =
-        "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
-    return RegExp(regex).hasMatch(url);
-  }
-
   ///Function to check whether the input URL is valid or not
-  /* static bool isValidUrl(String url) {
+  /*static bool isValidUrl(String url) {
     // Regex to check valid URL
     String regex =
         "((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)";
@@ -534,8 +514,4 @@ class Helper {
   //       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
   //       children: [pw.Text(keyName), pw.Text(dataValue)]);
   // }
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  static BuildContext getContext() {
-    return navigatorKey.currentContext!;
-  }
 }

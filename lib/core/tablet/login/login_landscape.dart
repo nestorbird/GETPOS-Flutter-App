@@ -187,9 +187,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     var res = await Helper.showConfirmationPopup(
         context, CLOSE_APP_QUESTION, OPTION_YES,
         hasCancelAction: true);
-    if (res != OPTION_CANCEL) {
-      exit(0);
-    }
+
     return false;
   }
 
@@ -364,7 +362,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        if (isValidInstanceUrl()) {
+                       
                           Navigator.push(
                               ctx,
                               MaterialPageRoute(
@@ -373,9 +371,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                                           TopicTypes.TERMS_AND_CONDITIONS,
                                       apiUrl:
                                           "https://${_urlCtrl.text}/api/")));
-                        } else {
-                          Helper.showPopup(context, INVALID_URL);
-                        }
+                       
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
@@ -391,7 +387,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                 TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () {
-                        if (isValidInstanceUrl()) {
+                     {
                           Navigator.push(
                               ctx,
                               MaterialPageRoute(
@@ -399,9 +395,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
                                       topicTypes: TopicTypes.PRIVACY_POLICY,
                                       apiUrl:
                                           "https://${_urlCtrl.text}/api/")));
-                        } else {
-                          Helper.showPopup(context, INVALID_URL);
-                        }
+                        } 
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(

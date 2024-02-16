@@ -34,7 +34,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     super.initState();
     _emailCtrl = TextEditingController();
     _urlCtrl = TextEditingController();
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "getpos.in";
   }
 
   @override

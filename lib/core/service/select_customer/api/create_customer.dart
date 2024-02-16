@@ -13,11 +13,11 @@ import '../../../../../utils/helper.dart';
 
 class CreateCustomer {
   Future<CommanResponse> createNew(
-      String phone, String name, String email) async {
+      String phone, String? name, String email) async {
     if (await Helper.isNetworkAvailable()) {
 //Creating map for request
       Map<String, String> requestBody = {
-        'customer_name': name,
+        'customer_name': name??"Guest",
         'mobile_no': phone,
         'email_id': email
       };

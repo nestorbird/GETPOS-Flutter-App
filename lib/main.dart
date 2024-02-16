@@ -63,6 +63,9 @@ void main() async {
   isUserLoggedIn = await DbHubManager().getManager() != null;
   //isUserLoggedIn = await DBPreferences().getPreference('MANAGER');
 
+  //Registering hive database type adapters
+  registerHiveTypeAdapters();
+  isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
   await SyncHelper().launchFlow(isUserLoggedIn);
@@ -71,9 +74,7 @@ void main() async {
   isTabletMode = Device.get().isTablet;
   if (isTabletMode) {
     await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.landscapeLeft],
-    );
-
+        [DeviceOrientation.landscapeLeft]);
     runApp(const TabletApp());
   } else {
     await SystemChrome.setPreferredOrientations(
