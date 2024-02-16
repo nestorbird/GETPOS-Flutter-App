@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
@@ -30,7 +32,8 @@ class _SimplePopupState extends State<SimplePopup> {
   Widget build(BuildContext context) {
     return Container(
         height: 100,
-        margin: morePaddingAll(x: 20),
+        margin:
+            Platform.isWindows ? morePaddingAll(x: 250) : morePaddingAll(x: 20),
         child: Center(
             child: Card(
           shape: cardBorderShape(),
@@ -55,7 +58,7 @@ class _SimplePopupState extends State<SimplePopup> {
                               onTap: () => widget.onOkPressed(),
                               child: SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width / 2.5,
+                                      MediaQuery.of(context).size.width / 4.0,
                                   child: Center(
                                       child: Text(
                                     widget.buttonText,
@@ -70,7 +73,7 @@ class _SimplePopupState extends State<SimplePopup> {
                                   .pop(OPTION_CANCEL.toLowerCase()),
                               child: SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width / 2.5,
+                                      MediaQuery.of(context).size.width / 4.0,
                                   child: Center(
                                       child: Text(
                                     OPTION_CANCEL,

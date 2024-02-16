@@ -183,7 +183,7 @@ class Helper {
         },
         pageBuilder: (context, animation, secondaryAnimation) {
           return SizedBox(
-            height: 100,
+            height: 80,
             child: SimplePopup(
               message: message,
               buttonText: btnTxt,

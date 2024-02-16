@@ -71,7 +71,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
-                    if (text.isNotEmpty && text.isNotEmpty) {
+                    if (text.isNotEmpty) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -79,7 +79,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                     // }
                   },
                   onSubmit: (text) {
-                    if (text.isNotEmpty && text.isNotEmpty) {
+                    if (text.isNotEmpty ) {
                       filterCustomerData(text);
                     }
                     //else {

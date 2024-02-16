@@ -9,6 +9,7 @@ import '../../../../../database/models/park_order.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
+import '../../../utils/helper.dart';
 import '../widget/alert_dialog_widget.dart';
 
 // ignore: must_be_immutable
@@ -66,7 +67,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
                 '$appCurrency ${order.orderAmount}',
                 style: getTextStyle(
                     fontSize: LARGE_MINUS_FONT_SIZE,
-                    color:  AppColors.getPrimary(),
+                    color: AppColors.getPrimary(),
                     fontWeight: FontWeight.w500),
               ),
             ),
@@ -79,7 +80,7 @@ class ParkedDataItemLandscape extends StatelessWidget {
                     onTap: () => _handleDelete(context),
                     child: SvgPicture.asset(
                       DELETE_IMAGE,
-                      color:  AppColors.getPrimary(),
+                      color: AppColors.getPrimary(),
                       width: 15,
                     ),
                   ),
@@ -102,19 +103,31 @@ class ParkedDataItemLandscape extends StatelessWidget {
 
   Future<void> _handleDelete(BuildContext context) async {
     var response = await AlertDialogWidget().show(
-        "Do you want to delete this parked order", OPTION_YES,context,
+        "Do you want to delete this parked order", OPTION_YES, context,
         hasCancelAction: true);
 
     if (response == "yes") {
       DbParkedOrder().deleteOrder(order);
       onDelete();
-      await AlertDialogWidget()
-          .show("Parked Order Deleted Successfully", OPTION_YES,context);
-    }
-  }
+      // // ignore: use_build_context_synchronously
+      // await AlertDialogWidget()
+      //     .show("Parked Order Deleted Successfully", OPTION_YES, context);
+      // ignore: use_build_context_synchronously
+      await Helper.showConfirmationPopup(
+          context, "Parked Order Deleted Successfully", OPTION_YES);
 
-  _handleOrderDetails() async {
-    ///TODO:::
-    /// Handle park order click to move to order screen
+      // // ignore: use_build_context_synchronously
+      // Navigator.of(context).pop();
+
+      // ignore: use_build_context_synchronously
+      //   await AlertDialogWidget()
+      //       .show("Parked Order Deleted Successfully", OPTION_YES, context);
+      // }
+    }
+
+    _handleOrderDetails() async {
+      ///TODO:::
+      /// Handle park order click to move to order screen
+    }
   }
 }

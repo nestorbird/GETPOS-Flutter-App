@@ -22,6 +22,9 @@ const ORDERTAXTEMPLATE_BOX = 'ordertaxtemplate';
 const URL_BOX = 'url';
 const SALES_ORDER_REQUEST_ITEMS_BOX = 'salesordererequestitems';
 const SALES_ORDER_REQUEST_BOX = 'salesordererequest';
+const POS_PROFILE_CASHIER = 'pos_profile_cashier_box';
+const PAYMENT_METHOD_BOX = 'payment_method_box';
+const SHIFT_MANAGEMENT_BOX = 'shift_management_box';
 
 //Temporary Variables
 const WardOne = 'SHM0134';
@@ -44,6 +47,9 @@ const OrderwiseTaxBoxTypeId = 21;
 const OrderTaxTemplateId = 22;
 const SalesOrderRequestId = 23;
 const SalesOrderRequestItemsId = 24;
+const PosProfileCashierBoxId = 25;
+const PaymentTypeBoxId = 26;
+const ShiftManagementBoxId = 27;
 
 //PreferenceBox Constants
 const SelectedWard = 'SELECTED_WARDS';
