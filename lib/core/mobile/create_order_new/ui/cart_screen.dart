@@ -869,7 +869,7 @@ log("Total Tax Amount itemwise: $taxation");
         // orderId = await Helper.getOrderId();
         // log('Order No : $orderId');
 
-      // await DbTaxes().saveItemWiseTax(orderId!, taxation);
+      await DbTaxes().saveItemWiseTax(orderId!, taxation);
 //await DbOrderItem().updateTaxAmounts(orderId!);
         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }

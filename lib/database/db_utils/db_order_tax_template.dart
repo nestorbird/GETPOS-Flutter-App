@@ -30,13 +30,5 @@ class DbOrderTaxTemplate {
     return box.clear();
   }
 
-// //to save tax list in db for orderwise taxation
-//   Future<List> saveOrderWiseTax(orderId, List<OrderTaxTemplate> list) async {
-//     box = await Hive.openBox<OrderTaxTemplate>(ORDERTAXTEMPLATE_BOX);
-//     for (OrderTaxTemplate item in list) {
-//       await box.put(item.id, item);
-//     }
 
-//     return list;
-//   }
 }

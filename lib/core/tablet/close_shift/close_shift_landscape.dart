@@ -1,86 +1,76 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 // for json decoding
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
-import 'package:nb_posx/core/tablet/create_order/create_order_landscape.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
-import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:nb_posx/widgets/button.dart';
+import 'package:nb_posx/widgets/custom_appbar.dart';
 import 'package:nb_posx/widgets/text_field_widget.dart'; // for making HTTP requests
 
-// class OpenShiftManagement extends StatefulWidget {
-//    final bool isNewShift;
-//     final RxString selectedView;
-//   const OpenShiftManagement({super.key,this.isNewShift = false,required this.selectedView});
-
-//   @override
-//   State<OpenShiftManagement>createState() => _OpenShiftManagementState();
-// }
-
-// class _OpenShiftManagementState extends State<OpenShiftManagement> {
-
-  class OpenShiftManagement extends StatefulWidget {
-    final bool isNewShift;
+class CloseShiftManagement extends StatefulWidget {
+   final bool isCloseShift;
     final RxString selectedView;
-  const OpenShiftManagement({super.key,this.isNewShift = false,required this.selectedView});
+  const CloseShiftManagement({super.key,this.isCloseShift = false, required this.selectedView});
 
   @override
-  State<OpenShiftManagement> createState() => _OpenShiftManagementState();
+ CloseShiftManagementState createState() =>CloseShiftManagementState();
 }
 
-class _OpenShiftManagementState extends State<OpenShiftManagement> {
-
-bool isShiftOpen = false;
+class CloseShiftManagementState extends State<CloseShiftManagement> {
   List<String> posProfiles = [];
   List<String> paymentMethods = [];
-late TextEditingController _openingCashCtrl;
-
+late TextEditingController  _closingCashCtrl;
+double? systemClosingCashBalance;
+double? systemClosingDigitalBalance;
  
-  late TextEditingController _openingDigitalCtrl;
+  late TextEditingController _closingDigitalCtrl;
   @override
   void initState() {
     super.initState();
-  _openingCashCtrl = TextEditingController();
-  _openingDigitalCtrl = TextEditingController();
+  _closingCashCtrl = TextEditingController();
+  _closingDigitalCtrl = TextEditingController();
     //fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
     return 
-    Scaffold(
+    // Scaffold(
      
-      appBar: AppBar(
-      //  leadingWidth: ,
-        title:  Center(
-          child: Text(
-            "Open Shift",
-            style: getTextStyle(
-              // color: MAIN_COLOR,
-              fontWeight: FontWeight.bold,
-              fontSize: 26.0,
+    //   appBar: AppBar(
+    //   //  leadingWidth: ,
+    //     title:  Center(
+    //       child: Text(
+    //         "Close Shift",
+    //         style: getTextStyle(
+    //           // color: MAIN_COLOR,
+    //           fontWeight: FontWeight.bold,
+    //           fontSize: 26.0,
         
-          ),
-        ),
+    //       ),
+    //     ),
         
-      ),
-      ),
+    //   ),
+    //   ),
     //  body:
-   
+   // body: 
+      Scaffold(
+        
+        resizeToAvoidBottomInset: true,
+        backgroundColor: AppColors.fontWhiteColor,
         body: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Column(
             children: [
               // hightSpacer40,
-          //  const CustomAppbar(title: OPEN_SHIFT, hideSidemenu: true, showBackBtn: true,),
+            const CustomAppbar(title: CLOSE_SHIFT, hideSidemenu: true, showBackBtn: true,),
             hightSpacer100,
              Stack(
               children: [
-                
+           // TODO:: Check Internet availablity through network manager    
                 Center(
                   child: Container(
                     width: 550,
@@ -88,29 +78,11 @@ late TextEditingController _openingCashCtrl;
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                //To select POS Profile name
-                 Container(
-    decoration: BoxDecoration(border: Border.all(color: AppColors.getTextandCancelIcon()),
-    borderRadius: BorderRadius.circular(6.0)),
-    
-              child:  DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Select POS Profile name'),
-                  value: null,
-                  items: posProfiles.map((profile) {
-                    return DropdownMenuItem<String>(
-                      value: profile,
-                      child: Text(profile),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                   
-                  },
-                ),
-                 ),
-                hightSpacer20,
+               
+                hightSpacer100,
                 TextFieldWidget(
-              txtCtrl: _openingCashCtrl,
-              hintText: 'Enter Opening Cash Balance',
+              txtCtrl: _closingCashCtrl,
+              hintText: 'Enter Closing Cash Balance',
               boxDecoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(8.0),
@@ -119,9 +91,14 @@ late TextEditingController _openingCashCtrl;
               password: false, // Not a password field
             ),
            hightSpacer20,
+Text(
+              'System Closing Cash Balance: ${systemClosingCashBalance ?? "Loading..."}',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+             hightSpacer20,
             TextFieldWidget(
-              txtCtrl: _openingDigitalCtrl,
-              hintText: 'Enter Opening Digital Balance',
+              txtCtrl: _closingDigitalCtrl,
+              hintText: 'Enter Closing Digital Balance',
               boxDecoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(8.0),
@@ -130,6 +107,11 @@ late TextEditingController _openingCashCtrl;
               password: false, // Not a password field
             ),
                   hightSpacer20,
+                  Text(
+              'System Closing Digital Balance: ${systemClosingDigitalBalance ?? "Loading..."}',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+             hightSpacer20,
                 // Dynamic payment method fields
                 for (var method in paymentMethods)
                   TextFormField(
@@ -139,7 +121,7 @@ late TextEditingController _openingCashCtrl;
                     },
                   ),
                        hightSpacer50,
-                   openShiftWidget() 
+                   closeShiftWidget() 
               ],
             ),
           ),
@@ -151,9 +133,10 @@ late TextEditingController _openingCashCtrl;
         ),
         ),
     );
+        //);
   }
   //Open Shift through custom Open Shift buttom
-             Widget openShiftWidget() => Center(
+             Widget closeShiftWidget() => Center(
                child: Container(
                        margin: const EdgeInsets.only(bottom: 20.0),
                        width: 800,
@@ -161,20 +144,10 @@ late TextEditingController _openingCashCtrl;
                        child: ButtonWidget(
                        
                          onPressed: () async {
-                           setState(() {
-                  isShiftOpen = true;
-                });
-                           widget.selectedView.value = "Order";
-                          
-
-            //                 Navigator.push(
-            // context,
-            // MaterialPageRoute(builder: (context) =>  CreateOrderLandscape(selectedView: widget.selectedView, order: null, isShiftCreated: true,)));
-
                           // await fetchData(_emailCtrl.text, _passCtrl.text, url);
                           
                          },
-                         title: "Open Shift",
+                         title: "Close Shift",
                          primaryColor: AppColors.getPrimary(),
                          // width: MediaQuery.of(context).size.width - 150,
                          height: 60,
@@ -182,12 +155,5 @@ late TextEditingController _openingCashCtrl;
                        ),
                      ),
              );
-
-  //             makeActiveOrder(ParkOrder parkedOrder) {
-  //   Helper.activateParkedOrder(parkedOrder);
-  //   DbParkedOrder().deleteOrder(parkedOrder);
-  //   widget.selectedView.value = "Order";
-  // }
-
 
 }

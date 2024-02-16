@@ -66,6 +66,10 @@ class LeftSideMenu extends StatelessWidget {
           _leftMenuSectionItem("My Profile", PROFILE_TAB_ICON, 30, () {
             selectedView.value = "My Profile";
           }),
+             hightSpacer10,
+          _leftMenuSectionItem("Open Shift", PROFILE_TAB_ICON, 30, () {
+            selectedView.value = "Open Shift";
+          }),
         ],
       ),
     );

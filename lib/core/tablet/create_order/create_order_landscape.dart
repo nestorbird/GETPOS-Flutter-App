@@ -27,10 +27,10 @@ import 'cart_widget.dart';
 // ignore: must_be_immutable
 class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
-
+bool isShiftCreated;
   final RxString selectedView;
   CreateOrderLandscape(
-      {Key? key, required this.order, required this.selectedView})
+      {Key? key, required this.order, required this.selectedView, required this.isShiftCreated})
       : super(key: key);
 
   @override
@@ -324,7 +324,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                            // _handleCustomerPopup();
                              Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const OpenShiftManagement()));
+            MaterialPageRoute(builder: (context) =>  OpenShiftManagement(selectedView: widget.selectedView,)));
 
                           } else {
                             if (cat.items[position].stock > 0) {

@@ -62,6 +62,7 @@ const MY_ACCOUNT_TXT = 'My Account';
 const SALES_HISTORY_TXT = 'Order History';
 const FINANCE_TXT = 'Finance';
 const OPEN_SHIFT = 'Open Shift';
+const CLOSE_SHIFT = 'Close Shift';
 
 //CREATE ORDER SCREEN
 
