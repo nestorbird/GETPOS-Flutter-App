@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../network/api_helper/comman_response.dart';
 import '../../../../../utils/helper.dart';
@@ -122,7 +122,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
         child: ButtonWidget(
           onPressed: () => Get.back(),
           title: "Cancel",
-          colorBG: DARK_GREY_COLOR,
+          primaryColor: AppColors.getAsset(),
           width: 200,
           height: 60,
           fontSize: LARGE_PLUS_FONT_SIZE,
@@ -136,7 +136,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
             await _handleForgotPassBtnClick();
           },
           title: "Continue",
-          colorBG: MAIN_COLOR,
+          primaryColor:  AppColors.getPrimary(),
           width: 200,
           height: 60,
           fontSize: LARGE_PLUS_FONT_SIZE,
@@ -149,7 +149,7 @@ class _ForgotPasswordLandscapeState extends State<ForgotPasswordLandscape> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: WHITE_COLOR,
+        backgroundColor: AppColors.fontWhiteColor,
         body: Stack(
           children: [
             // SvgPicture.asset(

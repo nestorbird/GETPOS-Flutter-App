@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../core/mobile/add_products/ui/added_product_item.dart';
 import '../database/models/attribute.dart';
@@ -38,6 +38,7 @@ class _ItemOptionsState extends State<ItemOptions> {
     } else {
       itemTotal = item.price * widget.orderItem.orderedQuantity;
     }
+    setState(() {});
   }
 
   @override
@@ -81,6 +82,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                           widget.orderItem.orderedQuantity =
                               widget.orderItem.orderedQuantity + 1;
                           _calculateItemPrice();
+
                           // _selectedCustomerSection();
                         }
                       });
@@ -114,7 +116,7 @@ class _ItemOptionsState extends State<ItemOptions> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: GREEN_COLOR,
+                    color: AppColors.getAsset(),
                   ),
                   child: ListTile(
                     dense: true,
@@ -124,21 +126,21 @@ class _ItemOptionsState extends State<ItemOptions> {
                     title: Text(
                       "Item Total",
                       style: getTextStyle(
-                          fontSize: MEDIUM_FONT_SIZE,
-                          color: WHITE_COLOR,
-                          fontWeight: FontWeight.bold),
+                          fontSize: SMALL_FONT_SIZE,
+                          color: AppColors.fontWhiteColor,
+                          fontWeight: FontWeight.normal),
                     ),
                     subtitle: Text(
                         "$appCurrency ${itemTotal.toStringAsFixed(2)}",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.w600,
-                            color: WHITE_COLOR)),
+                            color: AppColors.fontWhiteColor)),
                     trailing: Text("Add Item",
                         style: getTextStyle(
                             fontSize: LARGE_FONT_SIZE,
                             fontWeight: FontWeight.bold,
-                            color: WHITE_COLOR)),
+                            color: AppColors.fontWhiteColor)),
                   ),
                 ),
               )
@@ -163,29 +165,33 @@ class _ItemOptionsState extends State<ItemOptions> {
                     child: Container(
                         clipBehavior: Clip.antiAlias,
                         decoration: BoxDecoration(
-                          border: Border.all(color: MAIN_COLOR),
+                          border: Border.all(color: AppColors.getPrimary()),
                           // border: Border.all(color: Colors.yellow.shade800),
-                          color: MAIN_COLOR,
+                          color: AppColors.getPrimary(),
                           // color: Colors.yellow.shade800,
                           borderRadius:
                               BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.check,
                           size: 18.0,
-                          color: WHITE_COLOR,
+                          color: AppColors.fontWhiteColor,
                         )),
                   )
-                : Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: BLACK_COLOR),
-                      borderRadius:
-                          BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
-                    ),
-                    child: const Icon(
-                      null,
-                      size: 20.0,
+                : Visibility(
+                    visible: option.selected,
+                    child: Container(
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: AppColors.getTextandCancelIcon()),
+                        borderRadius:
+                            BorderRadius.circular(BORDER_CIRCULAR_RADIUS_06),
+                      ),
+                      child: const Icon(
+                        null,
+                        size: 20.0,
+                      ),
                     ),
                   ),
             widthSpacer(5),

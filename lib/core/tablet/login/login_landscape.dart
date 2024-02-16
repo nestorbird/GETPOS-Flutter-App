@@ -4,9 +4,14 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:nb_posx/core/service/login/api/verify_instance_service.dart';
+import 'package:m_toast/m_toast.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
+import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
+import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/main.dart';
+import 'package:nb_posx/utils/helpers/sync_helper.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../network/api_helper/comman_response.dart';
@@ -18,33 +23,40 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import '../../../database/db_utils/db_instance_url.dart';
-import '../../../network/api_constants/api_paths.dart';
 import '../../mobile/webview_screens/enums/topic_types.dart';
 import '../../mobile/webview_screens/ui/webview_screen.dart';
 import '../../service/login/api/login_api_service.dart';
+import '../../service/product/api/products_api_service.dart';
 import '../forgot_password/forgot_password_landscape.dart';
 import '../home_tablet.dart';
 
 class LoginLandscape extends StatefulWidget {
-  const LoginLandscape({Key? key}) : super(key: key);
+  final bool isUserLoggedIn;
+
+  const LoginLandscape({Key? key, this.isUserLoggedIn = false})
+      : super(key: key);
 
   @override
   State<LoginLandscape> createState() => _LoginLandscapeState();
 }
 
 class _LoginLandscapeState extends State<LoginLandscape> {
+ 
+
   late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
   late BuildContext ctx;
+  late String url;
 
   @override
   void initState() {
     super.initState();
-    _emailCtrl = TextEditingController();
-    _passCtrl = TextEditingController();
+    _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
+    _passCtrl = TextEditingController(text: "Admin@123");
     _urlCtrl = TextEditingController();
-    _emailCtrl.text = "demouser@nestorbird.com";
-    _passCtrl.text = "demouser@123";
-    _urlCtrl.text = "getpos.in";
+    // _emailCtrl.text = "";
+    // _passCtrl.text = "";
+    // _urlCtrl.text = instanceUrl;
+    _getUrlKey();
 
     // _getAppVersion();
   }
@@ -63,38 +75,42 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       onWillPop: _onBackPressed,
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: WHITE_COLOR,
-        body: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  child: Container(
-                    width: 550,
-                    padding: paddingXY(),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        headingLblWidget(),
-                        hightSpacer50,
-                        instanceUrlTxtboxSection(context),
-                        hightSpacer50,
-                        subHeadingLblWidget(),
-                        hightSpacer50,
-                        emailTxtboxSection(),
-                        hightSpacer20,
-                        passwordTxtboxSection(),
-                        hightSpacer20,
-                        forgotPasswordSection(),
-                        hightSpacer20,
-                        termAndPolicySection,
-                        hightSpacer32,
-                        loginBtnWidget(),
-                      ],
-                    ),
-                  )),
-            )
-          ],
+        backgroundColor: AppColors.fontWhiteColor,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Stack(
+            children: [
+              Center(
+                child: Container(
+                  width: 550,
+                  padding: paddingXY(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      headingLblWidget(),
+                      hightSpacer50,
+                      // instanceUrlTxtboxSection(context),
+                      // hightSpacer50,
+                      subHeadingLblWidget(),
+                      hightSpacer25,
+                      emailTxtboxSection(),
+                      hightSpacer20,
+                      passwordTxtboxSection(),
+                      hightSpacer20,
+                      forgotPasswordSection(),
+                      hightSpacer20,
+                      changeInstanceUrlSection(),
+                      hightSpacer20,
+                      termAndPolicySection,
+                      hightSpacer32,
+                      loginBtnWidget(),
+                      hightSpacer30
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -102,37 +118,69 @@ class _LoginLandscapeState extends State<LoginLandscape> {
 
   /// HANDLE LOGIN BTN ACTION
   Future<void> login(String email, String password, String url) async {
-    try {
-      Helper.showLoaderDialog(context);
+    if (email.isEmpty) {
+      Helper.showPopup(context, "Please Enter Email");
+    } else if (password.isEmpty) {
+      Helper.showPopup(context, "Please Enter Password");
+    } else {
+      try {
+        Helper.showLoaderDialog(context);
+        CommanResponse response =
+            await LoginService.login(email, password, url);
 
-      ///
-      CommanResponse res = await VerificationUrl.checkAppStatus();
-if(res.message==true){
-      CommanResponse response = await LoginService.login(email, password, url);
+        if (response.status!) {
+          log("$response");
 
-      if (response.status!) {
-        //Adding static data into the database
-        // await addDataIntoDB();
-        if (!mounted) return;
+          ///
+          ///if it is a Windown Platfrom (run without isolates)
+          ///
+          if (Platform.isWindows) {
+            if (widget.isUserLoggedIn) {
+              // toast.errorToast(
+              //     message: 'Please wait Background sync work in progess',
+              //     alignment: Alignment.topCenter);
+              await SyncHelper().loginFlow();
+              // toast.successToast(
+              //     message: 'Background Sync completed',
+              //     alignment: Alignment.topCenter);
+            } else {
+              await SyncHelper().launchFlow(isUserLoggedIn);
+            }
+          }
+
+          ///
+          /// else run other platform android, tablet (run with isolates)
+          ///
+          else {
+            await HubManagerDetails().getAccountDetails();
+            if (widget.isUserLoggedIn) {
+              // await CustomerService().getCustomers();
+              await ProductsService().getCategoryProduct();
+            }
+            // Start isolate with background processing and pass the receivePort
+            await useIsolate(isUserLoggedIn: true);
+          }
+          // if (isSuccess) {
+          // Once the signal is received, navigate to ProductListHome
+          Get.offAll(() => HomeTablet());
+          // } else {
+          //   // ignore: use_build_context_synchronously
+          //   Helper.showSnackBar(context, "Synchronization failed");
+          // }
+        } else {
+          if (!mounted) return;
+          Helper.hideLoader(context);
+          Helper.showPopup(context, response.message!);
+        }
+      } catch (e) {
+        // ignore: use_build_context_synchronously
         Helper.hideLoader(ctx);
-    
-        Get.offAll(() => HomeTablet());
-      } else {
-        if (!mounted) return;
-        Helper.hideLoader(ctx);
-        Helper.showPopup(ctx, response.message!);
-      }}
-      else{
-    Helper.showPopup(context, "Please update your app to latest version",
-            barrierDismissible: true);
+        log('Exception Caught :: $e');
+        // ignore: use_build_context_synchronously
+        Helper.showSnackBar(context, SOMETHING_WRONG);
       }
-    } catch (e) {
-      Helper.hideLoader(ctx);
-      log('Exception Caught :: $e');
-      Helper.showSnackBar(context, SOMETHING_WRONG);
-    }}
-  
-
+    }
+  }
 
   /// HANDLE BACK BTN PRESS ON LOGIN SCREEN
   Future<bool> _onBackPressed() async {
@@ -144,19 +192,19 @@ if(res.message==true){
   }
 
   ///Input field for entering the instance URL
-  Widget instanceUrlTxtboxSection(context) => Padding(
-        // margin: horizontalSpace(),
-        padding: smallPaddingAll(),
-        child: SizedBox(
-          height: 55,
-          child: TextFieldWidget(
-            boxDecoration: txtFieldBoxShadowDecoration,
-            txtCtrl: _urlCtrl,
-            verticalContentPadding: 16,
-            hintText: URL_HINT,
-          ),
-        ),
-      );
+  // Widget instanceUrlTxtboxSection(context) => Padding(
+  //       // margin: horizontalSpace(),
+  //       padding: smallPaddingAll(),
+  //       child: SizedBox(
+  //         height: 55,
+  //         child: TextFieldWidget(
+  //           boxDecoration: txtFieldBoxShadowDecoration,
+  //           txtCtrl: _urlCtrl,
+  //           verticalContentPadding: 16,
+  //           hintText: URL_HINT,
+  //         ),
+  //       ),
+  //     );
 
   /// LOGIN TXT(HEADING) IN CENTER
   ///
@@ -170,7 +218,7 @@ if(res.message==true){
         //   ),
         // ),
         child: Image.asset(
-          APP_ICON,
+          App_ICON,
           height: 150,
           width: 150,
         ),
@@ -236,7 +284,7 @@ if(res.message==true){
               child: Text(
                 FORGET_PASSWORD_SMALL_TXT,
                 style: getTextStyle(
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontSize: LARGE_MINUS_FONT_SIZE,
                     fontWeight: FontWeight.w600),
               ),
@@ -244,6 +292,60 @@ if(res.message==true){
           ),
         ],
       );
+
+  //CHANGE INSTANCE URL TEXTBOX SECTION
+  Widget changeInstanceUrlSection() => Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          InkWell(
+            onTap: () {
+              _emailCtrl.clear();
+              _passCtrl.clear();
+              fetchDataAndNavigate();
+
+              //Navigator.push(context,
+              // MaterialPageRoute(builder: (context) => const ThemeChange()));
+            },
+            child: Padding(
+              padding: rightSpace(),
+              child: Text(
+                CHANGE_INSTANCE_URL_TXT,
+                style: getTextStyle(
+                    color: AppColors.getPrimary(),
+                    fontSize: LARGE_MINUS_FONT_SIZE,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+        ],
+      );
+
+//FETCH MASTER'S AND TRANSACTION
+  Future<void> fetchDataAndNavigate() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the database
+      await DBPreferences().delete();
+      log("Cleared the DB");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+      await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const ThemeChangeTablet()),
+          (route) => route.isFirst);
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
+    }
+  }
 
   /// TERM AND CONDITION SECTION
   Widget get termAndPolicySection => Padding(
@@ -253,7 +355,7 @@ if(res.message==true){
           text: TextSpan(
               text: BY_SIGNING_IN,
               style: getTextStyle(
-                  color: DARK_GREY_COLOR,
+                  color: AppColors.getAsset(),
                   fontSize: LARGE_MINUS_FONT_SIZE,
                   fontWeight: FontWeight.normal),
               children: <TextSpan>[
@@ -273,13 +375,13 @@ if(res.message==true){
                       },
                     text: TERMS_CONDITIONS,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
                     text: AND_TXT,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.normal,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
                 TextSpan(
@@ -297,7 +399,7 @@ if(res.message==true){
                       },
                     text: PRIVACY_POLICY,
                     style: getTextStyle(
-                        color: DARK_GREY_COLOR,
+                        color: AppColors.getAsset(),
                         fontWeight: FontWeight.bold,
                         fontSize: LARGE_MINUS_FONT_SIZE)),
               ]),
@@ -305,16 +407,16 @@ if(res.message==true){
       );
 
   /// LOGIN BUTTON
-  Widget loginBtnWidget() => SizedBox(
+  Widget loginBtnWidget() => Container(
+        margin: const EdgeInsets.only(bottom: 20.0),
         width: double.infinity,
         child: ButtonWidget(
           onPressed: () async {
-            await DbInstanceUrl().deleteUrl();
-            String url = "https://${_urlCtrl.text}/api/";
             await login(_emailCtrl.text, _passCtrl.text, url);
+            log('Inside login.dart :$url');
           },
           title: "Log In",
-          colorBG: MAIN_COLOR,
+          primaryColor: AppColors.getPrimary(),
           // width: MediaQuery.of(context).size.width - 150,
           height: 60,
           fontSize: LARGE_PLUS_FONT_SIZE,
@@ -322,8 +424,13 @@ if(res.message==true){
       );
 
   ///Method to check whether the API URL is correct.
- /* bool isValidInstanceUrl() {
-    String url = "https://${_urlCtrl.text}/api/";
+  bool isValidInstanceUrl() {
+    url = "https://$url/api/";
     return Helper.isValidUrl(url);
-  }*/
+  }
+
+  _getUrlKey() async {
+    url = await DbInstanceUrl().getUrl();
+    setState(() {});
+  }
 }

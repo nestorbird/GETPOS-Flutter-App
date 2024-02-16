@@ -1,6 +1,15 @@
+import 'dart:developer';
+// import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/local_notification_service.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_sale_order.dart';
+import 'package:nb_posx/utils/helper.dart';
+
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../utils/helpers/sync_helper.dart';
@@ -17,13 +26,18 @@ class LogoutPopupView extends StatefulWidget {
 }
 
 class _LogoutPopupViewState extends State<LogoutPopupView> {
+  // static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+  //  ShowMToast toast = ShowMToast(navigatorKey.currentContext!);
+
+
+
   /// LOGIN BUTTON
   Widget get cancelBtnWidget => SizedBox(
         // width: double.infinity,
         child: ButtonWidget(
           onPressed: () => Get.back(),
           title: "Cancel",
-          colorBG: DARK_GREY_COLOR,
+          primaryColor: AppColors.getAsset(),
           width: 150,
           height: 50,
           fontSize: LARGE_PLUS_FONT_SIZE,
@@ -34,21 +48,32 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         // width: double.infinity,
         child: ButtonWidget(
           onPressed: () => handleLogout(),
+          //       {
+          //       // Close the current popup
+          //   Navigator.pop(context);
+
+          //   // Call the handleLogout function
+          //   handleLogout();
+          // },
           title: "Logout",
-          colorBG: MAIN_COLOR,
+          primaryColor: AppColors.getPrimary(),
           width: 150,
           height: 50,
           fontSize: LARGE_PLUS_FONT_SIZE,
         ),
       );
 
-  Future<void> handleLogout() async {
-    await SyncHelper().logoutFlow();
-    Get.offAll(() => const LoginLandscape());
-  }
+  // Future<void> handleLogout() async {
+  //   await SyncHelper().logoutFlow();
+  //   Get.offAll(() => const LoginLandscape());
+  // }
 
   @override
   Widget build(BuildContext context) {
+    // BuildContext? context = navigatorKey.currentContext;
+    // if (context != null) {
+    //   toast = ShowMToast(context);
+    // }
     return SizedBox(
       width: 400,
       height: 200,
@@ -69,5 +94,291 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
         ],
       ),
     );
+  }
+
+//  Future<void> handleLogout() async {
+
+//    var offlineOrders = await DbSaleOrder().getOfflineOrders();
+//   // var offlineOrders = await DbSaleOrder().getOrders();
+//     if (offlineOrders.isEmpty) {
+
+//       if (!mounted) return;
+//       var res = await Helper.showConfirmationPopup(
+//           context, LOGOUT_QUESTION, OPTION_YES,
+//           hasCancelAction: true);
+//       if (res != OPTION_CANCEL.toLowerCase()) {
+
+//         //check this later
+//       // await SyncHelper().logoutFlow();
+
+//       await fetchMasterAndDeleteTransaction();
+//       }
+//     } else {
+//       if (!mounted) return;
+//  bool isInternetAvailable = await Helper.isNetworkAvailable();
+//   if (offlineOrders.isNotEmpty) {
+//    //Navigator.of(context, rootNavigator: true).pop('dialog');
+//    Navigator.pop(context);
+//       var res= await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+//       if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
+//       //  Navigator.of(context, rootNavigator: true).pop('dialog');
+// var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+
+// if (resp ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
+//   // await   _checkForSyncNow();
+//  //for testing only : await fetchDataAndNavigate();
+//   // await fetchMasterAndDeleteTransaction();
+//  var response = await SyncHelper().syncNowFlow();
+
+//  if(response== true) {
+
+//   // ignore: use_build_context_synchronously
+//   Get.offAll(() => const LoginLandscape());
+//  }
+//   await DbSaleOrder().modifySevenDaysOrdersFromToday();
+
+// }
+//       }
+//       }
+//     }
+
+//   }
+
+// Future<void> handleLogout() async {
+
+//   var offlineOrders = await DbSaleOrder().getOfflineOrders();
+//  bool isInternetAvailable = await Helper.isNetworkAvailable();
+//   if (offlineOrders.isEmpty &&  isInternetAvailable== true) {
+//       Navigator.pop(context);
+//     if (!mounted) return;
+//     var res = await Helper.showConfirmationPopup(
+//         context, LOGOUT_QUESTION, OPTION_YES,
+//         hasCancelAction: true);
+
+//     if (res != OPTION_CANCEL.toLowerCase()) {
+//       await fetchMasterAndDeleteTransaction();
+//     }
+//   } else {
+//     if (!mounted) return;
+//  // Navigator.pop(context);
+// // Navigator.of(context, rootNavigator: true).pop();
+
+//   // Check internet connectivity
+//    bool isInternetAvailable = await Helper.isNetworkAvailable();
+//     // Show the popup indicating presence of offline orders
+//     if(offlineOrders.isNotEmpty && isInternetAvailable==false){
+//     var res = await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+
+//   //     if (res == OPTION_OK.toLowerCase() || isInternetAvailable == true) {
+//   // var response = await SyncHelper().syncNowFlow();
+
+//   //       if (response == true ) {
+//   //        // await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//   //        // await fetchMasterAndDeleteTransaction();
+//   //         Get.offAll(() => const LoginLandscape());
+//   //       }
+
+//   //       await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//   //     }
+
+//      // if (res == OPTION_OK.toLowerCase() || isInternetAvailable == false) {
+
+//       // Show popup for no internet
+//       //  var resp = await Helper.showConfirmationPopup(context, GET_ONLINE_MSG, OPTION_OK);
+//         if (res ==OPTION_OK.toLowerCase()&& isInternetAvailable) {
+//          var response = await SyncHelper().syncNowFlow();
+
+//           var res = await Helper.showConfirmationPopup(
+//         context, LOGOUT_QUESTION, OPTION_YES,
+//         hasCancelAction: true);
+
+//     if (res != OPTION_CANCEL.toLowerCase()) {
+//       await fetchMasterAndDeleteTransaction();
+//     }
+
+//        // if (resp == OPTION_OK.toLowerCase()) {
+//           // Handle the action if the user chooses to continue without internet
+//           // This could be showing them how to get online or any other action
+//       //  }
+//      // } else {
+//         // If internet is available after acknowledging the offline orders, synchronize
+
+//         if (response == true ) {
+//          // await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//          // await fetchMasterAndDeleteTransaction();
+//           Get.offAll(() => const LoginLandscape());
+//         }
+
+//         await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//       }
+//      }
+//      else{
+//        if ( isInternetAvailable) {
+//          var response = await SyncHelper().syncNowFlow();
+
+//        // if (resp == OPTION_OK.toLowerCase()) {
+//           // Handle the action if the user chooses to continue without internet
+//           // This could be showing them how to get online or any other action
+//       //  }
+//      // } else {
+//         // If internet is available after acknowledging the offline orders, synchronize
+//        // var res = await Helper.showConfirmationPopup(context, OFFLINE_ORDER_SYNCED, OPTION_OK);
+
+//         if (response == true ) {
+//          // await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//          // await fetchMasterAndDeleteTransaction();
+//           Get.offAll(() => const LoginLandscape());
+//         }
+
+//         await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//       }
+//      }
+//     }
+//   }
+// }
+
+  Future<void> handleLogout() async {
+    var offlineOrders = await DbSaleOrder().getOfflineOrders();
+    // var offlineOrders = await DbSaleOrder().getOrders();
+    bool isInternetAvailable = await Helper.isNetworkAvailable();
+
+    ///if there are no offline orders
+    ///scessfully logout
+    if (offlineOrders.isEmpty && isInternetAvailable) {
+      if (!mounted) return;
+      Navigator.pop(context);
+      var res = await Helper.showConfirmationPopup(
+          context, LOGOUT_QUESTION, OPTION_YES,
+          hasCancelAction: true);
+      if (res != OPTION_CANCEL.toLowerCase()) {
+        //check this later
+        // await SyncHelper().logoutFlow();
+        await fetchMasterAndDeleteTransaction();
+      }
+    }
+    // else if (isInternetAvailable == true) {
+    //   LocalNotificationService().showNotification(
+    //       id: 0,
+    //       title: 'Background Sync',
+    //       body: 'Please wait Background sync work in progess');
+    // }
+    else if (offlineOrders.isEmpty && isInternetAvailable == false) {
+      if (!mounted) return;
+      Navigator.pop(context);
+      await Helper.showConfirmationPopup(context, OFFLINE_ORDER_MSG, OPTION_OK);
+    } else {
+      if (!mounted) return;
+      if (offlineOrders.isNotEmpty && isInternetAvailable == false) {
+        Navigator.pop(context);
+        var res = await Helper.showConfirmationPopup(
+            context, OFFLINE_ORDER_MSG, OPTION_OK);
+        if (res == OPTION_OK.toLowerCase()) {
+          if (isInternetAvailable == true) {
+            // if (Platform.isWindows) {
+            //   toast.errorToast(
+            //       message: 'Please wait Background sync work in progess',
+            //       alignment: Alignment.topCenter);
+            // } else {
+            LocalNotificationService().showNotification(
+                id: 0,
+                title: 'Background Sync',
+                body: 'Please wait Background sync work in progess');
+            // }
+
+            var response = await SyncHelper().syncNowFlow();
+            if (response == true) {
+              // ignore: use_build_context_synchronously
+              Get.offAll(() => const LoginLandscape());
+            }
+            await DbSaleOrder().modifySevenDaysOrdersFromToday();
+          }
+        }
+      } else {
+        if (isInternetAvailable) {
+          if (!mounted) return;
+          Navigator.pop(context);
+          // if (Platform.isWindows) {
+          //   toast.errorToast(
+          //       message: 'Please wait Background sync work in progess',
+          //       alignment: Alignment.topCenter);
+          // } else {
+          LocalNotificationService().showNotification(
+              id: 0,
+              title: 'Background Sync',
+              body: 'Please wait Background sync work in progess');
+          // }
+          var response = await SyncHelper().syncNowFlow();
+
+          //TODO: Need to fix this as sync complete notification are not appear
+
+          if (response == true) {
+            // if (Platform.isWindows) {
+            //   toast.errorToast(
+            //       message: 'Background Sync completed',
+            //       alignment: Alignment.topCenter);
+            // } else {
+            LocalNotificationService().showNotification(
+                id: 1,
+                title: 'Background Sync',
+                body: 'Background Sync completed.');
+            // }
+
+            // await Navigator.pushReplacement(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => const Login(),
+            //   ),
+            // );
+            if (!mounted) return;
+            var res = await Helper.showConfirmationPopup(
+                context, LOGOUT_QUESTION, OPTION_YES,
+                hasCancelAction: true);
+            if (res != OPTION_CANCEL.toLowerCase()) {
+              // ignore: use_build_context_synchronously
+              await fetchMasterAndDeleteTransaction();
+            }
+            await DbSaleOrder().modifySevenDaysOrdersFromToday();
+          }
+        } else {
+          // Navigator.of(context).pop();
+          // Navigator.pop(context);
+        }
+
+        // var resp = await Helper.showConfirmationPopup(
+        //     context, GET_ONLINE_MSG, OPTION_OK);
+
+        // if (res == OPTION_OK.toLowerCase() && isInternetAvailable) {
+        // await   _checkForSyncNow();
+        //for testing only : await fetchDataAndNavigate();
+        // await fetchMasterAndDeleteTransaction();
+
+        // }
+      }
+    }
+  }
+
+  Future<void> fetchMasterAndDeleteTransaction() async {
+    // log('Entering fetchDataAndNavigate');
+    try {
+      // Fetch the URL
+      String url = await DbInstanceUrl().getUrl();
+      // Clear the transactional data
+      // await DBPreferences().deleteTransactionData;
+      await DbCustomer().deleteCustomer(DeleteCustomers);
+      await DbSaleOrder().delete();
+      log("Cleared the transactional data");
+      //to save the url
+      await DbInstanceUrl().saveUrl(url);
+      log("Saved Url:$url");
+      // Navigate to a different screen
+      // ignore: use_build_context_synchronously
+      Get.offAll(() => LoginLandscape());
+
+      // Save the URL again
+      //await DBPreferences().savePreference('url', url);
+    } catch (e) {
+      // Handle any errors that may occur during this process
+      log('Error: $e');
+    }
   }
 }

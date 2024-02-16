@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
-
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_hub_manager.dart';
@@ -12,37 +10,36 @@ import '../../../../../utils/helper.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
-
-import '../../../network/api_helper/comman_response.dart';
 import '../../service/finance/api/get_updated_account_details.dart';
-import '../../service/login/api/verify_instance_service.dart';
 import '../widget/change_password.dart';
 import '../widget/finance.dart';
 import '../widget/logout_popup.dart';
 import '../widget/title_search_bar.dart';
-
 class MyAccountLandscape extends StatefulWidget {
   const MyAccountLandscape({Key? key}) : super(key: key);
-
   @override
   State<MyAccountLandscape> createState() => _MyAccountLandscapeState();
 }
-
 class _MyAccountLandscapeState extends State<MyAccountLandscape> {
   var isChangePasswordVisible = true;
   double iconWidth = 80;
-
-   String cashCollected = "00.00";
-
+//TODO:: Updation in finance
+  late String cashCollected;
   @override
-  void initState() { 
-      verify();    _initView();
+  void initState() {
     super.initState();
-
+     cashCollected = "00.00";
+    _initView();
+  }
+  _getcashCollected() async {
+    HubManager manager = await DbHubManager().getManager() as HubManager;
+    cashCollected = Helper().formatCurrency(manager.cashBalance);
+    setState(() {});
   }
   _initView() async {
     if (await Helper.isNetworkAvailable()) {
       // print("INTERNET AVAILABLE");
+      // ignore: use_build_context_synchronously
       Helper.showLoaderDialog(context);
       await UpdatedHubManagerDetails().getUpdatedAccountDetails();
       if (!mounted) return;
@@ -53,39 +50,16 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
       _getcashCollected();
     }
   }
-
-  _getcashCollected() async {
-    HubManager manager = await DbHubManager().getManager() as HubManager;
-    cashCollected = Helper().formatCurrency(manager.cashBalance);
-    setState(() {});
-  }
-
- 
- final FocusNode _focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _handleTap() {
-    if (_focusNode.hasFocus) {
-      _focusNode.unfocus();
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
       // color: const Color(0xFFF9F8FB),
       // padding: paddingXY(),
-      child:GestureDetector (onTap: _handleTap,child:Column(
-        children: [ Column(
+      child: Column(
         children: [
           hightSpacer20,
           TitleAndSearchBar(
-            inputFormatter: [FilteringTextInputFormatter.digitsOnly],
             title: "My Profile",
             searchBoxVisible: false,
             onSubmit: (val) {},
@@ -138,14 +112,13 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
             ],
           ),
           hightSpacer10,
-          Divider(thickness: 1, color: DARK_GREY_COLOR.withOpacity(0.3)),
+          Divider(thickness: 1, color: AppColors.getAsset().withOpacity(0.3)),
           hightSpacer20,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               InkWell(
                 onTap: () {
-                  verify();
                   debugPrint("Change Password clicked");
                   setState(() {
                     isChangePasswordVisible = true;
@@ -171,7 +144,6 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
               ),
               InkWell(
                 onTap: () {
-                  verify();
                   debugPrint("Finance clicked");
                   setState(() {
                     isChangePasswordVisible = false;
@@ -196,7 +168,6 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
               ),
               InkWell(
                 onTap: () async {
-                  verify();
                   debugPrint("Logout clicked need to show popup");
                   await Get.defaultDialog(
                     // contentPadding: paddingXY(x: 0, y: 0),
@@ -231,16 +202,16 @@ class _MyAccountLandscapeState extends State<MyAccountLandscape> {
             child: FinanceView(cashCollected: cashCollected),
           ),
         ],
-      ),]))
+      ),
     );
   }
-
-  verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
-  }
 }
+
+
+
+
+
+
+
+
+

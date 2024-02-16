@@ -1,4 +1,5 @@
-import '../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/models/customer.dart';
@@ -50,7 +51,7 @@ class _SelectedCustomerWidgetState extends State<SelectedCustomerWidget> {
                       height: 70,
                       width: 70,
                       child: Card(
-                        color: MAIN_COLOR.withOpacity(0.1),
+                        color: AppColors.getPrimary().withOpacity(0.1),
                         shape: cardBorderShape(),
                         elevation: 0.0,
                         child: Container(),
@@ -94,15 +95,15 @@ class _SelectedCustomerWidgetState extends State<SelectedCustomerWidget> {
                             ))),
                   ),
                   hightSpacer10,
-                  const Divider(
+                 Divider(
                     height: 1,
-                    color: GREY_COLOR,
+                    color: AppColors.shadowBorder,
                   ),
                   TextButton(
                       onPressed: () => widget.onTapChangeCustomer!(),
                       child: Text(
                         CHANGE_CUSTOMER_TXT,
-                        style: getTextStyle(color: MAIN_COLOR),
+                        style: getTextStyle(color:  AppColors.getPrimary()),
                       ))
                 ],
               )),

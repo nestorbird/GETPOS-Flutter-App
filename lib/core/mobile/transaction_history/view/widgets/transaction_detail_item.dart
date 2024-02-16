@@ -1,8 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/models/attribute.dart';
@@ -25,18 +24,19 @@ class TransactionDetailItem extends StatefulWidget {
 }
 
 class _TransactionDetailItemState extends State<TransactionDetailItem> {
-  bool isUserOnline = true;
-
+ // bool isUserOnline = true;
+  bool isInternetAvailable = true;
   @override
   void initState() {
-    _checkUserAvailability();
+    checkInternetAvailability();
+ //   _checkUserAvailability();
     super.initState();
   }
 
-  _checkUserAvailability() async {
-    isUserOnline = await Helper.isNetworkAvailable();
-    setState(() {});
-  }
+  // _checkUserAvailability() async {
+  //   isUserOnline = await Helper.isNetworkAvailable();
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                 width: 90,
                 clipBehavior: Clip.hardEdge,
                 decoration: BoxDecoration(
-                  color: MAIN_COLOR.withOpacity(0.1),
+                  color: AppColors.getPrimary().withOpacity(0.1),
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                 ),
                 child: _getOrderedProductImage()),
@@ -84,9 +84,10 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
                     ),
                     Text(
                       '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
+                     // '$appCurrency ${widget.product.orderedPrice.toStringAsFixed(2)}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR,
+                          color: AppColors.getPrimary(),
                           fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -112,9 +113,10 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
   }
 
   _getOrderedProductImage() {
-    if (isUserOnline &&
-        widget.product.productImageUrl != null &&
-        widget.product.productImageUrl!.isNotEmpty) {
+    if (isInternetAvailable&&
+        widget.product.productImage.isEmpty &&
+        widget.product.productImageUrl!.isEmpty) {
+      //To check when images are needed
       log('Image Url : ${widget.product.productImageUrl!}');
       return ClipRRect(
         borderRadius: BorderRadius.circular(8), // Image border
@@ -127,23 +129,37 @@ class _TransactionDetailItemState extends State<TransactionDetailItem> {
       );
     } else {
       log('Local image');
-      return widget.product.productImage.isEmpty
-          ? SvgPicture.asset(
-              PRODUCT_IMAGE_,
-              height: 30,
-              width: 30,
-              fit: BoxFit.contain,
+      return (isInternetAvailable &&
+              widget.product.productImageUrl !=
+                  null)
+          ? Image.network(
+              widget.product.productImageUrl!,
+              fit: BoxFit.fill,
             )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(8), // Image border
-              child: SizedBox(
-                // Image radius
-                height: 80,
-                child: Image.memory(widget.product.productImage,
-                    fit: BoxFit.cover),
-              ),
-            );
+          : (isInternetAvailable &&
+                 widget.product.productImageUrl ==
+                      null)
+              ? Image.asset(
+                  NO_IMAGE,
+                  fit: BoxFit.fill,
+                )
+              : Image.asset(
+                  NO_IMAGE,
+                  fit: BoxFit.fill,
+                );
       // Image.memory(widget.product.productImage);
+    }
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
     }
   }
 }

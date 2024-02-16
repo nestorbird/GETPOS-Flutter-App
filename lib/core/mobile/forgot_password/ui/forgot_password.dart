@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../network/api_helper/comman_response.dart';
@@ -63,7 +63,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           padding: smallPaddingAll(),
                           child: SvgPicture.asset(
                             BACK_IMAGE,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             width: 25,
                           ),
                         ),
@@ -74,7 +74,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   hightSpacer50,
                   // hightSpacer50,
                   // appLogo
-                  Image.asset(APP_ICON, width: 100, height: 100),
+                  Image.asset(App_ICON, width: 100, height: 100),
                   hightSpacer50,
                   hightSpacer25,
                   headingLblWidget(),
@@ -170,7 +170,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           },
           width: MediaQuery.of(context).size.width,
           title: FORGOT_BTN_TXT,
-          colorBG: MAIN_COLOR,
+          primaryColor:  AppColors.getPrimary(),
         ),
       );
 
@@ -181,7 +181,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           style: getTextStyle(
               fontWeight: FontWeight.bold,
               fontSize: LARGE_FONT_SIZE,
-              color: MAIN_COLOR),
+              color:  AppColors.getPrimary()),
         ),
       );
 }

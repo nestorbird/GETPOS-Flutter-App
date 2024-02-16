@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../network/api_helper/comman_response.dart';
@@ -50,7 +50,7 @@ class _ChangePasswordState extends State<ChangePassword> {
           await _handleChangePassBtnAction();
         },
         title: CHANGE_PASSWORD_BTN_TXT,
-        colorBG: MAIN_COLOR,
+     primaryColor: AppColors.getPrimary(),
         width: MediaQuery.of(context).size.width,
       ),
     );
@@ -61,13 +61,13 @@ class _ChangePasswordState extends State<ChangePassword> {
         child: Column(
           children: [
             hightSpacer40,
-            const CustomAppbar(
+            CustomAppbar(
               title: "",
-              backBtnColor: BLACK_COLOR,
+              backBtnColor: AppColors.getTextandCancelIcon(),
               hideSidemenu: true,
             ),
             hightSpacer20,
-            Image.asset(APP_ICON, width: 100, height: 100),
+            Image.asset(App_ICON, width: 100, height: 100),
             hightSpacer20,
 
             hightSpacer50,
@@ -78,7 +78,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 CHANGE_PASSWORD_TITLE.toUpperCase(),
                 style: getTextStyle(
                     fontWeight: FontWeight.bold,
-                    color: MAIN_COLOR,
+                    color:  AppColors.getPrimary(),
                     fontSize: LARGE_FONT_SIZE),
               ),
             ),
@@ -88,7 +88,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     child: Text(
                       CHANGE_PASSWORD_OTP_VERIFY_MSG,
                       style: getTextStyle(
-                          color: WHITE_COLOR,
+                          color: AppColors.fontWhiteColor,
                           fontSize: SMALL_PLUS_FONT_SIZE,
                           fontWeight: FontWeight.w500),
                     ),
@@ -98,7 +98,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               child: Text(
                 CHANGE_PASSWORD_SET_MSG,
                 style: getTextStyle(
-                    color: WHITE_COLOR,
+                    color: AppColors.fontWhiteColor,
                     fontSize: SMALL_PLUS_FONT_SIZE,
                     fontWeight: FontWeight.w500),
               ),

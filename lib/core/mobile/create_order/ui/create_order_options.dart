@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../utils/ui_utils/card_border_shape.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
@@ -34,8 +34,8 @@ class _CreateOrderOptionsState extends State<CreateOrderOptions> {
               fontSize: MEDIUM_PLUS_FONT_SIZE,
             ),
           ),
-          trailing: const Icon(Icons.arrow_forward_ios_rounded,
-              color: BLACK_COLOR, size: 15),
+          trailing: Icon(Icons.arrow_forward_ios_rounded,
+              color: AppColors.getTextandCancelIcon(), size: 15),
           onTap: () => widget.onTap!(),
         ),
       ),

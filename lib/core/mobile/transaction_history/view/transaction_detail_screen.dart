@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
@@ -42,7 +43,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                   children: [
                     TransactionHeaderData(
                       heading: SALES_ID,
-                      headingColor: DARK_GREY_COLOR,
+                      headingColor:  AppColors.getAsset(),
                       content: widget.order.id,
                     ),
                     widthSpacer(50),
@@ -50,8 +51,9 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                       heading: SALE_AMOUNT_TXT,
                       content:
                           '$appCurrency ${widget.order.orderAmount.toStringAsFixed(2)}',
-                      headingColor: DARK_GREY_COLOR,
-                      contentColor: MAIN_COLOR,
+                        
+                      headingColor:  AppColors.getAsset(),
+                      contentColor:AppColors.getPrimary(),
                       // crossAlign: CrossAxisAlignment.center,
                     ),
                   ],
@@ -61,7 +63,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                 padding: horizontalSpace(x: 13),
                 child: TransactionHeaderData(
                   heading: DATE_TIME,
-                  headingColor: DARK_GREY_COLOR,
+                  headingColor:  AppColors.getAsset(),
                   content: '${widget.order.date} ${widget.order.time}',
                 )),
             Column(
@@ -76,7 +78,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                       style: getTextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: MEDIUM_MINUS_FONT_SIZE,
-                          color: DARK_GREY_COLOR),
+                          color:  AppColors.getAsset()),
                     )),
                 hightSpacer5,
                 CustomerTile(
@@ -96,7 +98,7 @@ class _TransactionDetailScreenState extends State<TransactionDetailScreen> {
                   style: getTextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: MEDIUM_MINUS_FONT_SIZE,
-                      color: DARK_GREY_COLOR),
+                      color:  AppColors.getAsset()),
                 )),
             hightSpacer10,
             ListView.builder(

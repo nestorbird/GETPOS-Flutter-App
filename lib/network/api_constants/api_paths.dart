@@ -31,6 +31,9 @@ final BASE_URL = ENVIRONMENT == ApiServer.DEV
         ? TEST_URL
         : PROD_URL;
 
+///THEME CHANGE PATH
+const THEME_PATH = 'method/nbpos.nbpos.api.get_theme_settings';
+
 ///LOGIN API PATH
 const LOGIN_PATH = 'method/nbpos.nbpos.api.login';
 const Verify_URL = 'https://control-centre.nestorbird.com/api/method/control_centre.api.validate';
@@ -68,6 +71,9 @@ const CHANGE_PASSWORD_PATH = 'method/nbpos.nbpos.api.change_password';
 // New Product api with category and variants
 const CATEGORY_PRODUCTS_PATH =
     'method/nbpos.custom_api.item_variant_api.get_items';
+
+//Orderwise taxes api
+const ORDERWISE_TAXES_PATH = 'method/nbpos.nbpos.api.get_sales_taxes';
 
 //PROMO CODES API PATH
 const GET_ALL_PROMO_CODES_PATH = '';

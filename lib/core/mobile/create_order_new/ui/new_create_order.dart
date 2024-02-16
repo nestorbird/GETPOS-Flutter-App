@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_categories.dart';
@@ -73,7 +73,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                 _selectedCust!.name,
                 style: getTextStyle(
                     fontSize: LARGE_FONT_SIZE,
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontWeight: FontWeight.w500),
               ),
               InkWell(
@@ -84,8 +84,8 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                   padding: miniPaddingAll(),
                   child: SvgPicture.asset(
                     CROSS_ICON,
-                    color: MAIN_COLOR,
-                    width: 20,height:20 ,
+                    color: AppColors.getPrimary(),
+                    width: 15,
                   ),
                 ),
               )
@@ -114,9 +114,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
           //   getCustomersFromDB();
           // }
         },
-      )
-      
-      );
+      ));
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +144,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                       margin: morePaddingAll(),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
-                        color: MAIN_COLOR,
+                        color: AppColors.getPrimary(),
                       ),
                       child: ListTile(
                         onTap: () {
@@ -160,19 +158,19 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                           "${parkOrder!.items.length} Item",
                           style: getTextStyle(
                               fontSize: SMALL_FONT_SIZE,
-                              color: WHITE_COLOR,
+                              color: AppColors.fontWhiteColor,
                               fontWeight: FontWeight.normal),
                         ),
                         subtitle: Text("$appCurrency ${_getItemTotal()}",
                             style: getTextStyle(
                                 fontSize: LARGE_FONT_SIZE,
                                 fontWeight: FontWeight.w600,
-                                color: WHITE_COLOR)),
+                                color: AppColors.fontWhiteColor)),
                         trailing: Text("View Cart",
                             style: getTextStyle(
                                 fontSize: LARGE_FONT_SIZE,
                                 fontWeight: FontWeight.w400,
-                                color: WHITE_COLOR)),
+                                color: AppColors.fontWhiteColor)),
                       ),
                     ),
                   ),
@@ -226,7 +224,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                               style: categories[position].isExpanded
                                   ? getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color: DARK_GREY_COLOR,
+                                      color: AppColors.getAsset(),
                                       fontWeight: FontWeight.w500)
                                   : getTextStyle(
                                       fontSize: MEDIUM_PLUS_FONT_SIZE,
@@ -240,7 +238,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
                                     child: Text(
                                       "${categories[position].items.length} items",
                                       style: getTextStyle(
-                                          color: MAIN_COLOR,
+                                          color: AppColors.getPrimary(),
                                           fontWeight: FontWeight.normal,
                                           fontSize: SMALL_PLUS_FONT_SIZE),
                                     ),
@@ -295,7 +293,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
     var data = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => const NewSelectCustomer()));
     if (data != null) {
-      getProducts();
+      //getProducts();
       setState(() {
         _selectedCust = data;
       });
@@ -326,7 +324,8 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
             items: [],
             orderAmount: 0,
             manager: manager,
-            transactionDateTime: DateTime.now());
+            transactionDateTime: DateTime.now(),
+            );
       }
 
       setState(() {
@@ -335,6 +334,7 @@ class _NewCreateOrderState extends State<NewCreateOrder> {
           OrderItem newItem = product;
           parkOrder!.items.add(newItem);
           _calculateOrderAmount();
+        
         } else if (product.orderedQuantity == 0) {
           parkOrder!.items.remove(product);
           _calculateOrderAmount();

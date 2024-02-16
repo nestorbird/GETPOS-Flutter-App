@@ -84,7 +84,8 @@ class GetSalesHistory {
                   orderedQuantity: orderedProduct.qty!,
                   productImage: Uint8List.fromList([]),
                   productImageUrl: orderedProduct.image,
-                  productUpdatedTime: DateTime.now());
+                  productUpdatedTime: DateTime.now(),
+                  tax: []);
 
               orderedProducts.add(product);
             }
@@ -108,14 +109,14 @@ class GetSalesHistory {
               id: order.name!,
               date: date,
               time: time,
+              
               customer: Customer(
-                id: order.customer!,
-                name: order.customerName!,
-                phone: order.contactPhone!,
-                email: order.contactEmail!,
-                isSynced: true,
-                modifiedDateTime: DateTime.now()
-              ),
+                  id: order.customer!,
+                  name: order.customerName!,
+                  phone: order.contactPhone!,
+                  email: order.contactEmail!,
+                  isSynced: true,
+                  modifiedDateTime: DateTime.now()),
               items: orderedProducts,
               manager: hubManager!,
               orderAmount: order.grandTotal!,
@@ -125,6 +126,7 @@ class GetSalesHistory {
               paymentMethod: order.modeOfPayment!,
               paymentStatus: "",
               transactionSynced: true,
+              
             );
 
             sales.add(saleOrder);

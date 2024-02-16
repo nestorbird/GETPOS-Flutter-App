@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/constants/asset_paths.dart';
+import 'package:nb_posx/utils/helper.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../database/db_utils/db_categories.dart';
 import '../../../../../database/models/category.dart';
@@ -30,12 +32,14 @@ class HomeLandscapeState extends State<HomeLandscape> {
   List<Product> products = [];
   List<Category> categories = [];
   ParkOrder? parkOrder;
+  bool isInternetAvailable = true;
 
   @override
   void initState() {
     searchCtrl = TextEditingController();
     super.initState();
     getProducts();
+    checkInternetAvailability();
   }
 
  final FocusNode _focusNode = FocusNode();
@@ -47,45 +51,52 @@ class HomeLandscapeState extends State<HomeLandscape> {
     super.dispose();
   }
 
-  void _handleTap() {
-    if (_focusNode.hasFocus) {
-      _focusNode.unfocus();
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector (onTap: _handleTap,child:Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        TitleAndSearchBar(
-          title: "Choose Category",
-          onSubmit: (text) {},
-          onTextChanged: (changedtext) {},
-          searchCtrl: searchCtrl,
-          inputFormatter: [],
-          searchHint: "Search products / Category",
-        ),
-        hightSpacer20,
-        getCategoryListWidget(),
-        hightSpacer20,
-        categories.isEmpty
-            ? const Center(
-                child: Text(
-                "No items found",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ))
-            : Expanded(
-                child: ListView.builder(
-                    primary: true,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return getCategoryItemsWidget(categories[index]);
-                    }),
-              ),
-      ],
-    ));
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TitleAndSearchBar(
+            title: "Choose Category",
+            onSubmit: (text) {},
+            onTextChanged: (changedtext) {},
+            searchCtrl: searchCtrl,
+            searchHint: "Search products / Category",
+          ),
+          hightSpacer20,
+          getCategoryListWidget(),
+          hightSpacer20,
+          categories.isEmpty
+              ? const Center(
+                  child: Text(
+                  "No items found",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ))
+              : Expanded(
+                  child: ListView.builder(
+                      primary: true,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        return getCategoryItemsWidget(categories[index]);
+                      }),
+                ),
+        ],
+      ),
+    );
   }
 
   getCategoryItemsWidget(Category cat) {
@@ -129,7 +140,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                                 width: 145,
                                 height: 105,
                                 decoration: BoxDecoration(
-                                    color: WHITE_COLOR,
+                                    color: AppColors.fontWhiteColor,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +163,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
                                       "$appCurrency ${cat.items[index].price}",
                                       textAlign: TextAlign.right,
                                       style: getTextStyle(
-                                          color: MAIN_COLOR,
+                                          color: AppColors.getPrimary(),
                                           fontSize: MEDIUM_FONT_SIZE),
                                     ),
                                   ],
@@ -162,8 +173,34 @@ class HomeLandscapeState extends State<HomeLandscape> {
                             SizedBox(
                               height: 60,
                               width: 60,
-                              child:
-                                  Image.memory(cat.items[index].productImage),
+                              child: (isInternetAvailable &&
+                                      categories[index]
+                                          .items
+                                          .first
+                                          .productImageUrl!
+                                          .isNotEmpty)
+                                  ? Image.network(
+                                      categories[index]
+                                          .items
+                                          .first
+                                          .productImageUrl!,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : (isInternetAvailable &&
+                                          categories[index]
+                                              .items
+                                              .first
+                                              .productImage
+                                              .isEmpty)
+                                      ? Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        ),
+                              //    Image.memory(cat.items[index].productImage),
                             ),
                           ],
                         ),
@@ -193,14 +230,41 @@ class HomeLandscapeState extends State<HomeLandscape> {
                       margin: paddingXY(y: 5),
                       width: 80,
                       decoration: BoxDecoration(
-                        color: WHITE_COLOR,
+                        color: AppColors.fontWhiteColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.memory(categories[index].image),
+                          //  Image.memory(categories[index].image),
+                          (isInternetAvailable &&
+                                  categories[index]
+                                      .items
+                                      .first
+                                      .productImageUrl!
+                                      .isNotEmpty)
+                              ? Image.network(
+                                  categories[index]
+                                      .items
+                                      .first
+                                      .productImageUrl!,
+                                  fit: BoxFit.fill,
+                                )
+                              : (isInternetAvailable &&
+                                      categories[index]
+                                          .items
+                                          .first
+                                          .productImage
+                                          .isEmpty)
+                                  ? Image.asset(
+                                      NO_IMAGE,
+                                      fit: BoxFit.fill,
+                                    )
+                                  : Image.asset(
+                                      NO_IMAGE,
+                                      fit: BoxFit.fill,
+                                    ),
                           hightSpacer4,
                           Text(
                             categories[index].name,

@@ -78,6 +78,8 @@ class Items {
       json['attributes'].forEach((v) {
         attributes!.add(Attributes.fromJson(v));
       });
+    } else {
+      attributes = [];
     }
     image = json['image'] ?? "";
     if (json['tax'] != null && json['tax'] != '') {
@@ -190,20 +192,29 @@ class Options {
 }
 
 class Tax {
+  String? taxId;
   String? itemTaxTemplate;
   double? taxRate;
+  String? taxType;
+  double? taxAmount;
 
-  Tax({this.itemTaxTemplate, this.taxRate});
+  Tax({this.taxId, this.itemTaxTemplate, this.taxType, this.taxRate, this.taxAmount});
 
   Tax.fromJson(Map<String, dynamic> json) {
+    taxId = json['taxId'] ?? "";
     itemTaxTemplate = json['item_tax_template'] ?? "";
+    taxType = json['tax_type'] ?? "";
     taxRate = json['tax_rate'] ?? 0.0;
+    taxAmount = json['tax_amount'] ?? 0.0;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['tax'] = taxId;
     data['item_tax_template'] = itemTaxTemplate;
+    data['tax_type'] = taxType;
     data['tax_rate'] = taxRate;
+    data['tax_amount'] = taxAmount;
     return data;
   }
 }

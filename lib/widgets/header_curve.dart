@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../utils/ui_utils/text_styles/custom_text_style.dart';
 
 // ignore: must_be_immutable
@@ -31,7 +31,7 @@ class HeaderCurveWidget extends StatelessWidget {
           Center(
               child: Text(
             "POS",
-            style: getTextStyle(color: WHITE_COLOR, fontSize: 40.0),
+            style: getTextStyle(color: AppColors.fontWhiteColor, fontSize: 40.0),
           ))
         ],
       ),
@@ -43,7 +43,7 @@ class HeaderCurve extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Paint paint0 = Paint()
-      ..color = MAIN_COLOR
+      ..color = AppColors.getPrimary()
       ..style = PaintingStyle.fill
       ..strokeWidth = 1;
 

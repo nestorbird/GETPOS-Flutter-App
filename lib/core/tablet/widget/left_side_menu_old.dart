@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
 import '../../../constants/asset_paths.dart';
 import '../../../utils/ui_utils/padding_margin.dart';
@@ -27,23 +27,23 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
     return Container(
       width: 80,
       height: Get.size.height,
-      color: WHITE_COLOR,
+      color: AppColors.fontWhiteColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
             padding: morePaddingAll(),
-            decoration: const BoxDecoration(
-                color: MAIN_COLOR,
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                color:AppColors.getPrimary(),
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15),
                     topRight: Radius.circular(15))),
             child: Text(
               "POS",
               textAlign: TextAlign.center,
               style: getTextStyle(
-                  color: WHITE_COLOR, fontSize: MEDIUM_PLUS_FONT_SIZE),
+                  color: AppColors.fontWhiteColor, fontSize: MEDIUM_PLUS_FONT_SIZE),
             ),
           ),
           _leftMenuSectionItem("Home", CREATE_ORDER_IMAGE, 50, () {
@@ -67,7 +67,7 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
                 title: "Do you want to logout?",
                 content: Container(),
                 confirm: const Text("Yes"),
-                confirmTextColor: MAIN_COLOR,
+                confirmTextColor:AppColors.getPrimary(),
                 cancel: const Text("Cancel"));
           }),
         ],
@@ -84,11 +84,11 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
         height: 75,
         decoration: BoxDecoration(
           color: title.toLowerCase() == widget.selectedView.toLowerCase()
-              ? MAIN_COLOR
-              : WHITE_COLOR,
+              ?  AppColors.getPrimary()
+              : AppColors.fontWhiteColor,
           borderRadius: BorderRadius.circular(5),
           boxShadow: const [BoxShadow(blurRadius: 0.05)],
-          border: Border.all(width: 1, color: GREY_COLOR),
+          border: Border.all(width: 1, color: AppColors.shadowBorder!),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -104,8 +104,8 @@ class _LeftSideMenuState extends State<LeftSideMenu> {
               style: getTextStyle(
                 fontWeight: FontWeight.w400,
                 color: title.toLowerCase() == widget.selectedView.toLowerCase()
-                    ? WHITE_COLOR
-                    : BLACK_COLOR,
+                    ? AppColors.fontWhiteColor
+                    : AppColors.getTextandCancelIcon(),
               ),
             ),
             hightSpacer10,

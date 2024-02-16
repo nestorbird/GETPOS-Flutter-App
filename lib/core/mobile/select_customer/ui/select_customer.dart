@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../database/db_utils/db_customer.dart';
 import '../../../../database/models/customer.dart';
@@ -51,7 +52,7 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
                 ? const NeverScrollableScrollPhysics()
                 : const ScrollPhysics(),
             child: Column(children: [
-              const CustomAppbar(title: SELECT_CUSTOMER_TXT),
+              const CustomAppbar(title: CUSTOMER_TXT),
               Padding(
                   padding: mediumPaddingAll(),
                   child: SearchWidget(
@@ -115,7 +116,11 @@ class _SelectCustomerScreenOldState extends State<SelectCustomerScreenOld> {
                   Navigator.pop(context, selectedCustomer);
                 },
                 fontSize: MEDIUM_FONT_SIZE,
-                title: SELECT_CONTINUE_TXT)),
+                title: SELECT_CONTINUE_TXT,
+                primaryColor:  AppColors.getPrimary()),
+                
+                ),
+                
       ),
     );
   }

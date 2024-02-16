@@ -1,11 +1,10 @@
 import 'dart:developer';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../database/models/product.dart';
@@ -39,9 +38,11 @@ class _ProductWidgetState extends State<ProductWidget> {
   late double stockQty;
   String? price;
   String? productStockUpdateDate;
+  bool isInternetAvailable = true;
 
   @override
   void initState() {
+    checkInternetAvailability();
     stockQty = widget.product!.stock > 0 ? widget.product!.stock : 0;
     price = Helper().formatCurrency(widget.product!.price);
     productStockUpdateDate = _getDateTimeString();
@@ -63,7 +64,7 @@ class _ProductWidgetState extends State<ProductWidget> {
             Container(
               height: widget.enableAddProductButton ? 100 : 120,
               decoration: BoxDecoration(
-                  color: MAIN_COLOR.withOpacity(.1),
+                  color: AppColors.getPrimary().withOpacity(.1),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(10),
@@ -85,7 +86,7 @@ class _ProductWidgetState extends State<ProductWidget> {
               padding: const EdgeInsets.only(left: 10, top: 2),
               child: Text("$ITEM_CODE_TXT - ${widget.product!.id}",
                   style: getItalicStyle(
-                    color: LIGHT_GREY_COLOR,
+                    color: AppColors.hintText,
                     fontSize: SMALL_MINUS_FONT_SIZE,
                   )),
             ),
@@ -93,7 +94,7 @@ class _ProductWidgetState extends State<ProductWidget> {
               padding: const EdgeInsets.only(left: 10, top: 8, bottom: 5),
               child: Text("$appCurrency $price",
                   style: getTextStyle(
-                      color: MAIN_COLOR,
+                      color: AppColors.getPrimary(),
                       fontWeight: FontWeight.w600,
                       fontSize: MEDIUM_MINUS_FONT_SIZE)),
             ),
@@ -102,7 +103,8 @@ class _ProductWidgetState extends State<ProductWidget> {
               child: Text(
                   "$ADD_PRODUCTS_AVAILABLE_STOCK_TXT - ${stockQty.round()}",
                   style: getTextStyle(
-                      color: DARK_GREY_COLOR, fontWeight: FontWeight.w400)),
+                      color: AppColors.getAsset(),
+                      fontWeight: FontWeight.w400)),
             ),
             Visibility(
                 visible: !widget.enableAddProductButton,
@@ -112,7 +114,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       "$ADD_PRODUCTS_STOCK_UPDATE_ON_TXT $productStockUpdateDate",
                       maxLines: 2,
                       style: getItalicStyle(
-                        color: LIGHT_GREY_COLOR,
+                        color: AppColors.hintText,
                         fontSize: SMALL_MINUS_FONT_SIZE,
                       )),
                 )),
@@ -122,7 +124,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                     padding: const EdgeInsets.only(top: 6, bottom: 10),
                     child: SizedBox(
                       child: Container(
-                        color: GREY_COLOR,
+                        color: AppColors.shadowBorder,
                         height: 0.2,
                       ),
                     ))),
@@ -144,17 +146,37 @@ class _ProductWidgetState extends State<ProductWidget> {
   }
 
   _getProductImage() {
-    if (widget.asset != null && widget.asset!.isNotEmpty) {
-      return Image.memory(
-        widget.asset!,
-        height: widget.enableAddProductButton ? 60 : 70,
+    if (isInternetAvailable && widget.product!.productImageUrl != null) {
+      Image.network(
+        widget.product!.productImageUrl!,
+        fit: BoxFit.fill,
       );
     } else {
-      return SvgPicture.asset(
-        PRODUCT_IMAGE,
-        height: widget.enableAddProductButton ? 60 : 70,
-      );
+      if (isInternetAvailable && widget.product!.productImageUrl == null) {
+        Image.asset(
+          NO_IMAGE,
+          fit: BoxFit.fill,
+        );
+      } else {
+        Image.asset(
+          NO_IMAGE,
+          fit: BoxFit.fill,
+        );
+      }
     }
+
+    // if (widget.asset != null && widget.asset!.isNotEmpty) {
+    //   return Image.memory(
+    //     widget.asset!,
+    //     height: widget.enableAddProductButton ? 60 : 70,
+    //   );
+    // } else {
+    //   return Image.asset(
+    //     NO_IMAGE,
+    //     fit: BoxFit.fill,
+    //     // height: widget.enableAddProductButton ? 60 : 70,
+    //   );
+    // }
   }
 
   _getDateTimeString() {
@@ -162,5 +184,17 @@ class _ProductWidgetState extends State<ProductWidget> {
         DateFormat.yMd().add_jm().format(widget.product!.productUpdatedTime);
     log('Formatted Date : $productUpdateDate');
     return productUpdateDate;
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 }

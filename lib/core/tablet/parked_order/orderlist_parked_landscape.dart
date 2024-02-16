@@ -129,7 +129,6 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
 
   Future<void> getParkedOrders() async {
     orderFromLocalDB = await DbParkedOrder().getOrders();
-
     parkedOrders = orderFromLocalDB.reversed.toList();
     fetchingData = false;
     setState(() {});

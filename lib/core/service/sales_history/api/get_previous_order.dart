@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/core/mobile/transaction_history/model/transaction.dart';
 import '../../../../../constants/app_constants.dart';
 import '../model/sale_order_list_response.dart';
 import '../../../../../database/db_utils/db_constants.dart';
@@ -34,9 +35,11 @@ class GetPreviousOrder {
 
     //Creating GET api url
     String apiUrl = SALES_HISTORY;
-    apiUrl +=
-        '?hub_manager=$hubManagerId&from_date=$dataUpto&to_date=$todaysDateTime';
-    // '?hub_manager=$hubManagerId&from_date=$dataUpto&to_date=${DateTime.now()}';
+    //apiUrl += '?hub_manager=$hubManagerId';
+    // changes done for domain
+    //&from_date=$dataUpto&to_date=$todaysDateTime';
+
+   apiUrl += '?hub_manager=$hubManagerId&from_date=$dataUpto&to_date=${DateTime.now()}';
 
     //Call to Sales History api
     var apiResponse = await APIUtils.getRequestWithHeaders(apiUrl);
@@ -75,7 +78,7 @@ class GetPreviousOrder {
                 productImage: productImage,
                 productUpdatedTime: DateTime.now(),
                 productImageUrl: '',
-                tax: 0); //TODO:: Siddhant - Need to configure tax after deployment
+                tax: []);
             orderedProducts.add(product);
           });
 
@@ -106,26 +109,25 @@ class GetPreviousOrder {
 
           //Creating a SaleOrder
           SaleOrder saleOrder = SaleOrder(
-            id: order.name!,
-            date: date,
-            time: time,
-            customer: Customer(
-              id: order.customer!,
-              name: order.customerName!,
-              phone: order.contactPhone!,
-              email: order.contactEmail!,
-              isSynced: true,
-              modifiedDateTime: DateTime.now()
-            ),
-            items: orderedProducts,
-            manager: hubManager!,
-            orderAmount: order.grandTotal!,
-            tracsactionDateTime: DateTime.parse(transactionDateTime),
-            transactionId: order.mpesaNo ?? "",
-            paymentMethod: order.modeOfPayment!,
-            paymentStatus: "",
-            transactionSynced: true,
-          );
+              id: order.name!,
+              date: date,
+              time: time,
+              customer: Customer(
+                  id: order.customer!,
+                  name: order.customerName!,
+                  phone: order.contactPhone!,
+                  email: order.contactEmail!,
+                  isSynced: true,
+                  modifiedDateTime: DateTime.now()),
+              items: orderedProducts,
+              manager: hubManager!,
+              orderAmount: order.grandTotal!,
+              tracsactionDateTime: DateTime.parse(transactionDateTime),
+              transactionId: order.mpesaNo ?? "",
+              paymentMethod: order.modeOfPayment!,
+              paymentStatus: "",
+              transactionSynced: true,
+              );
 
           sales.add(saleOrder);
         });
@@ -133,5 +135,25 @@ class GetPreviousOrder {
       }
     }
     return false;
+  }
+  Future<List<Transaction>> getSavedOrders() async {
+    List<SaleOrder> savedOrders = await DbSaleOrder().getOrders();
+    List<Transaction> transactions = [];
+
+    for (var order in savedOrders) {
+      Transaction transaction = Transaction(
+        id: order.id,
+        date: order.date,
+        time: order.time,
+        customer: order.customer,
+        items: order.items,
+        orderAmount: order.orderAmount,
+        tracsactionDateTime: order.tracsactionDateTime,
+      );
+
+      transactions.add(transaction);
+    }
+
+    return transactions;
   }
 }

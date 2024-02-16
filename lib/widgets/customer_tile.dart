@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../database/models/customer.dart';
 import '../main.dart';
@@ -52,16 +52,20 @@ class _CustomerTileState extends State<CustomerTile> {
   Widget build(BuildContext context) {
     var container = Container(
       margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+    
       padding: mediumPaddingAll(),
       decoration: BoxDecoration(
           color: isTabletMode
               ? const Color(0xFFF9F8FB)
               : isSelected
-                  ? OFF_WHITE_COLOR
-                  : WHITE_COLOR,
+                  ? AppColors.active
+                  : AppColors.fontWhiteColor,
           border: Border.all(
-              color: isSelected ? MAIN_COLOR : GREY_COLOR,
+              color: isSelected
+                  ? const Color(0xFFDC1E44)
+                  : const Color(0xFFC7C5C5),
               width: isSelected ? 0.3 : 1.0),
+              
           borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,11 +79,11 @@ class _CustomerTileState extends State<CustomerTile> {
                   child: Text(
                       widget.customer != null ? widget.customer!.name : "Guest",
                       style: getTextStyle(
-                          fontSize: MEDIUM_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR,
+                          fontSize: LARGE_MINUS_FONT_SIZE,
+                          color: AppColors.getPrimary(),
                           fontWeight: widget.isHighlighted!
                               ? FontWeight.bold
-                              : FontWeight.normal),
+                              : FontWeight.w600),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis),
                 ),
@@ -91,9 +95,9 @@ class _CustomerTileState extends State<CustomerTile> {
                   child: Text(
                     widget.customer != null ? widget.customer!.phone : "",
                     style: getTextStyle(
-                        fontSize: MEDIUM_FONT_SIZE,
-                        color: DARK_GREY_COLOR,
-                        fontWeight: FontWeight.bold),
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        color: AppColors.textandCancelIcon,
+                        fontWeight: FontWeight.w800),
                   ),
                 ),
               ),
@@ -104,9 +108,9 @@ class _CustomerTileState extends State<CustomerTile> {
             child: Text(
               widget.customer != null ? widget.customer!.email : "",
               style: getTextStyle(
-                  color: BLACK_COLOR,
-                  fontSize: SMALL_PLUS_FONT_SIZE,
-                  fontWeight: FontWeight.normal),
+                  color: AppColors.getTextandCancelIcon(),
+                  fontSize: MEDIUM_PLUS_FONT_SIZE,
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ],

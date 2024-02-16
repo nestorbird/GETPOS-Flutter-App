@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../network/api_helper/comman_response.dart';
@@ -38,11 +38,10 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: Get.height - 400,
+        height: Get.height - 300,
         width: 400,
         child: Column(
           children: [
-            hightSpacer50,
             hightSpacer50,
             SizedBox(
               height: 60,
@@ -77,7 +76,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
           },
           title: CHANGE_PASSWORD_BTN_TXT,
           fontSize: LARGE_FONT_SIZE,
-          colorBG: MAIN_COLOR,
+          primaryColor: AppColors.getAsset(),
           width: double.infinity,
           height: 60,
         ),

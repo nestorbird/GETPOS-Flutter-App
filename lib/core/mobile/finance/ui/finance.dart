@@ -1,4 +1,5 @@
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../database/db_utils/db_hub_manager.dart';
@@ -67,7 +68,7 @@ class _FinanceState extends State<Finance> {
                       style: getTextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: MEDIUM_FONT_SIZE,
-                          color: DARK_GREY_COLOR),
+                          color: AppColors.getAsset()),
                     ),
                   ],
                 ),
@@ -83,7 +84,7 @@ class _FinanceState extends State<Finance> {
                       style: getTextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: LARGE_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR),
+                          color:  AppColors.getPrimary()),
                     ),
                   ],
                 ),

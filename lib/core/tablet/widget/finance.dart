@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 
@@ -21,11 +21,11 @@ class FinanceView extends StatelessWidget {
               style: getTextStyle(
                   fontSize: LARGE_FONT_SIZE,
                   fontWeight: FontWeight.w600,
-                  color: DARK_GREY_COLOR)),
+                  color: AppColors.getAsset())),
           hightSpacer10,
           Text("$appCurrency $cashCollected",
               style: getTextStyle(
-                  color: MAIN_COLOR,
+                  color: AppColors.getPrimary(),
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold)),
         ],

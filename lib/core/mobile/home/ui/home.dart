@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/route_manager.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
                     padding: mediumPaddingAll(),
                     child: SvgPicture.asset(
                       MENU_ICON,
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       width: 20,
                     ),
                   ),
@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
                           WELCOME_BACK,
                           style: getTextStyle(
                             fontSize: SMALL_FONT_SIZE,
-                            color: MAIN_COLOR,
+                            color: AppColors.textandCancelIcon,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -106,7 +106,7 @@ class _HomeState extends State<Home> {
                           managerName,
                           style: getTextStyle(
                               fontSize: LARGE_FONT_SIZE,
-                              color: DARK_GREY_COLOR),
+                              color: const Color(0xFF707070)),
                           overflow: TextOverflow.ellipsis,
                         ),
                         hightSpacer30,
@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
                       padding: mediumPaddingAll(),
                       child: SvgPicture.asset(
                         MENU_ICON,
-                        color: BLACK_COLOR,
+                        color: AppColors.getTextandCancelIcon(),
                         width: 20,
                       ),
                     ),
@@ -159,7 +159,7 @@ class _HomeState extends State<Home> {
                       onReturn: () {},
                     ),
                     HomeTile(
-                      title: CUSTOMERS_TXT,
+                      title: CUSTOMER_TXT,
                       asset: CUSTOMER_IMAGE,
                       nextScreen: const Customers(),
                       onReturn: () {},

@@ -79,7 +79,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
     return GestureDetector (onTap: _handleTap,child: Column(
       children: [
         hightSpacer10,
-          TitleAndSearchBar(focusNode: _focusNode,
+          TitleAndSearchBar(
           inputFormatter: [FilteringTextInputFormatter.digitsOnly],
           parkedOrderVisible: true,
           title: "Orders History",
@@ -114,7 +114,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
             debugPrint("parked order clicked");
           },
           searchCtrl: searchCtrl,
-          searchHint: "Enter customer mobile number",
+          searchHint: "Enter Customer mobile",
         ),
         hightSpacer20,
         BlocBuilder<TransactionBloc, TransactionState>(
@@ -135,7 +135,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
               );
             default:
               return const Center(
-                child: CircularProgressIndicator(),
+                child: BottomLoader(),
               );
           }
         }),
@@ -152,12 +152,13 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
         controller: _scrollController,
         itemCount:
             state.hasReachedMax ? state.orders.length : state.orders.length + 1,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 10,
-          childAspectRatio: Get.height > Get.width ? 3 : 4.8,
-          // childAspectRatio: 4.8,
+          // childAspectRatio: Get.height > Get.width ? 4 : 4, (this was used earlier)
+          //3:4.8
+          childAspectRatio: 5,
         ),
         shrinkWrap: true,
         primary: false,
@@ -166,9 +167,15 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           if (state.orders.isEmpty) {
             return const ShimmerWidget();
           } else {
-            return position >= state.orders.length && !state.hasReachedMax
-                ? const Center(child: BottomLoader())
+            return position >= state.orders.length
+                ? state.hasReachedMax
+                    ? const BottomLoader()
+                    : const SizedBox()
                 : TransactionItemLandscape(order: state.orders[position]);
+
+            // return position >= state.orders.length && !state.hasReachedMax
+            //     ? const Center(child: BottomLoader())
+            //     : TransactionItemLandscape(order: state.orders[position]);
           }
         },
       ),

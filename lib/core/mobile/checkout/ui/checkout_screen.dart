@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
@@ -47,7 +47,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     _getHubManager();
     totalAmount = Helper().getTotal(widget.order.items);
     totalItems = widget.order.items.length;
-   
   }
 
   @override
@@ -83,12 +82,16 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         isAmountAndItemsVisible: true,
         totalAmount: '$totalAmount',
         totalItems: '$totalItems',
-        onTap: () => createSale(_isCODSelected?"Card":"Cash"),
+        onTap: () => createSale(_isCODSelected ? "Card" : "Cash"),
       ),
     );
   }
 
-  getPaymentOption(String icon, String title, bool selected,) {
+  getPaymentOption(
+    String icon,
+    String title,
+    bool selected,
+  ) {
     return Expanded(
       child: InkWell(
         onTap: () {
@@ -101,9 +104,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         child: Container(
           height: 180,
           decoration: BoxDecoration(
-              color: selected ? OFF_WHITE_COLOR : WHITE_COLOR,
+              color: selected ? AppColors.active : AppColors.fontWhiteColor,
               border: Border.all(
-                  color: selected ? MAIN_COLOR : DARK_GREY_COLOR, width: 0.4),
+                  color:
+                      selected ? AppColors.getPrimary() : AppColors.getAsset(),
+                  width: 0.4),
               borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_20)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -115,7 +120,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               hightSpacer20,
               Text(title,
                   style: getTextStyle(
-                      fontSize: LARGE_FONT_SIZE, color: DARK_GREY_COLOR)),
+                      fontSize: LARGE_FONT_SIZE, color: AppColors.getAsset())),
             ],
           ),
         ),
@@ -124,21 +129,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   createSale(String paymentMethod) async {
-    paymentMethod =paymentMethod;
-if(paymentMethod=="Card"){ return Helper.showPopup(context,
-              "Comming soon" );
+    paymentMethod = paymentMethod;
+    if (paymentMethod == "Card") {
+      return Helper.showPopup(context, "Comming soon");
+    } else {
+      DateTime currentDateTime = DateTime.now();
+      String date =
+          DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
+      log('Date : $date');
+      String time = DateFormat().add_jm().format(currentDateTime).toString();
+      log('Time : $time');
+      String orderId = await Helper.getOrderId();
+      log('Order No : $orderId');
 
-}else{
-    DateTime currentDateTime = DateTime.now();
-    String date =
-        DateFormat('EEEE d, LLLL y').format(currentDateTime).toString();
-    log('Date : $date');
-    String time = DateFormat().add_jm().format(currentDateTime).toString();
-    log('Time : $time');
-    String orderId = await Helper.getOrderId();
-    log('Order No : $orderId');
-
-    SaleOrder saleOrder = SaleOrder(
+      SaleOrder saleOrder = SaleOrder(
         id: orderId,
         orderAmount: totalAmount,
         date: date,
@@ -152,13 +156,15 @@ if(paymentMethod=="Card"){ return Helper.showPopup(context,
         transactionSynced: false,
         parkOrderId:
             "${widget.order.transactionDateTime.millisecondsSinceEpoch}",
-        tracsactionDateTime: currentDateTime);
-    if (!mounted) return;
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
-  }}
+        tracsactionDateTime: currentDateTime,
+      );
+      if (!mounted) return;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => SaleSuccessScreen(placedOrder: saleOrder)));
+    }
+  }
 
   void _getHubManager() async {
     hubManager = await DbHubManager().getManager();

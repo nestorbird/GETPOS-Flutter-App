@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/database/models/park_order.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
 import '../../../../database/models/hub_manager.dart';
 import '../../../../utils/helper.dart';
@@ -9,7 +10,6 @@ import 'create_order/create_order_landscape.dart';
 import 'customer/customers_landscape.dart';
 import 'my_account/my_account_landscape.dart';
 import 'parked_order/orderlist_parked_landscape.dart';
-import 'product/products_landscape.dart';
 import 'transaction/transaction_screen_landscape.dart';
 import 'widget/left_side_menu.dart';
 
@@ -18,7 +18,7 @@ class HomeTablet extends StatelessWidget {
   HomeTablet({Key? key}) : super(key: key);
 
   final selectedTab = "Order".obs;
-
+ ParkOrder? parkOrder;
   late Size size;
 
   @override
@@ -34,7 +34,7 @@ class HomeTablet extends StatelessWidget {
           LeftSideMenu(selectedView: selectedTab),
           Container(
             color: const Color(0xFFF9F8FB),
-            padding: paddingXY(),
+            padding: paddingXY(x:10),
             child: Obx(() => SizedBox(
                   width: size.width - 100,
                   height: size.height,
@@ -57,7 +57,7 @@ class HomeTablet extends StatelessWidget {
         //return const HomeLandscape();
         return CreateOrderLandscape(selectedView: selectedTab);*/
       case "Order":
-        return CreateOrderLandscape(selectedView: selectedTab);
+        return CreateOrderLandscape(selectedView: selectedTab, order:parkOrder );
       /*   case "Product":
         return const ProductsLandscape();*/
       case "Customer":

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../utils/ui_utils/padding_margin.dart';
@@ -19,20 +19,20 @@ class MainDrawer extends StatelessWidget {
       child: ListView(
         children: [
           Container(
-            color: MAIN_COLOR,
+            color:AppColors.getPrimary(),
             padding: morePaddingAll(),
             child: Row(
               children: [
                 SvgPicture.asset(
                   MENU_ICON,
-                  color: WHITE_COLOR,
+                  color: AppColors.fontWhiteColor,
                   width: 20,
                 ),
                 widthSpacer(10),
                 Text(
                   "Menu",
                   style: getTextStyle(
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       fontSize: LARGE_FONT_SIZE,
                       fontWeight: FontWeight.w400),
                 ),
@@ -45,7 +45,7 @@ class MainDrawer extends StatelessWidget {
                     padding: miniPaddingAll(),
                     child: SvgPicture.asset(
                       CROSS_ICON,
-                      color: WHITE_COLOR,
+                      color: AppColors.fontWhiteColor,
                       width: 15,
                     ),
                   ),
@@ -92,7 +92,7 @@ class MainDrawer extends StatelessWidget {
           title,
           style: getTextStyle(
               fontWeight: FontWeight.w400,
-              color: DARK_GREY_COLOR,
+              color: AppColors.getAsset(),
               fontSize: MEDIUM_FONT_SIZE),
         ),
       ),

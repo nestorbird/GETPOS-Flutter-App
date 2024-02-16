@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nb_posx/configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 
 import '../../../../constants/app_constants.dart';
@@ -24,12 +25,16 @@ class TransactionListScreen extends StatefulWidget {
 class _TransactionListScreenState extends State<TransactionListScreen> {
   final _scrollController = ScrollController();
   late TextEditingController _searchTransactionCtrl;
+   List<SaleOrder> order = [];
+ bool isOrdersFound= true;
 
   @override
   void initState() {
     super.initState();
     _searchTransactionCtrl = TextEditingController();
     _scrollController.addListener(_onScroll);
+   // getOrdersFromDB(0);
+    
   }
 
   @override
@@ -83,7 +88,8 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                   if (text.isEmpty) {
                     context.read<TransactionBloc>().state.orders.clear();
                     context.read<TransactionBloc>().add(TransactionFetched());
-                  } else {
+                  }
+                   else {
                     context
                         .read<TransactionBloc>()
                         .add(TransactionSearched(text, true));
@@ -114,6 +120,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
                     child: Text("No orders"),
                   );
                 }
+             
 
                 return Expanded(
                   child: ListView.builder(
@@ -141,7 +148,8 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         height: 60,
         margin: const EdgeInsets.only(left: 15, right: 15, bottom: 30),
         decoration: const BoxDecoration(
-            color: MAIN_COLOR,
+          //statically declaring it as red
+            color: Color(0xFFDC1E44),
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: TextButton(
             onPressed: () {
@@ -155,9 +163,19 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
               style: getTextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: MEDIUM_PLUS_FONT_SIZE,
-                  color: WHITE_COLOR),
+                  color: AppColors.fontWhiteColor),
             )),
       ),
     ));
   }
+
+   ///Function to get the customer data from api
+  ///If not available from api then load from local database
+  // Future<void> getOrdersFromDB(val) async {
+  //   //Fetch the data from local database
+  // order = await DbSaleOrder().getOfflineOrders();
+  //   isOrdersFound = order.isNotEmpty;
+  //   if (val == 0) setState(() {});
+  // }
+  
 }

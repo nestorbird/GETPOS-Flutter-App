@@ -1,4 +1,5 @@
-import '../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+
 import '../../../../constants/app_constants.dart';
 import '../../../../utils/ui_utils/card_border_shape.dart';
 
@@ -53,7 +54,7 @@ class SalesDataItem extends StatelessWidget {
                   Text(
                     '$appCurrency ${saleOrder!.orderAmount}',
                     style: getTextStyle(
-                        fontSize: SMALL_PLUS_FONT_SIZE, color: MAIN_COLOR),
+                        fontSize: SMALL_PLUS_FONT_SIZE, color: AppColors.getPrimary()),
                   ),
                   const Spacer(),
                   Text(

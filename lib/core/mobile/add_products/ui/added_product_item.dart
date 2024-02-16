@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/models/attribute.dart';
 import '../../../../database/models/order_item.dart';
+import '../../../../utils/helper.dart';
 import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 
@@ -34,8 +36,29 @@ class AddedProductItem extends StatefulWidget {
 }
 
 class _AddedProductItemState extends State<AddedProductItem> {
-  final Widget _greySizedBox =
-      SizedBox(width: 1.0, child: Container(color: MAIN_COLOR));
+  bool isInternetAvailable = true;
+  // final Widget _greySizedBox = SizedBox(
+  //     width: 1.0,
+  //     child: Container(
+  //       color: AppColors.getPrimary(),
+  //     ));
+  @override
+  void initState() {
+    checkInternetAvailability();
+    super.initState();
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,18 +73,44 @@ class _AddedProductItemState extends State<AddedProductItem> {
           width: 90,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            color: MAIN_COLOR.withOpacity(0.1),
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            // AppColors.getPrimary().withOpacity(0.1) ??
+            //Color(0xFF707070),
+            color: AppColors.getPrimary().withOpacity(0.1),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
-          child: widget.product.productImage.isEmpty
-              ? SvgPicture.asset(
-                  PRODUCT_IMAGE_SMALL,
-                  fit: BoxFit.contain,
-                )
-              : Image.memory(
-                  widget.product.productImage,
-                  fit: BoxFit.fill,
-                ),
+          child:
+              // widget.product.productImage.isEmpty
+              //     ? Image.asset(
+              //         NO_IMAGE,
+              //         fit: BoxFit.fill,
+              //       )
+              //     // SvgPicture.asset(
+              //     //     NO_IMAGE,
+              //     //     fit: BoxFit.fill,
+              //     //   )
+              //     : Image.memory(
+              //         widget.product.productImage,
+              //         fit: BoxFit.fill,
+              //       ),
+              //TODO:Need to fix this as NO_image are not show if the productimageurl is null in add item popup
+              (isInternetAvailable &&
+                      (widget.product.productImageUrl != ""))
+                         // widget.product.productImageUrl != null))
+                  ? Image.network(
+                      widget.product.productImageUrl!,
+                      fit: BoxFit.fill,
+                    )
+                  : (isInternetAvailable &&
+                          (widget.product.productImageUrl!.isEmpty||
+                              widget.product.productImageUrl == null))
+                      ? Image.asset(
+                          NO_IMAGE,
+                          fit: BoxFit.fill,
+                        )
+                      : Image.asset(
+                          NO_IMAGE,
+                          fit: BoxFit.fill,
+                        ),
         ),
         widthSpacer(15),
         Expanded(
@@ -85,8 +134,8 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           child: Padding(
                               padding: miniPaddingAll(),
                               child: SvgPicture.asset(DELETE_IMAGE,
-                                  height: 18,
-                                  color: DARK_GREY_COLOR,
+                                  height: 16,
+                                  color: AppColors.getAsset(),
                                   fit: BoxFit.contain)))),
                   Visibility(
                       visible: widget.isUsedinVariantsPopup,
@@ -95,21 +144,21 @@ class _AddedProductItemState extends State<AddedProductItem> {
                           child: Padding(
                               padding: miniPaddingAll(),
                               child: SvgPicture.asset(CROSS_ICON,
-                                  height: 20,
-                                  color: BLACK_COLOR,
+                                  height: 12,
+                                  color: AppColors.getTextandCancelIcon(),
                                   fit: BoxFit.contain))))
                 ]),
               ],
             ),
-            Text(
-              widget.isUsedinVariantsPopup
-                  ? 'Item Code - ${widget.product.id}'
-                  : "${_getItemVariants(widget.product.attributes)} x ${widget.product.orderedQuantity.toInt()}",
-              style: getTextStyle(
-                  fontSize: SMALL_FONT_SIZE, fontWeight: FontWeight.normal),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            ),
+            // Text(
+            //   widget.isUsedinVariantsPopup
+            //       ? 'Item Code - ${widget.product.id}'
+            //       : "${_getItemVariants(widget.product.attributes)} x ${widget.product.orderedQuantity.toInt()}",
+            //   style: getTextStyle(
+            //       fontSize: SMALL_FONT_SIZE, fontWeight: FontWeight.normal),
+            //   overflow: TextOverflow.ellipsis,
+            //   maxLines: 2,
+            // ),
             hightSpacer15,
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Column(
@@ -120,8 +169,8 @@ class _AddedProductItemState extends State<AddedProductItem> {
                     '$appCurrency ${widget.product.price.toStringAsFixed(2)}',
                     style: getTextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        color: MAIN_COLOR),
+                        fontSize: SMALL_PLUS_FONT_SIZE,
+                        color: AppColors.getPrimary()),
                   ),
                   Visibility(
                       visible: widget.isUsedinVariantsPopup,
@@ -129,18 +178,18 @@ class _AddedProductItemState extends State<AddedProductItem> {
                         "Stock - ${widget.product.stock}",
                         style: getTextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: MEDIUM_FONT_SIZE,
-                          color: GREEN_COLOR,
+                          fontSize: SMALL_PLUS_FONT_SIZE,
+                          color: AppColors.getSecondary(),
                         ),
                       )),
                 ],
               ),
               Container(
-                  width: 100,
-                  height: 25,
+                  width: 120,
+                  height: 30,
                   decoration: BoxDecoration(
                       border: Border.all(
-                        color: MAIN_COLOR,
+                        color: AppColors.getPrimary(),
                       ),
                       borderRadius:
                           BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
@@ -153,18 +202,18 @@ class _AddedProductItemState extends State<AddedProductItem> {
                             Icons.remove,
                             size: 25,
                           )),
-                      _greySizedBox,
+                      //   _greySizedBox,
                       Container(
-                          color: MAIN_COLOR.withOpacity(0.1),
+                          color: AppColors.getPrimary().withOpacity(0.1),
                           child: Text(
                             selectedQty,
                             style: getTextStyle(
                               fontSize: MEDIUM_PLUS_FONT_SIZE,
                               fontWeight: FontWeight.w600,
-                              color: MAIN_COLOR,
+                              color: AppColors.getPrimary(),
                             ),
                           )),
-                      _greySizedBox,
+                      //  _greySizedBox,
                       InkWell(
                           onTap: () => widget.onItemAdd!(),
                           child: const Icon(

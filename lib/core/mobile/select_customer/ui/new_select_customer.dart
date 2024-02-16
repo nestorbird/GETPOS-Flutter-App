@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
-import '../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../constants/app_constants.dart';
 
 import '../../../../database/db_utils/db_customer.dart';
@@ -21,6 +20,7 @@ import '../../../service/select_customer/api/create_customer.dart';
 import '../../../service/select_customer/api/get_customer.dart';
 
 class NewSelectCustomer extends StatefulWidget {
+ 
   const NewSelectCustomer({Key? key}) : super(key: key);
 
   @override
@@ -74,7 +74,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                   searchTextController: searchCtrl,
                   keyboardType: TextInputType.phone,
                   onTextChanged: (text) {
-                    if (text.isNotEmpty && text.isNotEmpty) {
+                    if (text.isNotEmpty) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -82,7 +82,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                     // }
                   },
                   onSubmit: (text) {
-                    if (text.isNotEmpty && text.isNotEmpty) {
+                    if (text.isNotEmpty ) {
                       filterCustomerData(text);
                     }
                     //else {
@@ -167,7 +167,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
             style: getTextStyle(
                 fontSize: MEDIUM_PLUS_FONT_SIZE,
                 fontWeight: FontWeight.w500,
-                color: MAIN_COLOR),
+                color:  AppColors.getPrimary()),
           ),
         )),
         Center(
@@ -179,13 +179,13 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
           ),
         )),
         hightSpacer20,
-      IgnorePointer (ignoring: true,child: Padding(
+      Padding(
           padding: horizontalSpace(x: 20),
           child: TextFieldWidget(
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _phoneCtrl,
               hintText: "Phone No.",
-              txtColor: BLACK_COLOR)),
+              txtColor: AppColors.getTextandCancelIcon()),
         ),
         hightSpacer20,
         Padding(
@@ -194,7 +194,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _nameCtrl,
               hintText: "Enter Name",
-              txtColor: BLACK_COLOR),
+              txtColor: AppColors.getTextandCancelIcon()),
         ),
         hightSpacer20,
         Padding(
@@ -203,7 +203,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               boxDecoration: txtFieldBorderDecoration,
               txtCtrl: _emailCtrl,
               hintText: "Enter Email (optional)",
-              txtColor: BLACK_COLOR),
+              txtColor: AppColors.getTextandCancelIcon()),
         ),
         hightSpacer30,
         SizedBox(
@@ -215,6 +215,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
                 }
               },
               title: "Add and Create Order",
+              primaryColor:  AppColors.getPrimary(),
             )),
         hightSpacer20,
         SizedBox(
@@ -223,7 +224,7 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              colorBG: DARK_GREY_COLOR,
+              primaryColor:  AppColors.getAsset(),
               title: "Cancel",
             )),
       ],
@@ -235,21 +236,22 @@ class _NewSelectCustomerState extends State<NewSelectCustomer> {
         .createNew(_phoneCtrl.text, _nameCtrl.text, _emailCtrl.text);
     if (response.status!) {
       filterCustomerData(_phoneCtrl.text);
-    } else {
-      Customer tempCustomer = Customer(
-          // profileImage: image,
-          // ward: Ward(id: "1", name: "1"),
-          email: _emailCtrl.text.trim(),
-          id: _phoneCtrl.text.trim(),
-          name: _nameCtrl.text.trim(),
-          phone: _phoneCtrl.text.trim(),
-          isSynced: false,
-          modifiedDateTime: DateTime.now());
-      List<Customer> customers = [];
-      customers.add(tempCustomer);
-      await DbCustomer().addCustomers(customers);
-      filterCustomerData(_phoneCtrl.text);
     }
+    //  else {
+    //   Customer tempCustomer = Customer(
+    //       // profileImage: image,
+    //       // ward: Ward(id: "1", name: "1"),
+    //       email: _emailCtrl.text.trim(),
+    //       id: _phoneCtrl.text.trim(),
+    //       name: _nameCtrl.text.trim(),
+    //       phone: _phoneCtrl.text.trim(),
+    //       isSynced: false,
+    //       modifiedDateTime: DateTime.now());
+    //   List<Customer> customers = [];
+    //   customers.add(tempCustomer);
+    //   await DbCustomer().addCustomers(customers);
+    //   filterCustomerData(_phoneCtrl.text);
+    // }
   }
 
   Future<void> _askCustomerAPI(String searchText) async {

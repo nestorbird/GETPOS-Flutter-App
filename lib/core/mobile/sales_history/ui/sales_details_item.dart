@@ -1,8 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import '../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../database/models/order_item.dart';
@@ -20,20 +19,31 @@ class SalesDetailsItems extends StatefulWidget {
 
   @override
   State<SalesDetailsItems> createState() => _SalesDetailsItemsState();
+
+  static fromMap(x) {}
 }
 
 class _SalesDetailsItemsState extends State<SalesDetailsItems> {
-  bool isUserOnline = true;
+  // bool isUserOnline = true;
+  bool isInternetAvailable = false;
 
   @override
   void initState() {
     _checkUserAvailability();
+
     super.initState();
   }
 
   _checkUserAvailability() async {
-    isUserOnline = await Helper.isNetworkAvailable();
-    setState(() {});
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 
   @override
@@ -77,14 +87,14 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
                       '$ITEM_CODE_TXT - ${widget.product!.id}',
                       style: getTextStyle(
                           fontWeight: FontWeight.normal,
-                          color: DARK_GREY_COLOR),
+                          color: AppColors.getAsset()),
                     ),
                     const Spacer(),
                     Text(
                       '$appCurrency ${widget.product!.price}',
                       style: getTextStyle(
                           fontSize: SMALL_PLUS_FONT_SIZE,
-                          color: MAIN_COLOR,
+                          color: AppColors.getPrimary(),
                           fontWeight: FontWeight.w500),
                     ),
                   ],
@@ -96,7 +106,7 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
   }
 
   _getOrderedProductImage() {
-    if (isUserOnline && widget.product!.productImageUrl!.isNotEmpty) {
+    if (isInternetAvailable && widget.product!.productImageUrl != null) {
       log('Image Url : ${widget.product!.productImageUrl!}');
       return ClipRRect(
         borderRadius: BorderRadius.circular(8), // Image border
@@ -109,22 +119,37 @@ class _SalesDetailsItemsState extends State<SalesDetailsItems> {
       );
     } else {
       log('Local image');
-      return widget.product!.productImage.isEmpty
-          ? SvgPicture.asset(
-              PRODUCT_IMAGE_,
-              height: 30,
-              width: 30,
-              fit: BoxFit.contain,
-            )
-          : ClipRRect(
-              borderRadius: BorderRadius.circular(8), // Image border
-              child: SizedBox(
-                // Image radius
-                height: 80,
-                child: Image.memory(widget.product!.productImage,
-                    fit: BoxFit.cover),
-              ),
-            );
+      return
+          //  widget.product!.productImage.isEmpty
+          //     ? Image.asset(
+          //         NO_IMAGE,
+          //         fit: BoxFit.fill,
+          //       )
+          //     : ClipRRect(
+          //         borderRadius: BorderRadius.circular(8), // Image border
+          //         child: SizedBox(
+          //           // Image radius
+          //           height: 80,
+          //           child: Image.memory(widget.product!.productImage,
+          //               fit: BoxFit.cover),
+          //         ),
+          //       );
+
+          (isInternetAvailable && widget.product!.productImageUrl != null)
+              ? Image.network(
+                  widget.product!.productImageUrl!,
+                  fit: BoxFit.fill,
+                )
+              : (isInternetAvailable && widget.product!.productImageUrl == null)
+                  ? Image.asset(
+                      NO_IMAGE,
+                      fit: BoxFit.fill,
+                    )
+                  : Image.asset(
+                      NO_IMAGE,
+                      fit: BoxFit.fill,
+                    );
+
       // Image.memory(widget.product!.productImage);
     }
   }

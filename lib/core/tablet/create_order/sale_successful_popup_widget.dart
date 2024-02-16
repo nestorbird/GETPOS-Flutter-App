@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
-import '../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+
 import '../../../constants/app_constants.dart';
 import '../../../constants/asset_paths.dart';
 import '../../../utils/ui_utils/spacer_widget.dart';
@@ -27,9 +28,9 @@ class SaleSuccessfulPopup extends StatelessWidget {
                     onTap: () => Navigator.pop(context, "home"),
                     child: SvgPicture.asset(
                       CROSS_ICON,
-                      height: 20,
-                      width: 20,
-                      color: BLACK_COLOR,
+                      height: 16,
+                      width: 16,
+                      color: AppColors.getTextandCancelIcon(),
                     ),
                   ))),
           Center(
@@ -47,8 +48,8 @@ class SaleSuccessfulPopup extends StatelessWidget {
             "Order Successful",
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
-                color: BLACK_COLOR,
-                fontWeight: FontWeight.bold),
+                color: AppColors.getTextandCancelIcon(),
+                fontWeight: FontWeight.w600),
           ),
           hightSpacer30,
           Padding(
@@ -73,7 +74,18 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+                isAmountAndItemsVisible: false,
+                buttonTitle: RETURN_TO_HOME_TXT,
+                onTap: () {
+                  Navigator.pop(context, "home");
+                  //  Navigator.of(context).pop();
+                  //  Navigator.pushReplacementNamed(context, '/home');
+                  //  Navigator.popUntil(context, (route) => false);
+                },
+              )),
+          Padding(
+              padding: const EdgeInsets.only(left: 35, right: 35),
+              child: LongButton(
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
                 onTap: () {

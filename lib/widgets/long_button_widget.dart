@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../utils/ui_utils/card_border_shape.dart';
@@ -54,14 +54,14 @@ class _LongButtonState extends State<LongButton> {
                                     0.0,
                                   ],
                                 colors: [
-                                    MAIN_COLOR,
-                                    MAIN_COLOR.withOpacity(0.9)
+                                    AppColors.getPrimary(),
+                                   AppColors.getPrimary().withOpacity(0.9)
                                   ])
-                            : const LinearGradient(
-                                begin: Alignment(0.0, 0.5),
-                                end: Alignment(0.5, 0.5),
-                                stops: [0.0, 0.0],
-                                colors: [MAIN_COLOR, MAIN_COLOR],
+                            :  LinearGradient(
+                                begin:const Alignment(0.0, 0.5),
+                                end:const Alignment(0.5, 0.5),
+                                stops: const [0.0, 0.0],
+                                colors: [AppColors.getPrimary(), AppColors.getPrimary()],
                               )),
                     child: Padding(
                       padding: mediumPaddingAll(),
@@ -86,7 +86,7 @@ class _LongButtonState extends State<LongButton> {
                                       Text(
                                         '${widget.totalItems}\n$ITEMS_TXT',
                                         style: getTextStyle(
-                                            color: WHITE_COLOR,
+                                            color: AppColors.fontWhiteColor,
                                             fontWeight: FontWeight.normal),
                                       )
                                     ],
@@ -99,7 +99,7 @@ class _LongButtonState extends State<LongButton> {
                                     '$appCurrency${widget.totalAmount}',
                                     style: getTextStyle(
                                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                                        color: WHITE_COLOR),
+                                        color: AppColors.fontWhiteColor),
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ))),
@@ -111,7 +111,7 @@ class _LongButtonState extends State<LongButton> {
                                     style: getTextStyle(
                                       fontSize:widget.isTab? MEDIUM_PLUS_FONT_SIZE:MEDIUM_MINUS_FONT_SIZE,
                                       fontWeight: FontWeight.bold,
-                                      color: WHITE_COLOR,
+                                      color: AppColors.fontWhiteColor,
                                     ))),
                           )
                         ],

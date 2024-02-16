@@ -4,6 +4,8 @@
 
 // ignore_for_file: constant_identifier_names
 
+import 'dart:ui';
+
 import '../network/api_helper/api_server.dart';
 
 const APP_NAME = 'NB POS';
@@ -14,13 +16,16 @@ const ENVIRONMENT = ApiServer.DEV;
 const OFFLINE_DATA_FOR = 7;
 const APP_VERSION = "App version";
 const APP_VERSION_FALLBACK = "1.0";
-
+//THEME CHANGE
+const invalidErrorText = "Invalid Url";
+const notAnActiveUrl = "Not an active Url";
 //LOGIN SCREEN
 const invalidPasswordMsg =
     "Enter at least 6 digits, should be one special characters,one uppercase,one lowercase,one digit.";
 //  "Invalid Password \n1. Include at least 8 digits and three special characters \n2. Include at least one upper case characters (A-Z)\n3. Include at least one lower case character (a-z)\n4. Include a number (0-9)\n5. Include a symbol (!, #, \$, etc.)";
 const passwordMismatch = "Password is mismatch";
 const LOGIN_TXT = 'Log In';
+
 const ACCESS_YOUR_ACCOUNT = 'Access your account';
 const EMAIL_TXT = 'Email';
 const PASSWORD_TXT = 'Password';
@@ -29,6 +34,7 @@ const URL_HINT = 'Enter ERP URL';
 const EMAIL_HINT = 'Enter your email';
 const PASSWORD_HINT = 'Enter your password';
 const FORGET_PASSWORD_SMALL_TXT = 'Forgot Password?';
+const CHANGE_INSTANCE_URL_TXT = 'Change Instance Url?';
 const BY_SIGNING_IN = 'By signing, you agree to our ';
 const TERMS_CONDITIONS = 'Terms & Conditions ';
 const AND_TXT = 'and ';
@@ -51,14 +57,15 @@ const WELCOME_BACK = 'Welcome Back,';
 const SYNC_NOW_TXT = 'Sync now';
 const CREATE_ORDER_TXT = 'Create Order'; //Create Order Screen
 const PRODUCTS_TXT = 'Products';
-const CUSTOMERS_TXT = 'Customers';
+const CUSTOMERS_TXT = 'Select Customer';
+const CUSTOMER_TXT = 'Customers';
 const MY_ACCOUNT_TXT = 'My Account';
 const SALES_HISTORY_TXT = 'Order History';
 const FINANCE_TXT = 'Finance';
 
 //CREATE ORDER SCREEN
 
-const SELECT_CUSTOMER_TXT = 'Select Customer'; //Select Customer Screen
+const SELECT_CUSTOMER_TXT = 'Select Customers'; //Select Customer Screen
 const ADD_PRODUCT_TXT = 'Add Product';
 const OUT_OF_STOCK = 'Out of stock'; //Create Order Screen
 const ITEMS_TXT = 'Items';
@@ -73,7 +80,7 @@ const SEARCH_PRODUCT_HINT_TXT = 'Search product / category';
 const SEARCH_HINT_TXT = 'Enter customer mobile number';
 const SEARCH_CUSTOMER_MSG_TXT = 'Type in customer mobile number...';
 const SELECT_CONTINUE_TXT = 'SELECT & CONTINUE';
-
+const CONTINUE_TXT = 'CONTINUE';
 // PRODUCT SCREEN
 const SEARCH_PRODUCT_TXT = 'Search product / category';
 
@@ -116,7 +123,10 @@ const RETURN_TO_HOME_TXT = 'Home Page';
 const CHANGE_PASSWORD = 'Change Password';
 const LOGOUT_TITLE = 'Logout';
 const LOGOUT_QUESTION = 'Do you really want to logout?';
-const OFFLINE_ORDER_MSG = 'Please sync your offline order first?';
+const OFFLINE_ORDER_MSG =
+    'Please turn on the internet & sync your offline order first';
+const OFFLINE_ORDER_SYNCED = 'Offline Order has been synced';
+const GET_ONLINE_MSG = 'Get your internet connectivity back.';
 
 //SALES HISTORY SCREEN
 const PARKED_ORDER_ID = 'Parked ID';
@@ -241,7 +251,7 @@ const double SALE_SUCCESS_IMAGE_WIDTH = 150;
 // FONT SIZES
 const double LARGE_FONT_SIZE = 16;
 const double LARGE_PLUS_FONT_SIZE = 22;
-const double LARGE_ULTRA_PLUS_SIZE = 24;
+const double EXTRA_LARGE_FONT_SIZE = 24;
 const double SMALL_MINUS_FONT_SIZE = 8;
 const double SMALL_FONT_SIZE = 10;
 const double SMALL_PLUS_FONT_SIZE = 12;
@@ -249,3 +259,12 @@ const double MEDIUM_MINUS_FONT_SIZE = 13;
 const double MEDIUM_FONT_SIZE = 14;
 const double MEDIUM_PLUS_FONT_SIZE = 16;
 const double LARGE_MINUS_FONT_SIZE = 18;
+
+//Custom Text Color
+const CUSTOM_TEXT_COLOR = Color.fromARGB(255, 87, 86, 86);
+
+//main.dart Constant
+const SuccessKey = 'SUCCESS_KEY';
+
+//unique key to delete customers
+const DeleteCustomers = 'DELETE_CUSTOMERS';

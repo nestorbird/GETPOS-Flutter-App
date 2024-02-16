@@ -5,14 +5,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
+import 'package:nb_posx/core/service/login/api/verify_instance_service.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../database/db_utils/db_categories.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
@@ -28,16 +29,23 @@ import '../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/item_options.dart';
-import '../../../service/login/api/verify_instance_service.dart';
+import '../../../service/product/api/products_api_service.dart';
 import '../../customers/ui/customers.dart';
 import '../../select_customer/ui/new_select_customer.dart';
 import '../../transaction_history/view/transaction_screen.dart';
 
 class ProductListHome extends StatefulWidget {
   final bool isForNewOrder;
+  final bool isAppLoggedIn;
+  // final bool isAppLoggedIn;
+
   final ParkOrder? parkedOrder;
-  const ProductListHome(
-      {super.key, this.isForNewOrder = false, this.parkedOrder});
+  const ProductListHome({
+    super.key,
+    this.isForNewOrder = false,
+    this.parkedOrder,
+    this.isAppLoggedIn = false,
+  });
 
   @override
   State<ProductListHome> createState() => _ProductListHomeState();
@@ -45,18 +53,19 @@ class ProductListHome extends StatefulWidget {
 
 class _ProductListHomeState extends State<ProductListHome> {
   final _key = GlobalKey<ExpandableFabState>();
-
+  // dynamic hubManagerData;
   final GlobalKey _focusKey = GlobalKey();
   late TextEditingController _searchTxtController;
   List<Product> products = [];
   List<Category> categories = [];
-
+  HubManager? manager;
   late String managerName = '';
   //bool _isFABOpened = false;
+  bool isInternetAvailable = false;
   ParkOrder? parkOrder;
   Customer? _selectedCust;
   final _scrollController = ScrollController();
-
+  //HubManager? hubManagerData;
   double _scrollToOffset(int index) {
     // Calculate the scroll offset for the given index
     // You'll need to adjust this based on your actual item heights
@@ -81,7 +90,11 @@ class _ProductListHomeState extends State<ProductListHome> {
   @override
   void initState() {
     super.initState();
-    verify();
+
+    checkInternetAvailability();
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    _getManagerName();
+    getProducts();
     // _height = MediaQuery.of(context).size.height;
     _searchTxtController = TextEditingController();
     if (widget.parkedOrder != null) {
@@ -91,10 +104,32 @@ class _ProductListHomeState extends State<ProductListHome> {
     if (widget.isForNewOrder && _selectedCust == null) {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
+    // });
 
-    _getManagerName();
-    getProducts();
-    //throw Exception();
+    // _getManagerName();
+
+    // getProducts();
+    // // _height = MediaQuery.of(context).size.height;
+    // _searchTxtController = TextEditingController();
+    // if (widget.parkedOrder != null) {
+    //   parkOrder = widget.parkedOrder;
+    //   _selectedCust = widget.parkedOrder!.customer;
+    // }
+    // if (widget.isForNewOrder && _selectedCust == null) {
+    //   Future.delayed(Duration.zero, () => goToSelectCustomer());
+    // }
+  }
+
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
   }
 
   @override
@@ -140,16 +175,16 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       children: [
                                         Text(WELCOME_BACK,
                                             style: getTextStyle(
-                                              fontSize: SMALL_PLUS_FONT_SIZE,
-                                              color: MAIN_COLOR,
-                                              fontWeight: FontWeight.w600,
+                                              fontSize: SMALL_FONT_SIZE,
+                                              color: AppColors.primary,
+                                              fontWeight: FontWeight.w500,
                                             )),
                                         hightSpacer5,
                                         Text(
-                                          managerName,
+                                          manager != null ? manager!.name : "",
                                           style: getTextStyle(
                                               fontSize: LARGE_FONT_SIZE,
-                                              color: DARK_GREY_COLOR),
+                                              color: AppColors.secondary),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ],
@@ -193,7 +228,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     padding: smallPaddingAll(),
                                     child: SvgPicture.asset(
                                       BACK_IMAGE,
-                                      color: BLACK_COLOR,
+                                      color: AppColors.getTextandCancelIcon(),
                                       width: 25,
                                     ),
                                   ),
@@ -204,7 +239,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       : '',
                                   style: getTextStyle(
                                       fontSize: LARGE_FONT_SIZE,
-                                      color: MAIN_COLOR),
+                                      color: AppColors.primary),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Stack(
@@ -240,9 +275,10 @@ class _ProductListHomeState extends State<ProductListHome> {
                                               padding: const EdgeInsets.all(6),
                                               margin: const EdgeInsets.only(
                                                   left: 20),
-                                              decoration: const BoxDecoration(
+                                              decoration: BoxDecoration(
                                                   shape: BoxShape.circle,
-                                                  color: MAIN_COLOR),
+                                                  color:
+                                                      AppColors.shadowBorder),
                                               child: Text(
                                                 parkOrder != null
                                                     ? parkOrder!.items.length
@@ -251,13 +287,16 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                     : "0",
                                                 style: getTextStyle(
                                                     fontSize: SMALL_FONT_SIZE,
-                                                    color: WHITE_COLOR),
+                                                    color: AppColors
+                                                        .fontWhiteColor),
                                               )))
                                     ])
                               ],
                             )),
                         hightSpacer15,
                         SearchWidget(
+                          searchHint: 'Search product / category',
+                          searchTextController: _searchTxtController,
                           onTap: () {
                             final state = _key.currentState;
                             if (state != null) {
@@ -267,8 +306,6 @@ class _ProductListHomeState extends State<ProductListHome> {
                               }
                             }
                           },
-                          searchHint: 'Search product / category',
-                          searchTextController: _searchTxtController,
                           onTextChanged: ((changedtext) {
                             final state = _key.currentState;
                             if (state != null) {
@@ -322,22 +359,33 @@ class _ProductListHomeState extends State<ProductListHome> {
                                                 Clip.antiAliasWithSaveLayer,
                                             decoration: const BoxDecoration(
                                                 shape: BoxShape.circle),
-                                            child: categories[position]
-                                                    .items
-                                                    .first
-                                                    .productImage
-                                                    .isEmpty
-                                                ? Image.asset(
-                                                    PIZZA_IMAGE,
-                                                    fit: BoxFit.fill,
-                                                  )
-                                                : Image.memory(
+                                            child: (isInternetAvailable &&
                                                     categories[position]
                                                         .items
                                                         .first
-                                                        .productImage,
+                                                        .productImageUrl!
+                                                        .isNotEmpty)
+                                                ? Image.network(
+                                                    categories[position]
+                                                        .items
+                                                        .first
+                                                        .productImageUrl!,
                                                     fit: BoxFit.fill,
-                                                  ),
+                                                  )
+                                                : (isInternetAvailable &&
+                                                        categories[position]
+                                                            .items
+                                                            .first
+                                                            .productImageUrl!
+                                                            .isEmpty)
+                                                    ? Image.asset(
+                                                        NO_IMAGE,
+                                                        fit: BoxFit.fill,
+                                                      )
+                                                    : Image.asset(
+                                                        NO_IMAGE,
+                                                        fit: BoxFit.fill,
+                                                      ),
                                           ),
                                           hightSpacer10,
                                           Text(
@@ -349,6 +397,29 @@ class _ProductListHomeState extends State<ProductListHome> {
                                         ],
                                       ));
                                 })),
+
+                        // FutureBuilder(
+                        //   future: init(),
+                        //   builder: (context, snapshot) {
+                        //     if (snapshot.connectionState ==
+                        //         ConnectionState.done) {
+                        //       return categories.isEmpty
+                        //           ? const Center(
+                        //               child: Text(
+                        //                 "No items found",
+                        //                 style: TextStyle(
+                        //                     fontWeight: FontWeight.bold),
+                        //               ),
+                        //             )
+                        //           : _getCategoryItems(); // Replace with your actual widget
+                        //     } else {
+                        //       return const Center(
+                        //         child:
+                        //             CircularProgressIndicator(), // Or any loading indicator
+                        //       );
+                        //     }
+                        //   },
+                        // ),
                         categories.isEmpty
                             ? const Center(
                                 child: Text(
@@ -376,7 +447,7 @@ class _ProductListHomeState extends State<ProductListHome> {
               }),
               type: ExpandableFabType.up,
               distance: 80,
-              backgroundColor: LIGHT_BLACK_COLOR,
+              backgroundColor: AppColors.parkOrderButton,
               child: SvgPicture.asset(
                 FAB_MAIN_ICON,
                 height: 55,
@@ -405,13 +476,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_FINANCE_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -439,13 +510,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_ACCOUNT_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -475,13 +546,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_HISTORY_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -510,13 +581,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_CUSTOMERS_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -541,13 +612,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                 //       }),
                 //       shape: const RoundedRectangleBorder(
                 //           borderRadius: BorderRadius.all(Radius.circular(8))),
-                //       backgroundColor: WHITE_COLOR,
+                //       backgroundColor: AppColors.fontWhiteColor,
                 //       child: Column(
                 //         mainAxisAlignment: MainAxisAlignment.center,
                 //         children: [
                 //           SvgPicture.asset(
                 //             FAB_PRODUCTS_ICON,
-                //             color: BLACK_COLOR,
+                //             color: AppColors.getTextandCancelIcon(),
                 //             height: 25,
                 //             width: 25,
                 //           ),
@@ -576,13 +647,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                       }),
                       shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8))),
-                      backgroundColor: WHITE_COLOR,
+                      backgroundColor: AppColors.fontWhiteColor,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
                             FAB_ORDERS_ICON,
-                            color: BLACK_COLOR,
+                            color: AppColors.getTextandCancelIcon(),
                             height: 25,
                             width: 25,
                           ),
@@ -604,13 +675,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                 //       }),
                 //       shape: const RoundedRectangleBorder(
                 //           borderRadius: BorderRadius.all(Radius.circular(8))),
-                //       backgroundColor: WHITE_COLOR,
+                //       backgroundColor: AppColors.fontWhiteColor,
                 //       child: Column(
                 //         mainAxisAlignment: MainAxisAlignment.center,
                 //         children: [
                 //           SvgPicture.asset(
                 //             FAB_HOME_ICON,
-                //             color: BLACK_COLOR,
+                //             color: AppColors.getTextandCancelIcon(),
                 //             height: 25,
                 //             width: 25,
                 //           ),
@@ -675,8 +746,13 @@ class _ProductListHomeState extends State<ProductListHome> {
                                   context, 'Sorry, item is not in stock.');
                             }
                           } else {
-                            Helper.showPopup(
-                                context, "Please select customer first");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const ProductListHome(
+                                        isForNewOrder: true)));
+                            // Helper.showPopup(
+                            //     context, "Please select customer first");
                             WidgetsBinding.instance.addPostFrameCallback((_) {
                               ShowCaseWidget.of(context)
                                   .startShowCase([_focusKey]);
@@ -706,7 +782,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                     width: 145,
                                     height: 90,
                                     decoration: BoxDecoration(
-                                        color: MAIN_COLOR.withOpacity(0.04),
+                                        color: AppColors.shadowBorder,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -736,7 +812,8 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           "$appCurrency ${categories[catPosition].items[itemPosition].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.center,
                                           style: getTextStyle(
-                                              color: MAIN_COLOR,
+                                              color:
+                                                  AppColors.textandCancelIcon,
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],
@@ -745,7 +822,9 @@ class _ProductListHomeState extends State<ProductListHome> {
                                 ),
                                 Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: WHITE_COLOR),
+                                        border: Border.all(
+                                            color: AppColors.fontWhiteColor ??
+                                                Colors.white),
                                         shape: BoxShape.circle),
                                     child: Container(
                                       margin: const EdgeInsets.only(
@@ -754,21 +833,54 @@ class _ProductListHomeState extends State<ProductListHome> {
                                       clipBehavior: Clip.antiAliasWithSaveLayer,
                                       decoration: const BoxDecoration(
                                           shape: BoxShape.circle),
-                                      child: categories[catPosition]
-                                              .items[itemPosition]
-                                              .productImage
-                                              .isEmpty
-                                          ? Image.asset(BURGAR_IMAGE)
-                                          : Image.memory(categories[catPosition]
-                                              .items[itemPosition]
-                                              .productImage),
+                                      child:
+                                          // categories[catPosition]
+                                          //         .items[itemPosition]
+                                          //         .productImageUrl!
+                                          //         .isEmpty&&isInternetAvailable
+                                          //     ? Image.asset(NO_IMAGE)
+                                          //     : Image.memory(categories[catPosition]
+                                          //         .items[itemPosition]
+                                          //         .productImage),
+                                          isInternetAvailable &&
+                                                  (categories[catPosition]
+                                                      .items[itemPosition]
+                                                      .productImageUrl!
+                                                      .isNotEmpty
+                                                  // || categories[catPosition]
+                                                  // .items[itemPosition]
+                                                  // .productImageUrl != ""
+                                                  )
+                                              ? Image.network(
+                                                  categories[catPosition]
+                                                      .items[itemPosition]
+                                                      .productImageUrl!,
+                                                  fit: BoxFit.fill,
+                                                )
+                                              : isInternetAvailable &&
+                                                      (categories[catPosition]
+                                                          .items[itemPosition]
+                                                          .productImageUrl!
+                                                          .isEmpty
+                                                      // || categories[catPosition]
+                                                      // .items[itemPosition]
+                                                      // .productImageUrl=="")
+                                                      )
+                                                  ? Image.asset(
+                                                      NO_IMAGE,
+                                                      fit: BoxFit.fill,
+                                                    )
+                                                  : Image.asset(
+                                                      NO_IMAGE,
+                                                      fit: BoxFit.fill,
+                                                    ),
                                     )),
                                 Container(
                                     padding: const EdgeInsets.all(6),
                                     margin: const EdgeInsets.only(left: 45),
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: GREEN_COLOR),
+                                        color: Color(0xFF62B146)),
                                     child: Text(
                                       categories[catPosition]
                                           .items[itemPosition]
@@ -777,7 +889,7 @@ class _ProductListHomeState extends State<ProductListHome> {
                                           .toString(),
                                       style: getTextStyle(
                                           fontSize: SMALL_FONT_SIZE,
-                                          color: WHITE_COLOR),
+                                          color: AppColors.fontWhiteColor),
                                     ))
                               ],
                             )));
@@ -787,6 +899,10 @@ class _ProductListHomeState extends State<ProductListHome> {
           );
         }));
   }
+
+  // Future<bool> isInternetAvailable() async {
+  //  return await Helper.isNetworkAvailable();
+  // }
 
   Future<void> getProducts() async {
     //Fetching data from DbProduct database
@@ -807,11 +923,43 @@ class _ProductListHomeState extends State<ProductListHome> {
     setState(() {});
   }
 
+  // _getManagerName() async {
+  //   // await DBPreferences().getPreference(Manager);
+  //   HubManager? manager = await DbHubManager().getManager();
+  //   if (manager != null) {
+  //     managerName = manager!.name;
+  //     //profilePic = manager.profileImage;
+  //     setState(() {});
+  //   } else {
+  //     // Handle the case where the manager is null
+  //     // For example, show an error message or set default values.
+  //     log('Manager is null');
+  //   }
+  // }
+  // _getManagerName() async {
+  //   HubManager manager = await DbHubManager().getManager() as HubManager;
+  //   managerName = manager.name;
+  //   //profilePic = manager.profileImage;
+  //   setState(() {});
+  // }
+
   _getManagerName() async {
-    HubManager manager = await DbHubManager().getManager() as HubManager;
-    managerName = manager.name;
-    //profilePic = manager.profileImage;
+    DbHubManager dbHubManager = DbHubManager();
+
+    var hubManagerData = await dbHubManager.getManager();
+    manager = HubManager(
+        id: hubManagerData!.id,
+        name: hubManagerData.name,
+        emailId: hubManagerData.emailId,
+        phone: hubManagerData.phone,
+        profileImage: hubManagerData.profileImage);
+    // await dbHubManager.addManager(manager!);
+    // await dbHubManager.getManager();
+    //   //profilePic = manager.profileImage;
     setState(() {});
+
+    // await DBPreferences().savePreference(Manager, manager!.name);
+    // await DBPreferences().getPreference(Manager);
   }
 
   verify() async {
@@ -839,14 +987,15 @@ class _ProductListHomeState extends State<ProductListHome> {
       if (parkOrder == null) {
         HubManager manager = await DbHubManager().getManager() as HubManager;
         parkOrder = ParkOrder(
-            id: _selectedCust!.id,
-            date: Helper.getCurrentDate(),
-            time: Helper.getCurrentTime(),
-            customer: _selectedCust!,
-            items: [],
-            orderAmount: 0,
-            manager: manager,
-            transactionDateTime: DateTime.now());
+          id: _selectedCust!.id,
+          date: Helper.getCurrentDate(),
+          time: Helper.getCurrentTime(),
+          customer: _selectedCust!,
+          items: [],
+          orderAmount: 0,
+          manager: manager,
+          transactionDateTime: DateTime.now(),
+        );
       }
 
       setState(() {
@@ -871,6 +1020,13 @@ class _ProductListHomeState extends State<ProductListHome> {
       amount += item.orderedPrice * item.orderedQuantity;
     }
     parkOrder!.orderAmount = amount;
+  }
+
+  _syncDataOnInAppLogin() async {
+    if (widget.isAppLoggedIn) {
+      await ProductsService().getCategoryProduct();
+      setState(() {});
+    }
   }
 
   void goToSelectCustomer() async {

@@ -31,7 +31,7 @@ const HOME_USER_IMAGE = "assets/icons/my_account.svg";
 const LOGIN_IMAGE = "assets/tablet_icons/side_image.svg";
 const PIZZA_IMAGE = "assets/images/pizza_img.png";
 const BURGAR_IMAGE = "assets/images/burgar_img.png";
-
+const NO_IMAGE = "assets/images/no_image.png";
 const HOME_TAB_ICON = "assets/tablet_icons/home_selected.svg";
 const ORDER_TAB_ICON = "assets/tablet_icons/order_icon.svg";
 const PRODUCE_TAB_ICON = "assets/tablet_icons/product_icon.svg";
@@ -49,8 +49,10 @@ const FINANCE_ACTIVE_TAB_IMAGE =
 const CHANGE_PASS_TAB_IMAGE = "assets/tablet_icons/change_pass_icon.svg";
 const CHANGE_PASS_ACTIVE_TAB_IMAGE =
     "assets/tablet_icons/change_pass_selected_icon.svg";
-const APP_ICON = "assets/images/app_logo.png";
-const APP_ICON_TABLET = "assets/images/app_logo_tablet.png";
+
+const App_ICON = "assets/images/app_logo.png";
+
+const App_ICON_TABLET = "assets/images/app_logo_tablet.png";
 // const CUSTOMER_SMALL_IMAGE = 'assets/icons/customer_small.svg';
 // const FORWARD_ARROW_IMAGE = 'assets/icons/forward_arrow.svg';
 // const PAYMENT_MPESA_ICON = 'assets/icons/mpesa_icon.svg';

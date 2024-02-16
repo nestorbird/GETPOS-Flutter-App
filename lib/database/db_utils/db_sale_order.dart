@@ -1,4 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
+import 'package:nb_posx/database/models/orderwise_tax.dart';
+import 'package:nb_posx/utils/helper.dart';
 
 import '../../constants/app_constants.dart';
 import '../models/order_item.dart';
@@ -16,12 +19,14 @@ class DbSaleOrder {
 
   Future<String> createOrder(SaleOrder order) async {
     String res = await saveOrder(order);
+    if(!await Helper.isNetworkAvailable()){
     await DBPreferences().incrementOrderNo(order.id);
-    await DbCategory().reduceInventory(order.items);
-    if (order.transactionId.isEmpty) {
-      await DbHubManager().updateCashBalance(order.orderAmount);
     }
-    await box.close();
+    await DbCategory().reduceInventory(order.items);
+    // if (order.transactionId.isEmpty) {
+    //   await DbHubManager().updateCashBalance(order.orderAmount);
+    // }
+    
     return res;
   }
 
@@ -59,19 +64,36 @@ class DbSaleOrder {
     return list;
   }
 
+//   Future<List<SaleOrder>> getOfflineOrders() async {
+//     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+//  List<SaleOrder> list= [];
+    
+//     // print("TOTAL ORDERS: ${box.keys.length}");
+//     for (var key in box.keys) {
+//       var item = await box.get(key);
+//       var product = item as SaleOrder;
+//       if (product.transactionSynced == false) list.add(product);
+//     }
+   
+//     return list;
+//   }
+  
   Future<List<SaleOrder>> getOfflineOrders() async {
-    box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
-
-    List<SaleOrder> list = [];
-    // print("TOTAL ORDERS: ${box.keys.length}");
-    for (var key in box.keys) {
-      var item = await box.get(key);
-      var product = item as SaleOrder;
-      if (product.transactionSynced == false) list.add(product);
+  box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+  List<SaleOrder> list = [];
+    
+  for (var key in box.keys) {
+    var item = await box.get(key);
+    var product = item as SaleOrder;
+    if (product.transactionSynced == false) {
+      // Inserting at index 0 will ensure the latest order is at the beginning of the list
+      list.insert(0, product);
     }
-    await box.close();
-    return list;
   }
+   
+  return list;
+}
+
 
   Future<double> getOfflineOrderCashBalance() async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
@@ -91,6 +113,23 @@ class DbSaleOrder {
     return cashBalance;
   }
 
+// //to fetch both offline and online orders
+// Future<List<SaleOrder>> getAllOrders() async {
+//   List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
+//   List<SaleOrder> onlineOrders = await DbSaleOrder().getOrders();
+
+//   // Concatenate the lists, giving priority to offline orders
+//   List<SaleOrder> list = List<SaleOrder>.empty(growable: true);
+//   list.addAll(offlineOrders);
+//   list.addAll(onlineOrders);
+
+//   return list;
+// }
+
+
+
+
+
   Future<String> saveOrder(SaleOrder order) async {
     box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
     String orderKey = _getOrderKey(order);
@@ -107,6 +146,7 @@ class DbSaleOrder {
 
       await box.put(orderKey, order);
     });
+    
     return true;
   }
 
@@ -162,4 +202,32 @@ class DbSaleOrder {
     // await box.close();
     return itemsToDelete == deleteCounter;
   }
-}
+
+  //to save tax list in db for orderwise taxation
+  Future<List> saveOrderWiseTax(orderId, List<OrderTax> list) async {
+    box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+    for (OrderTax item in list) {
+      await box.put(item.itemTaxTemplate, item);
+    }
+    // var taxwiseOrder=  await box.putAll();
+
+    return list;
+  }
+
+  Future<List> getOrderWiseTaxes(orderId, List<OrderTaxes> list) async{
+     box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+    List<OrderTax> list = [];
+
+    for (var item in box.values) {
+      var tax = item as OrderTax;
+     
+      var product = item as OrderItem;
+
+      if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
+        list.add(tax);
+      }
+    }
+    return list;
+  }
+  }
+

@@ -2,19 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:lottie/lottie.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/helper.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
+import '../../../../database/db_utils/db_constants.dart';
+import '../../../../database/db_utils/db_preferences.dart';
 import '../../../../database/db_utils/db_sale_order.dart';
 import '../../../../database/models/sale_order.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
 import '../../../../utils/ui_utils/text_styles/custom_text_style.dart';
 import '../../../../widgets/long_button_widget.dart';
 import '../../../service/create_order/api/create_sales_order.dart';
-import '../../create_order_new/ui/new_create_order.dart';
 import '../../home/ui/product_list_home.dart';
 
 class SaleSuccessScreen extends StatefulWidget {
@@ -40,15 +40,18 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         order.id = value.message;
         //order.save();
 
-        DbSaleOrder().createOrder(order).then((value) {
-          debugPrint('order sync and saved to db');
+
+        DbSaleOrder().createOrder(order).then((value) async {
+          log('order sync and saved to db');
           //Helper.showPopup(context, "Order synced and saved locally");
+           //await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, order.id);
         });
       } else {
-        DbSaleOrder().createOrder(widget.placedOrder).then((value) {
-          debugPrint('order saved to db');
-          Helper.showPopup(context,
-              "Order saved locally, and will be synced when you restart the app.");
+        DbSaleOrder().createOrder(widget.placedOrder).then((value) async {
+          log('order saved to db');
+          //await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, widget.placedOrder.id);
+          // Helper.showPopup(context,
+          //     "Order saved locally, and will be synced when you restart the app.");
         });
       }
     });
@@ -60,30 +63,32 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         onWillPop: () async {
           // Navigate to the HomeScreen when the back button is pressed
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => ProductListHome()),
+            MaterialPageRoute(builder: (context) => const ProductListHome()),
             (route) => false, // Remove all other routes from the stack
           );
-          return true; // Prevent default back button behavior
+          return false; // Prevent default back button behavior
         },
         child: Scaffold(
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             Center(
-            child: Lottie.asset(SUCCESS_IMAGE,
-                animate:
-                    true),
+              Center(
+                child: SvgPicture.asset(
+                  SUCCESS_IMAGE,
+                  height: SALE_SUCCESS_IMAGE_HEIGHT,
+                  width: SALE_SUCCESS_IMAGE_WIDTH,
+                  fit: BoxFit.contain,
+                ),
               ),
               hightSpacer30,
               Text(
                 SALES_SUCCESS_TXT,
                 style: getTextStyle(
                     fontSize: LARGE_FONT_SIZE,
-                    color: BLACK_COLOR,
+                    color: AppColors.getTextandCancelIcon(),
                     fontWeight: FontWeight.w600),
               ),
               hightSpacer30,
-              //rajni
               LongButton(
                 isAmountAndItemsVisible: false,
                 buttonTitle: "Print Receipt",
@@ -91,22 +96,30 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
                   _printInvoice();
                 },
               ),
-              // LongButton(
-              //   isAmountAndItemsVisible: false,
-              //   buttonTitle: RETURN_TO_HOME_TXT,
-              //   onTap: () {
-              //     Navigator.popUntil(context, (route) => route.isFirst);
-              //   },
-              // ),
+              LongButton(
+                isAmountAndItemsVisible: false,
+                buttonTitle: RETURN_TO_HOME_TXT,
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductListHome())),
+                // {
+                //   Navigator.popUntil(context, (route) => route.isFirst),
+                // },
+              ),
               LongButton(
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => NewCreateOrder()),
-                      (route) => route.isFirst);
-                },
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ProductListHome())),
+                //() {
+                // Navigator.pushAndRemoveUntil(
+                //     context,
+                //     MaterialPageRoute(builder: (context) => NewCreateOrder()),
+                //     (route) => route.isFirst);
+                // },
               ),
             ],
           ),

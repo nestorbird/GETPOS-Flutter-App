@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_posx/core/service/orderwise_taxation/api/orderwise_api_service.dart';
 import 'package:nb_posx/core/service/select_customer/api/create_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
@@ -23,7 +24,8 @@ class SyncHelper {
   ///
   Future<bool> loginFlow() async {
     await getDetails();
-    GetPreviousOrder().getOrdersOnLogin();
+    await GetPreviousOrder().getOrdersOnLogin();
+
     return true;
   }
 
@@ -74,7 +76,10 @@ class SyncHelper {
     }
 
     List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
+    //List<SaleOrder> offlineOrders = await DbSaleOrder().getAllOrders();
+
     if (offlineOrders.isNotEmpty) {
+      debugPrint("offline order is not empty");
       // ignore: unused_local_variable
       var result = await Future.forEach(offlineOrders, (SaleOrder order) async {
         var customers = await DbCustomer().getCustomer(order.customer.phone);
@@ -87,8 +92,14 @@ class SyncHelper {
         }
       });
     }
-
     await getDetails();
+    // var isResp = await getDetails();
+    // if (isResp== true){
+    //   log('isResp:$isResp');
+    //   return true;
+
+    // }
+
     return true;
   }
 
@@ -99,8 +110,9 @@ class SyncHelper {
   Future<bool> getDetails() async {
     if (await Helper.isNetworkAvailable()) {
       await HubManagerDetails().getAccountDetails();
-      var _ = await CustomerService().getCustomers();
+      await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
+      await OrderwiseTaxes().getOrderwiseTaxes();
       // _ = await ProductsService().getProducts();
     }
     return true;
@@ -118,4 +130,6 @@ class SyncHelper {
     //   }
     // }
   }
+
+ 
 }

@@ -1,4 +1,9 @@
+import 'dart:math';
+
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/database/models/customer.dart';
+import 'package:nb_posx/database/models/sale_order.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'db_constants.dart';
 
@@ -13,7 +18,7 @@ class DBPreferences {
   ///[value] -> Data for the defined [key].
   Future<void> savePreference(String key, dynamic value) async {
     //Open the PreferenceBox
-    await _openPreferenceBox();
+    await openPreferenceBox();
     //Saving preference data into PreferenceBox database
     await prefBox!.put(key, value);
     //Close the PreferenceBox
@@ -25,7 +30,7 @@ class DBPreferences {
   ///If key not exist then it will return blank string.
   Future<dynamic> getPreference(String key) async {
     //Open the PreferenceBox
-    await _openPreferenceBox();
+    await openPreferenceBox();
     //Getting value by key.
     dynamic value = prefBox!.get(key, defaultValue: '');
     //Close the PreferenceBox
@@ -35,8 +40,11 @@ class DBPreferences {
   }
 
   ///Open the PreferenceBox
-  _openPreferenceBox() async {
-    prefBox = await Hive.openBox(PREFERENCE_BOX);
+  openPreferenceBox() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    prefBox = await Hive.openBox(PREFERENCE_BOX, path: path);
+    // prefBox = await Hive.openBox(PREFERENCE_BOX);
   }
 
   ///Close the PreferenceBox
@@ -50,14 +58,41 @@ class DBPreferences {
     await prefBox!.close();
   }
 
+  // Future<void> deleteTranscationData() async {
+  //   prefBox = await Hive.openBox(CUSTOMER_BOX);
+  //   await prefBox!.clear();
+  //   await prefBox!.close();
+  //   prefBox = await Hive.openBox(SALE_ORDER_BOX);
+  //   await prefBox!.clear();
+  //   await prefBox!.close();
+  // }
+
+  Future<void> deleteTransactionData() async {
+ // Open and clear the "customers" box
+  var customerBox = await Hive.openBox<Customer>(CUSTOMER_BOX);
+  await customerBox.clear();
+  await customerBox.close();
+
+  // Open and clear the "sale_orders" box
+  var saleOrderBox = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
+  await saleOrderBox.clear();
+  await saleOrderBox.close();
+}
+
+
   Future<int> incrementOrderNo(String orderId) async {
     prefBox = await Hive.openBox(PREFERENCE_BOX);
+   String orderSeries = await DBPreferences().getPreference(SalesSeries);
+    log("ORDER SERIES :: $orderSeries" as num);
     var list = orderId.split("-");
     //String orderNo = list.last;
-    String orderNo = list.elementAt(list.indexOf(list.last) - 1);
+    String orderNo = list.elementAt(list.indexOf(list.last));
     if (orderNo.isEmpty) orderNo = "0001";
     int newOrderNo = int.parse(orderNo) + 1;
-    await savePreference(CURRENT_ORDER_NUMBER, "$newOrderNo");
+    await DBPreferences().savePreference(CURRENT_ORDER_NUMBER, "$newOrderNo");
+    log("Order No:: $orderNo" as num);
+    log("New Order No:: $newOrderNo" as num);
+   
     return newOrderNo;
   }
 }

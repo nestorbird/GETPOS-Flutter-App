@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../utils/ui_utils/padding_margin.dart';
@@ -18,13 +18,13 @@ class CustomAppbar extends StatelessWidget {
       required this.title,
       this.showBackBtn = true,
       this.hideSidemenu = false,
-      this.backBtnColor = BLACK_COLOR})
+      this.backBtnColor = const Color(0xFF000000)})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    TextStyle headerStyle =
-        getTextStyle(fontSize: LARGE_MINUS_FONT_SIZE, color: DARK_GREY_COLOR);
+    TextStyle headerStyle = getTextStyle(
+        fontSize: LARGE_MINUS_FONT_SIZE, color: AppColors.getAsset());
 
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5, left: 5),
@@ -32,7 +32,8 @@ class CustomAppbar extends StatelessWidget {
           ? Row(
               children: [
                 InkWell(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () =>Navigator.of(context).pop(),
+                  // Navigator.pop(context),
                   child: Padding(
                     padding: smallPaddingAll(),
                     child: SvgPicture.asset(

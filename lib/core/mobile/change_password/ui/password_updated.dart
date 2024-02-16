@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../../../../configs/theme_config.dart';
 import '../../../../constants/app_constants.dart';
 import '../../../../constants/asset_paths.dart';
 import '../../../../utils/ui_utils/spacer_widget.dart';
@@ -41,7 +41,7 @@ class _PasswordUpdatedState extends State<PasswordUpdated> {
           Navigator.of(context).popUntil((route) => route.isFirst);
         },
         title: PASSWORD_UPDATED_BTN_TXT,
-        colorBG: MAIN_COLOR,
+        primaryColor: AppColors.getPrimary(),
         width: 350,
         //width: MediaQuery.of(context).size.width / 2.5,
       ),
@@ -53,7 +53,7 @@ class _PasswordUpdatedState extends State<PasswordUpdated> {
             hightSpacer50,
             hightSpacer50,
             hightSpacer50,
-            Image.asset(APP_ICON, width: 100, height: 100),
+            Image.asset(App_ICON, width: 100, height: 100),
             hightSpacer50,
             // appLogo,
             hightSpacer50,
@@ -61,7 +61,7 @@ class _PasswordUpdatedState extends State<PasswordUpdated> {
               child: Text(
                 PASSWORD_UPDATED_TITLE.toUpperCase(),
                 style: getTextStyle(
-                    color: MAIN_COLOR,
+                    color: AppColors.getPrimary(),
                     fontWeight: FontWeight.bold,
                     fontSize: LARGE_FONT_SIZE),
               ),

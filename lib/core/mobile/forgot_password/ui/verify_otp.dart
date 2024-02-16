@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../utils/ui_utils/padding_margin.dart';
 import '../../../../../utils/ui_utils/spacer_widget.dart';
@@ -38,7 +38,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
           Navigator.popUntil(context, (route) => route.isFirst);
         },
         title: FORGOT_BTN_TXT,
-        colorBG: MAIN_COLOR,
+        primaryColor:  AppColors.getPrimary(),
         width: MediaQuery.of(context).size.width,
       ),
     );
@@ -50,7 +50,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             hightSpacer50,
             hightSpacer50,
             // appLogo,
-            Image.asset(APP_ICON, width: 100, height: 100),
+            Image.asset(App_ICON, width: 100, height: 100),
             hightSpacer50,
             hightSpacer50,
             Center(
@@ -59,7 +59,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 style: getTextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: LARGE_FONT_SIZE,
-                    color: MAIN_COLOR),
+                    color:  AppColors.getPrimary()),
               ),
             ),
             hightSpacer45,

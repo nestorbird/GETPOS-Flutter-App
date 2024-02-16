@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 
-import '../../../configs/theme_config.dart';
 import '../../../constants/asset_paths.dart';
 import '../../../utils/ui_utils/padding_margin.dart';
 import '../../../utils/ui_utils/spacer_widget.dart';
@@ -17,35 +17,29 @@ class LeftSideMenu extends StatelessWidget {
     return Container(
       width: 80,
       height: Get.size.height,
-      color: WHITE_COLOR,
+      color: AppColors.fontWhiteColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          InkWell(
-            onTap: () {
-              // print("tap");
-              selectedView.value = "Order";
-            },
-            child: Container(
-              padding: morePaddingAll(),
-              decoration: const BoxDecoration(
-                  // color: MAIN_COLOR,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(0),
-                      topRight: Radius.circular(15))),
-              child: Padding(
-                padding: verticalSpace(x: 0),
-                child: Image.asset(
-                  APP_ICON_TABLET,
-                  fit: BoxFit.fill,
-                ),
-                // child: Text(
-                //   "POS",
-                //   textAlign: TextAlign.center,
-                //   style: getTextStyle(
-                //       color: WHITE_COLOR, fontSize: LARGE_MINUS_FONT_SIZE),
-                // ),
+          Container(
+            //padding: morePaddingAll(),
+            decoration: const BoxDecoration(
+                // color: MAIN_COLOR,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(15))),
+            child: Padding(
+              padding: verticalSpace(x: 0),
+              child: Image.asset(
+                App_ICON_TABLET,
+                fit: BoxFit.fill,
               ),
+              // child: Text(
+              //   "POS",
+              //   textAlign: TextAlign.center,
+              //   style: getTextStyle(
+              //       color: AppColors.fontWhiteColor, fontSize: LARGE_MINUS_FONT_SIZE),
+              // ),
             ),
           ),
           hightSpacer15,
@@ -87,11 +81,11 @@ class LeftSideMenu extends StatelessWidget {
             // height: 75,
             decoration: BoxDecoration(
               color: title.toLowerCase() == selectedView.toLowerCase()
-                  ? MAIN_COLOR
-                  : WHITE_COLOR,
+                  ?  AppColors.getPrimary()
+                  : AppColors.fontWhiteColor,
               borderRadius: BorderRadius.circular(12),
               // boxShadow: const [BoxShadow(blurRadius: 0.05)],
-              border: Border.all(width: 1, color: GREY_COLOR),
+              border: Border.all(width: 1, color: AppColors.shadowBorder!),
             ),
             child: Wrap(
               // mainAxisSize: MainAxisSize.min,
@@ -103,8 +97,8 @@ class LeftSideMenu extends StatelessWidget {
                     child: SvgPicture.asset(
                       iconData,
                       color: title.toLowerCase() == selectedView.toLowerCase()
-                          ? WHITE_COLOR
-                          : DARK_GREY_COLOR,
+                          ? AppColors.fontWhiteColor
+                          : AppColors.getAsset(),
                       width: width,
                     ),
                   ),
@@ -120,8 +114,8 @@ class LeftSideMenu extends StatelessWidget {
                         fontSize: MEDIUM_FONT_SIZE,
                         fontWeight: FontWeight.w500,
                         color: title.toLowerCase() == selectedView.toLowerCase()
-                            ? WHITE_COLOR
-                            : BLACK_COLOR,
+                            ? AppColors.fontWhiteColor
+                            : AppColors.getTextandCancelIcon(),
                       ),
                     ),
                   ),

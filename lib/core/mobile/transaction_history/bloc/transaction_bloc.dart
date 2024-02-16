@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:nb_posx/core/service/sales_history/api/get_previous_order.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/database/models/attribute.dart';
 import 'package:nb_posx/database/models/sale_order.dart';
@@ -101,42 +102,144 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     }
   }
 
-  Future<List<Transaction>> _fetchTransactions([int orderSize = 0]) async {
-    if (await Helper.isNetworkAvailable()) {
-      int pageNo = 1;
-      if (orderSize > 0) {
-        var ord = orderSize / _listSize;
-        pageNo = (ord.ceilToDouble() + 1).toInt();
-      }
-      debugPrint("Current Page No: $pageNo");
+//Future<List<Transaction>> _fetchTransactions([int orderSize = 0]) async {
+//     if (await Helper.isNetworkAvailable()) {
+//       int pageNo = 1;
+//       if (orderSize > 0) {
+//         var ord = orderSize / _listSize;
+//         pageNo = (ord.ceilToDouble() + 1).toInt();
+//       }
+//       debugPrint("Current Page No: $pageNo");
+//  await DbSaleOrder().modifySevenDaysOrdersFromToday();
+//       String hubManagerId = await DBPreferences().getPreference(HubManagerId);
 
-      String hubManagerId = await DBPreferences().getPreference(HubManagerId);
+//       //Creating GET api url
+//       String apiUrl = SALES_HISTORY;
+//       apiUrl += '?hub_manager=$hubManagerId&page_no=$pageNo';
 
-      //Creating GET api url
-      String apiUrl = SALES_HISTORY;
-      apiUrl += '?hub_manager=$hubManagerId&page_no=$pageNo';
 
-      return _processRequest(apiUrl);
-    } else {
-      List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
-      List<Transaction> offlineTransactions = [];
-      for (var order in offlineOrders) {
-        Transaction transaction = Transaction(
-            id: order.id,
-            date: order.date,
-            time: order.time,
-            customer: order.customer,
-            items: order.items,
-            orderAmount: order.orderAmount,
-            tracsactionDateTime: order.tracsactionDateTime);
+//    return _processRequest(apiUrl);
+//     } 
+Future<List<Transaction>> _fetchTransactions([int orderSize = 0]) async {
+  // Fetch offline orders
+  List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
 
-        offlineTransactions.add(transaction);
-      }
-      return offlineTransactions;
-    }
+  // Combine both previous orders and offline orders
+  List<Transaction> allTransactions = [];
 
-    //throw Exception("Error fetching transactions");
+  // Add offline orders to allTransactions
+  for (var order in offlineOrders) {
+    Transaction transaction = Transaction(
+      id: order.id,
+      date: order.date,
+      time: order.time,
+      customer: order.customer,
+      items: order.items,
+      orderAmount: order.orderAmount,
+      tracsactionDateTime: order.tracsactionDateTime,
+    );
+
+    allTransactions.add(transaction);
   }
+
+  // If the user is online, fetch online orders
+  if (await Helper.isNetworkAvailable()) {
+    int pageNo = 1;
+    if (orderSize > 0) {
+      var ord = orderSize / _listSize;
+      pageNo = (ord.ceilToDouble() + 1).toInt();
+    }
+    debugPrint("Current Page No: $pageNo");
+    
+    await DbSaleOrder().modifySevenDaysOrdersFromToday();
+    String hubManagerId = await DBPreferences().getPreference(HubManagerId);
+
+    // Creating GET api url
+    String apiUrl = SALES_HISTORY;
+    apiUrl += '?hub_manager=$hubManagerId&page_no=$pageNo';
+
+    // Fetch online orders
+    List<Transaction> onlineTransactions = await _processRequest(apiUrl);
+
+    // Add online orders to allTransactions
+    for (var transaction in onlineTransactions) {
+      // Check whether an order with the same id already exists
+      bool orderExists =
+          allTransactions.any((offlineTransaction) => offlineTransaction.id == transaction.id);
+
+      // If the order doesn't exist, add it to allTransactions
+      if (!orderExists) {
+        allTransactions.add(transaction);
+      }
+    }
+  
+
+  return allTransactions;
+}
+  
+   
+    else {
+    
+    // Fetch offline orders
+List<SaleOrder> offlineOrders = await DbSaleOrder().getOfflineOrders();
+
+// Combine both previous orders and offline orders
+List<Transaction> allTransactions = [];
+
+// Add offline orders to allTransactions
+for (var order in offlineOrders) {
+  Transaction transaction = Transaction(
+    id: order.id,
+    date: order.date,
+    time: order.time,
+    customer: order.customer,
+    items: order.items,
+    orderAmount: order.orderAmount,
+    tracsactionDateTime: order.tracsactionDateTime,
+  );
+
+  allTransactions.add(transaction);
+}
+
+GetPreviousOrder getPreviousOrder = GetPreviousOrder();
+    List<Transaction> previousOrders = await getPreviousOrder.getSavedOrders();
+
+  
+
+    // Fetch all previous orders from the local database
+ //List<SaleOrder> previousOrders = await DbSaleOrder().getOrders();
+
+// to avoid duplicacy
+for (var order in previousOrders) {
+  // Check whether an order with the same id already exists
+  bool orderExists = allTransactions.any((transaction) => transaction.id == order.id);
+
+  // If the order doesn't exist, add it to allTransactions
+  if (!orderExists) {
+    Transaction transaction = Transaction(
+      id: order.id,
+      date: order.date,
+      time: order.time,
+      customer: order.customer,
+      items: order.items,
+      orderAmount: order.orderAmount,
+      tracsactionDateTime: order.tracsactionDateTime,
+    );
+
+    allTransactions.add(transaction);
+  }
+  
+}
+
+
+return allTransactions;
+
+    }
+  
+  }
+
+   
+
 
   Future<List<Transaction>> _processRequest(String apiUrl) async {
     try {
@@ -191,7 +294,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
                   productImage: Uint8List.fromList([]),
                   productImageUrl: orderedProduct.image,
                   productUpdatedTime: DateTime.now(),
-                  tax: 0);
+                  tax: []);
 
               orderedProducts.add(product);
             }
@@ -209,7 +312,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
                 .format(DateTime.parse(transactionDateTime))
                 .toString();
             log('Time : $time');
-
             Transaction sale = Transaction(
               id: order.name!,
               customer: Customer(
@@ -228,19 +330,31 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
             );
 
             sales.add(sale);
+           
           }
+       
         }
+     //await DbSaleOrder().saveOrders(sales);
         return sales;
-      } else {
+          
+        
+      } 
+      else {
         return [];
       }
-    } catch (ex) {
+      
+    }
+     catch (ex) {
       debugPrint("Exception occured $ex");
       debugPrintStack();
       log(ex.toString());
       return [];
     }
   }
+  
+
+      
+    
 
   Future<List<Transaction>> _searchTransactions(String query,
       {int orderSize = 0}) async {
@@ -261,4 +375,6 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
 
     throw Exception("Error fetching transactions");
   }
+  
 }
+  

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 
 import '../../constants/app_constants.dart';
 import '../../database/db_utils/db_constants.dart';
@@ -20,7 +21,7 @@ class APIUtils {
   static Future<Map<String, dynamic>> getRequest(String apiUrl) async {
     try {
       //Remote Call to API with url and headers
-      http.Response apiResponse = await http.get(_apiPath(apiUrl));
+      http.Response apiResponse = await http.get(await _apiPath(apiUrl));
 
       //Checking for the response code and handling the result.
       return _returnResponse(apiResponse);
@@ -71,10 +72,11 @@ class APIUtils {
       Helper.printJSONData(requestBody);
 
       //Getting response from api call
-      http.Response apiResponse = await http.post(_apiPath(apiUrl),
+      http.Response apiResponse = await http.post(await _apiPath(apiUrl),
           body: jsonEncode(requestBody),
           headers: enableHeader ? await _headers() : {});
       print(apiResponse);
+      log('Request Body :$requestBody');
 
       //Checking for the response code and handling the result.
       return _returnResponse(apiResponse);
@@ -91,7 +93,7 @@ class APIUtils {
     try {
       //Remote Call to API with url and headers
       http.Response apiResponse =
-          await http.get(_apiPath(apiUrl), headers: await _headers());
+          await http.get(await _apiPath(apiUrl), headers: await _headers());
 
       //Checking for the response code and handling the result.
       return _returnResponse(apiResponse);
@@ -103,11 +105,22 @@ class APIUtils {
     }
   }
 
-  static Uri _apiPath(String url) {
+  static Future<Uri> _apiPath(String url) async {
     //Parsing the apiURl to Uri
+    // if (instanceUrl == "https://$instanceUrl/api/") {
+    //   Uri uri = Uri.parse(instanceUrl + url);
+    //   log('API URL inside _apipath if :: $uri');
+    //   return uri;
+    // } else {
+    String appendInstanceUrl = await _getUrlKey();
+    instanceUrl = "https://$appendInstanceUrl/api/";
     Uri uri = Uri.parse(instanceUrl + url);
     log('API URL :: $uri');
     return uri;
+    // }
+    // Uri uri = Uri.parse(instanceUrl + url);
+    // log('API URL :: $uri');
+    // return uri;
   }
  static Uri _apiPathVerify(String url) {
     //Parsing the apiURl to Uri
@@ -117,6 +130,7 @@ class APIUtils {
   }
 
   static Future<Map<String, String>> _headers() async {
+    debugPrint("Fetch token");
     //Getting auth token
     String authToken = await getToken();
     debugPrint("TOKEN: $authToken");
@@ -161,5 +175,10 @@ class APIUtils {
 
     //Returning the final auth token as result
     return "token $apiKey:$apiSecret";
+  }
+
+  static Future<String> _getUrlKey() async {
+    String insUrl = await DbInstanceUrl().getUrl();
+    return insUrl;
   }
 }

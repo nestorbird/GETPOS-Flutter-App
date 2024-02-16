@@ -1,10 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/utils/helper.dart';
 
-import '../../../../../configs/theme_config.dart';
 import '../../../../../constants/app_constants.dart';
 import '../../../../../constants/asset_paths.dart';
 import '../../../../../database/db_utils/db_categories.dart';
@@ -23,9 +25,13 @@ import '../widget/select_customer_popup.dart';
 import '../widget/title_search_bar.dart';
 import 'cart_widget.dart';
 
+// ignore: must_be_immutable
 class CreateOrderLandscape extends StatefulWidget {
+  ParkOrder? order;
+
   final RxString selectedView;
-  const CreateOrderLandscape({Key? key, required this.selectedView})
+  CreateOrderLandscape(
+      {Key? key, required this.order, required this.selectedView})
       : super(key: key);
 
   @override
@@ -33,6 +39,10 @@ class CreateOrderLandscape extends StatefulWidget {
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
+  bool isInternetAvailable = true;
+  final ValueNotifier<List<OrderItem>> itemsNotifier =
+      ValueNotifier<List<OrderItem>>([]);
+  ParkOrder? parkOrder;
   late TextEditingController searchCtrl;
   late Size size;
   Customer? customer;
@@ -40,9 +50,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   List<Category> categories = [];
   // ParkOrder? parkOrder;
   late List<OrderItem> items;
+  late ScrollController _scrollController;
+  final _key = GlobalKey<ExpandableFabState>();
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    checkInternetAvailability();
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
@@ -59,6 +73,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 
   @override
   void dispose() {
+    itemsNotifier.dispose();
     searchCtrl.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -73,109 +88,148 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    return GestureDetector(
-        onTap: _handleTap,
-        child: Row(
-          children: [
-            SizedBox(
-              width: size.width - 415,
-              height: size.height,
-              child: SingleChildScrollView(
+    return Row(
+      children: [
+        SizedBox(
+          width: size.width - 505,
+          height: size.height,
+          child: Column(
+            children: [
+              TitleAndSearchBar(
+                title: "Choose Category",
+                searchCtrl: searchCtrl,
+                searchHint: "Search product / category",
+                searchBoxWidth: size.width / 4,
+                onTap: () {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    debugPrint('isOpen:${state.isOpen}');
+                    if (state.isOpen) {
+                      state.toggle();
+                    }
+                  }
+                },
+                onSubmit: (text) {
+                  if (searchCtrl.text.length >= 3) {
+                    _filterProductsCategories(searchCtrl.text);
+                  } else {
+                    getProducts();
+                  }
+                },
+                //  (text) {
+                //   if (text.length >= 3) {
+                //     categories.isEmpty
+                //         ? const Center(
+                //             child: Text(
+                //             "No items found",
+                //             style: TextStyle(fontWeight: FontWeight.bold),
+                //           ))
+                //         : _filterProductsCategories(text);
+                //   } else {
+                //     getProducts();
+                //   }
+                // },
+                onTextChanged: ((changedtext) {
+                  final state = _key.currentState;
+                  if (state != null) {
+                    debugPrint('isOpen:${state.isOpen}');
+                    if (state.isOpen) {
+                      state.toggle();
+                    }
+                  }
+                  if (changedtext.length < 3) {
+                    getProducts();
+                    // _filterProductsCategories(changedtext);
+                  }
+                }),
+                //  (changedtext) {
+                //   if (changedtext.length >= 3) {
+                //     categories.isEmpty
+                //         ? const Center(
+                //             child: Text(
+                //             "No items found",
+                //             style: TextStyle(fontWeight: FontWeight.bold),
+                //           ))
+                //         : _filterProductsCategories(changedtext);
+                //   } else {
+                //     getProducts();
+                //   }
+                // },
+              ),
+              hightSpacer20,
+              Expanded(
+                flex: 2,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
                   child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  TitleAndSearchBar(
-                    focusNode: _focusNode,
-                    inputFormatter: [],
-                    title: "Choose Category",
-                    onSubmit: (text) {
-                      if (text.length >= 3) {
-                        categories.isEmpty
-                            ? const Center(
-                                child: Text(
-                                "No items found",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))
-                            : _filterProductsCategories(text);
-                      } else {
-                        getProducts();
-                      }
-                    },
-                    onTextChanged: (changedtext) {
-                      if (changedtext.length >= 3) {
-                        categories.isEmpty
-                            ? const Center(
-                                child: Text(
-                                "No items found",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ))
-                            : _filterProductsCategories(changedtext);
-                      } else {
-                        getProducts();
-                      }
-                    },
-                    searchCtrl: searchCtrl,
-                    searchHint: "Search product / category",
-                    searchBoxWidth: size.width / 4,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      categories.isEmpty
+                          ? const Center(
+                              child: Text(
+                              "No items found",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ))
+                          : getCategoryListWidg(),
+                      hightSpacer20,
+                      ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemCount: categories.length,
+                        itemBuilder: (context, position) {
+                          return Column(
+                            children: [
+                              categories.isEmpty
+                                  ? const Center(
+                                      child: Text(
+                                      "No items found",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ))
+                                  : getCategoryItemsWidget(
+                                      categories[position]),
+                              hightSpacer10
+                            ],
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  hightSpacer20,
-                  categories.isEmpty
-                      ? const Center(
-                          child: Text(
-                          "No items found",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ))
-                      : getCategoryListWidg(),
-                  hightSpacer20,
-                  ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          categories.isEmpty
-                              ? const Center(
-                                  child: Text(
-                                  "No items found",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ))
-                              : getCategoryItemsWidget(categories[index]),
-                          hightSpacer10
-                        ],
-                      );
-                    },
-                  ),
-                ],
-              )),
-            ),
-            Padding(
-              padding: leftSpace(x: 5),
-              child: CartWidget(
-                customer: customer,
-                orderList: items,
-                onHome: () {
-                  widget.selectedView.value = "Home";
-                  items.clear();
-                  customer = null;
-                  setState(() {});
-                },
-                onPrintReceipt: () {
-                  widget.selectedView.value = "Home";
-                  items.clear();
-                  customer = null;
-                  setState(() {});
-                },
-                onNewOrder: () {
-                  customer = null;
-                  items = [];
-                  setState(() {});
-                },
-              ), //_cartWidget()
-            ),
-          ],
-        ));
+                ),
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: leftSpace(x: 5),
+          child: CartWidget(
+            // order: parkOrder!,
+            itemsNotifier: itemsNotifier,
+            customer: customer,
+            orderList: items,
+            taxes: const [],
+            onHome: () {
+              widget.selectedView.value = "Home";
+              items.clear();
+              customer = null;
+              setState(() {});
+            },
+            onPrintReceipt: () {
+              widget.selectedView.value = "Home";
+              items.clear();
+              customer = null;
+              setState(() {});
+            },
+            onNewOrder: () {
+              customer = null;
+              items = [];
+              setState(() {});
+            },
+          ), //_cartWidget()
+        ),
+      ],
+    );
   }
 
   getCategoryItemsWidget(Category cat) {
@@ -197,7 +251,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: cat.items.length,
-              itemBuilder: (BuildContext context, index) {
+              itemBuilder: (context, position) {
                 // return Container(
                 //     margin: const EdgeInsets.only(left: 8, right: 8),
                 //     child: InkWell(
@@ -206,9 +260,9 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //           _handleCustomerPopup();
                 //         } else {
                 //           var item =
-                //               OrderItem.fromJson(cat.items[index].toJson());
+                //               OrderItem.fromJson(cat.items[position].toJson());
                 //           _openItemDetailDialog(context, item);
-                //           debugPrint("Item clicked $index");
+                //           debugPrint("Item clicked $position");
                 //         }
                 //       },
                 //       child: Stack(
@@ -222,7 +276,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //               width: 145,
                 //               height: 105,
                 //               decoration: BoxDecoration(
-                //                   color: WHITE_COLOR,
+                //                   color: AppColors.fontWhiteColor,
                 //                   borderRadius: BorderRadius.circular(10)),
                 //               child: Column(
                 //                 mainAxisAlignment: MainAxisAlignment.center,
@@ -231,7 +285,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //                   hightSpacer25,
                 //                   SizedBox(
                 //                     child: Text(
-                //                       cat.items[index].name,
+                //                       cat.items[position].name,
                 //                       maxLines: 2,
                 //                       overflow: TextOverflow.ellipsis,
                 //                       style: getTextStyle(
@@ -242,7 +296,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //                   ),
                 //                   hightSpacer5,
                 //                   Text(
-                //                     "$appCurrency ${cat.items[index].price.toStringAsFixed(2)}",
+                //                     "$appCurrency ${cat.items[position].price.toStringAsFixed(2)}",
                 //                     textAlign: TextAlign.right,
                 //                     style: getTextStyle(
                 //                         color: MAIN_COLOR,
@@ -258,8 +312,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //             decoration:
                 //                 const BoxDecoration(shape: BoxShape.circle),
                 //             clipBehavior: Clip.antiAliasWithSaveLayer,
-                //             child: cat.items[index].productImage.isNotEmpty
-                //                 ? Image.memory(cat.items[index].productImage,
+                //             child: cat.items[position].productImage.isNotEmpty
+                //                 ? Image.memory(cat.items[position].productImage,
                 //                     fit: BoxFit.fill)
                 //                 : SvgPicture.asset(
                 //                     PRODUCT_IMAGE,
@@ -277,9 +331,9 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                           if (customer == null) {
                             _handleCustomerPopup();
                           } else {
-                            if (cat.items[index].stock > 0) {
-                              var item =
-                                  OrderItem.fromJson(cat.items[index].toJson());
+                            if (cat.items[position].stock > 0) {
+                              var item = OrderItem.fromJson(
+                                  cat.items[position].toJson());
                               log('Selected Item :: $item');
                               _openItemDetailDialog(context, item);
                             } else {
@@ -290,7 +344,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                         },
                         child: ColorFiltered(
                             colorFilter: ColorFilter.mode(
-                                cat.items[index].stock > 0
+                                cat.items[position].stock > 0
                                     ? Colors.transparent
                                     : Colors.white.withOpacity(0.6),
                                 BlendMode.screen),
@@ -302,10 +356,10 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                   child: Container(
                                     margin: paddingXY(x: 5, y: 20),
                                     padding: paddingXY(y: 0, x: 10),
-                                    width: 145,
-                                    height: 100,
+                                    width: 175, //to do here
+                                    height: 90,
                                     decoration: BoxDecoration(
-                                        color: WHITE_COLOR,
+                                        color: AppColors.fontWhiteColor,
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: Column(
@@ -318,7 +372,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                         SizedBox(
                                           height: 20,
                                           child: Text(
-                                            cat.items[index].name,
+                                            cat.items[position].name,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
@@ -331,10 +385,10 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                         ),
                                         hightSpacer4,
                                         Text(
-                                          "$appCurrency ${cat.items[index].price.toStringAsFixed(2)}",
+                                          "$appCurrency ${cat.items[position].price.toStringAsFixed(2)}",
                                           textAlign: TextAlign.end,
                                           style: getTextStyle(
-                                              color: MAIN_COLOR,
+                                              color: AppColors.getSecondary(),
                                               fontSize: SMALL_PLUS_FONT_SIZE),
                                         ),
                                       ],
@@ -343,32 +397,67 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                 ),
                                 Container(
                                     decoration: BoxDecoration(
-                                        border: Border.all(color: WHITE_COLOR),
+                                        border: Border.all(
+                                            color: AppColors.fontWhiteColor!),
                                         shape: BoxShape.circle),
                                     child: Container(
-                                      margin: const EdgeInsets.only(
-                                          left: 5, right: 5),
-                                      height: 58,
-                                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle),
-                                      child: cat
-                                              .items[index].productImage.isEmpty
-                                          ? Image.asset(BURGAR_IMAGE)
-                                          : Image.memory(
-                                              cat.items[index].productImage),
-                                    )),
+                                        // color: Colors.amber,
+                                        margin: const EdgeInsets.only(
+                                            left: 5, right: 5),
+                                        height: 55,
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        decoration: const BoxDecoration(
+                                            shape: BoxShape.circle),
+                                        child: (isInternetAvailable &&
+                                                (cat
+                                                    .items[position]
+                                                    .productImageUrl!
+                                                    .isNotEmpty))
+                                            //          !=
+                                            //     null ||
+                                            // cat
+                                            //     .items[position]
+                                            //     .productImageUrl!
+                                            //     .isNotEmpty))
+                                            ? Image.network(
+                                                cat.items[position]
+                                                    .productImageUrl!,
+                                              )
+                                            : (isInternetAvailable &&
+                                                    (cat
+                                                        .items[position]
+                                                        .productImageUrl!
+                                                        .isEmpty))
+                                                //          ==
+                                                //     null ||
+                                                // cat.items[position]
+                                                //         .productImageUrl ==
+                                                //     ""))
+                                                ? Image.asset(
+                                                    NO_IMAGE,
+                                                  )
+                                                : Image.asset(
+                                                    NO_IMAGE,
+                                                  )
+                                        // cat.items[position].productImage.isEmpty
+                                        //     ? Image.asset(NO_IMAGE)
+                                        //     : Image.memory(cat
+                                        //         .items[position].productImage),
+                                        )),
                                 Container(
                                     padding: const EdgeInsets.all(6),
                                     margin: const EdgeInsets.only(left: 45),
                                     decoration: const BoxDecoration(
                                         shape: BoxShape.circle,
-                                        color: GREEN_COLOR),
+                                        color: Color(0xFF62B146)),
                                     child: Text(
-                                      cat.items[index].stock.toInt().toString(),
+                                      cat.items[position].stock
+                                          .toInt()
+                                          .toString(),
                                       style: getTextStyle(
                                           fontSize: SMALL_FONT_SIZE,
-                                          color: WHITE_COLOR),
+                                          color: AppColors.fontWhiteColor),
                                     ))
                               ],
                             ))));
@@ -400,8 +489,16 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
-          itemBuilder: (BuildContext context, index) {
-            return InkWell(
+          itemBuilder: (context, position) {
+            return GestureDetector(
+              onTap: (() {
+                // log("TAPPED:::::");
+                final state = _key.currentState;
+                if (state != null && state.isOpen) {
+                  state.toggle();
+                }
+                _scrollToIndex(position);
+              }),
               child: categories.isEmpty
                   ? const Center(
                       child: Text(
@@ -413,7 +510,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                       margin: paddingXY(y: 5),
                       width: 100,
                       decoration: BoxDecoration(
-                        color: WHITE_COLOR,
+                        color: AppColors.fontWhiteColor,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
@@ -421,27 +518,68 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.only(left: 5),
-                            height: 60,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.amber),
-                            child: categories[index].image.isNotEmpty
-                                ? Image.memory(
-                                    categories[index].items.first.productImage,
-                                    height: 50,
-                                    width: 50,
-                                    fit: BoxFit.fill,
-                                  )
-                                : Image.asset(
-                                    BURGAR_IMAGE,
-                                    height: 55,
-                                    width: 55,
-                                    fit: BoxFit.fill,
-                                  ),
-                          ),
+                              margin: const EdgeInsets.only(left: 5),
+                              height: 60,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
+                              child: (isInternetAvailable &&
+                                      (categories[position]
+                                          .items[0]
+                                          .productImageUrl!
+                                          .isNotEmpty))
+                                  //         !=
+                                  //     null ||
+                                  // categories[position]
+                                  //     .items[0]
+                                  //     .productImageUrl!
+                                  //     .isNotEmpty))
+                                  ? Image.network(
+                                      categories[position]
+                                          .items[0]
+                                          .productImageUrl!,
+                                      fit: BoxFit.fill,
+                                      // height: 50,
+                                      // width: 50,
+                                    )
+                                  : (isInternetAvailable &&
+                                          (categories[position]
+                                              .items[0]
+                                              .productImageUrl!
+                                              .isEmpty))
+                                      ? Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        )
+                                      : Image.asset(
+                                          NO_IMAGE,
+                                          fit: BoxFit.fill,
+                                        ))
+                          // categories[position].image.isNotEmpty
+                          //     ? Image.memory(
+                          //         categories[position]
+                          //             .items
+                          //             .first
+                          //             .productImage,
+                          //         height: 50,
+                          //         width: 50,
+                          //         fit: BoxFit.fill,
+                          //       )
+                          //     : Image.asset(
+                          //         NO_IMAGE,
+                          //         fit: BoxFit.fill,
+                          //       ))
+
+                          // Image.asset(
+                          //     BURGAR_IMAGE,
+                          //     height: 50,
+                          //     width: 50,
+                          //     fit: BoxFit.fill,
+                          //   ),
+                          ,
                           Text(
-                            categories[index].name,
+                            categories[position].name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: getTextStyle(
@@ -457,9 +595,23 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     );
   }
 
+  Future<void> checkInternetAvailability() async {
+    try {
+      bool internetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        isInternetAvailable = internetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
+
   Future<void> getProducts() async {
     //Fetching data from DbProduct database
     categories = await DbCategory().getCategories();
+    log("CATEGORIES");
+    log(categories.toString());
     setState(() {});
   }
 
@@ -478,7 +630,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
         // contentPadding: paddingXY(x: 0, y: 0),
         title: "",
         titlePadding: paddingXY(x: 0, y: 0),
-        // custom: Container(),
+        //   custom: Container(),
         content: CreateCustomerPopup(
           phoneNo: result,
         ),
@@ -489,6 +641,19 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       debugPrint("Customer selected");
     }
     setState(() {});
+  }
+
+  double _scrollToOffset(int index) {
+    // Calculate the scroll offset for the given index
+    // You'll need to adjust this based on your actual item heights
+    double itemHeight = 200;
+    return itemHeight * index;
+  }
+
+  void _scrollToIndex(int index) {
+    double offset = _scrollToOffset(index);
+    _scrollController.animateTo(offset,
+        duration: const Duration(seconds: 1), curve: Curves.easeInOutSine);
   }
 
   void _filterProductsCategories(String searchTxt) {

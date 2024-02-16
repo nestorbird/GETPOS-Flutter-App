@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../../configs/theme_config.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import '../../../../../constants/app_constants.dart';
 
 import '../../../../../utils/ui_utils/padding_margin.dart';
@@ -20,7 +20,7 @@ class TransactionItemLandscape extends StatelessWidget {
       onTap: () => _handleOrderDetails(),
       child: Container(
         decoration: BoxDecoration(
-          border: Border.all(color: GREY_COLOR, width: 0.4),
+          border: Border.all(color: AppColors.shadowBorder!, width: 0.4),
           borderRadius: BorderRadius.circular(8),
         ),
         padding: morePaddingAll(),
@@ -35,16 +35,18 @@ class TransactionItemLandscape extends StatelessWidget {
                 children: [
                   Text(
                     order.customer.name,
+                    overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                        fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w500),
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
+                        fontWeight: FontWeight.w800),
                   ),
-                  hightSpacer10,
+                  hightSpacer5,
                   Text(
                     order.customer.phone.isEmpty
                         ? "9090909090"
                         : order.customer.phone,
                     style: getTextStyle(
-                        fontSize: MEDIUM_FONT_SIZE,
+                        fontSize: MEDIUM_PLUS_FONT_SIZE,
                         fontWeight: FontWeight.w500),
                   ),
                 ],
@@ -56,13 +58,13 @@ class TransactionItemLandscape extends StatelessWidget {
               child: Text(
                 '$appCurrency ${order.orderAmount}',
                 style: getTextStyle(
-                    fontSize: LARGE_MINUS_FONT_SIZE,
-                    color: MAIN_COLOR,
-                    fontWeight: FontWeight.w500),
+                    fontSize: MEDIUM_PLUS_FONT_SIZE,
+                    color: AppColors.getPrimary(),
+                    fontWeight: FontWeight.w800),
               ),
             ),
             Expanded(
-              flex: 4,
+              flex: 6,
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -72,17 +74,19 @@ class TransactionItemLandscape extends StatelessWidget {
                     overflow: TextOverflow.clip,
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
-                        fontWeight: FontWeight.w500),
+                        fontWeight: FontWeight.w600),
                   ),
-                  hightSpacer10,
+                  hightSpacer5,
                   Text(
-                    textAlign: TextAlign.start,
+                    
                     // '27th Jul 2021, 11:00AM ',
                     '${order.date} ${order.time}',
                     overflow: TextOverflow.clip,
-                    // textAlign: TextAlign.right,
+                    textAlign: TextAlign.center,
+
                     style: getTextStyle(
                         fontSize: MEDIUM_MINUS_FONT_SIZE,
+                        color: const Color(0xFF707070),
                         fontWeight: FontWeight.w500),
                   ),
                 ],

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 Widget getHeightSpacer(height) => SizedBox(height: height.toDouble());
 
 Widget widthSpacer(width) => SizedBox(width: width.toDouble());
-
+Widget widthSpacer40 = widthSpacer(40);
 Widget hightSpacer4 = getHeightSpacer(4);
 Widget hightSpacer5 = getHeightSpacer(5);
 Widget hightSpacer7 = getHeightSpacer(7);
@@ -18,3 +18,7 @@ Widget hightSpacer32 = getHeightSpacer(32);
 Widget hightSpacer40 = getHeightSpacer(40);
 Widget hightSpacer45 = getHeightSpacer(45);
 Widget hightSpacer50 = getHeightSpacer(50);
+Widget hightSpacer75 = getHeightSpacer(75);
+Widget hightSpacer85 = getHeightSpacer(85);
+Widget hightSpacer100 = getHeightSpacer(100);
+Widget hightSpacer120= getHeightSpacer(120);

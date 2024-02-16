@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 
-import '../configs/theme_config.dart';
 import '../constants/app_constants.dart';
 import '../constants/asset_paths.dart';
 import '../utils/ui_utils/padding_margin.dart';
@@ -18,10 +18,11 @@ class SearchWidgetTablet extends StatefulWidget {
   Function(String text)? onSubmit;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
-  FocusNode? focusNode;
+ VoidCallback? onTap;
   SearchWidgetTablet(
       {Key? key,
-      this.searchHint,this.focusNode,
+      this.searchHint,
+      this.onTap,
       this.searchTextController,
       this.onTextChanged,
       this.onSubmit,
@@ -39,10 +40,10 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
     return Container(
       decoration: searchTxtFieldBorderDecoration,
       child: TextField(
-        focusNode: widget.focusNode,
+          onTap: widget.onTap,
         style: getTextStyle(
             fontSize: MEDIUM_FONT_SIZE, fontWeight: FontWeight.normal),
-        cursorColor: BLACK_COLOR,
+        cursorColor: AppColors.getTextandCancelIcon(),
         controller: widget.searchTextController,
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.done,
@@ -51,7 +52,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
           hintText: widget.searchHint ?? SEARCH_HINT_TXT,
           contentPadding: const EdgeInsets.only(left: 10, right: 10),
           isDense: true,
-          prefixIconColor: WHITE_COLOR,
+          prefixIconColor: AppColors.fontWhiteColor,
           prefix: Padding(padding: leftSpace(x: 10)),
           prefixIcon: SvgPicture.asset(
             SEARCH_IMAGE,
@@ -73,7 +74,7 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
           //         ))
           //     : null,
           hintStyle: getHintStyle(),
-          focusColor: LIGHT_GREY_COLOR,
+          focusColor: AppColors.hintText,
           border: InputBorder.none,
         ),
         onSubmitted: (text) => widget.onSubmit!(text),

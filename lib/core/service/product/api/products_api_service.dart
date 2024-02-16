@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:intl/intl.dart';
+import 'package:nb_posx/database/db_utils/db_taxes.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 import '../../../../../constants/app_constants.dart';
 import '../model/category_products_response.dart' as cat_resp;
@@ -32,8 +34,7 @@ class ProductsService {
           ? DateFormat("yyyy-MM-dd").format(DateTime.parse(lastSyncDateTime))
           : "";
 
-      var categoryProductsPath =
-          "$CATEGORY_PRODUCTS_PATH?from_date=";
+      var categoryProductsPath = "$CATEGORY_PRODUCTS_PATH?from_date=";
       //Call to products list api
       var apiResponse =
           await APIUtils.getRequestWithHeaders(categoryProductsPath);
@@ -43,13 +44,16 @@ class ProductsService {
           cat_resp.CategoryProductsResponse.fromJson(apiResponse);
       if (resp.message!.isNotEmpty) {
         List<Category> categories = [];
+        //
         await Future.forEach(resp.message!, (catObj) async {
           var catData = catObj as cat_resp.Message;
-          //var image = Uint8List.fromList([]);
-          var image = (catData.itemGroupImage == null ||
-                  catData.itemGroupImage!.isEmpty)
-              ? Uint8List.fromList([])
-              : await Helper.getImageBytesFromUrl(catData.itemGroupImage!);
+          log("catObj:$catObj");
+          //   var image = Uint8List.fromList([]);
+          // var image = (catData.itemGroupImage == null ||
+          //         catData.itemGroupImage!.isEmpty)
+          //     ? Uint8List.fromList([])
+          //     : await Helper.getImageBytesFromUrl(catData.itemGroupImage!);
+          var image = Uint8List.fromList([]);
           List<Product> products = [];
 
           await Future.forEach(catData.items!, (itemObj) async {
@@ -77,7 +81,29 @@ class ProductsService {
               attributes.add(attrib);
             });
 
-            var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+            List<Taxes> taxes = [];
+            await Future.forEach(item.tax!, (taxObj) async {
+              var taxData = taxObj as cat_resp.Tax;
+              if (item.stockQty! > 0 &&
+                  item.productPrice! > 0 &&
+                  taxData.taxRate! > 0) {
+                Taxes tax = Taxes(
+                  taxId: taxData.taxId!,
+                  itemTaxTemplate: taxData.itemTaxTemplate!,
+                  taxType: taxData.taxType!,
+                  taxRate: taxData.taxRate!,
+                  taxAmount:taxData.taxAmount,
+                );
+                taxes.add(tax);
+              }
+            });
+            await DbTaxes().addTaxes(taxes);
+
+            await DBPreferences().savePreference(
+                PRODUCT_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
+
+            //  var imageBytes = await Helper.getImageBytesFromUrl(item.image!);
+            var imageBytes = Uint8List.fromList([]);
 
             Product product = Product(
                 id: item.id!,
@@ -90,10 +116,10 @@ class ProductsService {
                 productImage: imageBytes,
                 productImageUrl: item.image,
                 productUpdatedTime: DateTime.now(),
-                tax: item.tax != null && item.tax!.isNotEmpty
-                    ? item.tax!.first.taxRate!
-                    : 0.0);
-
+                // tax: item.tax != null && item.tax!.isNotEmpty
+                //     ? item.tax!.first.taxRate!
+                //     : 0.0);
+                tax: taxes);
             products.add(product);
           });
           Category category = Category(
@@ -163,6 +189,7 @@ class ProductsService {
           if (product.image != null) {
             //Fetching image bytes (Uint8List) from image url
             image = await Helper.getImageBytesFromUrl(product.image!);
+            // image = Uint8List.fromList([]);
           }
 
           //Creating object for product
@@ -176,7 +203,7 @@ class ProductsService {
               attributes: [],
               productImage: image,
               productUpdatedTime: DateTime.parse(product.itemModified),
-              tax: 0.0);
+              tax: []);
 
           //Adding product into the products list
           products.add(tempProduct);
