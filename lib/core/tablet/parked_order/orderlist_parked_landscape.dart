@@ -60,7 +60,7 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
         padding: EdgeInsets.all(10),
         child:GestureDetector (onTap: _handleTap,child: Column(
           children: [
-            TitleAndSearchBar(focusNode: _focusNode,
+            TitleAndSearchBar(
               inputFormatter: [FilteringTextInputFormatter.digitsOnly],
               title: "Parked Orders",
               onSubmit: (text) {

@@ -731,7 +731,7 @@ class _CartScreenState extends State<CartScreen> {
       );
 
   createSale(String paymentMethod) async {
-   // paymentMethod = paymentMethod;
+    // paymentMethod = paymentMethod;
     if (paymentMethod == "Card") {
       return Helper.showPopup(context, "Coming Soon");
     } else {
@@ -912,6 +912,8 @@ class _CartScreenState extends State<CartScreen> {
       totalAmount = totalAmount! + subTotalAmount;
       log('total after adding an item:$totalAmount');
 
+      setState(() {});
+
       // Itemwise taxation is applicable
       if (item.tax.isNotEmpty) {
         isTaxAvailable = true;
@@ -955,11 +957,14 @@ class _CartScreenState extends State<CartScreen> {
           //       Hive.box('TAX_BOX').putAt(4,taxAmount);
         }
 
-        log("Total Tax Amount itemwise: $totalTaxAmount");
-        orderId = await Helper.getOrderId();
-        log('Order No : $orderId');
+        item.tax.clear();
+        item.tax.addAll(taxation);
+        log("Total Tax Amount itemwise: $taxation");
+        // log("Total Tax Amount itemwise: $totalTaxAmount");
+        // orderId = await Helper.getOrderId();
+        // log('Order No : $orderId');
 
-        await DbTaxes().saveItemWiseTax(orderId, taxation);
+         await DbTaxes().saveItemWiseTax(orderId, taxation);
 
         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }

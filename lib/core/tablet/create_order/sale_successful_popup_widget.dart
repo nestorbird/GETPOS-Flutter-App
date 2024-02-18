@@ -34,18 +34,16 @@ class SaleSuccessfulPopup extends StatelessWidget {
                     ),
                   ))),
           Center(
-            child: Lottie.asset(SUCCESS_IMAGE,
-                animate:
-                    true), /*SvgPicture.asset(
+            child: SvgPicture.asset(
               SUCCESS_IMAGE,
               height: SALE_SUCCESS_IMAGE_HEIGHT,
               width: SALE_SUCCESS_IMAGE_WIDTH,
               fit: BoxFit.contain,
-            ),*/
+            ),
           ),
           hightSpacer30,
           Text(
-            "Order Successful",
+            "Order Successful!",
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
                 color: AppColors.getTextandCancelIcon(),
@@ -74,6 +72,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: RETURN_TO_HOME_TXT,
                 onTap: () {
@@ -86,6 +85,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
+                isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
                 onTap: () {

@@ -14,7 +14,6 @@ import '../../../../../utils/ui_utils/textfield_border_decoration.dart';
 import '../../../../../widgets/button.dart';
 import '../../../../../widgets/text_field_widget.dart';
 import '../../../../constants/asset_paths.dart';
-import '../../../../network/api_constants/api_paths.dart';
 import '../../../service/forgot_password/api/forgot_password_api.dart';
 
 import 'verify_otp.dart';

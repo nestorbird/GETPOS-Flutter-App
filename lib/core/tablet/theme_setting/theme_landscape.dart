@@ -82,9 +82,7 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //hightSpacer75,
-
                           headingLblWidget(),
-
                           hightSpacer50,
                           subHeadingLblWidget(),
                           hightSpacer25,
@@ -192,7 +190,6 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
           log(response.body);
           //not going inside the api
           await theme(url);
-
           if (!mounted) return;
           Helper.hideLoader(context);
         } else {

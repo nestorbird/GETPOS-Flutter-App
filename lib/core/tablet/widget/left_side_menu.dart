@@ -77,11 +77,11 @@ class LeftSideMenu extends StatelessWidget {
     return InkWell(
       onTap: () => action(),
       child: Obx(() => Container(
-            margin: EdgeInsets.fromLTRB(4, 1, 4, 5),
+            margin: const EdgeInsets.fromLTRB(4, 1, 4, 5),
             // height: 75,
             decoration: BoxDecoration(
               color: title.toLowerCase() == selectedView.toLowerCase()
-                  ?  AppColors.getPrimary()
+                  ? AppColors.getPrimary()
                   : AppColors.fontWhiteColor,
               borderRadius: BorderRadius.circular(12),
               // boxShadow: const [BoxShadow(blurRadius: 0.05)],
@@ -111,7 +111,7 @@ class LeftSideMenu extends StatelessWidget {
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       style: getTextStyle(
-                        fontSize: MEDIUM_FONT_SIZE,
+                        fontSize: MEDIUM_MINUS_FONT_SIZE,
                         fontWeight: FontWeight.w500,
                         color: title.toLowerCase() == selectedView.toLowerCase()
                             ? AppColors.fontWhiteColor

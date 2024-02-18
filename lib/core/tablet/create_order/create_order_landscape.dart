@@ -323,7 +323,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                 //       ),
                 //     ));
                 return Padding(
-                    padding: const EdgeInsets.only(right: 15),
+                    padding: const EdgeInsets.only(right: 9.0),
                     child: GestureDetector(
                         onTap: () {
                           _handleTap();
@@ -377,10 +377,8 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                             overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.center,
                                             style: getTextStyle(
-
-                                                // color: DARK_GREY_COLOR,
-                                                // fontWeight: FontWeight.w500,
-                                                fontSize: MEDIUM_FONT_SIZE),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: SMALL_PLUS_FONT_SIZE),
                                           ),
                                         ),
                                         hightSpacer4,
@@ -456,7 +454,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                           .toInt()
                                           .toString(),
                                       style: getTextStyle(
-                                          fontSize: SMALL_FONT_SIZE,
+                                          fontSize: SMALL_MINUS_FONT_SIZE,
                                           color: AppColors.fontWhiteColor),
                                     ))
                               ],
@@ -485,7 +483,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 
   getCategoryListWidg() {
     return SizedBox(
-      height: 120,
+      height: 110,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: categories.length,
@@ -508,7 +506,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     ))
                   : Container(
                       margin: paddingXY(y: 5),
-                      width: 100,
+                      width: 90,
                       decoration: BoxDecoration(
                         color: AppColors.fontWhiteColor,
                         borderRadius: BorderRadius.circular(10),
@@ -519,7 +517,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                         children: [
                           Container(
                               margin: const EdgeInsets.only(left: 5),
-                              height: 60,
+                              height: 50,
                               clipBehavior: Clip.antiAliasWithSaveLayer,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
@@ -583,7 +581,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: getTextStyle(
-                              fontSize: LARGE_FONT_SIZE,
+                              fontSize: SMALL_PLUS_FONT_SIZE,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
