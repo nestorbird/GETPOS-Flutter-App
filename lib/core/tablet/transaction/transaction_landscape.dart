@@ -32,7 +32,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
   // bool isCustomersFound = true;
 
   @override
-  void initState() {   verify();
+  void initState() {  
     super.initState();
     searchCtrl = TextEditingController();
     _scrollController.addListener(_onScroll);
@@ -147,7 +147,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
     debugPrint("OrderLENGTH:${state.orders.length} ");
 
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      padding: const EdgeInsets.fromLTRB(16, 12, 0, 0),
       child: GridView.builder(
         controller: _scrollController,
         itemCount:
@@ -158,7 +158,7 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
           crossAxisSpacing: 10,
           // childAspectRatio: Get.height > Get.width ? 4 : 4, (this was used earlier)
           //3:4.8
-          childAspectRatio: 5,
+          childAspectRatio: 4,
         ),
         shrinkWrap: true,
         primary: false,
@@ -181,12 +181,12 @@ class _TransactionLandscapeState extends State<TransactionLandscape> {
       ),
     );
   }
-  verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
-  }
+  // verify() async {
+  //   CommanResponse res = await VerificationUrl.checkAppStatus();
+  //   if (res.message == true) {
+  //   } else {
+  //     Helper.showPopup(context, "Please update your app to latest version",
+  //         barrierDismissible: true);
+  //   }
+  // }
 }
