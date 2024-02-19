@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 
@@ -69,14 +68,14 @@ class _AddedProductItemState extends State<AddedProductItem> {
     return Row(
       children: [
         Container(
-          height: 90,
-          width: 90,
+          height: 80,
+          width: 80,
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             // AppColors.getPrimary().withOpacity(0.1) ??
             //Color(0xFF707070),
             color: AppColors.getPrimary().withOpacity(0.1),
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
           ),
           child:
               // widget.product.productImage.isEmpty
@@ -93,15 +92,14 @@ class _AddedProductItemState extends State<AddedProductItem> {
               //         fit: BoxFit.fill,
               //       ),
               //TODO:Need to fix this as NO_image are not show if the productimageurl is null in add item popup
-              (isInternetAvailable &&
-                      (widget.product.productImageUrl != ""))
-                         // widget.product.productImageUrl != null))
+              (isInternetAvailable && (widget.product.productImageUrl != ""))
+                  // widget.product.productImageUrl != null))
                   ? Image.network(
                       widget.product.productImageUrl!,
                       fit: BoxFit.fill,
                     )
                   : (isInternetAvailable &&
-                          (widget.product.productImageUrl!.isEmpty||
+                          (widget.product.productImageUrl!.isEmpty ||
                               widget.product.productImageUrl == null))
                       ? Image.asset(
                           NO_IMAGE,
@@ -122,7 +120,7 @@ class _AddedProductItemState extends State<AddedProductItem> {
               children: [
                 Text(
                   widget.product.name,
-                  style: getTextStyle(fontSize: LARGE_FONT_SIZE),
+                  style: getTextStyle(fontSize: MEDIUM_FONT_SIZE),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),

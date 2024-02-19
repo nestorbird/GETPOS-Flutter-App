@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../configs/theme_config.dart';
 import '../../../constants/app_constants.dart';
 
 // Pass in the height and it return a vertical spacer
@@ -9,7 +7,7 @@ import '../../../constants/app_constants.dart';
 TextStyle getTextStyle(
         {fontWeight = FontWeight.bold,
         fontSize = SMALL_FONT_SIZE,
-        color = BLACK_COLOR}) =>
+        color =const Color(0xFF000000)}) =>
     GoogleFonts.montserrat(
         fontWeight: fontWeight, fontSize: fontSize, color: color);
 
@@ -18,7 +16,7 @@ TextStyle getBoldStyle() => GoogleFonts.montserrat(
     );
 
 TextStyle getItalicStyle(
-        {fontSize, fontWeight = FontWeight.normal, color = DARK_GREY_COLOR}) =>
+        {fontSize, fontWeight = FontWeight.normal, color = const Color(0xFF707070)}) =>
     GoogleFonts.montserrat(
         fontSize: fontSize,
         fontWeight: fontWeight,

@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
-import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
+// import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
@@ -267,7 +267,6 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
-       
         if (selectedCardMode == true) {
           Helper.showPopupForTablet(context, "Coming Soon..");
         } else {
@@ -277,7 +276,7 @@ class _CartWidgetState extends State<CartWidget> {
             _showOrderPlacedSuccessPopup();
           }
         }
-        
+
         // _prepareCart();
         // if (currentCart != null) {
         //   if (selectedCardMode == true) {
@@ -959,16 +958,20 @@ class _CartWidgetState extends State<CartWidget> {
         orderId = await Helper.getOrderId();
         log('Order No : $orderId');
 
+        item.tax.clear();
+        item.tax.addAll(taxation);
+
         await DbTaxes().saveItemWiseTax(orderId, taxation);
 
         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
-      setState(() {});
-      log("Total Amount:: $totalAmount");
+      // setState(() {});
+      // log("Total Amount:: $totalAmount");
     }
 
     // Order wise tax applicable
     if (!isTaxAvailable) {
+      taxAmountMap.clear();
       taxAmount = 0.0;
       totalTaxAmount = 0.0;
       data = await DbOrderTaxTemplate().getOrderTaxesTemplate();
@@ -1007,9 +1010,14 @@ class _CartWidgetState extends State<CartWidget> {
         //await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
         await DbOrderTax().saveOrderWiseTax(orderId!, taxesData);
       });
-      setState(() {});
-      log("Total Amount:: $totalAmount");
+      // setState(() {});
+      // log("Total Amount:: $totalAmount");
     }
+
+    if (!mounted) return;
+
+setState(() {
+  
 
     //taxAmountMap contains the accumulated tax amounts for each tax type
     taxDetailsList = taxAmountMap.entries
@@ -1019,9 +1027,10 @@ class _CartWidgetState extends State<CartWidget> {
               'tax_amount': entry.value,
             })
         .toList();
-    setState(() {});
+   // setState(() {});
     grandTotal = totalAmount! + totalTaxAmount;
     log('Grand Total:: $grandTotal');
+    });
   }
 
   void _updateOrderPriceAndSave() {

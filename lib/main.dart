@@ -64,7 +64,7 @@ void main() async {
   //isUserLoggedIn = await DBPreferences().getPreference('MANAGER');
 
   //Registering hive database type adapters
-  registerHiveTypeAdapters();
+  //registerHiveTypeAdapters();
   isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
   log('Instance Url for hub manager: $instanceUrl');
@@ -129,7 +129,6 @@ void registerHiveTypeAdapters() {
 //Registering salesorderrequest adapter
   Hive.registerAdapter(SalesOrderRequestAdapter());
 
-  
   ///Registering PAYMENT METHOD adapter
   Hive.registerAdapter(PaymentTypeAdapter());
 

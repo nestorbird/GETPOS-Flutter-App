@@ -193,7 +193,7 @@ class Helper {
               buttonText: btnTxt,
               hasCancelAction: hasCancelAction,
               onOkPressed: () {
-                SystemNavigator.pop();
+                Navigator.pop(context, btnTxt.toLowerCase());
               },
             ),
           );

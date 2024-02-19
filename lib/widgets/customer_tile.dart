@@ -52,7 +52,6 @@ class _CustomerTileState extends State<CustomerTile> {
   Widget build(BuildContext context) {
     var container = Container(
       margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-    
       padding: mediumPaddingAll(),
       decoration: BoxDecoration(
           color: isTabletMode
@@ -65,7 +64,6 @@ class _CustomerTileState extends State<CustomerTile> {
                   ? const Color(0xFFDC1E44)
                   : const Color(0xFFC7C5C5),
               width: isSelected ? 0.3 : 1.0),
-              
           borderRadius: BorderRadius.circular(BORDER_CIRCULAR_RADIUS_08)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +95,7 @@ class _CustomerTileState extends State<CustomerTile> {
                     style: getTextStyle(
                         fontSize: MEDIUM_PLUS_FONT_SIZE,
                         color: AppColors.textandCancelIcon,
-                        fontWeight: FontWeight.w800),
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
               ),

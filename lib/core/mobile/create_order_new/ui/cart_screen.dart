@@ -80,7 +80,7 @@ class _CartScreenState extends State<CartScreen> {
   late List<OrderTaxTemplate>? getOrderTemplate;
   List<CouponCode> couponCodes = [];
   List<OrderTaxTemplate> data = [];
-  List<Taxes>? taxesData;
+  List<OrderTax> taxesData = [];
 
   @override
   void initState() {
@@ -731,7 +731,7 @@ class _CartScreenState extends State<CartScreen> {
       );
 
   createSale(String paymentMethod) async {
-   // paymentMethod = paymentMethod;
+    // paymentMethod = paymentMethod;
     if (paymentMethod == "Card") {
       return Helper.showPopup(context, "Coming Soon");
     } else {
@@ -912,8 +912,11 @@ class _CartScreenState extends State<CartScreen> {
       totalAmount = totalAmount! + subTotalAmount;
       log('total after adding an item:$totalAmount');
 
+      setState(() {});
+
       // Itemwise taxation is applicable
       if (item.tax.isNotEmpty) {
+        taxesData.clear();
         isTaxAvailable = true;
 
         // Calculating subtotal amount to calculate taxes for attributes in items
@@ -955,9 +958,12 @@ class _CartScreenState extends State<CartScreen> {
           //       Hive.box('TAX_BOX').putAt(4,taxAmount);
         }
 
-        log("Total Tax Amount itemwise: $totalTaxAmount");
-        orderId = await Helper.getOrderId();
-        log('Order No : $orderId');
+        item.tax.clear();
+        item.tax.addAll(taxation);
+        log("Total Tax Amount itemwise: $taxation");
+        // log("Total Tax Amount itemwise: $totalTaxAmount");
+        // orderId = await Helper.getOrderId();
+        // log('Order No : $orderId');
 
         await DbTaxes().saveItemWiseTax(orderId, taxation);
 
@@ -976,8 +982,6 @@ class _CartScreenState extends State<CartScreen> {
 
       await Future.forEach<OrderTaxTemplate>(data,
           (OrderTaxTemplate message) async {
-        List<OrderTax> taxesData = [];
-
         for (var tax in message.tax) {
           taxAmount = totalAmount! * tax.taxRate / 100;
           log('Tax Amount : $taxAmount');
