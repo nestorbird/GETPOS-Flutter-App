@@ -41,7 +41,7 @@ class _ThemeChangeTabletState extends State<ThemeChangeTablet> {
 
     _urlCtrl = TextEditingController();
 
-    _urlCtrl.text = instanceUrl;
+    _urlCtrl.text = "getpos.in";
   }
 
   @override
