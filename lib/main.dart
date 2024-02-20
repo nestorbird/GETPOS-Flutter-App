@@ -129,7 +129,6 @@ void registerHiveTypeAdapters() {
 //Registering salesorderrequest adapter
   Hive.registerAdapter(SalesOrderRequestAdapter());
 
-  
   ///Registering PAYMENT METHOD adapter
   Hive.registerAdapter(PaymentTypeAdapter());
 

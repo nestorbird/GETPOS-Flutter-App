@@ -43,7 +43,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
     checkInternetAvailability();
   }
 
- final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void dispose() {
@@ -107,7 +107,7 @@ class HomeLandscapeState extends State<HomeLandscape> {
         Text(
           cat.name,
           style: getTextStyle(
-            fontSize: LARGE_FONT_SIZE,
+            fontSize: SMALL_PLUS_FONT_SIZE,
           ),
         ),
         hightSpacer10,

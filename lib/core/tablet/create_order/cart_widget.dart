@@ -9,7 +9,7 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/widget/calculate_taxes.dart';
 import 'package:nb_posx/core/service/product/model/products_response.dart';
 import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.dart';
-import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
+// import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
@@ -269,7 +269,6 @@ class _CartWidgetState extends State<CartWidget> {
     //       )
     return InkWell(
       onTap: () async {
-       
         if (selectedCardMode == true) {
           Helper.showPopupForTablet(context, "Coming Soon..");
         } else {

@@ -44,7 +44,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
            ),
           hightSpacer30,
           Text(
-            "Order Successful",
+            "Order Successful!",
             style: getTextStyle(
                 fontSize: LARGE_PLUS_FONT_SIZE,
                 color: AppColors.getTextandCancelIcon(),

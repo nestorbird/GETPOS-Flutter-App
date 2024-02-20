@@ -21,7 +21,7 @@ class TaxesAdapter extends TypeAdapter<Taxes> {
       itemTaxTemplate: fields[1] as String,
       taxType: fields[2] as String,
       taxRate: fields[3] as double,
-      taxAmount: fields[4] == null ? 0.0 : fields[4] as double?,
+      taxAmount: fields[4] as double?,
     );
   }
 

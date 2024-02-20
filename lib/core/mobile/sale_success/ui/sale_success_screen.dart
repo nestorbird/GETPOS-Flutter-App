@@ -134,6 +134,7 @@ class _SaleSuccessScreenState extends State<SaleSuccessScreen> {
         Helper.showPopup(context, "Print operation cancelled by you.");
       }
     } catch (e) {
+      // ignore: use_build_context_synchronously
       Helper.showPopup(context, SOMETHING_WENT_WRONG);
       log('Exception ocurred in printing invoice :: $e');
     }
