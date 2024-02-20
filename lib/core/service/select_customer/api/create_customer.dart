@@ -70,7 +70,7 @@ class CreateCustomer {
         // ward: Ward(id: "1", name: "1"),
         email: email.trim(),
         id: phone.trim(),
-        name: name.trim(),
+        name: name!.trim(),
         phone: phone.trim(),
         isSynced: false,
         modifiedDateTime: DateTime.now());

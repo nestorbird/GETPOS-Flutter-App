@@ -15,6 +15,7 @@ class TextFieldWidget extends StatefulWidget {
     required this.boxDecoration,
     this.verticalContentPadding = 10,
     this.password = false,
+  
   }) : _txtCtrl = txtCtrl,
        _hintText = hintText,
        super(key: key);
@@ -43,6 +44,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
           fontSize: LARGE_MINUS_FONT_SIZE,
           fontWeight: FontWeight.w600,
         ),
+        keyboardType: TextInputType.number,
         controller: widget._txtCtrl,
         cursorColor: AppColors.getAsset(),
         autocorrect: false,

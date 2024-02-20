@@ -17,9 +17,11 @@ import 'widget/left_side_menu.dart';
 
 // ignore: must_be_immutable
 class HomeTablet extends StatelessWidget {
-  HomeTablet({Key? key}) : super(key: key);
+  bool isShiftCreated;
+  HomeTablet({Key? key,this.isShiftCreated=false}) : super(key: key);
 
   final selectedTab = "Order".obs;
+  
  ParkOrder? parkOrder;
   late Size size;
 
@@ -33,6 +35,7 @@ class HomeTablet extends StatelessWidget {
           child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // isShiftCreated?LeftSideMenu(selectedView: "Open Shift".obs):
           LeftSideMenu(selectedView: selectedTab),
           Container(
             color: const Color(0xFFF9F8FB),
@@ -54,6 +57,7 @@ class HomeTablet extends StatelessWidget {
   }
 
   _getSelectedView() {
+   
     switch (selectedTab.value) {
 /*case "Home":
         //return const HomeLandscape();

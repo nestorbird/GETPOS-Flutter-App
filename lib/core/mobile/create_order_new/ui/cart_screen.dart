@@ -821,7 +821,8 @@ class _CartScreenState extends State<CartScreen> {
       // Itemwise taxation is applicable
       if (item.tax!.isNotEmpty) {
         isTaxAvailable = true;
-
+        //to clear orderwise taxes
+        //taxesData!.clear();
         // Calculating subtotal amount to calculate taxes for attributes in items
         if (item.attributes.isNotEmpty) {
           for (var attribute in item.attributes) {
@@ -915,6 +916,7 @@ log("Total Tax Amount itemwise: $taxation");
         log('Order No : $orderId');
         //await DbSaleOrder().saveOrderWiseTax(orderId, taxesData);
         await DbOrderTax().saveOrderWiseTax(orderId!, taxesData);
+        
       });
       setState(() {});
       log("Total Amount:: $totalAmount");

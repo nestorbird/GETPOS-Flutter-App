@@ -806,6 +806,8 @@ class _CartWidgetState extends State<CartWidget> {
     }
   }
 
+
+
 //code before taxation module implemented
   Future<bool> _placeOrderHandler() async {
     DateTime currentDateTime = DateTime.now();
@@ -1021,6 +1023,7 @@ class _CartWidgetState extends State<CartWidget> {
           .toList();
       //   setState(() {});
       grandTotal = totalAmount + totalTaxAmount;
+      log('Grand Total  :: $grandTotal');
    });
     
   }

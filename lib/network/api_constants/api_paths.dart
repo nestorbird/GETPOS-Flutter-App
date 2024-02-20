@@ -32,48 +32,48 @@ final BASE_URL = ENVIRONMENT == ApiServer.DEV
         : PROD_URL;
 
 ///THEME CHANGE PATH
-const THEME_PATH = 'method/nbpos.nbpos.api.get_theme_settings';
+const THEME_PATH = 'method/getpos.getpos.api.get_theme_settings';
 
 ///LOGIN API PATH
-const LOGIN_PATH = 'method/nbpos.nbpos.api.login';
+const LOGIN_PATH = 'method/getpos.getpos.api.login';
 const Verify_URL = 'https://control-centre.nestorbird.com/api/method/control_centre.api.validate';
 
 ///CUSTOMERS LIST API PATH
-const CUSTOMERS_PATH = 'method/nbpos.nbpos.api.get_customer_list_by_hubmanager';
+const CUSTOMERS_PATH = 'method/getpos.getpos.api.get_customer_list_by_hubmanager';
 
-const CUSTOMER_PATH = 'method/nbpos.nbpos.api.get_customer';
+const CUSTOMER_PATH = 'method/getpos.getpos.api.get_customer';
 
-const CREATE_CUSTOMER_PATH = 'method/nbpos.nbpos.api.create_customer';
+const CREATE_CUSTOMER_PATH = 'method/getpos.getpos.api.create_customer';
 
-const NEW_GET_ALL_CUSTOMERS_PATH = 'method/nbpos.nbpos.api.get_all_customer';
+const NEW_GET_ALL_CUSTOMERS_PATH = 'method/getpos.getpos.api.get_all_customer';
 
 //PRODUCTS LIST API PATH
-const PRODUCTS_PATH = 'method/nbpos.nbpos.api.get_item_list_by_hubmanager';
+const PRODUCTS_PATH = 'method/getpos.getpos.api.get_item_list_by_hubmanager';
 
 //CREATE SALE ORDER PATH
-const CREATE_SALES_ORDER_PATH = 'method/nbpos.nbpos.api.create_sales_order';
+const CREATE_SALES_ORDER_PATH = 'method/getpos.getpos.api.create_sales_order';
 
 //TOPICS API (PRIVACY POLICY AND TERMS & CONDITIONS)
-const TOPICS_PATH = 'method/nbpos.nbpos.api.privacy_policy_and_terms';
+const TOPICS_PATH = 'method/getpos.getpos.api.privacy_policy_and_terms';
 
 //FORGET PASSWORD PATH
-const FORGET_PASSWORD = 'method/nbpos.nbpos.api.forgot_password';
+const FORGET_PASSWORD = 'method/getpos.getpos.api.forgot_password';
 
 //MY ACCOUNT API
-const MY_ACCOUNT_PATH = 'method/nbpos.nbpos.api.get_details_by_hubmanager';
+const MY_ACCOUNT_PATH = 'method/getpos.getpos.api.get_details_by_hubmanager';
 
 //SALES HISTORY PATH
-const SALES_HISTORY = 'method/nbpos.nbpos.api.get_sales_order_list';
+const SALES_HISTORY = 'method/getpos.getpos.api.get_sales_order_list';
 
 //MY ACCOUNT API
-const CHANGE_PASSWORD_PATH = 'method/nbpos.nbpos.api.change_password';
+const CHANGE_PASSWORD_PATH = 'method/getpos.getpos.api.change_password';
 
 // New Product api with category and variants
 const CATEGORY_PRODUCTS_PATH =
-    'method/nbpos.custom_api.item_variant_api.get_items';
+    'method/getpos.custom_api.item_variant_api.get_items';
 
 //Orderwise taxes api
-const ORDERWISE_TAXES_PATH = 'method/nbpos.nbpos.api.get_sales_taxes';
+const ORDERWISE_TAXES_PATH = 'method/getpos.getpos.api.get_sales_taxes';
 
 //PROMO CODES API PATH
 const GET_ALL_PROMO_CODES_PATH = '';

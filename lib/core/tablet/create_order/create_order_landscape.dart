@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/tablet/home_tablet.dart';
 import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -30,9 +31,9 @@ import 'cart_widget.dart';
 class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
 bool isShiftCreated;
-  final RxString selectedView;
+  final RxString? selectedView;
   CreateOrderLandscape(
-      {Key? key, required this.order, required this.selectedView, required this.isShiftCreated})
+      {Key? key, this.order, this.selectedView, required this.isShiftCreated})
       : super(key: key);
 
   @override
@@ -212,13 +213,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
             orderList: items,
             taxes: const [],
             onHome: () {
-              widget.selectedView.value = "Home";
+              widget.selectedView!.value = "Home";
               items.clear();
               customer = null;
               setState(() {});
             },
             onPrintReceipt: () {
-              widget.selectedView.value = "Home";
+              widget.selectedView!.value = "Home";
               items.clear();
               customer = null;
               setState(() {});
@@ -331,10 +332,15 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                           _handleTap();
 
                           if (customer == null) {
+                            Navigator.push(
+                             context,
+                             MaterialPageRoute(builder: (context) => 
+                              HomeTablet(isShiftCreated: true,)));
                            // _handleCustomerPopup();
-                             Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  OpenShiftManagement(selectedView: widget.selectedView,)));
+                            //  Navigator.push(
+                            //  context,
+                            //  MaterialPageRoute(builder: (context) => 
+                            //   OpenShiftManagement()));
 
                           } else {
                             if (cat.items[position].stock > 0) {

@@ -5,6 +5,8 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/core/tablet/create_order/create_order_landscape.dart';
+import 'package:nb_posx/core/tablet/home/home_landscape.dart';
+import 'package:nb_posx/core/tablet/home_tablet.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
@@ -14,8 +16,8 @@ import 'package:nb_posx/widgets/text_field_widget.dart'; // for making HTTP requ
 
   class OpenShiftManagement extends StatefulWidget {
     final bool isNewShift;
-    final RxString selectedView;
-  const OpenShiftManagement({super.key,this.isNewShift = false,required this.selectedView});
+    final RxString? selectedView;
+  const OpenShiftManagement({super.key,this.isNewShift = false, this.selectedView});
 
   @override
   State<OpenShiftManagement> createState() => _OpenShiftManagementState();
@@ -107,6 +109,7 @@ Widget posCashierSection()=>Container(
   Widget paymentMethodsWidget()=>Column(
     children: [
         TextFieldWidget(
+          
               txtCtrl: _openingCashCtrl,
               hintText: 'Enter Opening Cash Balance',
               boxDecoration: BoxDecoration(
@@ -132,20 +135,30 @@ Widget posCashierSection()=>Container(
   );
 
 // WIDGETS- BUTTON
-  Widget openShiftBtnWidget()=> ButtonWidget(
-          colorTxt:AppColors.fontWhiteColor,
-          isMarginRequired: false,
-          width: 600,
-          onPressed: () async {
-            setState(() {
-              isShiftOpen = true;
-             });
-              widget.selectedView.value = "Order";   
-          },
-          title: OPEN_SHIFT.toUpperCase(),
-          primaryColor: AppColors.getPrimary(),
-          // width: MediaQuery.of(context).size.width - 150,
-          height: 60,
-          fontSize: LARGE_FONT_SIZE,
-  );
+Widget openShiftBtnWidget() => ButtonWidget(
+  colorTxt: AppColors.fontWhiteColor,
+  isMarginRequired: false,
+  width: 600,
+  onPressed: () async {
+    // setState(() {
+    //   isShiftOpen = true;
+    // });
+
+    // widget.selectedView.value = "Order";
+
+    // Navigate to the Order screen
+    // CreateOrderLandscape(selectedView: RxString("Order"),isShiftCreated: true,);
+    await Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>  HomeTablet(isShiftCreated: false,)
+      ),
+    );
+  },
+  title: OPEN_SHIFT.toUpperCase(),
+  primaryColor: AppColors.getPrimary(),
+  height: 60,
+  fontSize: LARGE_FONT_SIZE,
+);
+
 }
