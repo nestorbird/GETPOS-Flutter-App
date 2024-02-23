@@ -54,7 +54,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+               // isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "Print Receipt",
                 onTap: () {
@@ -73,7 +73,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+               // isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: RETURN_TO_HOME_TXT,
                 onTap: () {
@@ -86,7 +86,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+                //isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
                 onTap: () {

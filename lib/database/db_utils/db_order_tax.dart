@@ -40,4 +40,14 @@ class DbOrderTax {
     var list = orderTaxesList.cast<OrderTax>(); 
     return list;
   }
+
+ Future<void> clearOrderTaxes() async {
+  box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+
+  // Iterate through the keys in the box and remove each item
+  final keys = box.keys;
+  for (var key in keys) {
+    await box.delete(key);
+  }
+}
 }

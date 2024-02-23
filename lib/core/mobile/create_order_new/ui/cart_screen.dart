@@ -10,7 +10,7 @@ import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/parked_orders/ui/orderlist_screen.dart';
 import 'package:nb_posx/core/service/create_order/api/promo_code_service.dart';
 import 'package:nb_posx/core/service/create_order/model/promo_codes_response.dart';
-import 'package:nb_posx/database/db_utils/db_order_item.dart';
+// import 'package:nb_posx/database/db_utils/db_order_item.dart';
 //import 'package:nb_posx/core/service/orderwise_taxation/model/orderwise_tax_response.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
@@ -820,7 +820,7 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {});
 
       // Itemwise taxation is applicable
-      if (item.tax.isNotEmpty) {
+      if (item.tax!.isNotEmpty) {
         taxesData.clear();
         isTaxAvailable = true;
         //to clear orderwise taxes
@@ -864,8 +864,8 @@ class _CartScreenState extends State<CartScreen> {
           //       Hive.box('TAX_BOX').putAt(4,taxAmount);
         }
 
-        item.tax.clear();
-        item.tax.addAll(taxation);
+        item.tax!.clear();
+        item.tax!.addAll(taxation);
         log("Total Tax Amount itemwise: $taxation");
         // log("Total Tax Amount itemwise: $totalTaxAmount");
         // orderId = await Helper.getOrderId();
@@ -873,7 +873,7 @@ class _CartScreenState extends State<CartScreen> {
 
         await DbTaxes().saveItemWiseTax(orderId!, taxation);
 
-      await DbTaxes().saveItemWiseTax(orderId!, taxation);
+      
 //await DbOrderItem().updateTaxAmounts(orderId!);
         //await     DbSaleOrderRequestItems().saveItemWiseTaxRequest(orderId, taxation);
       }
@@ -943,7 +943,7 @@ class _CartScreenState extends State<CartScreen> {
     }
     widget.order.orderAmount = orderAmount!;
     log('orderAmount after deleting:: $orderAmount');
-parkOrders = await DbParkedOrder().getOrders();
+var parkOrders = await DbParkedOrder().getOrders();
 //await _configureTaxAndTotal(parkOrders!);
     _configureTaxAndTotal(widget.order.items);
     // calculateItemWiseTax(taxDetailsList,subTotalAmount);

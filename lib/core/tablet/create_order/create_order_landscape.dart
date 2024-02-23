@@ -7,6 +7,7 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/tablet/home_tablet.dart';
 import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/database/models/park_order.dart';
+import 'package:nb_posx/database/models/shift_management.dart';
 import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -49,6 +50,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   late TextEditingController searchCtrl;
   late Size size;
   Customer? customer;
+  ShiftManagement? shiftManagement;
   List<Product> products = [];
   List<Category> categories = [];
   // ParkOrder? parkOrder;
@@ -332,15 +334,15 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                           _handleTap();
 
                           if (customer == null) {
-                            Navigator.push(
-                             context,
-                             MaterialPageRoute(builder: (context) => 
-                              HomeTablet(isShiftCreated: true,)));
-                           // _handleCustomerPopup();
+                            // Navigator.push(
+                            //  context,
+                            //  MaterialPageRoute(builder: (context) => 
+                            //   HomeTablet(isShiftCreated: true,)));
+                           _handleCustomerPopup();
                             //  Navigator.push(
                             //  context,
                             //  MaterialPageRoute(builder: (context) => 
-                            //   OpenShiftManagement()));
+                            //   const OpenShiftManagement()));
 
                           } else {
                             if (cat.items[position].stock > 0) {
@@ -651,6 +653,11 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       debugPrint("Customer selected");
     }
     setState(() {});
+//     if (result != customer && result.runtimeType == ShiftManagement ){
+// shiftManagement =result;
+// debugPrint("Pos Cashier selected");
+//     }
+//     setState(() {}); 
   }
 
   double _scrollToOffset(int index) {
