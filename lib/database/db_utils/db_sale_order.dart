@@ -203,31 +203,7 @@ class DbSaleOrder {
     return itemsToDelete == deleteCounter;
   }
 
-  //to save tax list in db for orderwise taxation
-  Future<List> saveOrderWiseTax(orderId, List<OrderTax> list) async {
-    box = await Hive.openBox<SaleOrder>(SALE_ORDER_BOX);
-    for (OrderTax item in list) {
-      await box.put(item.itemTaxTemplate, item);
-    }
-    // var taxwiseOrder=  await box.putAll();
-
-    return list;
-  }
-
-  Future<List> getOrderWiseTaxes(orderId, List<OrderTaxes> list) async{
-     box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
-    List<OrderTax> list = [];
-
-    for (var item in box.values) {
-      var tax = item as OrderTax;
-     
-      var product = item as OrderItem;
-
-      if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
-        list.add(tax);
-      }
-    }
-    return list;
-  }
+  
+ 
   }
 

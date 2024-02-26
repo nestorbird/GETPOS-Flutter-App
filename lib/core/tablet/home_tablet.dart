@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nb_posx/core/tablet/close_shift/close_shift_landscape.dart';
+import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import '../../../../database/db_utils/db_hub_manager.dart';
 import '../../../../database/models/hub_manager.dart';
@@ -15,9 +17,11 @@ import 'widget/left_side_menu.dart';
 
 // ignore: must_be_immutable
 class HomeTablet extends StatelessWidget {
-  HomeTablet({Key? key}) : super(key: key);
+  bool isShiftCreated;
+  HomeTablet({Key? key,this.isShiftCreated=false}) : super(key: key);
 
   final selectedTab = "Order".obs;
+  
  ParkOrder? parkOrder;
   late Size size;
 
@@ -31,6 +35,7 @@ class HomeTablet extends StatelessWidget {
           child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // isShiftCreated?LeftSideMenu(selectedView: "Open Shift".obs):
           LeftSideMenu(selectedView: selectedTab),
           Container(
             color: const Color(0xFFF9F8FB),
@@ -52,12 +57,13 @@ class HomeTablet extends StatelessWidget {
   }
 
   _getSelectedView() {
+   
     switch (selectedTab.value) {
 /*case "Home":
         //return const HomeLandscape();
         return CreateOrderLandscape(selectedView: selectedTab);*/
       case "Order":
-        return CreateOrderLandscape(selectedView: selectedTab, order:parkOrder );
+        return CreateOrderLandscape(selectedView: selectedTab, order:parkOrder ,isShiftCreated: true,);
       /*   case "Product":
         return const ProductsLandscape();*/
       case "Customer":
@@ -70,6 +76,8 @@ class HomeTablet extends StatelessWidget {
         );
       case "Parked Order":
         return OrderListParkedLandscape(selectedView: selectedTab);
+        case "Open Shift":
+        return OpenShiftManagement(selectedView: selectedTab);
     }
   }
 }

@@ -20,10 +20,11 @@ class TitleAndSearchBar extends StatefulWidget {
   final bool hideOperatorDetails;
   Function(String changedtext)? onTextChanged;
   Function(String text)? onSubmit;
+  VoidCallback? onTap;
   Function? parkOrderClicked;
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
-  VoidCallback? onTap;
+ 
 
   TitleAndSearchBar(
       {Key? key,
@@ -36,6 +37,7 @@ class TitleAndSearchBar extends StatefulWidget {
       this.parkedOrderVisible = false,
       this.hideOperatorDetails = false,
       this.onTextChanged,
+   
       this.parkOrderClicked,
       this.onSubmit,
        this.inputFormatter,

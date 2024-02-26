@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:m_toast/m_toast.dart';
+
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
@@ -52,9 +52,9 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     super.initState();
     _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
     _passCtrl = TextEditingController(text: "Admin@123");
-    _urlCtrl = TextEditingController();
-    // _emailCtrl.text = "";
-    // _passCtrl.text = "";
+   // _urlCtrl = TextEditingController();
+   // _emailCtrl.text = "";
+   // _passCtrl.text = "";
     // _urlCtrl.text = instanceUrl;
     _getUrlKey();
 
@@ -326,6 +326,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
+       log(url);
       // Clear the database
       await DBPreferences().delete();
       log("Cleared the DB");

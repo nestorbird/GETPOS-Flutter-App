@@ -9,8 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
+import 'package:nb_posx/database/db_utils/db_constants.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_order_item.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/database/db_utils/db_product.dart';
+import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/main.dart';
 import 'package:nb_posx/utils/helpers/sync_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -44,6 +51,7 @@ class _LoginState extends State<Login> {
   late TextEditingController _emailCtrl, _passCtrl;
   late String url;
   String? version;
+  String prefix = "";
 
   @override
   void initState() {
@@ -53,7 +61,8 @@ class _LoginState extends State<Login> {
     _getUrlKey();
 
     // url = instanceUrl;
-
+     var dbPreferences = DBPreferences();
+ dbPreferences.getPreference(SSL_PREFIX);
     _getAppVersion();
   }
 
@@ -302,8 +311,6 @@ class _LoginState extends State<Login> {
 
               fetchDataAndNavigate();
 
-              //Navigator.push(context,
-              // MaterialPageRoute(builder: (context) => const ThemeChange()));
             },
             child: Padding(
               padding: rightSpace(),
@@ -341,7 +348,7 @@ class _LoginState extends State<Login> {
                                   builder: (context) => WebViewScreen(
                                         topicTypes:
                                             TopicTypes.TERMS_AND_CONDITIONS,
-                                        apiUrl: "https://$url/api/",
+                                        apiUrl: "$prefix://$url/api/",
                                       )));
                      
                       },
@@ -365,7 +372,7 @@ class _LoginState extends State<Login> {
                               MaterialPageRoute(
                                   builder: (context) => WebViewScreen(
                                         topicTypes: TopicTypes.PRIVACY_POLICY,
-                                        apiUrl: "https://$url/api/",
+                                        apiUrl: "$prefix://$url/api/",
                                       )));
                       
                       },
@@ -403,7 +410,7 @@ class _LoginState extends State<Login> {
 
   ///Method to check whether the API URL is correct.
   bool isValidInstanceUrl() {
-    url = "https://$url/api/";
+    url = "$prefix://$url/api/";
     return Helper.isValidUrl(url);
   }
 
@@ -426,14 +433,15 @@ class _LoginState extends State<Login> {
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
+      log(url);
       // Clear the database
-      await DBPreferences().delete();
+      SyncHelper().logoutFlow();
       log("Cleared the DB");
       //to save the url
-      await DbInstanceUrl().saveUrl(url);
-      log("Saved Url:$url");
-// while changing instance
-      SyncHelper().logoutFlow();
+     // await DbInstanceUrl().saveUrl(url);
+     // log("Saved Url:$url");
+
+     
 
     
       await Navigator.pushAndRemoveUntil(

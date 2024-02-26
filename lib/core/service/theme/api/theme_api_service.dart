@@ -39,7 +39,7 @@ class ThemeService {
 
       // API success
       // ignore: unnecessary_null_comparison
-      if (themeResponse.message != null) {
+      if (themeResponse.message.data.primary.isNotEmpty) { // This condition is always true 
         var dbPreferences = DBPreferences();
 
         dbPreferences.savePreference(BASE_URL, instanceUrl);
@@ -103,7 +103,7 @@ class ThemeService {
 
       // API Failure
       else {
-        // Return the Failure Theme Response
+        // Return the Failure Theme Response 0xFF000000
         return CommanResponse(
             status: false,
             message: themeResponse.message.data,

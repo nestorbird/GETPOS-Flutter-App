@@ -19,12 +19,15 @@ class SearchWidgetTablet extends StatefulWidget {
   TextInputType keyboardType;
   List<TextInputFormatter>? inputFormatter;
  VoidCallback? onTap;
+  
+
   SearchWidgetTablet(
       {Key? key,
       this.searchHint,
       this.onTap,
       this.searchTextController,
       this.onTextChanged,
+     
       this.onSubmit,
       this.keyboardType = TextInputType.text,
       this.inputFormatter})
@@ -48,12 +51,14 @@ class _SearchWidgetTabletState extends State<SearchWidgetTablet> {
         textAlignVertical: TextAlignVertical.center,
         textInputAction: TextInputAction.done,
         autocorrect: true,
+  
         decoration: InputDecoration(
           hintText: widget.searchHint ?? SEARCH_HINT_TXT,
           contentPadding: const EdgeInsets.only(left: 10, right: 10),
           isDense: true,
           prefixIconColor: AppColors.fontWhiteColor,
           prefix: Padding(padding: leftSpace(x: 10)),
+          
           prefixIcon: SvgPicture.asset(
             SEARCH_IMAGE,
             width: 30,

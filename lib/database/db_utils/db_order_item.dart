@@ -1,4 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:nb_posx/database/db_utils/db_taxes.dart';
+import 'package:nb_posx/database/models/taxes.dart';
 
 import '../models/order_item.dart';
 import 'db_constants.dart';
@@ -56,4 +58,8 @@ class DbOrderItem {
     box.close();
     return list;
   }
-}
+
+ 
+  
+    }
+  

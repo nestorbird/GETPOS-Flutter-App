@@ -33,14 +33,15 @@ class SaleSuccessfulPopup extends StatelessWidget {
                       color: AppColors.getTextandCancelIcon(),
                     ),
                   ))),
-          Center(
-            child: SvgPicture.asset(
+           Center(
+           child:
+                    SvgPicture.asset(
               SUCCESS_IMAGE,
               height: SALE_SUCCESS_IMAGE_HEIGHT,
               width: SALE_SUCCESS_IMAGE_WIDTH,
               fit: BoxFit.contain,
             ),
-          ),
+           ),
           hightSpacer30,
           Text(
             "Order Successful!",
@@ -53,7 +54,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+               // isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "Print Receipt",
                 onTap: () {
@@ -72,7 +73,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+               // isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: RETURN_TO_HOME_TXT,
                 onTap: () {
@@ -85,7 +86,7 @@ class SaleSuccessfulPopup extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: LongButton(
-                isTab: true,
+                //isTab: true,
                 isAmountAndItemsVisible: false,
                 buttonTitle: "New Order",
                 onTap: () {

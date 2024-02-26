@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
+import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -226,6 +227,8 @@ class HomeLandscapeState extends State<HomeLandscape> {
                   ))
                 : InkWell(
                     onTap: () => _handleCustomerPopup(),
+                    
+                     
                     child: Container(
                       margin: paddingXY(y: 5),
                       width: 80,

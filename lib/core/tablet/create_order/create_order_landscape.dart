@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/tablet/home_tablet.dart';
+import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/database/models/park_order.dart';
+import 'package:nb_posx/database/models/shift_management.dart';
 import 'package:nb_posx/utils/helper.dart';
 
 import '../../../../../constants/app_constants.dart';
@@ -28,10 +31,10 @@ import 'cart_widget.dart';
 // ignore: must_be_immutable
 class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
-
-  final RxString selectedView;
+bool isShiftCreated;
+  final RxString? selectedView;
   CreateOrderLandscape(
-      {Key? key, required this.order, required this.selectedView})
+      {Key? key, this.order, this.selectedView, required this.isShiftCreated})
       : super(key: key);
 
   @override
@@ -39,6 +42,7 @@ class CreateOrderLandscape extends StatefulWidget {
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
+   final _key = GlobalKey<ExpandableFabState>();
   bool isInternetAvailable = true;
   final ValueNotifier<List<OrderItem>> itemsNotifier =
       ValueNotifier<List<OrderItem>>([]);
@@ -46,12 +50,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   late TextEditingController searchCtrl;
   late Size size;
   Customer? customer;
+  ShiftManagement? shiftManagement;
   List<Product> products = [];
   List<Category> categories = [];
   // ParkOrder? parkOrder;
   late List<OrderItem> items;
   late ScrollController _scrollController;
-  final _key = GlobalKey<ExpandableFabState>();
+ 
 
   @override
   void initState() {
@@ -60,7 +65,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
-    verify();
+   // verify();
     getProducts();
     if (Helper.activeParkedOrder != null) {
       log("park order is active");
@@ -210,13 +215,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
             orderList: items,
             taxes: const [],
             onHome: () {
-              widget.selectedView.value = "Home";
+              widget.selectedView!.value = "Home";
               items.clear();
               customer = null;
               setState(() {});
             },
             onPrintReceipt: () {
-              widget.selectedView.value = "Home";
+              widget.selectedView!.value = "Home";
               items.clear();
               customer = null;
               setState(() {});
@@ -329,7 +334,16 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                           _handleTap();
 
                           if (customer == null) {
-                            _handleCustomerPopup();
+                            // Navigator.push(
+                            //  context,
+                            //  MaterialPageRoute(builder: (context) => 
+                            //   HomeTablet(isShiftCreated: true,)));
+                           _handleCustomerPopup();
+                            //  Navigator.push(
+                            //  context,
+                            //  MaterialPageRoute(builder: (context) => 
+                            //   const OpenShiftManagement()));
+
                           } else {
                             if (cat.items[position].stock > 0) {
                               var item = OrderItem.fromJson(
@@ -639,6 +653,11 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       debugPrint("Customer selected");
     }
     setState(() {});
+//     if (result != customer && result.runtimeType == ShiftManagement ){
+// shiftManagement =result;
+// debugPrint("Pos Cashier selected");
+//     }
+//     setState(() {}); 
   }
 
   double _scrollToOffset(int index) {
@@ -665,12 +684,12 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     setState(() {});
   }
 
-  verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
-  }
+  // verify() async {
+  //   CommanResponse res = await VerificationUrl.checkAppStatus();
+  //   if (res.message == true) {
+  //   } else {
+  //     Helper.showPopup(context, "Please update your app to latest version",
+  //         barrierDismissible: true);
+  //   }
+  // }
 }

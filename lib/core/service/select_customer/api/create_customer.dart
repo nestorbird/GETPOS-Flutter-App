@@ -80,6 +80,6 @@ class CreateCustomer {
     await DbCustomer().addCustomers(customers);
 
     return CommanResponse(
-        status: true, message: tempCustomer, apiStatus: ApiStatus.NO_INTERNET);
+        status: false, message: NO_INTERNET, apiStatus: ApiStatus.NO_INTERNET);
   }
 }

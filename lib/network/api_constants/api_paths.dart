@@ -36,12 +36,10 @@ const THEME_PATH = 'method/getpos.getpos.api.get_theme_settings';
 
 ///LOGIN API PATH
 const LOGIN_PATH = 'method/getpos.getpos.api.login';
-const Verify_URL =
-    'https://control-centre.nestorbird.com/api/method/control_centre.api.validate';
+const Verify_URL = 'https://control-centre.nestorbird.com/api/method/control_centre.api.validate';
 
 ///CUSTOMERS LIST API PATH
-const CUSTOMERS_PATH =
-    'method/getpos.getpos.api.get_customer_list_by_hubmanager';
+const CUSTOMERS_PATH = 'method/getpos.getpos.api.get_customer_list_by_hubmanager';
 
 const CUSTOMER_PATH = 'method/getpos.getpos.api.get_customer';
 

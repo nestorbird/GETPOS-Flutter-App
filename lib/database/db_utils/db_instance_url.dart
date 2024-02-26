@@ -10,15 +10,8 @@ class DbInstanceUrl {
   Future<void> saveUrl(String url) async {
     box = await Hive.openBox<String>(URL_BOX);
 
-    // if (url == "https://$url/api/") {
-    //   await box.put(URL_KEY, url);
-    //   log('Inside if:$url');
-    //   log("Saved Url in DB:$url");
-    // } else {
-    //   url = "https://$url/api/";
-
     await box.put(URL_KEY, url);
-    //log('Inside else:$url');
+
     log("Saved Url in DB:$url");
   }
 
@@ -28,9 +21,10 @@ class DbInstanceUrl {
     String url = box.get(URL_KEY) ?? instanceUrl;
     return url;
   }
-
   Future<int> deleteUrl() async {
     box = await Hive.openBox<String>(URL_BOX);
     return await box.clear();
   }
+
+  
 }

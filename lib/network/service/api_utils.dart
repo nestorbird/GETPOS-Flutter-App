@@ -112,8 +112,13 @@ class APIUtils {
     //   log('API URL inside _apipath if :: $uri');
     //   return uri;
     // } else {
+       
+    var dbPreferences = DBPreferences();
+    
+                  String prefix = await dbPreferences.getPreference(SSL_PREFIX); 
+
     String appendInstanceUrl = await _getUrlKey();
-    instanceUrl = "https://$appendInstanceUrl/api/";
+    instanceUrl = "$prefix://$appendInstanceUrl/api/";
     Uri uri = Uri.parse(instanceUrl + url);
     log('API URL :: $uri');
     return uri;

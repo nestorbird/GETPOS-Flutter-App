@@ -64,6 +64,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   bool isInternetAvailable = false;
   ParkOrder? parkOrder;
   Customer? _selectedCust;
+ // PosProfileCashier? _selectedPosProfile;   TO BE ADDED
   final _scrollController = ScrollController();
   //HubManager? hubManagerData;
   double _scrollToOffset(int index) {
@@ -104,7 +105,10 @@ class _ProductListHomeState extends State<ProductListHome> {
     if (widget.isForNewOrder && _selectedCust == null) {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
-    // });
+    //  if (widget.isNewShift && _selectedPosProfile == null && _sele) {
+    //   Future.delayed(Duration.zero, () => _selectPosProfile());
+    // }
+   
 
     // _getManagerName();
 
@@ -962,16 +966,16 @@ class _ProductListHomeState extends State<ProductListHome> {
     // await DBPreferences().getPreference(Manager);
   }
 
-  verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-      _getManagerName();
-      getProducts();
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
-  }
+  // verify() async {
+  //   CommanResponse res = await VerificationUrl.checkAppStatus();
+  //   if (res.message == true) {
+  //     _getManagerName();
+  //     getProducts();
+  //   } else {
+  //     Helper.showPopup(context, "Please update your app to latest version",
+  //         barrierDismissible: true);
+  //   }
+  // }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {
     product.orderedPrice = product.price;

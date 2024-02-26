@@ -23,24 +23,16 @@ class DbOrderTax {
 //to save tax list in db for orderwise taxation
   Future<List>? saveOrderWiseTax(String orderId, List<OrderTax> list) async {
     box = await Hive.openBox<List>(ORDERWISE_TAX_BOX);
-    // for (OrderTax item in list) {
-    //   await box.put(item.itemTaxTemplate, item);
-    //   var savedTaxes = await box.get(item.itemTaxTemplate);
-    //   log("Saved Tax :: $savedTaxes");
-    // }
+    
     await box.put(orderId, list);
-    // var savedTaxesList = await box.get(orderId);
-    // print("Saved Taxes :: $savedTaxesList");
+   
     return list;
   }
 
   //to fetch the Orderwise tax list
   Future<List<OrderTax>>? getOrderWiseTax(String orderId) async {
     final box = await Hive.openBox<List>(ORDERWISE_TAX_BOX);
-    // Assuming 'id' is the property that represents the orderId in OrderTaxes
-    // final List<OrderTax> orderTaxesList = box.values
-    //     .where((orderTax) => orderTax.itemTaxTemplate == orderId)
-    //     .toList();
+    
     var orderTaxesList = box.get(orderId);
     if(orderTaxesList == null || orderTaxesList.isEmpty) {
       return List<OrderTax>.empty();
@@ -48,4 +40,14 @@ class DbOrderTax {
     var list = orderTaxesList.cast<OrderTax>(); 
     return list;
   }
+
+ Future<void> clearOrderTaxes() async {
+  box = await Hive.openBox<OrderTax>(ORDERTAX_BOX);
+
+  // Iterate through the keys in the box and remove each item
+  final keys = box.keys;
+  for (var key in keys) {
+    await box.delete(key);
+  }
+}
 }

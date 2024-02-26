@@ -15,9 +15,9 @@ BoxDecoration searchTxtFieldBorderDecoration = BoxDecoration(
 BoxDecoration txtFieldBoxShadowDecoration = BoxDecoration(
     color: AppColors.fontWhiteColor,
     border: Border.all(color: AppColors.getAsset(), width: BORDER_WIDTH),
-    boxShadow: const [
+    boxShadow:  [
       BoxShadow(
-        color: Color(0xFFC7C5C5),
+        color: AppColors.getshadowBorder(),
         spreadRadius: 1,
         blurRadius: 5,
         offset: Offset(0, 2),
