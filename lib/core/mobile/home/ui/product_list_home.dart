@@ -966,16 +966,16 @@ class _ProductListHomeState extends State<ProductListHome> {
     // await DBPreferences().getPreference(Manager);
   }
 
-  verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-      _getManagerName();
-      getProducts();
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
-  }
+  // verify() async {
+  //   CommanResponse res = await VerificationUrl.checkAppStatus();
+  //   if (res.message == true) {
+  //     _getManagerName();
+  //     getProducts();
+  //   } else {
+  //     Helper.showPopup(context, "Please update your app to latest version",
+  //         barrierDismissible: true);
+  //   }
+  // }
 
   _openItemDetailDialog(BuildContext context, OrderItem product) async {
     product.orderedPrice = product.price;

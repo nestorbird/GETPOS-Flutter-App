@@ -10,8 +10,14 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/mobile/home/ui/product_list_home.dart';
 import 'package:nb_posx/core/mobile/theme/theme_setting_screen.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
+import 'package:nb_posx/database/db_utils/db_customer.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/db_utils/db_order_item.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax.dart';
+import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
+import 'package:nb_posx/database/db_utils/db_product.dart';
+import 'package:nb_posx/database/db_utils/db_sale_order.dart';
 import 'package:nb_posx/main.dart';
 import 'package:nb_posx/utils/helpers/sync_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -429,13 +435,13 @@ class _LoginState extends State<Login> {
       String url = await DbInstanceUrl().getUrl();
       log(url);
       // Clear the database
-      await DBPreferences().delete();
+      SyncHelper().logoutFlow();
       log("Cleared the DB");
       //to save the url
-      await DbInstanceUrl().saveUrl(url);
-      log("Saved Url:$url");
-// while changing instance
-      SyncHelper().logoutFlow();
+     // await DbInstanceUrl().saveUrl(url);
+     // log("Saved Url:$url");
+
+     
 
     
       await Navigator.pushAndRemoveUntil(

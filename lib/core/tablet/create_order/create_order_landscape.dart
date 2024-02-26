@@ -65,7 +65,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
-    verify();
+   // verify();
     getProducts();
     if (Helper.activeParkedOrder != null) {
       log("park order is active");
@@ -684,12 +684,12 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     setState(() {});
   }
 
-  verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
-  }
+  // verify() async {
+  //   CommanResponse res = await VerificationUrl.checkAppStatus();
+  //   if (res.message == true) {
+  //   } else {
+  //     Helper.showPopup(context, "Please update your app to latest version",
+  //         barrierDismissible: true);
+  //   }
+  // }
 }

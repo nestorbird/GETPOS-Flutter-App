@@ -12,7 +12,7 @@ import 'package:nb_posx/core/tablet/create_order/sale_successful_popup_widget.da
 import 'package:nb_posx/database/db_utils/db_order_item.dart';
 // import 'package:nb_posx/database/db_utils/db_hub_manager.dart';
 import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
-import 'package:nb_posx/database/db_utils/db_sales_order_req_items.dart';
+
 import 'package:nb_posx/database/db_utils/db_taxes.dart';
 import 'package:nb_posx/database/models/order_item.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
@@ -83,7 +83,7 @@ class _CartWidgetState extends State<CartWidget> {
   SaleOrder? saleOrder;
   List<Map<String, dynamic>> taxDetailsList = [];
   List<OrderTaxTemplate> data = [];
-  final bool isItemWiseTax = true;
+  bool isItemWiseTax = true;
    Map<String, double> taxAmountMap = {};
 
 
@@ -856,7 +856,7 @@ class _CartWidgetState extends State<CartWidget> {
         time: time,
         customer: widget.customer!,
         manager: Helper.hubManager!,
-        items: currentCart!.items,
+        items: currentCart!.items ,
         transactionId: '',
         paymentMethod: selectedCardMode
             ? "Card"
@@ -918,15 +918,15 @@ class _CartWidgetState extends State<CartWidget> {
    Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
   // Initialize variables
   bool isTaxAvailable = false;
+  
   totalAmount = 0.0;
   subTotalAmount = 0.0;
   taxAmount = 0.0;
   totalTaxAmount = 0.0;
   orderAmount = 0.0;
   grandTotal = 0.0;
-// setState(() {
-  
-// });
+
+
   // Map to store tax amounts for each tax type
  Map<String, double> taxAmountMap = {};
 
@@ -946,6 +946,7 @@ class _CartWidgetState extends State<CartWidget> {
     if (item.tax!.isNotEmpty) {
     
       isTaxAvailable = true;
+      isItemWiseTax = true;
       // Calculating subtotal amount to calculate taxes for attributes in items
       if (item.attributes.isNotEmpty) {
         for (var attribute in item.attributes) {
@@ -979,17 +980,17 @@ class _CartWidgetState extends State<CartWidget> {
           ifAbsent: () => taxAmount,
         );
       }
-      item.tax!.clear();
+     item.tax!.clear();
      item.tax!.addAll(taxation);
     
-//   await DbTaxes().saveItemWiseTax(orderId!, taxation);
+   // await DbTaxes().saveItemWiseTax(orderId!, taxation);
     }
     
    }
      //OrderWise Taxation is applicable
      if (!isTaxAvailable  ){
   
-     
+     isItemWiseTax =false;
       // Order wise tax applicable
       taxAmount = 0.0;
       totalTaxAmount = 0.0;

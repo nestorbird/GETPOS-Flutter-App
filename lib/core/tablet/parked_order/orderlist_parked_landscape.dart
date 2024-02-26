@@ -31,7 +31,8 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
   late bool fetchingData;
 
   @override
-  void initState() {   verify();
+  void initState() {   
+    //verify();
     fetchingData = true;
     searchCtrl = TextEditingController();
     super.initState();
@@ -148,12 +149,13 @@ class _OrderListParkedLandscapeState extends State<OrderListParkedLandscape> {
         .toList();
 
     setState(() {});
-  }verify() async {
-    CommanResponse res = await VerificationUrl.checkAppStatus();
-    if (res.message == true) {
-    } else {
-      Helper.showPopup(context, "Please update your app to latest version",
-          barrierDismissible: true);
-    }
   }
+  // verify() async {
+  //   CommanResponse res = await VerificationUrl.checkAppStatus();
+  //   if (res.message == true) {
+  //   } else {
+  //     Helper.showPopup(context, "Please update your app to latest version",
+  //         barrierDismissible: true);
+  //   }
+  // }
 }

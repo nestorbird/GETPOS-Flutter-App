@@ -16,29 +16,7 @@ class DbTaxes {
     box.close();
   }
 
-  Future<List<OrderItem>> getProducts() async {
-    box = await Hive.openBox<OrderItem>(ORDER_ITEM_BOX);
-    List<OrderItem> list = [];
-    for (var item in box.values) {
-      var product = item as OrderItem;
-      if (product.stock > 0 && product.price > 0) list.add(product);
-    }
-    return list;
-  }
 
-  Future<List<Taxes>> getTaxes() async {
-    box = await Hive.openBox<Taxes>(TAX_BOX);
-    List<Taxes> list = [];
-    for (var item in box.values) {
-      var tax = item as Taxes;
-      getProducts();
-      var product = item as OrderItem;
-      if (product.stock > 0 && product.price > 0 && tax.taxRate > 0) {
-        list.add(tax);
-      }
-    }
-    return list;
-  }
 
 
   Future<int> deleteTaxes() async {
@@ -69,17 +47,6 @@ class DbTaxes {
     return list;
   }
 
-  
-
-
-//    Future<List<Taxes>> getItemWiseTax(String orderId) async {
-//   var box = await Hive.openBox<Taxes>(TAX_BOX);
-
-//   // Assuming you have stored the itemTaxTemplate as the key for each item
-//   List<Taxes> taxList = box.values.where((tax) => tax.itemTaxTemplate == orderId).toList();
-
-//   return taxList;
-// }
 
 Future<List<Taxes>>? getItemWiseTax(String orderId) async {
     final box = await Hive.openBox<List>(TAX_BOX);

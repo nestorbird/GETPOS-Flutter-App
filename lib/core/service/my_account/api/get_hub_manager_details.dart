@@ -72,7 +72,7 @@ class HubManagerDetails {
               .savePreference(SalesSeries, hubManagerData.series);
         } else {
           //SAL-ORD-2024-00333
-          String salesOrderSeries = "SAL-ORD-YYYY-#####";
+          String salesOrderSeries = "OFF-ORD-YYYY-#####";
           await DBPreferences().savePreference(SalesSeries, salesOrderSeries);
         }
 
