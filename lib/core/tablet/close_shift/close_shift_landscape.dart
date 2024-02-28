@@ -3,9 +3,10 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 // for json decoding
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
-import 'package:nb_posx/utils%20copy/ui_utils/text_styles/custom_text_style.dart';
+
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
+import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:nb_posx/widgets/button.dart';
 import 'package:nb_posx/widgets/custom_appbar.dart';
 import 'package:nb_posx/widgets/text_field_widget.dart'; // for making HTTP requests

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
@@ -154,7 +155,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           else {
             await HubManagerDetails().getAccountDetails();
             if (widget.isUserLoggedIn) {
-              // await CustomerService().getCustomers();
+               await CustomerService().getCustomers();
               await ProductsService().getCategoryProduct();
             }
             // Start isolate with background processing and pass the receivePort
@@ -301,7 +302,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
             onTap: () {
               _emailCtrl.clear();
               _passCtrl.clear();
-              fetchDataAndNavigate();
+            clearDataAndNavigate();
 
               //Navigator.push(context,
               // MaterialPageRoute(builder: (context) => const ThemeChange()));
@@ -321,19 +322,23 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       );
 
 //FETCH MASTER'S AND TRANSACTION
-  Future<void> fetchDataAndNavigate() async {
+
+Future<void> clearDataAndNavigate() async {
     // log('Entering fetchDataAndNavigate');
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
-       log(url);
+      log(url);
       // Clear the database
-      await DBPreferences().delete();
-      log("Cleared the DB");
+      SyncHelper().changeInstanceFlow();
+      log("Cleared the master for changed instance");
       //to save the url
-      await DbInstanceUrl().saveUrl(url);
-      log("Saved Url:$url");
-      // Navigate to a different screen
+     // await DbInstanceUrl().saveUrl(url);
+     // log("Saved Url:$url");
+
+     
+
+    
       // ignore: use_build_context_synchronously
       await Navigator.pushAndRemoveUntil(
           context,
@@ -347,6 +352,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
       log('Error: $e');
     }
   }
+  
 
   /// TERM AND CONDITION SECTION
   Widget get termAndPolicySection => Padding(

@@ -39,7 +39,8 @@ class CustomerService {
           : '';
 
       String customerUrl =
-          '$NEW_GET_ALL_CUSTOMERS_PATH?search=$searchTxt&from_date=$lastSyncDateTime';
+          '$NEW_GET_ALL_CUSTOMERS_PATH';
+          //?search=$searchTxt&from_date=$lastSyncDateTime';
 
       //Call to customer api
       var apiResponse = await APIUtils.getRequestWithHeaders(customerUrl);
@@ -99,9 +100,9 @@ class CustomerService {
 
           //Adding new customers into the database
           await DbCustomer().addCustomers(customers);
-
-          await DBPreferences().savePreference(
-              CUSTOMER_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
+        
+          // await DBPreferences().savePreference(
+          //     CUSTOMER_LAST_SYNC_DATETIME, Helper.getCurrentDateTime());
 
           //returning the CommanResponse as true
           return CommanResponse(

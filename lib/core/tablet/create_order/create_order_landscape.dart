@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:get/get.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
+import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
+import 'package:nb_posx/core/service/product/api/products_api_service.dart';
 import 'package:nb_posx/core/tablet/home_tablet.dart';
 import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
 import 'package:nb_posx/database/models/park_order.dart';
@@ -33,8 +35,9 @@ class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
 bool isShiftCreated;
   final RxString? selectedView;
+  final bool isAppLoggedIn;
   CreateOrderLandscape(
-      {Key? key, this.order, this.selectedView, required this.isShiftCreated})
+      {Key? key, this.order, this.selectedView, required this.isShiftCreated, this.isAppLoggedIn= false})
       : super(key: key);
 
   @override
@@ -71,6 +74,9 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       log("park order is active");
       customer = Helper.activeParkedOrder!.customer;
       items = Helper.activeParkedOrder!.items;
+      // To check that app is logged in
+       _syncDataOnInAppLogin();
+   
     }
   }
 
@@ -658,6 +664,13 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
 // debugPrint("Pos Cashier selected");
 //     }
 //     setState(() {}); 
+  }
+   _syncDataOnInAppLogin() async {
+    if (widget.isAppLoggedIn) {
+      var _ = await CustomerService().getCustomers();
+      await ProductsService().getCategoryProduct();
+      setState(() {});
+    }
   }
 
   double _scrollToOffset(int index) {

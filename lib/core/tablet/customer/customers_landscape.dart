@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 
 import '../../../../../database/db_utils/db_customer.dart';
 import '../../../../../database/models/customer.dart';
@@ -12,6 +13,7 @@ import '../../service/login/api/verify_instance_service.dart';
 import '../widget/title_search_bar.dart';
 
 class CustomersLandscape extends StatefulWidget {
+  
   const CustomersLandscape({Key? key}) : super(key: key);
 
   @override
@@ -22,6 +24,7 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
   late TextEditingController searchCtrl;
   List<Customer> customers = [];
   bool isCustomersFound = true;
+   final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {  
@@ -31,13 +34,8 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
     getCustomersFromDB(0);
   }
 
-  Future<void> getCustomersFromDB(val) async {
-    //Fetch the data from local database
-    customers = await DbCustomer().getCustomers();
-    isCustomersFound = customers.isNotEmpty;
-    if (val == 0) setState(() {});
-  }
-  final FocusNode _focusNode = FocusNode();
+  
+ 
 
   @override
   void dispose() {
@@ -121,6 +119,15 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
     );
   }
 
+
+Future<void> getCustomersFromDB(val) async {
+    //Fetch the data from local database
+    customers = await DbCustomer().getCustomers();
+    isCustomersFound = customers.isNotEmpty;
+    if (val == 0) setState(() {});
+  }
+
+  
   void filterCustomerData(String searchText) async {
     await getCustomersFromDB(1);
     customers = customers
@@ -129,13 +136,13 @@ class _CustomersLandscapeState extends State<CustomersLandscape> {
             element.phone.toLowerCase().contains(searchText.toLowerCase()))
         .toList();
 
-    isCustomersFound = customers.isNotEmpty;
+   
 
     if (!isCustomersFound) {
-      // CommanResponse response =
-      //     await CustomerService().getCustomers(searchTxt: searchText);
+       CommanResponse response =
+          await CustomerService().getCustomers(searchTxt: searchText);
     }
-
+ isCustomersFound = customers.isNotEmpty;
     setState(() {});
   }
   // verify() async {

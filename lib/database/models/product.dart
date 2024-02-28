@@ -42,7 +42,6 @@ class Product extends HiveObject {
   DateTime productUpdatedTime;
 
   @HiveField(9)
-  //double tax;
   List<Taxes> tax;
 
   Product(

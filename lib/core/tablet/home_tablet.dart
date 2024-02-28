@@ -76,8 +76,8 @@ class HomeTablet extends StatelessWidget {
         );
       case "Parked Order":
         return OrderListParkedLandscape(selectedView: selectedTab);
-        case "Open Shift":
-        return OpenShiftManagement(selectedView: selectedTab);
+        // case "Open Shift":
+        // return OpenShiftManagement(selectedView: selectedTab);
     }
   }
 }

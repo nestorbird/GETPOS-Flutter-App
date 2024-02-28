@@ -358,8 +358,7 @@ class _CartWidgetState extends State<CartWidget> {
             ),
           ),
         ),
-        //to fetch list of items added in cart
-        //_prodListSection(),
+        
         //Item total
         widget.orderList.isEmpty
             ? const SizedBox()
@@ -370,6 +369,7 @@ class _CartWidgetState extends State<CartWidget> {
             ? const SizedBox()
             : _subtotalSection(
                 "Subtotal", "$appCurrency ${totalAmount.toStringAsFixed(2)}"),
+        //To DO: When discounts and loyality points are added
         // widget.orderList.isEmpty
         //     ? const SizedBox()
         //     : _subtotalSection("Discount", "- $appCurrency 0.00",
@@ -795,13 +795,7 @@ class _CartWidgetState extends State<CartWidget> {
         : Container();
   }
 
-  /* void _calculateOrderAmount() {
-    double amount = 0;
-    for (var item in currentCart!.items) {
-      amount += item.orderedPrice * item.orderedQuantity;
-    }
-    currentCart!.orderAmount = amount;
-  }*/
+ 
 
   void _showOrderPlacedSuccessPopup() async {
     var response = await Get.defaultDialog(
@@ -842,7 +836,7 @@ class _CartWidgetState extends State<CartWidget> {
       // log("Taxes :: $taxes");
       
 //if OrderWise taxation is applicable
-       var tax = await DbOrderTax().getOrderWiseTax(orderId!);
+       var tax = await DbOrderTax().getOrderWiseTax(orderId);
        log("OrderWise Taxes :: $tax");
       
 
@@ -915,6 +909,7 @@ class _CartWidgetState extends State<CartWidget> {
     }
   }
 
+//Calculate Tax and Total 
    Future<void> _configureTaxAndTotal(List<OrderItem> items) async {
   // Initialize variables
   bool isTaxAvailable = false;
