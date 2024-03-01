@@ -18,6 +18,7 @@ import 'package:nb_posx/database/db_utils/db_order_tax_template.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/db_utils/db_product.dart';
 import 'package:nb_posx/database/db_utils/db_sale_order.dart';
+import 'package:nb_posx/database/models/product.dart';
 import 'package:nb_posx/main.dart';
 import 'package:nb_posx/utils/helpers/sync_helper.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -167,8 +168,11 @@ class _LoginState extends State<Login> {
           log("$response");
           // dataLoadInLandingScreen();
           // await ProductsService().getCategoryProduct();
+          List<Product> product = await DbProduct().getProducts();
+    log("Product: $product");
+    
           await HubManagerDetails().getAccountDetails();
-          if (widget.isUserLoggedIn) {
+           if (widget.isUserLoggedIn) {
             await ProductsService().getCategoryProduct();
           }
           Helper.hideLoader(context);
@@ -176,6 +180,8 @@ class _LoginState extends State<Login> {
          await useIsolate(isUserLoggedIn: true);
           // if (isSuccess) {
           // Once the signal is received, navigate to ProductListHome
+       product = await DbProduct().getProducts();
+    log("Product: $product");
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -309,7 +315,7 @@ class _LoginState extends State<Login> {
               _emailCtrl.clear();
               _passCtrl.clear();
 
-              fetchDataAndNavigate();
+              clearDataAndNavigate();
 
             },
             child: Padding(
@@ -422,21 +428,17 @@ class _LoginState extends State<Login> {
     return false;
   }
 
-  dataLoadInLandingScreen() async {
-    await ProductsService().getCategoryProduct();
-    await HubManagerDetails().getAccountDetails();
-    setState(() {});
-  }
+  
 
-  Future<void> fetchDataAndNavigate() async {
+  Future<void> clearDataAndNavigate() async {
     // log('Entering fetchDataAndNavigate');
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
       log(url);
       // Clear the database
-      SyncHelper().logoutFlow();
-      log("Cleared the DB");
+      SyncHelper().changeInstanceFlow();
+      log("Cleared the master for changed instance");
       //to save the url
      // await DbInstanceUrl().saveUrl(url);
      // log("Saved Url:$url");

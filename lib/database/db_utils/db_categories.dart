@@ -24,6 +24,12 @@ class DbCategory {
     return list;
   }
 
+Future<int> deleteProducts() async {
+    box = await Hive.openBox<Category>(CATEGORY_BOX);
+    return box.clear();
+  }
+
+
   Future<void> reduceInventory(List<OrderItem> items) async {
     box = await Hive.openBox<Category>(CATEGORY_BOX);
     for (OrderItem orderItem in items) {

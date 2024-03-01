@@ -10,6 +10,7 @@ import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/mobile/create_order_new/ui/cart_screen.dart';
 import 'package:nb_posx/core/mobile/finance/ui/finance.dart';
 import 'package:nb_posx/core/mobile/my_account/ui/my_account.dart';
+import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/core/service/login/api/verify_instance_service.dart';
 import 'package:nb_posx/widgets/search_widget.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -105,23 +106,10 @@ class _ProductListHomeState extends State<ProductListHome> {
     if (widget.isForNewOrder && _selectedCust == null) {
       Future.delayed(Duration.zero, () => goToSelectCustomer());
     }
-    //  if (widget.isNewShift && _selectedPosProfile == null && _sele) {
-    //   Future.delayed(Duration.zero, () => _selectPosProfile());
-    // }
+    _syncDataOnInAppLogin();
+   
    
 
-    // _getManagerName();
-
-    // getProducts();
-    // // _height = MediaQuery.of(context).size.height;
-    // _searchTxtController = TextEditingController();
-    // if (widget.parkedOrder != null) {
-    //   parkOrder = widget.parkedOrder;
-    //   _selectedCust = widget.parkedOrder!.customer;
-    // }
-    // if (widget.isForNewOrder && _selectedCust == null) {
-    //   Future.delayed(Duration.zero, () => goToSelectCustomer());
-    // }
   }
 
   Future<void> checkInternetAvailability() async {
@@ -1028,6 +1016,7 @@ class _ProductListHomeState extends State<ProductListHome> {
 
   _syncDataOnInAppLogin() async {
     if (widget.isAppLoggedIn) {
+      var _ = await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
       setState(() {});
     }

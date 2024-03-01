@@ -356,23 +356,24 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
       }
     }
   }
-
-  Future<void> fetchMasterAndDeleteTransaction() async {
+ Future<void> fetchMasterAndDeleteTransaction() async {
     // log('Entering fetchDataAndNavigate');
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
+
       // Clear the transactional data
-      // await DBPreferences().deleteTransactionData;
       await DbCustomer().deleteCustomer(DeleteCustomers);
       await DbSaleOrder().delete();
       log("Cleared the transactional data");
+
       //to save the url
       await DbInstanceUrl().saveUrl(url);
       log("Saved Url:$url");
-      // Navigate to a different screen
+
+      // Navigate to a Login screen
       // ignore: use_build_context_synchronously
-      Get.offAll(() => LoginLandscape());
+    Get.offAll(() => LoginLandscape());
 
       // Save the URL again
       //await DBPreferences().savePreference('url', url);

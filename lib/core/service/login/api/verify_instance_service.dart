@@ -2,8 +2,9 @@ import 'package:nb_posx/network/api_constants/api_paths.dart';
 import 'package:nb_posx/network/api_helper/api_status.dart';
 import 'package:nb_posx/network/api_helper/comman_response.dart';
 import 'package:nb_posx/network/service/api_utils.dart';
-import 'package:nb_posx/utils%20copy/helper.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:nb_posx/utils/helper.dart';
 
 class VerificationUrl {
   static Future<CommanResponse> checkAppStatus() async {

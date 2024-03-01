@@ -1,7 +1,15 @@
+
+
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:nb_posx/core/mobile/customers/ui/customers.dart';
 import 'package:nb_posx/core/service/orderwise_taxation/api/orderwise_api_service.dart';
 import 'package:nb_posx/core/service/select_customer/api/create_customer.dart';
+import 'package:nb_posx/database/db_utils/db_categories.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
+import 'package:nb_posx/database/models/category.dart';
+import 'package:nb_posx/database/models/product.dart';
 import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import '../../core/service/create_order/api/create_sales_order.dart';
@@ -43,13 +51,20 @@ class SyncHelper {
   ///
   /// when user logout from the app we follow this sync process
   ///
-  Future<bool> logoutFlow() async {
-    await DbCustomer().deleteCustomers();
+  Future<bool> changeInstanceFlow() async {
+    //master data
+   var _= await DbCustomer().deleteCustomers();
+   // _ is a variable which can be ignored but can be used to handle the exceptions.
     await DbHubManager().delete();
-    await DbProduct().deleteProducts();
+   _ = await DbProduct().deleteProducts();
     await DbSaleOrder().delete();
     await DBPreferences().delete();
     await DbInstanceUrl().deleteUrl();
+  await DbCategory().deleteProducts();
+   List<Product> product = await DbProduct().getProducts();
+    log("Prpoduct: $product");
+ List<Category> category = await DbCategory().getCategories();
+    log("category: $category");
     //instanceUrl = 'getpos.in';
     return true;
   }
@@ -109,10 +124,16 @@ class SyncHelper {
   ///
   Future<bool> getDetails() async {
     if (await Helper.isNetworkAvailable()) {
+      List<Product> product = await DbProduct().getProducts();
+      log("Before api service while log in: $product");
       await HubManagerDetails().getAccountDetails();
-      await CustomerService().getCustomers();
+      var response = await CustomerService().getCustomers();
+      log(" customers in login flow: $response");
+
       await ProductsService().getCategoryProduct();
       await OrderwiseTaxes().getOrderwiseTaxes();
+ product = await DbProduct().getProducts();
+      log("After api service while log in: $product");
       // _ = await ProductsService().getProducts();
     }
     return true;

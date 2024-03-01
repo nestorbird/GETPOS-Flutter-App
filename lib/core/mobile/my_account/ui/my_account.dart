@@ -341,15 +341,17 @@ class _MyAccountState extends State<MyAccount> {
     try {
       // Fetch the URL
       String url = await DbInstanceUrl().getUrl();
+
       // Clear the transactional data
-      // await DBPreferences().deleteTransactionData;
       await DbCustomer().deleteCustomer(DeleteCustomers);
       await DbSaleOrder().delete();
       log("Cleared the transactional data");
+
       //to save the url
       await DbInstanceUrl().saveUrl(url);
       log("Saved Url:$url");
-      // Navigate to a different screen
+
+      // Navigate to a Login screen
       // ignore: use_build_context_synchronously
       await Navigator.pushReplacement(
         context,

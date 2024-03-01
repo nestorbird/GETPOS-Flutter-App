@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:hive_flutter/hive_flutter.dart';
 
 import '../models/customer.dart';
@@ -8,9 +10,15 @@ class DbCustomer {
 
   Future<void> addCustomers(List<Customer> list) async {
     box = await Hive.openBox<Customer>(CUSTOMER_BOX);
-    for (Customer c in list) {
+    try{
+       for (Customer c in list) {
       await box.put(c.id, c);
     }
+    
+    }catch(e){
+      log(e.toString());
+    }
+   
    
   }
 

@@ -166,13 +166,13 @@ class _CustomersState extends State<Customers> {
             element.phone.toLowerCase().contains(searchText.toLowerCase()))
         .toList();
 
-    isCustomersFound = customers.isNotEmpty;
+  
 
     if (!isCustomersFound) {
       CommanResponse response =
           await CustomerService().getCustomers(searchTxt: searchText);
     }
-
+  isCustomersFound = customers.isNotEmpty;
     setState(() {});
   }
 }
