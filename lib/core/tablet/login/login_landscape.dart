@@ -8,8 +8,10 @@ import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
+import 'package:nb_posx/core/service/open_shift/service/get_opening_data_api.dart';
+
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
-import 'package:nb_posx/database/db_utils/db_preferences.dart';
+
 import 'package:nb_posx/main.dart';
 import 'package:nb_posx/utils/helpers/sync_helper.dart';
 
@@ -47,18 +49,16 @@ class _LoginLandscapeState extends State<LoginLandscape> {
   late TextEditingController _emailCtrl, _passCtrl, _urlCtrl;
   late BuildContext ctx;
   late String url;
+  bool? internetAvailable;
 
   @override
   void initState() {
     super.initState();
     _emailCtrl = TextEditingController(text: "branch_manager@testmail.com");
     _passCtrl = TextEditingController(text: "Admin@123");
-   // _urlCtrl = TextEditingController();
-   // _emailCtrl.text = "";
-   // _passCtrl.text = "";
-    // _urlCtrl.text = instanceUrl;
+   
     _getUrlKey();
-
+    checkNetworkAvailable();
     // _getAppVersion();
   }
 
@@ -154,20 +154,19 @@ class _LoginLandscapeState extends State<LoginLandscape> {
           ///
           else {
             await HubManagerDetails().getAccountDetails();
-            if (widget.isUserLoggedIn) {
-               await CustomerService().getCustomers();
+            if (widget.isUserLoggedIn ) {
+              await CustomerService().getCustomers();
               await ProductsService().getCategoryProduct();
+            //  await GetOpeningDataService().getOpeningDataDetails();
             }
             // Start isolate with background processing and pass the receivePort
             await useIsolate(isUserLoggedIn: true);
           }
-          // if (isSuccess) {
-          // Once the signal is received, navigate to ProductListHome
+        if(internetAvailable == true){
+            await GetOpeningShiftService().getOpeningShiftDetails();
+        }
           Get.offAll(() => HomeTablet());
-          // } else {
-          //   // ignore: use_build_context_synchronously
-          //   Helper.showSnackBar(context, "Synchronization failed");
-          // }
+          
         } else {
           if (!mounted) return;
           Helper.hideLoader(context);
@@ -435,7 +434,17 @@ Future<void> clearDataAndNavigate() async {
     url = "https://$url/api/";
     return Helper.isValidUrl(url);
   }
-
+checkNetworkAvailable() async {
+    try {
+      bool isInternetAvailable = await Helper.isNetworkAvailable();
+      setState(() {
+        internetAvailable = isInternetAvailable;
+      });
+    } catch (error) {
+      // Handle the error if needed
+      print('Error: $error');
+    }
+  }
   _getUrlKey() async {
     url = await DbInstanceUrl().getUrl();
     setState(() {});

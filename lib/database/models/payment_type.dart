@@ -51,13 +51,14 @@ class PaymentType extends HiveObject {
   }
 
   factory PaymentType.fromMap(Map<String, dynamic> map) {
-    return PaymentType(
-        parent: map['parent'],
-        isDefault: map['default'],
-        allowInReturns: map['allow_in_returns'],
-        modeOfPayment:map['mode_of_payment']
-        );
-  }
+  return PaymentType(
+    parent: map['parent'],
+    isDefault: map['default'] == 1, // Checking if the value is 1 for true
+    allowInReturns: map['allow_in_returns'] == 1, // Checkinf if the value is 1 for true
+    modeOfPayment: map['mode_of_payment'],
+  );
+}
+
 
   String toJson() => json.encode(toMap());
 

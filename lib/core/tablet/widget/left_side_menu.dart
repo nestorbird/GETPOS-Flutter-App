@@ -55,22 +55,27 @@ class LeftSideMenu extends StatelessWidget {
           _leftMenuSectionItem("Product", PRODUCE_TAB_ICON, 30, () {
             selectedView.value = "Product";
           }),*/
+          // note: The width has been changed from 30-20.
           hightSpacer10,
-          _leftMenuSectionItem("Customer", CUSTOMER_TAB_ICON, 30, () {
+          _leftMenuSectionItem("Customer", CUSTOMER_TAB_ICON, 20, () {
             selectedView.value = "Customer";
           }),
           hightSpacer10,
-          _leftMenuSectionItem("History", HISTORY_TAB_ICON, 30, () {
+          _leftMenuSectionItem("History", HISTORY_TAB_ICON, 20, () {
             selectedView.value = "History";
           }),
           hightSpacer10,
-          _leftMenuSectionItem("My Profile", PROFILE_TAB_ICON, 30, () {
+          _leftMenuSectionItem("My Profile", PROFILE_TAB_ICON, 20, () {
             selectedView.value = "My Profile";
           }),
-        //      hightSpacer10,
-        //   _leftMenuSectionItem("Open Shift", PROFILE_TAB_ICON, 30, () {
-        //     selectedView.value = "Open Shift";
-        //  }),
+            hightSpacer10,
+          _leftMenuSectionItem("Open Shift", OPENSHIFT_TAB_ICON, 20, () {
+            selectedView.value = "Open Shift";
+         }),
+         hightSpacer10,
+         _leftMenuSectionItem("Close Shift", CLOSESHIFT_TAB_ICON, 20, () {
+            selectedView.value = "Close Shift";
+         }),
         ],
       ),
     );

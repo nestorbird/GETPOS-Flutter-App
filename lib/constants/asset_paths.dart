@@ -38,6 +38,9 @@ const PRODUCE_TAB_ICON = "assets/tablet_icons/product_icon.svg";
 const CUSTOMER_TAB_ICON = "assets/tablet_icons/customer_icon.svg";
 const HISTORY_TAB_ICON = "assets/tablet_icons/history_icon.svg";
 const PROFILE_TAB_ICON = "assets/tablet_icons/my_profile_icon.svg";
+const OPENSHIFT_TAB_ICON = "assets/icons/fab_open_shift.svg";
+const CLOSESHIFT_TAB_ICON = "assets/icons/fab_close_shift.svg";
+
 
 const EMPTY_CART_TAB_IMAGE = "assets/images/empty_cart.png";
 const SEARCH_TAB_IMAGE = "assets/tablet_icons/search_icon.svg";
@@ -49,6 +52,7 @@ const FINANCE_ACTIVE_TAB_IMAGE =
 const CHANGE_PASS_TAB_IMAGE = "assets/tablet_icons/change_pass_icon.svg";
 const CHANGE_PASS_ACTIVE_TAB_IMAGE =
     "assets/tablet_icons/change_pass_selected_icon.svg";
+const DROPDOWN_ICON = 'assets/icons/drop_down_icon.svg';
 
 const App_ICON = "assets/images/app_logo.png";
 

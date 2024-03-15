@@ -1,44 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'taxes.dart';
+part of 'payment_info.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TaxesAdapter extends TypeAdapter<Taxes> {
+class PaymentInfoAdapter extends TypeAdapter<PaymentInfo> {
   @override
-  final int typeId = 20;
+  final int typeId = 1;
 
   @override
-  Taxes read(BinaryReader reader) {
+  PaymentInfo read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Taxes(
-      taxId: fields[0] as String,
-      itemTaxTemplate: fields[1] as String,
-      taxType: fields[2] as String,
-      taxRate: fields[3] as double,
-      taxAmount: fields[4] == null ? 0.0 : fields[4] as double?,
+    return PaymentInfo(
+      paymentType: fields[0] as String,
+      amount: fields[1] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Taxes obj) {
+  void write(BinaryWriter writer, PaymentInfo obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.taxId)
-      ..writeByte(1)
-      ..write(obj.itemTaxTemplate)
       ..writeByte(2)
-      ..write(obj.taxType)
-      ..writeByte(3)
-      ..write(obj.taxRate)
-      ..writeByte(4)
-      ..write(obj.taxAmount);
+      ..writeByte(0)
+      ..write(obj.paymentType)
+      ..writeByte(1)
+      ..write(obj.amount);
   }
 
   @override
@@ -47,7 +38,7 @@ class TaxesAdapter extends TypeAdapter<Taxes> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaxesAdapter &&
+      other is PaymentInfoAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

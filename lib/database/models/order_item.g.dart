@@ -29,7 +29,7 @@ class OrderItemAdapter extends TypeAdapter<OrderItem> {
       productImage: fields[8] as Uint8List,
       productUpdatedTime: fields[9] as DateTime,
       productImageUrl: fields[11] == null ? '' : fields[11] as String?,
-      tax: (fields[12] as List).cast<Taxes>(),
+      tax: (fields[12] as List?)?.cast<Taxes>(),
     );
   }
 

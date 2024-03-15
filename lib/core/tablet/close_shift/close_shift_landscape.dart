@@ -1,150 +1,204 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
-// for json decoding
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
-
+import 'package:nb_posx/core/tablet/home_tablet.dart';
+import 'package:nb_posx/database/db_utils/db_shift_management.dart';
+import 'package:nb_posx/database/models/payment_info.dart';
+import 'package:nb_posx/database/models/shift_management.dart';
 import 'package:nb_posx/utils/ui_utils/padding_margin.dart';
 import 'package:nb_posx/utils/ui_utils/spacer_widget.dart';
-import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:nb_posx/widgets/button.dart';
-import 'package:nb_posx/widgets/custom_appbar.dart';
-import 'package:nb_posx/widgets/text_field_widget.dart'; // for making HTTP requests
 
 class CloseShiftManagement extends StatefulWidget {
-  
-    final RxString selectedView;
-  const CloseShiftManagement({super.key, required this.selectedView});
+   final bool isShiftOpen;
+  final RxString selectedView;
+  const CloseShiftManagement({Key? key, this.isShiftOpen = true, required this.selectedView}) : super(key: key);
 
   @override
- CloseShiftManagementState createState() =>CloseShiftManagementState();
+  CloseShiftManagementState createState() => CloseShiftManagementState();
 }
 
 class CloseShiftManagementState extends State<CloseShiftManagement> {
-  List<String> posProfiles = [];
-  List<String> paymentMethods = [];
-  bool isShiftClose = false;
-late TextEditingController  _closingCashCtrl;
-double? systemClosingCashBalance;
-double? systemClosingDigitalBalance;
- 
-  late TextEditingController _closingDigitalCtrl;
-  @override
-  void initState() {
-    super.initState();
-  _closingCashCtrl = TextEditingController();
-  _closingDigitalCtrl = TextEditingController();
-    //fetchData();
-  }
+  bool isShiftOpen = false;
+  late List<TextEditingController> controllers = [];
+  ShiftManagement? closeShiftManagement;
+late Future<ShiftManagement?> _future;
+  late Future<ShiftManagement?> shiftManagementFuture;
 
- @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor: AppColors.fontWhiteColor,
-        body:  SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Stack(
-            children: [
-              Center(
-                child:
-                Container(
-                  width: 450,
-                  padding: paddingXY(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      hightSpacer10,
-                      openShiftHeadingWidget(),
-                      hightSpacer120,
-                      hightSpacer20,
-                      posCashierSection(),
-                      hightSpacer30,
-                      paymentMethodsWidget(),
-                      hightSpacer30,
-                      openShiftBtnWidget(),
-                      hightSpacer30
-                    ],
-                  ),
-                ),
-              )
-            ],
-          )),
-    );
+  @override
+ void initState() {
+  _future = DbShiftManagement().getShiftManagement();
+  super.initState();
+   controllers = [];
 }
 
-//WIDGETS
-Widget openShiftHeadingWidget()=>Center(
-  child: Text(
-          OPEN_SHIFT.toUpperCase(),
-          style: getTextStyle(
-            // color: MAIN_COLOR,
-            fontWeight: FontWeight.bold,
-            fontSize: LARGE_PLUS_FONT_SIZE,
+  @override
+void dispose() {
+  super.dispose();
+}
+
+  @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    resizeToAvoidBottomInset: false,
+    backgroundColor: AppColors.fontWhiteColor,
+    body: SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width /3, 
+          padding: paddingXY(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+           hightSpacer10,
+              closeShiftHeadingWidget(),
+             hightSpacer120,
+             hightSpacer30,
+              FutureBuilder<ShiftManagement?>(
+                future: _future,
+                builder: (context, snapshot) {
+                  // if (snapshot.connectionState == ConnectionState.waiting) {
+                  //   return const CircularProgressIndicator();
+                  // } 
+                 if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    var shiftManagement = snapshot.data;
+                    if (shiftManagement != null) {
+                      return paymentMethodsWidget(shiftManagement);
+                    } else {
+                      return  Text('Please Open the Shift first',
+                      style:  TextStyle(
+                            fontSize:LARGE_FONT_SIZE ,
+                            color: AppColors.textandCancelIcon,
+                          fontWeight: FontWeight.w500));
+                    }
+                  }
+                },
+              ),
+            hightSpacer30,
+              closeShiftBtnWidget(closeShiftManagement),
+             hightSpacer30,
+            ],
           ),
         ),
-);
-//In progress - Pos Cashier 
-Widget posCashierSection()=>Container(
-    decoration: BoxDecoration(border: Border.all(color: AppColors.getTextandCancelIcon()),
-    borderRadius: BorderRadius.circular(6.0)),
-    
-              child:  DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Select POS Profile name'),
-                  value: null,
-                  items: posProfiles.map((profile) {
-                    return DropdownMenuItem<String>(
-                      value: profile,
-                      child: Text(profile),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                   
-                  },
-                ));
-                //Dynamic widgets for Payment Method
-  Widget paymentMethodsWidget()=>Column(
-    children: [
-        TextFieldWidget(
-              txtCtrl: _closingCashCtrl,
-              hintText: 'Enter Opening Cash Balance',
-              boxDecoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              verticalContentPadding: 16,
-              password: false, // Not a password field
-            ),
-            hightSpacer30,
-        TextFieldWidget(
-              txtCtrl: _closingDigitalCtrl,
-              hintText: 'Enter Opening Digital Balance',
-              boxDecoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              verticalContentPadding: 16,
-              password: false, // Not a password field
-            ),
-        
-    ],
+      ),
+    ),
   );
+}
 
-// WIDGETS- BUTTON
-  Widget openShiftBtnWidget()=> ButtonWidget(
-          colorTxt:AppColors.fontWhiteColor,
-          isMarginRequired: false,
-          width: 600,
-          onPressed: () async {
-            setState(() {
-              isShiftClose = true;
-             });
-              widget.selectedView.value = "Order";   
-          },
-          title: OPEN_SHIFT.toUpperCase(),
-          primaryColor: AppColors.getPrimary(),
-          // width: MediaQuery.of(context).size.width - 150,
-          height: 60,
-          fontSize: LARGE_FONT_SIZE,
+
+//Close Shift Heading
+ Widget closeShiftHeadingWidget() => Center(
+      child: Text(
+        CLOSE_SHIFT.toUpperCase(),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: LARGE_PLUS_FONT_SIZE,
+        ),
+      ),
+    );
+
+//Payment methods of pos profile
+ Widget paymentMethodsWidget(ShiftManagement shiftManagement) {
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: shiftManagement.paymentInfoList.length,
+    itemBuilder: (context, index) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+            width: 500,
+            decoration: BoxDecoration(
+              border: Border.all(color: AppColors.getshadowBorder()),
+              borderRadius: BorderRadius.circular(6.0),
+            ),
+            child: Padding(
+              padding: leftSpace(x:10),
+              child: Center(
+                child: TextFormField(
+                  // controller: controllers[index],
+                  //autofocus: true,
+                    keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(color: AppColors.asset,
+                    fontWeight: FontWeight.w500),
+                     contentPadding: leftSpace(x: 21),
+                    border: InputBorder.none,
+                   // hintTextDirection: TextDirection.ltr,
+                    hintText: 'Enter the closing ${shiftManagement.paymentsMethod[index].modeOfPayment} balance',
+                  ),
+                ),
+              ),
+            ),
+          ),
+          hightSpacer5,
+          Text(
+            'System Closing ${shiftManagement.paymentInfoList[index].paymentType} Balance: ${shiftManagement.paymentInfoList[index].amount}',
+            style: const TextStyle(fontSize: 16,
+            fontWeight: FontWeight.w500),
+          ),
+            hightSpacer30,
+        ],
+      );
+    },
+  );
+}
+
+//Button for Close Shift and clear the DB after closing the shift
+  Widget closeShiftBtnWidget(ShiftManagement? closeShiftManagement) => ButtonWidget(
+      colorTxt: AppColors.fontWhiteColor,
+      isMarginRequired: false,
+      width: 600,
+      onPressed: () async {
+        if (closeShiftManagement != null &&
+            closeShiftManagement.posProfile.isNotEmpty &&
+            closeShiftManagement.paymentInfoList.isNotEmpty) {
+          List<String> amounts = controllers.map((controller) => controller.text).toList();
+
+          // Create a list of PaymentInfo objects
+          List<PaymentInfo> paymentInfoList = [];
+          for (int i = 0; i < closeShiftManagement.paymentInfoList.length; i++) {
+            PaymentInfo paymentInfo = PaymentInfo(
+              paymentType: closeShiftManagement.paymentInfoList[i].paymentType,
+              amount: amounts[i],
+            );
+            paymentInfoList.add(paymentInfo);
+          }
+
+          ShiftManagement shiftManagement = ShiftManagement(
+            posProfile: closeShiftManagement.posProfile,
+            paymentsMethod: closeShiftManagement.paymentsMethod,
+            paymentInfoList: paymentInfoList,
+          );
+          log('Shift Info: $shiftManagement');
+
+          // Save the shift management data before navigating to HomeTablet
+        await DbShiftManagement().closeShiftManagement(shiftManagement);
+      }
+  //If Shift gets synced in ERP clear the DB of close shift 
+ 
+  await DbShiftManagement().deleteShift();
+
+      // Navigate to HomeTablet
+      // ignore: use_build_context_synchronously
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomeTablet(isShiftCreated: false),
+          ),
+        );
+      },
+      title: CLOSE_SHIFT.toUpperCase(),
+      primaryColor: AppColors.getPrimary(),
+      height: 60,
+      fontSize: LARGE_FONT_SIZE,
   );
 }

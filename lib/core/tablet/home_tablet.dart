@@ -63,7 +63,7 @@ class HomeTablet extends StatelessWidget {
         //return const HomeLandscape();
         return CreateOrderLandscape(selectedView: selectedTab);*/
       case "Order":
-        return CreateOrderLandscape(selectedView: selectedTab, order:parkOrder ,isShiftCreated: true,);
+        return CreateOrderLandscape(selectedView: selectedTab, order:parkOrder ,isShiftCreated: false,);
       /*   case "Product":
         return const ProductsLandscape();*/
       case "Customer":
@@ -76,8 +76,10 @@ class HomeTablet extends StatelessWidget {
         );
       case "Parked Order":
         return OrderListParkedLandscape(selectedView: selectedTab);
-        // case "Open Shift":
-        // return OpenShiftManagement(selectedView: selectedTab);
+        case "Open Shift":
+        return OpenShiftManagement(selectedView: selectedTab);
+        case "Close Shift":
+        return CloseShiftManagement(selectedView: selectedTab);
     }
   }
 }

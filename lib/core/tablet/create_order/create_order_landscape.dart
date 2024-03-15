@@ -8,6 +8,7 @@ import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/core/service/product/api/products_api_service.dart';
 import 'package:nb_posx/core/tablet/home_tablet.dart';
 import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
+import 'package:nb_posx/core/tablet/widget/left_side_menu_old.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/database/models/shift_management.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -33,7 +34,7 @@ import 'cart_widget.dart';
 // ignore: must_be_immutable
 class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
-bool isShiftCreated;
+bool isShiftCreated = false;
   final RxString? selectedView;
   final bool isAppLoggedIn;
   CreateOrderLandscape(
@@ -339,18 +340,20 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                         onTap: () {
                           _handleTap();
 
-                          if (customer == null) {
-                            // Navigator.push(
-                            //  context,
-                            //  MaterialPageRoute(builder: (context) => 
-                            //   HomeTablet(isShiftCreated: true,)));
-                           _handleCustomerPopup();
-                            //  Navigator.push(
-                            //  context,
-                            //  MaterialPageRoute(builder: (context) => 
-                            //   const OpenShiftManagement()));
+                          // if (customer == null && widget.isShiftCreated == false) { 
+                          //    Navigator.pushReplacement(
+                          //    context,
+                          //    MaterialPageRoute(builder: (context) => 
+                          //     const OpenShiftManagement(isShiftOpen: false,)));
+                          // }
 
-                          } else {
+// if (customer == null && widget.isShiftCreated == true) {
+//                           _handleCustomerPopup();
+// }
+                           if (customer == null){
+                              _handleCustomerPopup();
+                           }
+                          else {
                             if (cat.items[position].stock > 0) {
                               var item = OrderItem.fromJson(
                                   cat.items[position].toJson());

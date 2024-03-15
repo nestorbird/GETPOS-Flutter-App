@@ -200,6 +200,8 @@ const SOMETHING_WENT_WRONG = 'Something went wrong, Please try later...';
 const FAILURE_OCCURED = 'Failure occured';
 const SERVER_COMM_EXCEPTION =
     'Error occured while communication with server with StatusCode';
+const SELECT_POS_PROFILE = 'Select Pos Profile';
+const PAYMENT_METHODS = 'Payment Methods';
 
 // ERROR MSG
 const NO_PRODUCTS_FOUND_MSG = 'No products found';

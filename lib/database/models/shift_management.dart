@@ -1,46 +1,55 @@
 import 'dart:convert';
-
 import 'package:hive/hive.dart';
 import 'package:nb_posx/database/db_utils/db_constants.dart';
 import 'package:nb_posx/database/models/payment_type.dart';
 import 'package:nb_posx/database/models/pos_profile_cashier.dart';
+import 'package:nb_posx/database/models/payment_info.dart'; // Import PaymentInfo model
 
 part 'shift_management.g.dart';
 
 @HiveType(typeId: ShiftManagementBoxId)
 class ShiftManagement extends HiveObject {
-
   @HiveField(0)
-  List<PosProfileCashier> posProfilesData;
+  String posProfile;
 
   @HiveField(1)
   List<PaymentType> paymentsMethod;
 
-  ShiftManagement(
-      {required this.posProfilesData, required this.paymentsMethod});
+  @HiveField(2) 
+  List<PaymentInfo> paymentInfoList; 
+
+  ShiftManagement({
+    required this.posProfile,
+    required this.paymentsMethod,
+    required this.paymentInfoList, 
+  });
 
   ShiftManagement copyWith({
-    List<PosProfileCashier>? posProfilesData,
+    String? posProfile,
     List<PaymentType>? paymentsMethod,
+    List<PaymentInfo>? paymentInfoList, 
   }) {
     return ShiftManagement(
-        posProfilesData: posProfilesData ?? this.posProfilesData,
-        paymentsMethod: paymentsMethod ?? this.paymentsMethod);
+      posProfile: posProfile ?? this.posProfile,
+      paymentsMethod: paymentsMethod ?? this.paymentsMethod,
+      paymentInfoList: paymentInfoList ?? this.paymentInfoList, 
+    );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      "pos_profiles_data": posProfilesData.map((x) => x.toMap()).toList(),
-      "payments_method": paymentsMethod.map((x) => x.toMap()).toList()
+      'posProfile': posProfile,
+      'paymentsMethod': paymentsMethod.map((payment) => payment.toMap()).toList(),
+      'paymentInfoList': paymentInfoList.map((info) => info.toMap()).toList(),
     };
   }
 
   factory ShiftManagement.fromMap(Map<String, dynamic> map) {
     return ShiftManagement(
-        posProfilesData: List<PosProfileCashier>.from(
-            map['pos_profiles_data']?.map((x) => PosProfileCashier.fromMap(x))),
-        paymentsMethod: List<PaymentType>.from(
-            map['payments_method']?.map((x) => PaymentType.fromMap(x))));
+      posProfile: map['posProfile'],
+      paymentsMethod: List<PaymentType>.from(map['paymentsMethod']?.map((x) => PaymentType.fromMap(x)) ?? []),
+      paymentInfoList: List<PaymentInfo>.from(map['paymentInfoList']?.map((x) => PaymentInfo.fromMap(x)) ?? []),
+    );
   }
 
   String toJson() => json.encode(toMap());
@@ -50,7 +59,7 @@ class ShiftManagement extends HiveObject {
 
   @override
   String toString() {
-    return 'ShiftManagement(pos_profiles_data: $posProfilesData, payments_method: $paymentsMethod)';
+    return 'ShiftManagement(pos_profiles_data: $posProfile, payments_method: $paymentsMethod, payment_info_list: $paymentInfoList)';
   }
 
   @override
@@ -59,11 +68,12 @@ class ShiftManagement extends HiveObject {
 
     return other is ShiftManagement &&
         other.paymentsMethod == paymentsMethod &&
-        other.posProfilesData == posProfilesData;
+        other.posProfile == posProfile &&
+        other.paymentInfoList == paymentInfoList; 
   }
 
   @override
   int get hashCode {
-    return paymentsMethod.hashCode ^ posProfilesData.hashCode;
+    return paymentsMethod.hashCode ^ posProfile.hashCode ^ paymentInfoList.hashCode; 
   }
 }
