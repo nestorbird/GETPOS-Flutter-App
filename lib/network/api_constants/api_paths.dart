@@ -77,3 +77,9 @@ const ORDERWISE_TAXES_PATH = 'method/getpos.getpos.api.get_sales_taxes';
 
 //PROMO CODES API PATH
 const GET_ALL_PROMO_CODES_PATH = '';
+
+//OPENING SHIFT MANAGEMENT API PATH
+const GET_OPENING_DATA_PATH =
+    'method/getpos.custom_api.pos_api.get_opening_data';
+//CREATE OPENUNG SHIFT API PATH
+const CREATE_OPENING_SHIFT = 'method/getpos.custom_api.pos_api.create_opening_voucher';

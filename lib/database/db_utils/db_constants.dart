@@ -25,6 +25,8 @@ const SALES_ORDER_REQUEST_BOX = 'salesordererequest';
 const POS_PROFILE_CASHIER = 'pos_profile_cashier_box';
 const PAYMENT_METHOD_BOX = 'payment_method_box';
 const SHIFT_MANAGEMENT_BOX = 'shift_management_box';
+const CREATE_SHIFT_BOX = 'create_shift_box';
+const BALANCE_DETAILS_BOX = 'balance_detail_box';
 
 //Temporary Variables
 const WardOne = 'SHM0134';
@@ -50,6 +52,8 @@ const SalesOrderRequestItemsId = 24;
 const PosProfileCashierBoxId = 25;
 const PaymentTypeBoxId = 26;
 const ShiftManagementBoxId = 27;
+const CreateShiftManagementBoxId = 28;
+const BalanceDetailsBoxId = 29;
 
 //PreferenceBox Constants
 const SelectedWard = 'SELECTED_WARDS';

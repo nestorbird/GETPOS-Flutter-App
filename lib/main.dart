@@ -17,6 +17,7 @@ import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/db_utils/db_preferences.dart';
 import 'package:nb_posx/database/models/order_tax_template.dart';
 import 'package:nb_posx/database/models/orderwise_tax.dart';
+import 'package:nb_posx/database/models/payment_info.dart';
 import 'package:nb_posx/database/models/sales_order_req.dart';
 import 'package:nb_posx/database/models/sales_order_req_items.dart';
 import 'package:nb_posx/database/models/taxes.dart';
@@ -67,6 +68,7 @@ void main() async {
   //registerHiveTypeAdapters();
   isUserLoggedIn = await DbHubManager().getManager() != null;
   instanceUrl = await DbInstanceUrl().getUrl();
+  //to check for DB clearance
   log('Instance Url for hub manager: $instanceUrl');
   await SyncHelper().launchFlow(isUserLoggedIn);
 
@@ -137,6 +139,9 @@ void registerHiveTypeAdapters() {
 
   ///Registering SHIFT MANAGEMENT adapter
   Hive.registerAdapter(ShiftManagementAdapter());
+
+  ///Registering PAYMENT INFO adapter
+   Hive.registerAdapter(PaymentInfoAdapter());
 }
 
 class MobileApp extends StatelessWidget {
@@ -167,7 +172,7 @@ class TabletApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: isUserLoggedIn ? HomeTablet() : const ThemeChangeTablet(),
+      home: isUserLoggedIn ? HomeTablet(isShiftCreated: false,) : const ThemeChangeTablet(),
     );
   }
 }

@@ -65,7 +65,7 @@ class _ProductListHomeState extends State<ProductListHome> {
   bool isInternetAvailable = false;
   ParkOrder? parkOrder;
   Customer? _selectedCust;
- // PosProfileCashier? _selectedPosProfile;   TO BE ADDED
+  //PosProfileCashier? _selectedPosProfile;  
   final _scrollController = ScrollController();
   //HubManager? hubManagerData;
   double _scrollToOffset(int index) {

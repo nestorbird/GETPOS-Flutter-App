@@ -83,7 +83,7 @@ class _LogoutPopupViewState extends State<LogoutPopupView> {
           Text("Confirm",
               style: getTextStyle(fontSize: 28.0, fontWeight: FontWeight.bold)),
           hightSpacer10,
-          Text("Are you sure, you want to logout",
+          Text("Are you sure, you want to logout?",
               style: getTextStyle(
                   fontSize: LARGE_FONT_SIZE, fontWeight: FontWeight.w500)),
           hightSpacer10,

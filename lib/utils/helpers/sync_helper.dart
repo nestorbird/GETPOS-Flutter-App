@@ -3,14 +3,13 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:nb_posx/core/mobile/customers/ui/customers.dart';
+
 import 'package:nb_posx/core/service/orderwise_taxation/api/orderwise_api_service.dart';
 import 'package:nb_posx/core/service/select_customer/api/create_customer.dart';
 import 'package:nb_posx/database/db_utils/db_categories.dart';
 import 'package:nb_posx/database/db_utils/db_instance_url.dart';
 import 'package:nb_posx/database/models/category.dart';
 import 'package:nb_posx/database/models/product.dart';
-import 'package:nb_posx/network/api_constants/api_paths.dart';
 
 import '../../core/service/create_order/api/create_sales_order.dart';
 import '../../core/service/customer/api/customer_api_service.dart';
@@ -124,20 +123,16 @@ class SyncHelper {
   ///
   Future<bool> getDetails() async {
     if (await Helper.isNetworkAvailable()) {
-      List<Product> product = await DbProduct().getProducts();
-      log("Before api service while log in: $product");
-      await HubManagerDetails().getAccountDetails();
-      var response = await CustomerService().getCustomers();
-      log(" customers in login flow: $response");
-
-      await ProductsService().getCategoryProduct();
-      await OrderwiseTaxes().getOrderwiseTaxes();
- product = await DbProduct().getProducts();
-      log("After api service while log in: $product");
+    await HubManagerDetails().getAccountDetails();
+    await CustomerService().getCustomers();
+    await ProductsService().getCategoryProduct();
+    await OrderwiseTaxes().getOrderwiseTaxes();
       // _ = await ProductsService().getProducts();
     }
     return true;
   }
+
+  
 
   ///
   /// this process through the list of wards and if any ward's is_assigned property is set to 0

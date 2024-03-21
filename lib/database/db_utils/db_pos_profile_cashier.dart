@@ -7,7 +7,7 @@ import '../models/pos_profile_cashier.dart';
 class DbPosProfileCashier {
   late Box box;
   ///
-  /// ADD OR CREATE THE CASHIER
+  /// ADD THE POS PROFILES
   ///
   Future<void> addPosProfileCashiers(List<PosProfileCashier> list) async {
     box = await Hive.openBox<PosProfileCashier>(POS_PROFILE_CASHIER);

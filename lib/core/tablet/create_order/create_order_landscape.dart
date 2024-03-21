@@ -8,6 +8,8 @@ import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/core/service/product/api/products_api_service.dart';
 import 'package:nb_posx/core/tablet/home_tablet.dart';
 import 'package:nb_posx/core/tablet/open_shift/open_shift_management_landscape.dart';
+import 'package:nb_posx/core/tablet/widget/left_side_menu.dart';
+import 'package:nb_posx/core/tablet/widget/left_side_menu_old.dart';
 import 'package:nb_posx/database/models/park_order.dart';
 import 'package:nb_posx/database/models/shift_management.dart';
 import 'package:nb_posx/utils/helper.dart';
@@ -31,13 +33,22 @@ import '../widget/title_search_bar.dart';
 import 'cart_widget.dart';
 
 // ignore: must_be_immutable
+// Define a callback function type
+typedef OnCheckChangedCallback = void Function(bool isChecked);
+
 class CreateOrderLandscape extends StatefulWidget {
   ParkOrder? order;
-bool isShiftCreated;
-  final RxString? selectedView;
+  bool isShiftCreated;
+  final RxString selectedView;
   final bool isAppLoggedIn;
+  final OnCheckChangedCallback? onCheckChanged;
   CreateOrderLandscape(
-      {Key? key, this.order, this.selectedView, required this.isShiftCreated, this.isAppLoggedIn= false})
+      {Key? key,
+      this.order,
+      required this.selectedView,
+      required this.isShiftCreated,
+      this.onCheckChanged,
+      this.isAppLoggedIn = false})
       : super(key: key);
 
   @override
@@ -45,7 +56,7 @@ bool isShiftCreated;
 }
 
 class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
-   final _key = GlobalKey<ExpandableFabState>();
+  final _key = GlobalKey<ExpandableFabState>();
   bool isInternetAvailable = true;
   final ValueNotifier<List<OrderItem>> itemsNotifier =
       ValueNotifier<List<OrderItem>>([]);
@@ -59,7 +70,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
   // ParkOrder? parkOrder;
   late List<OrderItem> items;
   late ScrollController _scrollController;
- 
+  RxString selectedView = RxString("");
 
   @override
   void initState() {
@@ -68,15 +79,14 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     items = [];
     searchCtrl = TextEditingController();
     super.initState();
-   // verify();
+    // verify();
     getProducts();
     if (Helper.activeParkedOrder != null) {
       log("park order is active");
       customer = Helper.activeParkedOrder!.customer;
       items = Helper.activeParkedOrder!.items;
       // To check that app is logged in
-       _syncDataOnInAppLogin();
-   
+      _syncDataOnInAppLogin();
     }
   }
 
@@ -199,7 +209,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                                           fontWeight: FontWeight.bold),
                                     ))
                                   : getCategoryItemsWidget(
-                                      categories[position]),
+                                      categories[position], selectedView),
                               hightSpacer10
                             ],
                           );
@@ -243,7 +253,7 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     );
   }
 
-  getCategoryItemsWidget(Category cat) {
+  getCategoryItemsWidget(Category cat, RxString selectedView) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -338,19 +348,80 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
                     child: GestureDetector(
                         onTap: () {
                           _handleTap();
+                          if (customer == null &&
+                              widget.isShiftCreated == false) {
+                            Helper.showPopupForTablet(
+                                context, "Please Open the Shift First");
+                          }
 
-                          if (customer == null) {
-                            // Navigator.push(
-                            //  context,
-                            //  MaterialPageRoute(builder: (context) => 
-                            //   HomeTablet(isShiftCreated: true,)));
-                           _handleCustomerPopup();
-                            //  Navigator.push(
-                            //  context,
-                            //  MaterialPageRoute(builder: (context) => 
-                            //   const OpenShiftManagement()));
+                          // if (customer == null && widget.isShiftCreated == false) {
+                          // selectedView.value = "Open Shift";
+                          // if (widget.onCheckChanged != null) {
+                          // widget.onCheckChanged!(true); // Call the callback function
+                          // }
+                          //          }
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => Scaffold(
+                          //       body: Row(
+                          //         children: [
+                          //           LeftSideMenu(selectedView: selectedView,isShiftCreated: false,),
+                          //           Expanded(
+                          //             child: OpenShiftManagement(
+                          //               isShiftCreated: false,
+                          //               selectedView: selectedView,
+                          //               updateShiftStatus: (bool ) { false; },
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // );
 
-                          } else {
+                          // RxString selectedView =
+                          //     RxString(''); // Define selectedView here
+//                           if (customer == null && widget.isShiftCreated == false) {
+//   selectedView.value = "Open Shift";
+//   if (widget.onCheckChanged != null) {
+//     widget.onCheckChanged!(true); // Call the callback function
+//   }
+// }
+                          // Update selected view to "Open Shift"
+
+                          //   Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => Scaffold(
+                          //         body: Row(
+                          //           children: [
+                          //             // Displaying Left Side Menu
+                          //           //   LeftSideMenu(selectedView: RxString(widget.selectedView!.value)),
+                          //             LeftSideMenu(selectedView: selectedView,isShiftCreated: false,),
+                          //             Expanded(
+                          //              // flex: 4,
+                          //               child: OpenShiftManagement(
+                          //                 isShiftCreated: false,
+                          //                 selectedView:
+                          //                     selectedView, updateShiftStatus: (bool ) { false; },
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   );
+                          // }
+
+                          else if (customer == null &&
+                              widget.isShiftCreated == true) {
+                            _handleCustomerPopup();
+                          }
+                          //  if (customer == null){
+                          //     _handleCustomerPopup();
+                          //  }
+                          else {
                             if (cat.items[position].stock > 0) {
                               var item = OrderItem.fromJson(
                                   cat.items[position].toJson());
@@ -659,13 +730,9 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
       debugPrint("Customer selected");
     }
     setState(() {});
-//     if (result != customer && result.runtimeType == ShiftManagement ){
-// shiftManagement =result;
-// debugPrint("Pos Cashier selected");
-//     }
-//     setState(() {}); 
   }
-   _syncDataOnInAppLogin() async {
+
+  _syncDataOnInAppLogin() async {
     if (widget.isAppLoggedIn) {
       var _ = await CustomerService().getCustomers();
       await ProductsService().getCategoryProduct();
@@ -697,6 +764,12 @@ class _CreateOrderLandscapeState extends State<CreateOrderLandscape> {
     setState(() {});
   }
 
+// Method to call the callback function when the shift status changes
+  void _updateShiftStatus(bool isShiftCreated) {
+    if (widget.onCheckChanged != null) {
+      widget.onCheckChanged!(isShiftCreated);
+    }
+  }
   // verify() async {
   //   CommanResponse res = await VerificationUrl.checkAppStatus();
   //   if (res.message == true) {

@@ -17,19 +17,22 @@ class ShiftManagementAdapter extends TypeAdapter<ShiftManagement> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ShiftManagement(
-      posProfilesData: (fields[0] as List).cast<PosProfileCashier>(),
+      posProfile: fields[0] as String,
       paymentsMethod: (fields[1] as List).cast<PaymentType>(),
+      paymentInfoList: (fields[2] as List).cast<PaymentInfo>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, ShiftManagement obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.posProfilesData)
+      ..write(obj.posProfile)
       ..writeByte(1)
-      ..write(obj.paymentsMethod);
+      ..write(obj.paymentsMethod)
+      ..writeByte(2)
+      ..write(obj.paymentInfoList);
   }
 
   @override
