@@ -11,7 +11,7 @@ import '../models/pos_profile_cashier.dart';
 class DbShiftManagement {
   late Box box;
 
-  Future<void> createShiftManagement(ShiftManagement shiftManagement) async {
+  Future<void> getShiftManagementData(ShiftManagement shiftManagement) async {
     // Open the Hive box
     var box = await Hive.openBox<ShiftManagement>(SHIFT_MANAGEMENT_BOX);
 

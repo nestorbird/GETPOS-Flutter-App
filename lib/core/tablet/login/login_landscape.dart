@@ -8,7 +8,7 @@ import 'package:get/route_manager.dart';
 import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/core/service/customer/api/customer_api_service.dart';
 import 'package:nb_posx/core/service/my_account/api/get_hub_manager_details.dart';
-import 'package:nb_posx/core/service/open_shift/service/get_opening_data_api.dart';
+import 'package:nb_posx/core/service/open_shift_data/service/get_opening_data_api.dart';
 
 import 'package:nb_posx/core/tablet/theme_setting/theme_landscape.dart';
 
@@ -165,7 +165,7 @@ class _LoginLandscapeState extends State<LoginLandscape> {
         if(internetAvailable == true){
             await GetOpeningShiftService().getOpeningShiftDetails();
         }
-          Get.offAll(() => HomeTablet());
+          Get.offAll(() => HomeTablet(isShiftCreated: false,));
           
         } else {
           if (!mounted) return;

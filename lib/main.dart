@@ -172,7 +172,7 @@ class TabletApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: isUserLoggedIn ? HomeTablet() : const ThemeChangeTablet(),
+      home: isUserLoggedIn ? HomeTablet(isShiftCreated: false,) : const ThemeChangeTablet(),
     );
   }
 }

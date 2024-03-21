@@ -9,6 +9,7 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/constants/app_constants.dart';
 import 'package:nb_posx/constants/asset_paths.dart';
 import 'package:nb_posx/core/tablet/home_tablet.dart';
+import 'package:nb_posx/core/tablet/widget/left_side_menu.dart';
 import 'package:nb_posx/database/db_utils/db_payment_types.dart';
 import 'package:nb_posx/database/db_utils/db_pos_profile_cashier.dart';
 import 'package:nb_posx/database/db_utils/db_shift_management.dart';
@@ -22,17 +23,17 @@ import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:nb_posx/widgets/button.dart';
 
 class OpenShiftManagement extends StatefulWidget {
-  final bool isShiftOpen;
+  final bool isShiftCreated;
   final RxString? selectedView;
-
-  const OpenShiftManagement({Key? key, this.isShiftOpen = false, this.selectedView}) : super(key: key);
+final void Function(bool) updateShiftStatus;
+  const OpenShiftManagement({Key? key, this.isShiftCreated = false, this.selectedView,required this.updateShiftStatus, }) : super(key: key);
 
   @override
   State<OpenShiftManagement> createState() => _OpenShiftManagementState();
 }
 
 class _OpenShiftManagementState extends State<OpenShiftManagement> {
- bool isShiftOpen = false;
+ bool isShiftCreated = false;
   List<PosProfileCashier> posProfiles = [];
   List<PaymentType> paymentMethods = [];
   String selectedPosProfile = "";
@@ -55,7 +56,7 @@ class _OpenShiftManagementState extends State<OpenShiftManagement> {
         physics: const BouncingScrollPhysics(),
         child: Center(
           child: Container(
-            width: MediaQuery.of(context).size.width /3,
+            width: MediaQuery.of(context).size.width /3, 
             padding: paddingXY(),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -248,20 +249,21 @@ Widget openShiftBtnWidget() => ButtonWidget(
 log('Shift Info: $shiftManagement');
 
 // Save the shift management data before navigating to HomeTablet
-await DbShiftManagement().createShiftManagement( shiftManagement);
+await DbShiftManagement().getShiftManagementData( shiftManagement);
         }
         
 // Update the shift state
         setState(() {
-          isShiftOpen = true;
+          isShiftCreated= true;
+        
         });
-
+ LeftSideMenu(isShiftCreated: true,selectedView:RxString(widget.selectedView!.value,));
         // Navigate to HomeTablet
         // ignore: use_build_context_synchronously
         await Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeTablet(isShiftCreated: true),
+            builder: (context) => HomeTablet(isShiftCreated: true,),
           ),
         );
 

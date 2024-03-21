@@ -11,7 +11,8 @@ import '../../../utils/ui_utils/text_styles/custom_text_style.dart';
 
 class LeftSideMenu extends StatelessWidget {
   final RxString selectedView;
-  const LeftSideMenu({Key? key, required this.selectedView}) : super(key: key);
+  bool isShiftCreated;
+  LeftSideMenu({Key? key, required this.selectedView, required this.isShiftCreated}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,13 +70,15 @@ class LeftSideMenu extends StatelessWidget {
             selectedView.value = "My Profile";
           }),
             hightSpacer10,
-          _leftMenuSectionItem("Open Shift", OPENSHIFT_TAB_ICON, 20, () {
-            selectedView.value = "Open Shift";
-         }),
          hightSpacer10,
-         _leftMenuSectionItem("Close Shift", CLOSESHIFT_TAB_ICON, 20, () {
-            selectedView.value = "Close Shift";
-         }),
+          if (!isShiftCreated)
+            _leftMenuSectionItem("Open Shift", OPENSHIFT_TAB_ICON, 20, () {
+              selectedView.value = "Open Shift";
+            }),
+          if (isShiftCreated)
+            _leftMenuSectionItem("Close Shift", CLOSESHIFT_TAB_ICON, 20, () {
+              selectedView.value = "Close Shift";
+            }),
         ],
       ),
     );
@@ -129,7 +132,7 @@ class LeftSideMenu extends StatelessWidget {
                     ),
                   ),
                 ),
-                Text(""),
+                const Text(""),
                 hightSpacer40,
               ],
             ),

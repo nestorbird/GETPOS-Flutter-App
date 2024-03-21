@@ -5,6 +5,8 @@ import 'package:nb_posx/configs/theme_dynamic_colors.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/custom_text_style.dart';
 import 'package:nb_posx/utils/ui_utils/text_styles/edit_text_hint_style.dart';
 import '../constants/asset_paths.dart';
+
+//WE CAN USE THIS DROP DOWN LATER IF THERE'LL WILL BE REQUIREMENT
 // ignore: must_be_immutable
 class FilterDropdown extends StatefulWidget {
   FilterDropdown({
